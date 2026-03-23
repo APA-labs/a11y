@@ -11,7 +11,7 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,jsx,json,md}\"",
     "type-check": "turbo run type-check",
     "test": "turbo run test",
     "postinstall": "command -v lefthook >/dev/null 2>&1 && lefthook install || true"
@@ -23,7 +23,7 @@
   "devDependencies": {
     "eslint": "^9.0.0",
     "prettier": "^3.2.0",
-    "turbo": "^1.13.0",
+    "turbo": "^2.0.0",
     "typescript": "^5.3.3"
   }
 }

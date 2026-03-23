@@ -28,6 +28,11 @@ async function main() {
 
   if (failed.length === 0) {
     console.log(`\n✅ Verification passed (${passed.map((r) => r.name).join(', ')})`)
+    require('child_process').execSync('node .claude/hooks/auto-commit.js', {
+      cwd: ROOT,
+      stdio: ['pipe', 'inherit', 'inherit'],
+      input: '',
+    })
     return
   }
 
