@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/format-on-save.js",
+            "statusMessage": "Formatting..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/verify.js",
+            "statusMessage": "Verifying type-check & lint...",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

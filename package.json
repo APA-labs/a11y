@@ -1,0 +1,29 @@
+{
+  "name": "a11y-pattern-agent",
+  "version": "0.0.1",
+  "description": "AI-powered accessibility design assistant",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "postinstall": "command -v lefthook >/dev/null 2>&1 && lefthook install || true"
+  },
+  "workspaces": [
+    "packages/*",
+    "tools/*"
+  ],
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.2.0",
+    "turbo": "^1.13.0",
+    "typescript": "^5.3.3"
+  }
+}

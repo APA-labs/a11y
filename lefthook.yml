@@ -1,0 +1,24 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{js,ts,tsx,jsx}"
+      run: pnpm lint
+    format:
+      glob: "*.{js,ts,tsx,jsx,json,md}"
+      run: pnpm format
+    type-check:
+      glob: "*.{ts,tsx}"
+      run: pnpm type-check
+
+pre-push:
+  parallel: true
+  commands:
+    lint:
+      run: pnpm lint
+    format:
+      run: pnpm format
+    type-check:
+      run: pnpm type-check
+    build:
+      run: pnpm build
