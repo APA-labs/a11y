@@ -1,0 +1,58 @@
+{
+  "patterns": [
+    {
+      "id": "button",
+      "name": "Button",
+      "description": "Standard button component",
+      "keywords": ["button", "btn", "action", "click", "submit", "cta"]
+    },
+    {
+      "id": "toggle_button",
+      "name": "Toggle Button",
+      "description": "Button with toggled state",
+      "keywords": ["toggle", "switch", "on/off", "aria-pressed", "mute", "like", "favorite"]
+    },
+    {
+      "id": "text_input",
+      "name": "Text Input",
+      "description": "Text input field",
+      "keywords": ["input", "text", "field", "textfield", "email", "search", "tel"]
+    },
+    {
+      "id": "password_input",
+      "name": "Password Input",
+      "description": "Password input field",
+      "keywords": ["password", "secret", "pin", "passcode"]
+    },
+    {
+      "id": "form_validation",
+      "name": "Form Validation",
+      "description": "Form with validation messages",
+      "keywords": ["validation", "error", "form", "required", "invalid", "submit"]
+    },
+    {
+      "id": "modal_dialog",
+      "name": "Modal Dialog",
+      "description": "Modal dialog component",
+      "keywords": ["modal", "dialog", "popup", "overlay", "lightbox", "drawer"]
+    },
+    {
+      "id": "disclosure",
+      "name": "Disclosure",
+      "description": "Expandable/collapsible content",
+      "keywords": ["accordion", "expand", "collapse", "faq", "disclosure", "details", "summary"]
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "description": "Tab navigation component",
+      "keywords": ["tabs", "tab", "tabpanel", "navigation", "tablist"]
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "description": "Tooltip or popover component",
+      "keywords": ["tooltip", "hint", "popover", "hover", "info"]
+    }
+  ]
+}

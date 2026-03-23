@@ -1,38 +1,26 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
+import cors from '@fastify/cors'
+import Fastify from 'fastify'
+
+import { analyzeRoutes } from './routes/analyze.js'
+import { healthRoutes } from './routes/health.js'
 
 const fastify = Fastify({
-  logger: true,
-});
+  logger: {
+    level: process.env.LOG_LEVEL ?? 'info',
+  },
+})
 
-await fastify.register(cors, {
-  origin: true,
-});
+await fastify.register(cors, { origin: true })
+await fastify.register(healthRoutes)
+await fastify.register(analyzeRoutes)
 
-fastify.get('/health', async (request, reply) => {
-  return { status: 'ok' };
-});
+const port = parseInt(process.env.PORT ?? '3001', 10)
+const host = process.env.HOST ?? '0.0.0.0'
 
-fastify.post<{ Body: any }>('/api/analyze', async (request, reply) => {
-  // TODO: Implement analysis logic
-  return {
-    patterns: [],
-    checklist: { must: [], should: [], avoid: [] },
-    codeSamples: [],
-    tests: [],
-    questions: [],
-    references: [],
-  };
-});
-
-const start = async () => {
-  try {
-    await fastify.listen({ port: 3001, host: '0.0.0.0' });
-    console.log('Backend running on http://localhost:3001');
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-};
-
-start();
+try {
+  await fastify.listen({ port, host })
+  console.log(`Backend running on http://localhost:${port}`)
+} catch (err) {
+  fastify.log.error(err)
+  process.exit(1)
+}
