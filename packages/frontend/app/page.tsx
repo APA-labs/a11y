@@ -10,7 +10,7 @@ export default function Home() {
       {/* Header */}
       <div className='mb-10'>
         <h1 className='text-2xl font-bold text-slate-900 mb-2'>Accessibility Pattern Hub</h1>
-        <p className='text-slate-500 text-sm leading-relaxed max-w-xl'>
+        <p className='text-slate-500 text-sm leading-relaxed'>
           WCAG 2.1 AA 기준의 공통 베이스라인과 Material Design, Radix UI, Ant Design의 구현 방식을 한눈에 비교하세요.
         </p>
       </div>
