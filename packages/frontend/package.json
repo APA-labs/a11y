@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Next.js frontend",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
