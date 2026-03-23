@@ -25,21 +25,22 @@ function Dialog({ isOpen, onClose, title, children }: Props) {
 
   return isOpen ? (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
-    >
+      role='dialog'
+      aria-modal='true'
+      aria-labelledby={titleId}>
       <h2 id={titleId}>{title}</h2>
       {children}
-      <button type="button" onClick={onClose}>닫기</button>
+      <button
+        type='button'
+        onClick={onClose}>
+        닫기
+      </button>
     </div>
   ) : null
 }
 
 // 뒤 콘텐츠 숨기기
-<main aria-hidden={isDialogOpen ? 'true' : undefined}>
-  {/* 메인 콘텐츠 */}
-</main>
+;<main aria-hidden={isDialogOpen ? 'true' : undefined}>{/* 메인 콘텐츠 */}</main>
 ```
 
 ## Notes

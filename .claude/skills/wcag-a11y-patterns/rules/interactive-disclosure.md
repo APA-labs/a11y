@@ -24,15 +24,19 @@ function Disclosure({ title, children }: Props) {
   return (
     <div>
       <button
-        type="button"
+        type='button'
         aria-expanded={isOpen}
         aria-controls={panelId}
-        onClick={() => setIsOpen(!isOpen)}
-      >
+        onClick={() => setIsOpen(!isOpen)}>
         {title}
-        <ChevronIcon aria-hidden="true" style={{ rotate: isOpen ? '180deg' : '0deg' }} />
+        <ChevronIcon
+          aria-hidden='true'
+          style={{ rotate: isOpen ? '180deg' : '0deg' }}
+        />
       </button>
-      <div id={panelId} hidden={!isOpen}>
+      <div
+        id={panelId}
+        hidden={!isOpen}>
         {children}
       </div>
     </div>
@@ -42,10 +46,10 @@ function Disclosure({ title, children }: Props) {
 
 ## Keyboard
 
-| 키 | 동작 |
-|----|------|
-| Enter / Space | 토글 |
-| Tab | 다음 포커스 가능 요소로 |
+| 키            | 동작                    |
+| ------------- | ----------------------- |
+| Enter / Space | 토글                    |
+| Tab           | 다음 포커스 가능 요소로 |
 
 ## Notes
 

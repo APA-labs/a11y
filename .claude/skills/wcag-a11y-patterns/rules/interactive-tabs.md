@@ -27,7 +27,7 @@ function Tabs({ tabs }: { tabs: { id: string; label: string; content: ReactNode 
       ArrowRight: (index + 1) % tabs.length,
       ArrowLeft: (index - 1 + tabs.length) % tabs.length,
       Home: 0,
-      End: tabs.length - 1,
+      End: tabs.length - 1
     }
     const next = keys[e.key]
     if (next === undefined) return
@@ -38,19 +38,20 @@ function Tabs({ tabs }: { tabs: { id: string; label: string; content: ReactNode 
 
   return (
     <div>
-      <div role="tablist">
+      <div role='tablist'>
         {tabs.map((tab, i) => (
           <button
             key={tab.id}
-            ref={(el) => { tabRefs.current[tab.id] = el }}
-            role="tab"
+            ref={(el) => {
+              tabRefs.current[tab.id] = el
+            }}
+            role='tab'
             id={`tab-${tab.id}`}
             aria-selected={tab.id === activeId}
             aria-controls={`panel-${tab.id}`}
             tabIndex={tab.id === activeId ? 0 : -1}
             onClick={() => setActiveId(tab.id)}
-            onKeyDown={(e) => handleKeyDown(e, i)}
-          >
+            onKeyDown={(e) => handleKeyDown(e, i)}>
             {tab.label}
           </button>
         ))}
@@ -58,11 +59,10 @@ function Tabs({ tabs }: { tabs: { id: string; label: string; content: ReactNode 
       {tabs.map((tab) => (
         <div
           key={tab.id}
-          role="tabpanel"
+          role='tabpanel'
           id={`panel-${tab.id}`}
           aria-labelledby={`tab-${tab.id}`}
-          hidden={tab.id !== activeId}
-        >
+          hidden={tab.id !== activeId}>
           {tab.content}
         </div>
       ))}

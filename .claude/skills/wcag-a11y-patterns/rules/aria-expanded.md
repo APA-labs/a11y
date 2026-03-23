@@ -17,12 +17,13 @@ function Accordion({ title, children }: Props) {
     <div>
       <button
         aria-expanded={open}
-        aria-controls="panel-id"
-        onClick={() => setOpen(!open)}
-      >
+        aria-controls='panel-id'
+        onClick={() => setOpen(!open)}>
         {title}
       </button>
-      <div id="panel-id" hidden={!open}>
+      <div
+        id='panel-id'
+        hidden={!open}>
         {children}
       </div>
     </div>
@@ -30,11 +31,10 @@ function Accordion({ title, children }: Props) {
 }
 
 // ✅ 드롭다운 메뉴
-<button
+;<button
   aria-expanded={isOpen}
-  aria-haspopup="listbox"
-  onClick={toggle}
->
+  aria-haspopup='listbox'
+  onClick={toggle}>
   옵션 선택
 </button>
 ```

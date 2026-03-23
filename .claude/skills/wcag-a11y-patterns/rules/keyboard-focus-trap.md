@@ -16,9 +16,7 @@ function Dialog({ isOpen, onClose, triggerRef, children }: Props) {
     if (!isOpen) return
 
     // 다이얼로그 열리면 첫 번째 포커스 가능 요소로 이동
-    const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    )
+    const focusable = dialogRef.current?.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
     focusable?.[0]?.focus()
 
     function handleKeyDown(e: KeyboardEvent) {
@@ -50,10 +48,9 @@ function Dialog({ isOpen, onClose, triggerRef, children }: Props) {
   return (
     <div
       ref={dialogRef}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="dialog-title"
-    >
+      role='dialog'
+      aria-modal='true'
+      aria-labelledby='dialog-title'>
       {children}
     </div>
   )

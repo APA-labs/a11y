@@ -13,13 +13,13 @@ export const config = [
   ...tseslint.configs.recommended,
   {
     plugins: { turbo: turboPlugin },
-    rules: { 'turbo/no-undeclared-env-vars': 'warn' },
+    rules: { 'turbo/no-undeclared-env-vars': 'warn' }
   },
   { plugins: { onlyWarn } },
   {
     plugins: {
       import: eslintPluginImport,
-      'unused-imports': eslintPluginUnusedImports,
+      'unused-imports': eslintPluginUnusedImports
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -32,8 +32,8 @@ export const config = [
           args: 'after-used',
           argsIgnorePattern: '^_',
           ignoreRestSiblings: true,
-          caughtErrors: 'none',
-        },
+          caughtErrors: 'none'
+        }
       ],
       'unused-imports/no-unused-imports': 'warn',
       'unused-imports/no-unused-vars': 'off',
@@ -42,10 +42,10 @@ export const config = [
         {
           groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'object', 'type'],
           'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true },
-        },
-      ],
-    },
+          alphabetize: { order: 'asc', caseInsensitive: true }
+        }
+      ]
+    }
   },
-  { ignores: ['dist/**'] },
+  { ignores: ['dist/**'] }
 ]

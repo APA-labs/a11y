@@ -58,25 +58,14 @@
   "tests": [
     {
       "title": "Label Association Test",
-      "steps": [
-        "Use screen reader",
-        "Navigate to input",
-        "Verify label is announced with input"
-      ],
+      "steps": ["Use screen reader", "Navigate to input", "Verify label is announced with input"],
       "tools": ["NVDA", "VoiceOver"]
     },
     {
       "title": "Error State Test",
-      "steps": [
-        "Submit form with invalid input",
-        "Verify error message is announced",
-        "Verify input is marked as invalid"
-      ],
+      "steps": ["Submit form with invalid input", "Verify error message is announced", "Verify input is marked as invalid"],
       "tools": ["axe", "NVDA"]
     }
   ],
-  "references": [
-    "https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html",
-    "https://www.w3.org/WAI/tutorials/forms/labels/"
-  ]
+  "references": ["https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html", "https://www.w3.org/WAI/tutorials/forms/labels/"]
 }

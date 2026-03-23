@@ -6,8 +6,8 @@ import { healthRoutes } from './routes/health.js'
 
 const fastify = Fastify({
   logger: {
-    level: process.env.LOG_LEVEL ?? 'info',
-  },
+    level: process.env.LOG_LEVEL ?? 'info'
+  }
 })
 
 await fastify.register(cors, { origin: true })

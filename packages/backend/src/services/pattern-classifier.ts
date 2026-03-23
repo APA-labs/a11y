@@ -38,7 +38,7 @@ Return ONLY a JSON object:
         model: CLAUDE_MODEL,
         max_tokens: 512,
         system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: prompt }],
+        messages: [{ role: 'user', content: prompt }]
       })
 
       const block = response.content[0]

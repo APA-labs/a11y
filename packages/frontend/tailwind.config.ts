@@ -5,14 +5,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        sidebar: '#0f172a',
+        sidebar: '#0f172a'
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-      },
-    },
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 }
 
 export default config

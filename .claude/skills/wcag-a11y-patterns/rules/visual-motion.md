@@ -25,9 +25,7 @@
 ```tsx
 // ✅ React에서 모션 감소 감지
 function useReducedMotion() {
-  const [reduced, setReduced] = useState(
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
+  const [reduced, setReduced] = useState(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     const handler = (e: MediaQueryListEvent) => setReduced(e.matches)
@@ -43,7 +41,7 @@ function AnimatedComponent() {
   return (
     <div
       style={{
-        transition: reducedMotion ? 'none' : 'transform 0.3s ease',
+        transition: reducedMotion ? 'none' : 'transform 0.3s ease'
       }}
     />
   )

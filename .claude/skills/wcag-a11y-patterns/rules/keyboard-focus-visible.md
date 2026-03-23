@@ -10,8 +10,12 @@
 
 ```css
 /* ❌ 포커스 완전 제거 */
-:focus { outline: none; }
-*:focus { outline: 0; }
+:focus {
+  outline: none;
+}
+*:focus {
+  outline: 0;
+}
 
 /* ✅ 커스텀 포커스 스타일로 대체 */
 :focus-visible {
@@ -21,15 +25,17 @@
 }
 
 /* ✅ 마우스 클릭 시에는 숨기고, 키보드만 표시 */
-:focus:not(:focus-visible) { outline: none; }
-:focus-visible { outline: 2px solid #0066cc; }
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid #0066cc;
+}
 ```
 
 ```tsx
 // ✅ Tailwind
-<button className="focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2">
-  클릭
-</button>
+<button className='focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'>클릭</button>
 ```
 
 ## Notes

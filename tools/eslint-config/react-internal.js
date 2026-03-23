@@ -16,15 +16,15 @@ export const config = [
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
-      globals: { ...globals.serviceworker, ...globals.browser },
-    },
+      globals: { ...globals.serviceworker, ...globals.browser }
+    }
   },
   {
     plugins: { 'react-hooks': pluginReactHooks },
     settings: { react: { version: 'detect' } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'off',
-    },
-  },
+      'react/react-in-jsx-scope': 'off'
+    }
+  }
 ]

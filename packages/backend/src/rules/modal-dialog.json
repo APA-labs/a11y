@@ -63,25 +63,14 @@
   "tests": [
     {
       "title": "Focus Trap Test",
-      "steps": [
-        "Open modal",
-        "Tab through all elements",
-        "Verify focus cycles within modal only"
-      ],
+      "steps": ["Open modal", "Tab through all elements", "Verify focus cycles within modal only"],
       "tools": ["Keyboard only"]
     },
     {
       "title": "Escape Key Test",
-      "steps": [
-        "Open modal",
-        "Press Escape",
-        "Verify modal closes and focus returns to trigger"
-      ],
+      "steps": ["Open modal", "Press Escape", "Verify modal closes and focus returns to trigger"],
       "tools": ["Keyboard only"]
     }
   ],
-  "references": [
-    "https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/",
-    "https://www.w3.org/TR/wai-aria-1.2/#dialog"
-  ]
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/", "https://www.w3.org/TR/wai-aria-1.2/#dialog"]
 }

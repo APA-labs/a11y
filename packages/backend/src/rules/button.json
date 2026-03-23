@@ -62,25 +62,14 @@
   "tests": [
     {
       "title": "Keyboard Navigation Test",
-      "steps": [
-        "Tab to the button",
-        "Press Enter or Space",
-        "Verify action is triggered"
-      ],
+      "steps": ["Tab to the button", "Press Enter or Space", "Verify action is triggered"],
       "tools": ["Keyboard only"]
     },
     {
       "title": "Screen Reader Test",
-      "steps": [
-        "Use NVDA/JAWS/VoiceOver",
-        "Navigate to button",
-        "Verify button name, role, and state are announced"
-      ],
+      "steps": ["Use NVDA/JAWS/VoiceOver", "Navigate to button", "Verify button name, role, and state are announced"],
       "tools": ["NVDA", "JAWS", "VoiceOver"]
     }
   ],
-  "references": [
-    "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
-    "https://www.w3.org/TR/wai-aria-1.2/#button"
-  ]
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/button/", "https://www.w3.org/TR/wai-aria-1.2/#button"]
 }

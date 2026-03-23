@@ -24,7 +24,7 @@ function getChangedDirs(scopePath, srcRelative) {
   const allFiles = [
     ...run(`git diff --cached --name-only -- "${scopePath}"`).split('\n'),
     ...run(`git diff --name-only -- "${scopePath}"`).split('\n'),
-    ...run(`git ls-files --others --exclude-standard -- "${scopePath}"`).split('\n'),
+    ...run(`git ls-files --others --exclude-standard -- "${scopePath}"`).split('\n')
   ].filter(Boolean)
 
   const dirs = new Set()

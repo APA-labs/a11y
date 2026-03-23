@@ -32,15 +32,14 @@ function Tooltip({ content, children }: Props) {
         onBlur: () => setVisible(false),
         onKeyDown: (e: KeyboardEvent) => {
           if (e.key === 'Escape') setVisible(false)
-        },
+        }
       })}
       {visible && (
         <div
-          role="tooltip"
+          role='tooltip'
           id={tooltipId}
           onMouseEnter={() => setVisible(true)}
-          onMouseLeave={() => setVisible(false)}
-        >
+          onMouseLeave={() => setVisible(false)}>
           {content}
         </div>
       )}

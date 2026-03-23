@@ -18,7 +18,7 @@ async function main() {
 
   const checks = [
     { name: 'type-check', cmd: 'pnpm type-check' },
-    { name: 'lint', cmd: 'pnpm lint' },
+    { name: 'lint', cmd: 'pnpm lint' }
   ]
 
   const results = checks.map(({ name, cmd }) => ({ name, ...run(cmd) }))
@@ -31,7 +31,7 @@ async function main() {
     require('child_process').execSync('node .claude/hooks/auto-commit.js', {
       cwd: ROOT,
       stdio: ['pipe', 'inherit', 'inherit'],
-      input: '',
+      input: ''
     })
     return
   }

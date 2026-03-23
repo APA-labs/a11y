@@ -37,14 +37,15 @@ a11y/
 
 ## API
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/health` | 헬스 체크 |
-| POST | `/api/analyze` | 접근성 분석 요청 |
+| Method | Path           | Description      |
+| ------ | -------------- | ---------------- |
+| GET    | `/health`      | 헬스 체크        |
+| POST   | `/api/analyze` | 접근성 분석 요청 |
 
 ### POST /api/analyze
 
 **Request**
+
 ```json
 {
   "description": "드롭다운 메뉴 컴포넌트",
@@ -53,6 +54,7 @@ a11y/
 ```
 
 **Response**
+
 ```json
 {
   "patterns": ["disclosure", "listbox"],
@@ -96,20 +98,20 @@ import type { AnalysisRequest } from '@a11y/shared'
 
 ## Tooling
 
-| 도구 | 역할 |
-|------|------|
-| **mise** | Node.js 버전 관리 (`node 22`) |
-| **lefthook** | Git hooks (pre-commit: lint·format·type-check / pre-push: +build) |
-| **Prettier** | 코드 포맷팅 |
-| **ESLint 9** | 린팅 (flat config) |
-| **Turborepo** | 빌드 캐싱 및 태스크 오케스트레이션 |
+| 도구          | 역할                                                              |
+| ------------- | ----------------------------------------------------------------- |
+| **mise**      | Node.js 버전 관리 (`node 22`)                                     |
+| **lefthook**  | Git hooks (pre-commit: lint·format·type-check / pre-push: +build) |
+| **Prettier**  | 코드 포맷팅                                                       |
+| **ESLint 9**  | 린팅 (flat config)                                                |
+| **Turborepo** | 빌드 캐싱 및 태스크 오케스트레이션                                |
 
 ### Claude Code Hooks
 
-| 이벤트 | 동작 |
-|--------|------|
-| `Write` / `Edit` | 저장 즉시 Prettier + ESLint --fix 자동 실행 |
-| `Stop` (작업 완료) | `type-check` + `lint` 검증 후 결과 출력 |
+| 이벤트             | 동작                                        |
+| ------------------ | ------------------------------------------- |
+| `Write` / `Edit`   | 저장 즉시 Prettier + ESLint --fix 자동 실행 |
+| `Stop` (작업 완료) | `type-check` + `lint` 검증 후 결과 출력     |
 
 ### Claude Commands
 

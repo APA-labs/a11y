@@ -23,9 +23,12 @@ function FormField({ id, label, error, value, onChange }: Props) {
         aria-describedby={error ? errorId : undefined}
       />
       {error && (
-        <p id={errorId} role="alert" aria-live="assertive">
+        <p
+          id={errorId}
+          role='alert'
+          aria-live='assertive'>
           {/* 아이콘 + 텍스트로 색상 외 구분 */}
-          <span aria-hidden="true">⚠ </span>
+          <span aria-hidden='true'>⚠ </span>
           {error}
         </p>
       )}

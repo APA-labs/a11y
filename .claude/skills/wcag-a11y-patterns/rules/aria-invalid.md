@@ -22,7 +22,9 @@ function FormField({ id, label, error, ...props }: Props) {
         {...props}
       />
       {error && (
-        <p id={errorId} role="alert">
+        <p
+          id={errorId}
+          role='alert'>
           {error}
         </p>
       )}

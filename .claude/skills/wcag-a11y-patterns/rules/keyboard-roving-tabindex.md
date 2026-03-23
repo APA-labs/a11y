@@ -27,18 +27,19 @@ function TabList({ tabs }: { tabs: Tab[] }) {
   }
 
   return (
-    <div role="tablist">
+    <div role='tablist'>
       {tabs.map((tab, i) => (
         <button
           key={tab.id}
-          ref={(el) => { tabRefs.current[i] = el }}
-          role="tab"
+          ref={(el) => {
+            tabRefs.current[i] = el
+          }}
+          role='tab'
           aria-selected={i === activeIndex}
           aria-controls={`panel-${tab.id}`}
           tabIndex={i === activeIndex ? 0 : -1}
           onKeyDown={(e) => handleKeyDown(e, i)}
-          onClick={() => setActiveIndex(i)}
-        >
+          onClick={() => setActiveIndex(i)}>
           {tab.label}
         </button>
       ))}

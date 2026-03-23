@@ -12,7 +12,7 @@ export class LLMOrchestrator {
           `Pattern: ${r.pattern}\n` +
           `Must: ${r.checklist.must.map((i) => i.title).join(', ')}\n` +
           `Should: ${r.checklist.should.map((i) => i.title).join(', ')}\n` +
-          `References: ${r.references.slice(0, 2).join(', ')}`,
+          `References: ${r.references.slice(0, 2).join(', ')}`
       )
       .join('\n\n')
 
@@ -43,7 +43,7 @@ Return ONLY valid JSON matching this exact structure:
       max_tokens: 4096,
       thinking: { type: 'adaptive' },
       system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{ role: 'user', content: prompt }]
     })
 
     const response = await stream.finalMessage()
@@ -71,9 +71,9 @@ Return ONLY valid JSON matching this exact structure:
       messages: [
         {
           role: 'user',
-          content: `Fix this invalid JSON and return only the corrected version:\n\n${invalidJSON}`,
-        },
-      ],
+          content: `Fix this invalid JSON and return only the corrected version:\n\n${invalidJSON}`
+        }
+      ]
     })
 
     const block = response.content[0]

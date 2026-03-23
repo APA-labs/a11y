@@ -1,36 +1,36 @@
 export interface AnalysisRequest {
-  description: string;
-  context?: string;
+  description: string
+  context?: string
 }
 
 export interface ChecklistItem {
-  id: string;
-  title: string;
-  description: string;
-  level: 'must' | 'should' | 'avoid';
+  id: string
+  title: string
+  description: string
+  level: 'must' | 'should' | 'avoid'
 }
 
 export interface CodeSample {
-  language: 'react' | 'html' | 'typescript';
-  label: string;
-  code: string;
+  language: 'react' | 'html' | 'typescript'
+  label: string
+  code: string
 }
 
 export interface TestGuide {
-  title: string;
-  steps: string[];
-  tools?: string[];
+  title: string
+  steps: string[]
+  tools?: string[]
 }
 
 export interface AnalysisResponse {
-  patterns: string[];
+  patterns: string[]
   checklist: {
-    must: ChecklistItem[];
-    should: ChecklistItem[];
-    avoid: ChecklistItem[];
-  };
-  codeSamples: CodeSample[];
-  tests: TestGuide[];
-  questions: string[];
-  references: string[];
+    must: ChecklistItem[]
+    should: ChecklistItem[]
+    avoid: ChecklistItem[]
+  }
+  codeSamples: CodeSample[]
+  tests: TestGuide[]
+  questions: string[]
+  references: string[]
 }

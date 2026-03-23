@@ -5,7 +5,7 @@ function log(level: LogLevel, message: string, meta?: unknown): void {
     timestamp: new Date().toISOString(),
     level,
     message,
-    ...(meta !== undefined ? { meta } : {}),
+    ...(meta !== undefined ? { meta } : {})
   }
   const output = JSON.stringify(entry)
   if (level === 'error') {
@@ -19,5 +19,5 @@ export const logger = {
   info: (message: string, meta?: unknown) => log('info', message, meta),
   warn: (message: string, meta?: unknown) => log('warn', message, meta),
   error: (message: string, meta?: unknown) => log('error', message, meta),
-  debug: (message: string, meta?: unknown) => log('debug', message, meta),
+  debug: (message: string, meta?: unknown) => log('debug', message, meta)
 }

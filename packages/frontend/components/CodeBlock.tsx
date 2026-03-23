@@ -15,24 +15,24 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
   }
 
   return (
-    <div className="rounded-xl overflow-hidden border border-slate-200 bg-[#1e293b]">
+    <div className='rounded-xl overflow-hidden border border-slate-200 bg-[#1e293b]'>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#0f172a] border-b border-slate-700/60">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-slate-400">{sample.label}</span>
-          <span className="text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-400 font-mono">
-            {sample.language}
-          </span>
+      <div className='flex items-center justify-between px-4 py-2.5 bg-[#0f172a] border-b border-slate-700/60'>
+        <div className='flex items-center gap-2'>
+          <span className='text-xs font-mono text-slate-400'>{sample.label}</span>
+          <span className='text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-400 font-mono'>{sample.language}</span>
         </div>
         <button
           onClick={handleCopy}
           aria-label={copied ? '복사됨' : '코드 복사'}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-slate-700"
-        >
+          className='flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-slate-700'>
           {copied ? (
             <>
-              <Check size={13} className="text-emerald-400" />
-              <span className="text-emerald-400">복사됨</span>
+              <Check
+                size={13}
+                className='text-emerald-400'
+              />
+              <span className='text-emerald-400'>복사됨</span>
             </>
           ) : (
             <>
@@ -44,8 +44,8 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
       </div>
 
       {/* Code */}
-      <pre className="overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin">
-        <code className="text-slate-200 font-mono">{sample.code}</code>
+      <pre className='overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin'>
+        <code className='text-slate-200 font-mono'>{sample.code}</code>
       </pre>
     </div>
   )
