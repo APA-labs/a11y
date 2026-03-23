@@ -1,2 +1,2 @@
-export * from './types/analysis';
-export * from './schemas/analysis';
+export * from './types/analysis.js'
+export * from './schemas/analysis.js'
