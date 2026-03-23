@@ -24,3 +24,6 @@ Thumbs.db
 
 # Turbo
 .turbo/
+
+# Claude
+CLAUDE.local.md
