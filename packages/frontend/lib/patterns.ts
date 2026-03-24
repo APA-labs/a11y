@@ -174,7 +174,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   loading={isLoading}
   aria-label={isLoading ? '저장 중' : '저장'}
   style={{ minWidth: 44, minHeight: 44 }}
-  onClick={handleSave}
+  onClick={() => {}}
 >
   저장
 </Button>
@@ -183,7 +183,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 <Button
   danger
   aria-label="항목 삭제"
-  onClick={handleDelete}
+  onClick={() => {}}
 >
   삭제
 </Button>`
@@ -533,7 +533,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 <Dialog
   open={isOpen}
-  onClose={onClose}
+  onClose={() => setIsOpen(false)}
   aria-labelledby="dialog-title"
   aria-describedby="dialog-description"
   // keepMounted 사용 주의!
@@ -547,8 +547,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     </p>
   </DialogContent>
   <DialogActions>
-    <Button onClick={onClose}>취소</Button>
-    <Button onClick={handleDelete} color="error" autoFocus>
+    <Button onClick={() => setIsOpen(false)}>취소</Button>
+    <Button onClick={() => {}} color="error" autoFocus>
       삭제
     </Button>
   </DialogActions>
@@ -601,7 +601,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
       <Dialog.Close asChild>
         <button>취소</button>
       </Dialog.Close>
-      <button onClick={handleDelete}>삭제</button>
+      <button onClick={() => {}}>삭제</button>
     </Dialog.Content>
   </Dialog.Portal>
 </Dialog.Root>`
@@ -637,14 +637,14 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 <Modal
   open={isOpen}
-  onCancel={onClose}
+  onCancel={() => setIsOpen(false)}
   title="파일 삭제"
   destroyOnClose
   footer={[
-    <Button key="cancel" onClick={onClose}>
+    <Button key="cancel" onClick={() => setIsOpen(false)}>
       취소
     </Button>,
-    <Button key="delete" type="primary" danger onClick={handleDelete}>
+    <Button key="delete" type="primary" danger onClick={() => {}}>
       삭제
     </Button>,
   ]}
@@ -2074,11 +2074,11 @@ const OPTIONS = [
 <FormGroup>
   <FormLabel component="legend">알림 설정</FormLabel>
   <FormControlLabel
-    control={<Checkbox checked={emailChecked} onChange={(e) => setEmail(e.target.checked)} />}
+    control={<Checkbox checked={emailChecked} onChange={(e) => setEmailChecked(e.target.checked)} />}
     label="이메일 알림"
   />
   <FormControlLabel
-    control={<Checkbox checked={smsChecked} onChange={(e) => setSms(e.target.checked)} />}
+    control={<Checkbox checked={smsChecked} onChange={(e) => setSmsChecked(e.target.checked)} />}
     label="SMS 알림"
   />
 </FormGroup>`

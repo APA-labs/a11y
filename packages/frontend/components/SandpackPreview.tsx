@@ -106,14 +106,16 @@ function splitDeclsAndJsx(body: string): { decls: string; jsx: string } {
   return { decls: declLines.join('\n').trim(), jsx: jsxLines.join('\n').trim() }
 }
 
-const STATE_VAR_RE = /\b(is[A-Z]\w*|has[A-Z]\w*|show[A-Z]\w*|open|active|enabled|checked|loading|selected)\b/g
+const STATE_VAR_RE =
+  /\b(is[A-Z]\w*|has[A-Z]\w*|show[A-Z]\w*|\w+Checked|\w+Open|\w+Visible|\w+Selected|\w+Enabled|\w+Active|open|active|enabled|checked|loading|selected)\b/g
 
 function buildStateDecls(code: string): string[] {
   const found = new Set<string>()
   let m: RegExpExecArray | null
   STATE_VAR_RE.lastIndex = 0
   while ((m = STATE_VAR_RE.exec(code)) !== null) {
-    if (m[1]) found.add(m[1])
+    const name = m[1]
+    if (name && !name.startsWith('set')) found.add(name)
   }
   return [...found].map((v) => `const [${v}, set${v.charAt(0).toUpperCase()}${v.slice(1)}] = useState(false)`)
 }
