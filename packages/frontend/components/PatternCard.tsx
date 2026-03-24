@@ -4,12 +4,12 @@ import Link from 'next/link'
 import type { Pattern } from '../lib/types'
 
 const TAG_COLORS: Record<string, string> = {
-  interactive: 'bg-sand-50 text-sand-700',
+  interactive: 'bg-violet-50 text-violet-700',
   form: 'bg-mauve-100 text-mauve-700',
   overlay: 'bg-mist-100 text-mist-700',
   'focus-management': 'bg-navy-100 text-navy-700',
   state: 'bg-mauve-50 text-mauve-600',
-  action: 'bg-sand-100 text-sand-600',
+  action: 'bg-violet-100 text-violet-600',
   input: 'bg-mist-50 text-mist-700'
 }
 
@@ -22,15 +22,15 @@ export default function PatternCard({ pattern }: { pattern: Pattern }) {
   return (
     <Link
       href={`/patterns/${pattern.slug}`}
-      className='group block bg-white rounded-xl border border-mist-200 hover:border-sand-300 hover:shadow-sm transition-all p-5'>
+      className='group block bg-white rounded-xl border border-mist-200 hover:border-violet-300 hover:shadow-sm transition-all p-5'>
       <div className='flex items-start justify-between mb-3'>
         <div className='flex-1 min-w-0 pr-3'>
-          <h2 className='font-semibold text-navy text-[15px] group-hover:text-sand transition-colors'>{pattern.name}</h2>
+          <h2 className='font-semibold text-navy text-[15px] group-hover:text-violet-600 transition-colors'>{pattern.name}</h2>
           <p className='text-sm text-mist-700 mt-1 line-clamp-2 leading-relaxed'>{pattern.description}</p>
         </div>
         <ArrowRight
           size={15}
-          className='shrink-0 mt-0.5 text-mist-300 group-hover:text-sand group-hover:translate-x-0.5 transition-all'
+          className='shrink-0 mt-0.5 text-mist-300 group-hover:text-violet-600 group-hover:translate-x-0.5 transition-all'
         />
       </div>
 

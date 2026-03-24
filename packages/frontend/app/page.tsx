@@ -18,7 +18,7 @@ export default function Home() {
 
       <div className='flex items-center gap-10 mb-10 pb-10 border-b border-mist-200'>
         <div>
-          <p className='text-3xl font-bold text-sand'>{patterns.length}</p>
+          <p className='text-3xl font-bold text-violet-600'>{patterns.length}</p>
           <p className='text-xs text-mist-700 mt-1 uppercase tracking-wider'>Patterns</p>
         </div>
         <div>
@@ -33,7 +33,7 @@ export default function Home() {
           <div className='ml-auto'>
             <Link
               href='/analyze'
-              className='flex items-center gap-2 px-4 py-2 bg-sand text-white text-sm font-medium rounded-lg hover:bg-sand-700 transition-colors'>
+              className='flex items-center gap-2 px-4 py-2 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 transition-colors'>
               <Sparkles size={14} />
               AI 분석
             </Link>

@@ -40,7 +40,7 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
           {pattern.wcagCriteria.map((criterion) => (
             <span
               key={criterion}
-              className='text-xs px-2.5 py-1 rounded-full bg-sand-50 text-sand-700 font-mono border border-sand-200'>
+              className='text-xs px-2.5 py-1 rounded-full bg-violet-50 text-violet-700 font-mono border border-violet-200'>
               {criterion}
             </span>
           ))}
@@ -93,7 +93,7 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
                   href={ref.href}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='inline-flex items-center gap-1.5 text-sm text-sand hover:text-sand-700 transition-colors'>
+                  className='inline-flex items-center gap-1.5 text-sm text-violet-600 hover:text-violet-700 transition-colors'>
                   {ref.label}
                   <ExternalLink size={12} />
                 </a>

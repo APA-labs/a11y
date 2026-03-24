@@ -31,7 +31,7 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
         <Link
           href='/'
           className='flex items-center gap-2.5 group'>
-          <div className='w-7 h-7 rounded-md bg-sand flex items-center justify-center text-white font-bold text-sm'>A</div>
+          <div className='w-7 h-7 rounded-md bg-violet-600 flex items-center justify-center text-white font-bold text-sm'>A</div>
           <span className='font-semibold text-white text-sm tracking-tight'>A11y Patterns</span>
         </Link>
       </div>
@@ -50,7 +50,7 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
                     href={href}
                     className={`
                       flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                      ${isActive ? 'bg-sand text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
+                      ${isActive ? 'bg-violet-600 text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
                     `}>
                     <span className={isActive ? 'text-white' : 'text-mist-600'}>{ICON_MAP[pattern.slug] ?? <Square size={14} />}</span>
                     {pattern.name}
@@ -69,7 +69,7 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
                 href='/wcag'
                 className={`
                   flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                  ${pathname === '/wcag' ? 'bg-sand text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
+                  ${pathname === '/wcag' ? 'bg-violet-600 text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
                 `}>
                 <ShieldCheck
                   size={14}
@@ -90,7 +90,7 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
                   href='/analyze'
                   className={`
                     flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                    ${pathname === '/analyze' ? 'bg-sand text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
+                    ${pathname === '/analyze' ? 'bg-violet-600 text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
                   `}>
                   <Sparkles
                     size={14}
