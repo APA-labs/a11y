@@ -1,12 +1,27 @@
 'use client'
 
-import { Check, Copy } from 'lucide-react'
+import { Check, Copy, Eye, Code } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
 
 import type { CodeSample } from '../lib/types'
 
+const SandpackPreviewBlock = dynamic(() => import('./SandpackPreview'), {
+  ssr: false,
+  loading: () => (
+    <div
+      className='rounded-b-xl bg-slate-900 flex items-center justify-center'
+      style={{ height: 260 }}>
+      <span className='text-sm text-slate-400'>로딩 중...</span>
+    </div>
+  )
+})
+
 export default function CodeBlock({ sample }: { sample: CodeSample }) {
   const [copied, setCopied] = useState(false)
+  const [tab, setTab] = useState<'code' | 'preview'>('code')
+
+  const canPreview = ['tsx', 'jsx', 'ts', 'js', 'html'].includes(sample.language)
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(sample.code)
@@ -22,31 +37,64 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
           <span className='text-xs font-mono text-slate-400'>{sample.label}</span>
           <span className='text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-400 font-mono'>{sample.language}</span>
         </div>
-        <button
-          onClick={handleCopy}
-          aria-label={copied ? '복사됨' : '코드 복사'}
-          className='flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-slate-700'>
-          {copied ? (
+
+        <div className='flex items-center gap-1'>
+          {canPreview && (
             <>
-              <Check
-                size={13}
-                className='text-emerald-400'
-              />
-              <span className='text-emerald-400'>복사됨</span>
-            </>
-          ) : (
-            <>
-              <Copy size={13} />
-              <span>복사</span>
+              <button
+                onClick={() => setTab('code')}
+                aria-pressed={tab === 'code'}
+                className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${
+                  tab === 'code' ? 'bg-slate-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                }`}>
+                <Code size={12} />
+                <span>코드</span>
+              </button>
+              <button
+                onClick={() => setTab('preview')}
+                aria-pressed={tab === 'preview'}
+                className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${
+                  tab === 'preview' ? 'bg-slate-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                }`}>
+                <Eye size={12} />
+                <span>미리보기</span>
+              </button>
             </>
           )}
-        </button>
+
+          <button
+            onClick={handleCopy}
+            aria-label={copied ? '복사됨' : '코드 복사'}
+            className='flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-slate-700 ml-1'>
+            {copied ? (
+              <>
+                <Check
+                  size={13}
+                  className='text-emerald-400'
+                />
+                <span className='text-emerald-400'>복사됨</span>
+              </>
+            ) : (
+              <>
+                <Copy size={13} />
+                <span>복사</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Code */}
-      <pre className='overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin rounded-b-xl'>
-        <code className='text-slate-200 font-mono whitespace-pre'>{sample.code}</code>
-      </pre>
+      {/* Content */}
+      {tab === 'code' ? (
+        <pre className='overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin rounded-b-xl'>
+          <code className='text-slate-200 font-mono whitespace-pre'>{sample.code}</code>
+        </pre>
+      ) : (
+        <SandpackPreviewBlock
+          code={sample.code}
+          language={sample.language}
+        />
+      )}
     </div>
   )
 }
