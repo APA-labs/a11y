@@ -1,0 +1,104 @@
+{
+  "pattern": "Tabs",
+  "wcagLevel": "A",
+  "checklist": {
+    "must": [
+      {
+        "id": "tabs-tablist-role",
+        "title": "Tab container has tablist role",
+        "description": "The container element holding all tab elements must have role=\"tablist\""
+      },
+      {
+        "id": "tabs-tab-role",
+        "title": "Each tab has tab role",
+        "description": "Each tab element must have role=\"tab\" and belong to the tablist"
+      },
+      {
+        "id": "tabs-tabpanel-role",
+        "title": "Each panel has tabpanel role",
+        "description": "Each content section must have role=\"tabpanel\" with a unique id"
+      },
+      {
+        "id": "tabs-aria-controls",
+        "title": "Tab references its panel",
+        "description": "Each tab must have aria-controls pointing to the id of its associated tabpanel"
+      },
+      {
+        "id": "tabs-aria-selected",
+        "title": "Active tab has aria-selected",
+        "description": "The active tab must have aria-selected=\"true\"; inactive tabs must have aria-selected=\"false\""
+      },
+      {
+        "id": "tabs-keyboard-arrow",
+        "title": "Arrow keys move between tabs",
+        "description": "Left/Right Arrow keys must move focus between tabs; Tab key must move focus into the active panel"
+      }
+    ],
+    "should": [
+      {
+        "id": "tabs-aria-labelledby",
+        "title": "Panel labelled by its tab",
+        "description": "Each tabpanel should have aria-labelledby referencing its controlling tab id"
+      },
+      {
+        "id": "tabs-roving-tabindex",
+        "title": "Use roving tabindex in tablist",
+        "description": "Only the active tab should be in the natural tab order (tabindex=\"0\"); others should have tabindex=\"-1\""
+      },
+      {
+        "id": "tabs-home-end",
+        "title": "Home/End keys jump to first/last tab",
+        "description": "Home key should move focus to the first tab, End key to the last tab"
+      }
+    ],
+    "avoid": [
+      {
+        "id": "tabs-no-role",
+        "title": "Missing ARIA roles",
+        "description": "Don't implement tabs with only CSS/JS without ARIA roles — screen readers won't recognize the pattern"
+      },
+      {
+        "id": "tabs-hidden-panels-in-dom",
+        "title": "Leaving inactive panels visible to screen readers",
+        "description": "Inactive tab panels must be hidden (hidden attribute or display:none) so screen readers skip them"
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React Tabs",
+      "code": "import { useState } from 'react'\n\nconst TABS = [\n  { id: 'tab-1', label: 'Tab 1', content: 'Panel 1 content' },\n  { id: 'tab-2', label: 'Tab 2', content: 'Panel 2 content' },\n]\n\nexport function Tabs() {\n  const [active, setActive] = useState('tab-1')\n\n  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {\n    if (e.key === 'ArrowRight') setActive(TABS[Math.min(index + 1, TABS.length - 1)].id)\n    if (e.key === 'ArrowLeft') setActive(TABS[Math.max(index - 1, 0)].id)\n    if (e.key === 'Home') setActive(TABS[0].id)\n    if (e.key === 'End') setActive(TABS[TABS.length - 1].id)\n  }\n\n  return (\n    <div>\n      <div role=\"tablist\">\n        {TABS.map((tab, i) => (\n          <button\n            key={tab.id}\n            id={tab.id}\n            role=\"tab\"\n            aria-selected={active === tab.id}\n            aria-controls={`panel-${tab.id}`}\n            tabIndex={active === tab.id ? 0 : -1}\n            onClick={() => setActive(tab.id)}\n            onKeyDown={(e) => handleKeyDown(e, i)}\n          >\n            {tab.label}\n          </button>\n        ))}\n      </div>\n      {TABS.map((tab) => (\n        <div\n          key={tab.id}\n          id={`panel-${tab.id}`}\n          role=\"tabpanel\"\n          aria-labelledby={tab.id}\n          hidden={active !== tab.id}\n        >\n          {tab.content}\n        </div>\n      ))}\n    </div>\n  )\n}"
+    },
+    "html": {
+      "label": "HTML Tabs",
+      "code": "<div role=\"tablist\">\n  <button id=\"tab-1\" role=\"tab\" aria-selected=\"true\" aria-controls=\"panel-1\" tabindex=\"0\">Tab 1</button>\n  <button id=\"tab-2\" role=\"tab\" aria-selected=\"false\" aria-controls=\"panel-2\" tabindex=\"-1\">Tab 2</button>\n</div>\n<div id=\"panel-1\" role=\"tabpanel\" aria-labelledby=\"tab-1\">Panel 1 content</div>\n<div id=\"panel-2\" role=\"tabpanel\" aria-labelledby=\"tab-2\" hidden>Panel 2 content</div>"
+    }
+  },
+  "tests": [
+    {
+      "title": "Arrow Key Navigation",
+      "steps": [
+        "Tab into the tablist",
+        "Press Right Arrow to move to next tab",
+        "Press Left Arrow to go back",
+        "Press Home/End to jump to first/last tab"
+      ],
+      "tools": ["Keyboard only"]
+    },
+    {
+      "title": "Screen Reader Announcement",
+      "steps": [
+        "Navigate to the tablist",
+        "Verify each tab announces its label, role, and selected state",
+        "Activate a tab and verify the panel becomes accessible"
+      ],
+      "tools": ["NVDA", "VoiceOver"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+    "https://www.w3.org/TR/wai-aria-1.2/#tab",
+    "https://www.w3.org/TR/wai-aria-1.2/#tablist",
+    "https://www.w3.org/TR/wai-aria-1.2/#tabpanel"
+  ]
+}

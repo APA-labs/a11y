@@ -39,8 +39,14 @@
     {
       "id": "disclosure",
       "name": "Disclosure",
-      "description": "Expandable/collapsible content",
-      "keywords": ["accordion", "expand", "collapse", "faq", "disclosure", "details", "summary"]
+      "description": "Show/hide toggle for a section of content",
+      "keywords": ["disclosure", "show", "hide", "expand", "collapse", "faq", "details", "summary", "toggle"]
+    },
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "description": "Vertically stacked sections with expandable panels",
+      "keywords": ["accordion", "expand", "collapse", "sections", "panel", "faq"]
     },
     {
       "id": "tabs",
@@ -52,7 +58,31 @@
       "id": "tooltip",
       "name": "Tooltip",
       "description": "Tooltip or popover component",
-      "keywords": ["tooltip", "hint", "popover", "hover", "info"]
+      "keywords": ["tooltip", "hint", "popover", "hover", "info", "help"]
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "description": "Input with popup for selecting from a list of options",
+      "keywords": ["combobox", "select", "dropdown", "autocomplete", "listbox", "option", "picker", "chooser"]
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "description": "Checkbox input for boolean or multi-select choices",
+      "keywords": ["checkbox", "check", "checked", "tick", "multi-select", "options"]
+    },
+    {
+      "id": "radio",
+      "name": "Radio Group",
+      "description": "Group of mutually exclusive radio buttons",
+      "keywords": ["radio", "radiogroup", "option", "single-select", "choice", "gender", "rating"]
+    },
+    {
+      "id": "link",
+      "name": "Link",
+      "description": "Navigational link to internal or external resource",
+      "keywords": ["link", "anchor", "href", "navigate", "url", "external", "internal"]
     }
   ]
 }
