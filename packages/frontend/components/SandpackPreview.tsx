@@ -1,7 +1,6 @@
 'use client'
 
-import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider, UnstyledOpenInCodeSandboxButton } from '@codesandbox/sandpack-react'
-import { ExternalLink } from 'lucide-react'
+import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react'
 import { Component, type ReactNode } from 'react'
 
 class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
@@ -30,24 +29,24 @@ class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: 
 
 const DS_DEPS: Record<string, Record<string, string>> = {
   '@mui/material': {
-    '@mui/material': 'latest',
-    '@emotion/react': 'latest',
-    '@emotion/styled': 'latest',
-    '@mui/icons-material': 'latest'
+    '@mui/material': '5.15.14',
+    '@emotion/react': '11.11.4',
+    '@emotion/styled': '11.11.0',
+    '@mui/icons-material': '5.15.14'
   },
   '@radix-ui': {
-    '@radix-ui/react-collapsible': 'latest',
-    '@radix-ui/react-tabs': 'latest',
-    '@radix-ui/react-tooltip': 'latest',
-    '@radix-ui/react-accordion': 'latest',
-    '@radix-ui/react-checkbox': 'latest',
-    '@radix-ui/react-radio-group': 'latest',
-    '@radix-ui/react-switch': 'latest',
-    '@radix-ui/react-dialog': 'latest',
-    '@radix-ui/react-popover': 'latest',
-    '@radix-ui/react-icons': 'latest'
+    '@radix-ui/react-collapsible': '1.0.3',
+    '@radix-ui/react-tabs': '1.0.4',
+    '@radix-ui/react-tooltip': '1.0.7',
+    '@radix-ui/react-accordion': '1.1.2',
+    '@radix-ui/react-checkbox': '1.0.4',
+    '@radix-ui/react-radio-group': '1.1.3',
+    '@radix-ui/react-switch': '1.0.3',
+    '@radix-ui/react-dialog': '1.0.5',
+    '@radix-ui/react-popover': '1.0.7',
+    '@radix-ui/react-icons': '1.3.0'
   },
-  antd: { antd: 'latest' }
+  antd: { antd: '5.16.4' }
 }
 
 function detectDeps(code: string): Record<string, string> {
@@ -144,17 +143,6 @@ ${stateBlock}
 }`
 }
 
-function OpenInCSBButton() {
-  return (
-    <UnstyledOpenInCodeSandboxButton>
-      <span className='flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 transition-colors'>
-        <ExternalLink size={12} />
-        CodeSandbox에서 열기
-      </span>
-    </UnstyledOpenInCodeSandboxButton>
-  )
-}
-
 interface Props {
   code: string
   language: string
@@ -180,7 +168,6 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
 
   const appCode = buildAppCode(code)
   const extraDeps = detectDeps(code)
-  const hasExternalDeps = Object.keys(extraDeps).length > 0
 
   return (
     <SandpackErrorBoundary>
@@ -191,21 +178,12 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
         customSetup={{ dependencies: extraDeps }}
         options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
         <SandpackLayout style={{ borderRadius: '0 0 0.75rem 0.75rem', border: 'none' }}>
-          <SandpackCodeEditor style={{ height: hasExternalDeps ? 320 : 280 }} />
-          {!hasExternalDeps && (
-            <SandpackPreview
-              style={{ height: 280 }}
-              showNavigator={false}
-            />
-          )}
+          <SandpackCodeEditor style={{ height: 280 }} />
+          <SandpackPreview
+            style={{ height: 280 }}
+            showNavigator={false}
+          />
         </SandpackLayout>
-
-        {hasExternalDeps && (
-          <div className='flex items-center justify-between px-4 py-2 bg-[#151515] rounded-b-xl border-t border-slate-700/40'>
-            <span className='text-xs text-slate-500'>외부 패키지 포함 — 인라인 미리보기 불가</span>
-            <OpenInCSBButton />
-          </div>
-        )}
       </SandpackProvider>
     </SandpackErrorBoundary>
   )
