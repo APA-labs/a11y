@@ -13,8 +13,8 @@ export default function Home() {
     <div className='max-w-4xl mx-auto px-8 py-12'>
       <div className='mb-10'>
         <h1 className='text-3xl font-bold text-navy mb-3'>Accessibility Pattern Hub</h1>
-        <p className='text-mist-700 text-sm leading-relaxed max-w-xl'>
-          WCAG 2.1 AA 기준의 공통 베이스라인과 Material Design, Radix UI, Ant Design의 구현 방식을 한눈에 비교하세요.
+        <p className='text-mist-700 text-sm leading-relaxed'>
+          WCAG 2.1 AA 기준의 공통 베이스라인과 다양한 디자인 시스템들의 구현 방식을 한눈에 비교하세요.
         </p>
       </div>
 
