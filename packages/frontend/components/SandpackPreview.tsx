@@ -2,36 +2,120 @@
 
 import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react'
 
-function buildAppCode(componentCode: string): string {
-  const defaultExportMatch = componentCode.match(/export\s+default\s+function\s+(\w+)/)
-  if (defaultExportMatch) return componentCode
+const DS_DEPS: Record<string, Record<string, string>> = {
+  '@mui/material': {
+    '@mui/material': 'latest',
+    '@emotion/react': 'latest',
+    '@emotion/styled': 'latest',
+    '@mui/icons-material': 'latest'
+  },
+  '@radix-ui': {
+    '@radix-ui/react-collapsible': 'latest',
+    '@radix-ui/react-tabs': 'latest',
+    '@radix-ui/react-tooltip': 'latest',
+    '@radix-ui/react-accordion': 'latest',
+    '@radix-ui/react-checkbox': 'latest',
+    '@radix-ui/react-radio-group': 'latest',
+    '@radix-ui/react-switch': 'latest',
+    '@radix-ui/react-dialog': 'latest',
+    '@radix-ui/react-popover': 'latest',
+    '@radix-ui/react-icons': 'latest'
+  },
+  antd: { antd: 'latest' }
+}
 
-  const namedExportMatch = componentCode.match(/export\s+function\s+(\w+)/)
-  const name = namedExportMatch?.[1]
-  if (!name) return componentCode
+function detectDeps(code: string): Record<string, string> {
+  const deps: Record<string, string> = {}
+  for (const [key, pkgs] of Object.entries(DS_DEPS)) {
+    if (code.includes(key)) Object.assign(deps, pkgs)
+  }
+  return deps
+}
 
-  const hasChildren = /children/.test(componentCode)
-  const hasTitle = /\btitle\b/.test(componentCode)
-  const hasLabel = /\blabel\b/.test(componentCode)
-  const hasLegend = /\blegend\b/.test(componentCode)
+function extractImports(code: string): { imports: string; body: string } {
+  const lines = code.split('\n')
+  const importLines: string[] = []
+  const bodyLines: string[] = []
+  let inImport = false
 
-  const props: string[] = []
-  if (hasTitle) props.push('title="예시 제목"')
-  if (hasLabel) props.push('label="레이블"')
-  if (hasLegend) props.push('legend="그룹 제목"')
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (trimmed.startsWith('import ')) {
+      importLines.push(line)
+      inImport = trimmed.endsWith('{') || trimmed.includes('from') === false
+    } else if (inImport) {
+      importLines.push(line)
+      if (trimmed.endsWith("'") || trimmed.endsWith('"')) inImport = false
+    } else {
+      bodyLines.push(line)
+    }
+  }
 
-  const propsStr = props.join(' ')
+  return { imports: importLines.join('\n'), body: bodyLines.join('\n').trim() }
+}
 
-  const inner = hasChildren ? `<p style={{ margin: 0 }}>예시 내용입니다.</p>` : ''
+const STATE_VAR_RE = /\b(is[A-Z]\w*|has[A-Z]\w*|show[A-Z]\w*|open|active|enabled|checked|loading|selected)\b/g
 
-  const renderCall = inner ? `<${name} ${propsStr}>${inner}</${name}>` : `<${name} ${propsStr} />`
+function buildStateDecls(code: string): string[] {
+  const found = new Set<string>()
+  let m: RegExpExecArray | null
+  STATE_VAR_RE.lastIndex = 0
+  while ((m = STATE_VAR_RE.exec(code)) !== null) {
+    if (m[1]) found.add(m[1])
+  }
+  return [...found].map((v) => `const [${v}, set${v.charAt(0).toUpperCase()}${v.slice(1)}] = useState(false)`)
+}
 
-  return `${componentCode}
+function buildAppCode(code: string): string {
+  if (/export\s+default\s+function\s+App/.test(code)) return code
+
+  const namedExportMatch = code.match(/export\s+(?:default\s+)?function\s+(\w+)/)
+
+  if (namedExportMatch) {
+    const name = namedExportMatch[1]
+    const hasChildren = /children/.test(code)
+    const hasTitle = /\btitle\b/.test(code)
+    const hasLabel = /\blabel\b/.test(code)
+    const hasLegend = /\blegend\b/.test(code)
+
+    const props = [hasTitle && 'title="예시 제목"', hasLabel && 'label="레이블"', hasLegend && 'legend="그룹 제목"'].filter(Boolean).join(' ')
+
+    const inner = hasChildren ? `<p style={{ margin: 0 }}>예시 내용입니다.</p>` : ''
+    const renderCall = inner ? `<${name} ${props}>${inner}</${name}>` : `<${name} ${props} />`
+
+    return `${code}
 
 export default function App() {
   return (
     <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
       ${renderCall}
+    </div>
+  )
+}`
+  }
+
+  // Raw JSX / snippet — extract imports, inject useState for detected variables
+  const { imports, body } = extractImports(code)
+  const stateDecls = buildStateDecls(body)
+  const needsUseState = stateDecls.length > 0
+  const reactImport = needsUseState ? `import { useState } from 'react'` : `import React from 'react'`
+
+  const stateBlock = stateDecls.length > 0 ? `  ${stateDecls.join('\n  ')}\n` : ''
+
+  const bodyIndented = body
+    .split('\n')
+    .map((l) => `      ${l}`)
+    .join('\n')
+    .trim()
+
+  return `${reactImport}
+${imports}
+
+export default function App() {
+${stateBlock}
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
+      ${bodyIndented}
     </div>
   )
 }`
@@ -61,17 +145,19 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
   }
 
   const appCode = buildAppCode(code)
+  const extraDeps = detectDeps(code)
 
   return (
     <SandpackProvider
       template='react-ts'
       files={{ '/App.tsx': appCode }}
       theme='dark'
-      options={{ recompileMode: 'delayed', recompileDelay: 500 }}>
+      customSetup={{ dependencies: extraDeps }}
+      options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
       <SandpackLayout style={{ borderRadius: '0 0 0.75rem 0.75rem', border: 'none' }}>
-        <SandpackCodeEditor style={{ height: 260 }} />
+        <SandpackCodeEditor style={{ height: 280 }} />
         <SandpackPreview
-          style={{ height: 260 }}
+          style={{ height: 280 }}
           showNavigator={false}
         />
       </SandpackLayout>
