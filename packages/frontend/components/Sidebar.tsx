@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, ShieldCheck, Sparkles, Square, ToggleLeft, Type } from 'lucide-react'
+import { BookOpen, ChevronDown, ExternalLink, Layers, Link2, List, ShieldCheck, Sparkles, Square, ToggleLeft, Type } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -10,7 +10,15 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   button: <Square size={14} />,
   'text-input': <Type size={14} />,
   'modal-dialog': <BookOpen size={14} />,
-  toggle: <ToggleLeft size={14} />
+  toggle: <ToggleLeft size={14} />,
+  disclosure: <ChevronDown size={14} />,
+  tabs: <Layers size={14} />,
+  tooltip: <ExternalLink size={14} />,
+  accordion: <List size={14} />,
+  combobox: <Type size={14} />,
+  checkbox: <Square size={14} />,
+  'radio-group': <Square size={14} />,
+  link: <Link2 size={14} />
 }
 
 export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
