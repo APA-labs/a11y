@@ -62,14 +62,14 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
           </div>
 
           <div className='grid grid-cols-2 gap-6'>
-            <div>
+            <div className='min-w-0'>
               <ChecklistSection
                 must={pattern.baseline.checklist.must}
                 should={pattern.baseline.checklist.should}
                 avoid={pattern.baseline.checklist.avoid}
               />
             </div>
-            <div>
+            <div className='min-w-0'>
               <h3 className='text-sm font-semibold text-slate-700 mb-3'>기본 코드 예시</h3>
               <CodeBlock sample={pattern.baseline.codeSample} />
             </div>

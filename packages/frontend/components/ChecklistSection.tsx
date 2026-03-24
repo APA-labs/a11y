@@ -48,15 +48,9 @@ function ChecklistGroup({ items, level }: { items: ChecklistItem[]; level: 'must
         {items.map((item) => (
           <li
             key={item.id}
-            className={`flex gap-3 p-3 rounded-lg border text-sm ${cfg.containerClass}`}>
-            <Icon
-              size={15}
-              className={`shrink-0 mt-0.5 ${cfg.iconClass}`}
-            />
-            <div>
-              <p className={`font-medium ${cfg.titleClass}`}>{item.title}</p>
-              <p className='text-slate-500 text-xs mt-0.5 leading-relaxed'>{item.description}</p>
-            </div>
+            className={`p-3 rounded-lg border text-sm ${cfg.containerClass}`}>
+            <p className={`font-medium ${cfg.titleClass}`}>{item.title}</p>
+            <p className='text-slate-500 text-xs mt-0.5 leading-relaxed'>{item.description}</p>
           </li>
         ))}
       </ul>

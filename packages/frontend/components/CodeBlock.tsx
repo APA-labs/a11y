@@ -15,9 +15,9 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
   }
 
   return (
-    <div className='rounded-xl overflow-hidden border border-slate-200 bg-[#1e293b]'>
+    <div className='rounded-xl border border-slate-200 bg-[#1e293b]'>
       {/* Header */}
-      <div className='flex items-center justify-between px-4 py-2.5 bg-[#0f172a] border-b border-slate-700/60'>
+      <div className='flex items-center justify-between px-4 py-2.5 bg-[#0f172a] border-b border-slate-700/60 rounded-t-xl'>
         <div className='flex items-center gap-2'>
           <span className='text-xs font-mono text-slate-400'>{sample.label}</span>
           <span className='text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-400 font-mono'>{sample.language}</span>
@@ -44,8 +44,8 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
       </div>
 
       {/* Code */}
-      <pre className='overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin'>
-        <code className='text-slate-200 font-mono'>{sample.code}</code>
+      <pre className='overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin rounded-b-xl'>
+        <code className='text-slate-200 font-mono whitespace-pre'>{sample.code}</code>
       </pre>
     </div>
   )
