@@ -83,6 +83,24 @@
       "name": "Link",
       "description": "Navigational link to internal or external resource",
       "keywords": ["link", "anchor", "href", "navigate", "url", "external", "internal"]
+    },
+    {
+      "id": "alert",
+      "name": "Alert / Toast",
+      "description": "Non-interactive notification message for users",
+      "keywords": ["alert", "toast", "notification", "snackbar", "banner", "message", "status", "feedback", "announce", "live region"]
+    },
+    {
+      "id": "select",
+      "name": "Select (Listbox)",
+      "description": "Custom select dropdown with listbox pattern",
+      "keywords": ["select", "listbox", "dropdown", "option", "list", "picker", "choose", "native select", "single select"]
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "description": "Hierarchical navigation trail showing current page location",
+      "keywords": ["breadcrumb", "breadcrumbs", "navigation", "trail", "path", "hierarchy", "location", "current page"]
     }
   ]
 }
