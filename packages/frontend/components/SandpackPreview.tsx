@@ -120,22 +120,68 @@ function buildStateDecls(code: string): string[] {
   return [...found].map((v) => `const [${v}, set${v.charAt(0).toUpperCase()}${v.slice(1)}] = useState(false)`)
 }
 
+function parseDestructuredProps(code: string, funcName: string): string[] {
+  const re = new RegExp(`function\\s+${funcName}\\s*\\(\\s*\\{([^}]+)\\}`)
+  const m = code.match(re)
+  if (!m || !m[1]) return []
+  return m[1]
+    .split(',')
+    .map((p) => {
+      const part = p
+        .trim()
+        .replace(/\s*=.*$/, '')
+        .split(':')[0]
+      return part ? part.trim() : ''
+    })
+    .filter((p) => p && /^[a-z]/.test(p) && !p.startsWith('...'))
+}
+
 function buildAppCode(code: string): string {
   if (/export\s+default\s+function\s+App/.test(code)) return code
 
   const namedExportMatch = code.match(/export\s+(?:default\s+)?function\s+(\w+)/)
 
   if (namedExportMatch) {
-    const name = namedExportMatch[1]
-    const hasChildren = /children/.test(code)
-    const hasTitle = /\btitle\b/.test(code)
-    const hasLabel = /\blabel\b/.test(code)
-    const hasLegend = /\blegend\b/.test(code)
+    const name = namedExportMatch[1] ?? ''
+    const rawProps = parseDestructuredProps(code, name)
+    const hasChildren = rawProps.includes('children') || /children/.test(code)
 
-    const props = [hasTitle && 'title="예시 제목"', hasLabel && 'label="레이블"', hasLegend && 'legend="그룹 제목"'].filter(Boolean).join(' ')
+    const propBindings: string[] = []
+    for (const prop of rawProps) {
+      if (prop === 'children') continue
+      if (prop === 'label') {
+        propBindings.push('label="레이블"')
+        continue
+      }
+      if (prop === 'title') {
+        propBindings.push('title="예시 제목"')
+        continue
+      }
+      if (prop === 'legend') {
+        propBindings.push('legend="그룹 제목"')
+        continue
+      }
+      if (prop === 'id') {
+        propBindings.push('id="example-id"')
+        continue
+      }
+      if (prop === 'href') {
+        propBindings.push('href="#"')
+        continue
+      }
+      if (/^on[A-Z]/.test(prop)) {
+        propBindings.push(`${prop}={() => {}}`)
+        continue
+      }
+      if (/^(checked|indeterminate|selected|disabled|required|readOnly|multiple|open|active|enabled|visible|expanded|loading)$/.test(prop)) {
+        propBindings.push(`${prop}={false}`)
+        continue
+      }
+    }
 
     const inner = hasChildren ? `<p style={{ margin: 0 }}>예시 내용입니다.</p>` : ''
-    const renderCall = inner ? `<${name} ${props}>${inner}</${name}>` : `<${name} ${props} />`
+    const propsStr = propBindings.join(' ')
+    const renderCall = inner ? `<${name} ${propsStr}>${inner}</${name}>` : `<${name} ${propsStr} />`
 
     return `${code}
 

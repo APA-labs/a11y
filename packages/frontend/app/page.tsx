@@ -1,3 +1,5 @@
+export const dynamic = 'force-static'
+
 import { Sparkles } from 'lucide-react'
 import Link from 'next/link'
 

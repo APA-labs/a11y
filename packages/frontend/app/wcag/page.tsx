@@ -1,3 +1,5 @@
+export const dynamic = 'force-static'
+
 import { CheckCircle, Info, AlertTriangle } from 'lucide-react'
 
 const LEVELS = [

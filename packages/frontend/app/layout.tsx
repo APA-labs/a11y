@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const aiEnabled = !!process.env.ANTHROPIC_API_KEY
+  const aiEnabled = process.env.NEXT_PUBLIC_AI_ENABLED === 'true'
 
   return (
     <html lang='ko'>

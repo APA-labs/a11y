@@ -2019,19 +2019,18 @@ const OPTIONS = [
       codeSample: {
         language: 'tsx',
         label: 'Baseline (React)',
-        code: `export function Checkbox({
-  id,
-  label,
-  checked,
-  onChange,
+        code: `import { useState } from 'react'
+
+export function Checkbox({
+  id = 'cb-example',
+  label = '레이블',
   indeterminate = false,
 }: {
-  id: string
-  label: string
-  checked: boolean
-  onChange: (v: boolean) => void
+  id?: string
+  label?: string
   indeterminate?: boolean
 }) {
+  const [checked, setChecked] = useState(false)
   return (
     <label htmlFor={id}>
       <input
@@ -2039,7 +2038,7 @@ const OPTIONS = [
         type="checkbox"
         checked={checked}
         ref={(el) => { if (el) el.indeterminate = indeterminate }}
-        onChange={(e) => onChange(e.target.checked)}
+        onChange={(e) => setChecked(e.target.checked)}
       />
       {label}
     </label>

@@ -7,6 +7,8 @@ import CodeBlock from '../../../components/CodeBlock'
 import DesignSystemTabs from '../../../components/DesignSystemTabs'
 import { getPattern, patterns } from '../../../lib/patterns'
 
+export const dynamic = 'force-static'
+
 export function generateStaticParams() {
   return patterns.map((p) => ({ slug: p.slug }))
 }
