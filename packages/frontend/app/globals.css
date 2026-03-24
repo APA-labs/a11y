@@ -5,6 +5,32 @@
 @layer base {
   :root {
     --sidebar-width: 240px;
+
+    /* Brand palette */
+    --color-pearl: #f6f7f7;
+    --color-sand: #a28958;
+    --color-sand-light: #c4a570;
+    --color-sand-dark: #705c38;
+    --color-mist: #9a99a7;
+    --color-mist-light: #c8c7d2;
+    --color-mist-dark: #636272;
+    --color-mauve: #7c646c;
+    --color-mauve-light: #b09699;
+    --color-mauve-dark: #523b43;
+    --color-navy: #2c435d;
+    --color-navy-light: #5088b3;
+    --color-navy-dark: #1e2e40;
+
+    /* Semantic tokens */
+    --color-bg: var(--color-pearl);
+    --color-surface: #ffffff;
+    --color-accent: var(--color-sand);
+    --color-accent-hover: var(--color-sand-dark);
+    --color-neutral: var(--color-mist);
+    --color-warm: var(--color-mauve);
+    --color-text-primary: var(--color-navy);
+    --color-text-secondary: var(--color-mist-dark);
+    --color-border: var(--color-mist-light);
   }
 
   * {
