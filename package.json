@@ -14,6 +14,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,jsx,json,md}\"",
     "type-check": "turbo run type-check",
     "test": "turbo run test",
+    "transform:rules": "pnpm --filter @a11y/spec-transformer transform",
+    "transform:pattern": "pnpm --filter @a11y/spec-transformer transform:patterns",
+    "verify:rules": "pnpm --filter @a11y/spec-transformer verify:rules",
+    "verify:patterns": "pnpm --filter @a11y/spec-transformer verify:all",
     "postinstall": "command -v lefthook >/dev/null 2>&1 && lefthook install || true"
   },
   "workspaces": [
