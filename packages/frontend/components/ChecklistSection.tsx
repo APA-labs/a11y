@@ -8,8 +8,8 @@ const CONFIG = {
     icon: AlertCircle,
     containerClass: 'bg-red-50 border-red-100',
     iconClass: 'text-red-500',
-    labelClass: 'text-red-700 bg-red-100',
-    titleClass: 'text-slate-800'
+    labelClass: 'text-red-600 bg-red-100',
+    titleClass: 'text-navy'
   },
   should: {
     label: 'Should',
@@ -17,15 +17,15 @@ const CONFIG = {
     containerClass: 'bg-amber-50 border-amber-100',
     iconClass: 'text-amber-500',
     labelClass: 'text-amber-700 bg-amber-100',
-    titleClass: 'text-slate-800'
+    titleClass: 'text-navy'
   },
   avoid: {
     label: 'Avoid',
     icon: MinusCircle,
-    containerClass: 'bg-slate-50 border-slate-200',
-    iconClass: 'text-slate-400',
-    labelClass: 'text-slate-600 bg-slate-200',
-    titleClass: 'text-slate-700'
+    containerClass: 'bg-mist-50 border-mist-200',
+    iconClass: 'text-mist-500',
+    labelClass: 'text-mist-700 bg-mist-200',
+    titleClass: 'text-navy-700'
   }
 }
 
@@ -36,21 +36,21 @@ function ChecklistGroup({ items, level }: { items: ChecklistItem[]; level: 'must
 
   return (
     <div>
-      <div className='flex items-center gap-2 mb-2'>
+      <div className='flex items-center gap-2 mb-2.5'>
         <Icon
-          size={14}
+          size={13}
           className={cfg.iconClass}
         />
         <span className={`text-xs font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${cfg.labelClass}`}>{cfg.label}</span>
-        <span className='text-xs text-slate-400'>{items.length}개</span>
+        <span className='text-xs text-mist-500'>{items.length}개</span>
       </div>
       <ul className='space-y-2'>
         {items.map((item) => (
           <li
             key={item.id}
             className={`p-3 rounded-lg border text-sm ${cfg.containerClass}`}>
-            <p className={`font-medium ${cfg.titleClass}`}>{item.title}</p>
-            <p className='text-slate-500 text-xs mt-0.5 leading-relaxed'>{item.description}</p>
+            <p className={`font-medium text-[13px] ${cfg.titleClass}`}>{item.title}</p>
+            <p className='text-mist-600 text-xs mt-0.5 leading-relaxed'>{item.description}</p>
           </li>
         ))}
       </ul>

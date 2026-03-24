@@ -12,7 +12,7 @@ const SandpackPreviewBlock = dynamic(() => import('./SandpackPreview'), {
     <div
       className='rounded-b-xl bg-slate-900 flex items-center justify-center'
       style={{ height: 260 }}>
-      <span className='text-sm text-slate-400'>로딩 중...</span>
+      <span className='text-sm text-mist-400'>로딩 중...</span>
     </div>
   )
 })
@@ -30,12 +30,12 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
   }
 
   return (
-    <div className='rounded-xl border border-slate-200 bg-[#1e293b]'>
+    <div className='rounded-xl border border-mist-200 bg-navy-800'>
       {/* Header */}
-      <div className='flex items-center justify-between px-4 py-2.5 bg-[#0f172a] border-b border-slate-700/60 rounded-t-xl'>
+      <div className='flex items-center justify-between px-4 py-2.5 bg-navy-900 border-b border-navy-800 rounded-t-xl'>
         <div className='flex items-center gap-2'>
-          <span className='text-xs font-mono text-slate-400'>{sample.label}</span>
-          <span className='text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-400 font-mono'>{sample.language}</span>
+          <span className='text-xs font-mono text-mist-400'>{sample.label}</span>
+          <span className='text-xs px-1.5 py-0.5 rounded bg-navy-700 text-mist-400 font-mono'>{sample.language}</span>
         </div>
 
         <div className='flex items-center gap-1'>
@@ -45,7 +45,7 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
                 onClick={() => setTab('code')}
                 aria-pressed={tab === 'code'}
                 className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${
-                  tab === 'code' ? 'bg-slate-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                  tab === 'code' ? 'bg-navy-600 text-white' : 'text-mist-400 hover:text-white hover:bg-navy-700'
                 }`}>
                 <Code size={12} />
                 <span>코드</span>
@@ -54,7 +54,7 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
                 onClick={() => setTab('preview')}
                 aria-pressed={tab === 'preview'}
                 className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${
-                  tab === 'preview' ? 'bg-slate-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                  tab === 'preview' ? 'bg-navy-600 text-white' : 'text-mist-400 hover:text-white hover:bg-navy-700'
                 }`}>
                 <Eye size={12} />
                 <span>미리보기</span>
@@ -65,7 +65,7 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
           <button
             onClick={handleCopy}
             aria-label={copied ? '복사됨' : '코드 복사'}
-            className='flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-slate-700 ml-1'>
+            className='flex items-center gap-1.5 text-xs text-mist-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-navy-700 ml-1'>
             {copied ? (
               <>
                 <Check

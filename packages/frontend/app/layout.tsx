@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang='ko'>
-      <body className='flex h-screen bg-slate-50 text-slate-900 overflow-hidden'>
+      <body className='flex h-screen bg-pearl text-navy overflow-hidden'>
         <Sidebar aiEnabled={aiEnabled} />
         <main className='flex-1 overflow-y-auto'>{children}</main>
       </body>
