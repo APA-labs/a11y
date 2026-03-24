@@ -35,16 +35,12 @@ export default function PatternCard({ pattern }: { pattern: Pattern }) {
           src={previewSrc}
           alt={`${pattern.name} 미리보기`}
           fill
-          className='object-cover object-top'
+          className='object-cover scale-100 hover:scale-105 transition-transform'
           onError={(e) => {
             ;(e.currentTarget as HTMLImageElement).style.display = 'none'
           }}
           unoptimized
         />
-        {/* 이미지 없을 때 fallback */}
-        <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
-          <span className='text-xs text-mist-400 font-mono'>{pattern.name}</span>
-        </div>
       </div>
 
       {/* 카드 본문 */}
