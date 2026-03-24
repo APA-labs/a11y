@@ -21,7 +21,8 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   link: <Link2 size={14} />,
   alert: <Bell size={14} />,
   select: <List size={14} />,
-  breadcrumb: <ChevronDown size={14} />
+  breadcrumb: <ChevronDown size={14} />,
+  pagination: <List size={14} />
 }
 
 export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
