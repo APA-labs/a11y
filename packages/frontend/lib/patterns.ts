@@ -2543,6 +2543,713 @@ const { Link } = Typography
         ]
       }
     }
+  },
+  {
+    slug: 'alert',
+    name: 'Alert / Toast',
+    description: '사용자 작업을 방해하지 않고 중요 메시지를 전달하는 알림 컴포넌트',
+    wcagCriteria: ['1.3.1 Info and Relationships', '1.4.1 Use of Color', '2.2.3 No Timing', '4.1.3 Status Messages'],
+    tags: ['feedback', 'live-region', 'notification'],
+    baseline: {
+      checklist: {
+        must: [
+          {
+            id: 'alert-m1',
+            title: 'role 명시',
+            description: '긴급 알림은 role="alert"(aria-live="assertive"), 비긴급은 role="status"(aria-live="polite")를 사용해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'alert-m2',
+            title: '키보드 포커스 이동 금지',
+            description: 'Alert/Toast는 사용자 작업을 방해하지 않아야 합니다. 표시될 때 자동으로 키보드 포커스를 이동시키지 마세요.',
+            level: 'must'
+          },
+          {
+            id: 'alert-m3',
+            title: '닫기 버튼 키보드 접근 가능',
+            description: '닫기(dismiss) 버튼이 있는 경우 키보드로 접근하고 활성화할 수 있어야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'alert-m4',
+            title: '충분한 표시 시간',
+            description: '자동으로 사라지는 토스트는 사용자가 읽기에 충분한 시간(최소 5초)을 제공해야 합니다. WCAG 2.2.3 요구사항입니다.',
+            level: 'must'
+          }
+        ],
+        should: [
+          {
+            id: 'alert-s1',
+            title: '색상 외 아이콘으로 유형 구분',
+            description: 'success/error/warning/info를 색상만으로 구분하지 말고 아이콘을 함께 사용하세요.',
+            level: 'should'
+          },
+          {
+            id: 'alert-s2',
+            title: '자동 닫힘 일시정지',
+            description: '사용자가 호버하거나 포커스를 두면 자동 닫힘 타이머를 일시정지하세요.',
+            level: 'should'
+          },
+          {
+            id: 'alert-s3',
+            title: '알림 쌓임 관리',
+            description: '동시에 여러 토스트가 표시되면 스크린리더 사용자에게 과부하가 됩니다. 최대 개수를 제한하세요.',
+            level: 'should'
+          }
+        ],
+        avoid: [
+          {
+            id: 'alert-a1',
+            title: '너무 빠른 자동 닫힘',
+            description: '3초 미만으로 자동 닫히면 WCAG 2.2.3(타이밍 조정 가능) 실패입니다. 충분한 시간을 주거나 수동 닫기만 허용하세요.',
+            level: 'avoid'
+          },
+          {
+            id: 'alert-a2',
+            title: '색상만으로 심각도 전달',
+            description: '빨간색=오류처럼 색상만으로 의미를 전달하면 색맹 사용자가 인식할 수 없습니다.',
+            level: 'avoid'
+          },
+          {
+            id: 'alert-a3',
+            title: '페이지 로드 시 미리 존재하는 alert',
+            description: '페이지 로드 시 이미 DOM에 있는 role="alert" 요소는 스크린리더가 자동으로 읽지 않습니다. 동적으로 삽입하세요.',
+            level: 'avoid'
+          }
+        ]
+      },
+      codeSample: {
+        language: 'tsx',
+        label: 'Baseline (React)',
+        code: `function AlertDemo() {
+  const [alerts, setAlerts] = useState([]);
+
+  const addAlert = (message, type = 'info') => {
+    const id = Date.now();
+    setAlerts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => removeAlert(id), 5000);
+  };
+
+  const removeAlert = (id) => setAlerts(prev => prev.filter(a => a.id !== id));
+
+  return (
+    <div>
+      <button onClick={() => addAlert('저장되었습니다.', 'success')}>저장</button>
+
+      {/* 스크린리더 라이브 영역 (시각적으로 숨김) */}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {alerts.map(a => a.message).join('. ')}
+      </div>
+
+      {/* 시각적 토스트 */}
+      <div className="toast-container" aria-label="알림">
+        {alerts.map(alert => (
+          <div key={alert.id} role="alert" className={\`toast toast-\${alert.type}\`}>
+            <span>{alert.message}</span>
+            <button onClick={() => removeAlert(alert.id)} aria-label="알림 닫기">×</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`
+      }
+    },
+    designSystems: {
+      material: {
+        id: 'material',
+        name: 'Material Design (MUI)',
+        color: '#1976d2',
+        additionalChecks: [
+          {
+            id: 'alert-mui-1',
+            title: 'Snackbar + Alert 조합',
+            description: 'MUI에서 토스트 알림은 Snackbar 안에 Alert를 넣어 사용합니다. Snackbar가 위치를, Alert가 의미론적 role을 담당합니다.',
+            level: 'must'
+          },
+          {
+            id: 'alert-mui-2',
+            title: 'autoHideDuration 최소 5000ms',
+            description: 'autoHideDuration을 5000 미만으로 설정하면 WCAG 2.2.3에 위배됩니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'MUI Snackbar + Alert',
+          code: `import { Snackbar, Alert } from '@mui/material';
+
+<Snackbar
+  open={isOpen}
+  autoHideDuration={5000}
+  onClose={() => setIsOpen(false)}
+  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+>
+  <Alert
+    onClose={() => setIsOpen(false)}
+    severity="success"
+    variant="filled"
+  >
+    파일이 저장되었습니다.
+  </Alert>
+</Snackbar>`
+        },
+        notes: [
+          'MUI Alert 단독 사용 시 role="alert"가 자동 적용됩니다.',
+          'Snackbar의 onClose는 Escape 키 및 외부 클릭에 반응합니다.',
+          'severity prop (success/info/warning/error)이 아이콘과 색상을 자동 적용합니다.'
+        ]
+      },
+      radix: {
+        id: 'radix',
+        name: 'Radix UI',
+        color: '#6e56cf',
+        additionalChecks: [
+          {
+            id: 'alert-radix-1',
+            title: 'Toast.Viewport에 hotkey 안내',
+            description: 'Toast.Viewport에 label prop으로 스크린리더 사용자에게 단축키(F8) 안내를 제공하세요.',
+            level: 'should'
+          },
+          {
+            id: 'alert-radix-2',
+            title: 'type prop으로 긴급도 설정',
+            description: '사용자 액션 결과는 type="foreground", 백그라운드 작업은 type="background"를 사용하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Radix Toast',
+          code: `import * as Toast from '@radix-ui/react-toast';
+
+function ToastDemo() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Toast.Provider swipeDirection="right">
+      <button onClick={() => setOpen(true)}>저장</button>
+
+      <Toast.Root
+        open={open}
+        onOpenChange={setOpen}
+        type="foreground"
+        duration={5000}
+      >
+        <Toast.Title>저장 완료</Toast.Title>
+        <Toast.Description>파일이 저장되었습니다.</Toast.Description>
+        <Toast.Close aria-label="닫기">×</Toast.Close>
+      </Toast.Root>
+
+      <Toast.Viewport
+        label="알림 목록. F8을 눌러 이동하세요."
+        className="toast-viewport"
+      />
+    </Toast.Provider>
+  );
+}`
+        },
+        notes: [
+          'Radix Toast는 F8 단축키로 뷰포트에 포커스 이동을 지원합니다.',
+          'swipeDirection으로 스와이프 제스처를 설정할 수 있습니다.',
+          'aria-live 요구사항을 내부적으로 준수합니다.'
+        ]
+      },
+      antd: {
+        id: 'antd',
+        name: 'Ant Design',
+        color: '#1677ff',
+        additionalChecks: [
+          {
+            id: 'alert-antd-1',
+            title: 'message/notification 접근성 한계',
+            description:
+              'Ant Design의 message.success() 등 명령형 API는 aria-live 영역에 삽입되지 않을 수 있습니다. Alert 컴포넌트를 직접 사용하는 방식을 권장합니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Ant Design Alert',
+          code: `import { Alert, Space } from 'antd';
+
+{/* 인라인 Alert */}
+<Alert
+  message="저장 완료"
+  description="파일이 성공적으로 저장되었습니다."
+  type="success"
+  showIcon
+  closable
+  onClose={() => {}}
+/>
+
+{/* 토스트형 - notification API */}
+import { notification } from 'antd';
+
+const openNotification = () => {
+  notification.success({
+    message: '저장 완료',
+    description: '파일이 저장되었습니다.',
+    duration: 5,
+  });
+};`
+        },
+        notes: [
+          'Alert 컴포넌트의 showIcon prop은 severity 유형을 아이콘으로 자동 표시합니다.',
+          'notification API는 duration을 0으로 설정하면 수동으로 닫기 전까지 유지됩니다.',
+          'closable prop 사용 시 닫기 버튼이 자동으로 추가됩니다.'
+        ]
+      }
+    }
+  },
+  {
+    slug: 'select',
+    name: 'Select (Listbox)',
+    description: '목록에서 하나의 옵션을 선택하는 커스텀 드롭다운 컴포넌트',
+    wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value'],
+    tags: ['form', 'interactive', 'dropdown'],
+    baseline: {
+      checklist: {
+        must: [
+          {
+            id: 'select-m1',
+            title: 'role="listbox"와 role="option" 사용',
+            description: '커스텀 select는 컨테이너에 role="listbox", 각 항목에 role="option"을 명시해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'select-m2',
+            title: '레이블 연결',
+            description: '트리거 버튼에 aria-labelledby 또는 aria-label로 레이블을 연결해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'select-m3',
+            title: '키보드 내비게이션',
+            description: 'ArrowUp/ArrowDown으로 옵션 이동, Enter/Space로 선택, Escape로 닫기를 지원해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'select-m4',
+            title: '선택 상태 표시',
+            description: '선택된 옵션에 aria-selected="true"를 설정하고, 트리거에 aria-expanded로 열림/닫힘 상태를 표시해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'select-m5',
+            title: '포커스 관리',
+            description: '팝업 열릴 때 선택된 옵션(없으면 첫 번째)으로 포커스 이동, 닫힐 때 트리거로 포커스 복귀해야 합니다.',
+            level: 'must'
+          }
+        ],
+        should: [
+          {
+            id: 'select-s1',
+            title: '타입어헤드 지원',
+            description: '키보드로 문자를 입력하면 해당 문자로 시작하는 옵션으로 포커스가 이동하도록 구현하세요.',
+            level: 'should'
+          },
+          {
+            id: 'select-s2',
+            title: 'Home/End 키 지원',
+            description: '5개 이상의 옵션이 있을 때 Home/End 키로 첫 번째/마지막 옵션으로 이동을 지원하세요.',
+            level: 'should'
+          },
+          {
+            id: 'select-s3',
+            title: '그룹화에 role="group" 사용',
+            description: '옵션이 그룹으로 나뉘는 경우 role="group"과 aria-label로 그룹을 구분하세요.',
+            level: 'should'
+          }
+        ],
+        avoid: [
+          {
+            id: 'select-a1',
+            title: 'div/span으로만 구현',
+            description: '시맨틱 없이 div/span만으로 드롭다운을 구현하면 스크린리더가 인식하지 못합니다. role 속성이 필수입니다.',
+            level: 'avoid'
+          },
+          {
+            id: 'select-a2',
+            title: '탐색 중 자동 선택',
+            description: 'ArrowKey 탐색 중에 자동으로 값이 변경되면 스크린리더 사용자가 원치 않는 선택이 발생합니다.',
+            level: 'avoid'
+          }
+        ]
+      },
+      codeSample: {
+        language: 'tsx',
+        label: 'Baseline (React)',
+        code: `function SelectDemo() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const options = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!isOpen) setIsOpen(true);
+      setActiveIndex(i => Math.min(i + 1, options.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex(i => Math.max(i - 1, 0));
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (isOpen) { setSelected(options[activeIndex]); setIsOpen(false); }
+      else setIsOpen(true);
+    } else if (e.key === 'Escape') {
+      setIsOpen(false);
+    }
+  };
+
+  return (
+    <div>
+      <label id="fruit-label">과일 선택</label>
+      <button
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-labelledby="fruit-label"
+        onKeyDown={handleKeyDown}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {selected ?? '선택하세요'}
+      </button>
+      {isOpen && (
+        <ul role="listbox" aria-labelledby="fruit-label" tabIndex={-1}>
+          {options.map((opt, i) => (
+            <li
+              key={opt}
+              role="option"
+              aria-selected={selected === opt}
+              onClick={() => { setSelected(opt); setIsOpen(false); }}
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}`
+      }
+    },
+    designSystems: {
+      material: {
+        id: 'material',
+        name: 'Material Design (MUI)',
+        color: '#1976d2',
+        additionalChecks: [
+          {
+            id: 'select-mui-1',
+            title: 'FormControl + InputLabel 조합 필수',
+            description: 'MUI Select는 FormControl과 InputLabel을 함께 사용해야 올바른 레이블이 연결됩니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'MUI Select',
+          code: `import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
+<FormControl fullWidth>
+  <InputLabel id="fruit-label">과일 선택</InputLabel>
+  <Select
+    labelId="fruit-label"
+    value={selected}
+    label="과일 선택"
+    onChange={(e) => setSelected(e.target.value)}
+  >
+    <MenuItem value="apple">Apple</MenuItem>
+    <MenuItem value="banana">Banana</MenuItem>
+    <MenuItem value="cherry">Cherry</MenuItem>
+  </Select>
+</FormControl>`
+        },
+        notes: [
+          'labelId와 InputLabel의 id가 일치해야 스크린리더가 레이블을 읽습니다.',
+          'native prop을 사용하면 브라우저 기본 <select>로 렌더링됩니다.',
+          'disabled 옵션에는 aria-disabled가 자동으로 적용됩니다.'
+        ]
+      },
+      radix: {
+        id: 'radix',
+        name: 'Radix UI',
+        color: '#6e56cf',
+        additionalChecks: [
+          {
+            id: 'select-radix-1',
+            title: 'Label 컴포넌트와 함께 사용',
+            description: 'Radix Label 컴포넌트를 Select.Trigger와 연결해 스크린리더 레이블을 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Radix Select',
+          code: `import * as Select from '@radix-ui/react-select';
+import * as Label from '@radix-ui/react-label';
+
+<Label.Root htmlFor="fruit-trigger">과일 선택</Label.Root>
+<Select.Root value={selected} onValueChange={setSelected}>
+  <Select.Trigger id="fruit-trigger" aria-label="과일 선택">
+    <Select.Value placeholder="선택하세요" />
+    <Select.Icon />
+  </Select.Trigger>
+  <Select.Portal>
+    <Select.Content>
+      <Select.Viewport>
+        <Select.Item value="apple">
+          <Select.ItemText>Apple</Select.ItemText>
+        </Select.Item>
+        <Select.Item value="banana">
+          <Select.ItemText>Banana</Select.ItemText>
+        </Select.Item>
+      </Select.Viewport>
+    </Select.Content>
+  </Select.Portal>
+</Select.Root>`
+        },
+        notes: [
+          'Radix Select는 W3C ListBox 및 Select-Only Combobox 패턴을 준수합니다.',
+          'Select.Item에 disabled prop을 추가하면 aria-disabled가 자동 적용됩니다.',
+          'Select.Content의 position="popper"로 위치 조정이 가능합니다.'
+        ]
+      },
+      antd: {
+        id: 'antd',
+        name: 'Ant Design',
+        color: '#1677ff',
+        additionalChecks: [
+          {
+            id: 'select-antd-1',
+            title: '레이블 연결',
+            description: 'Ant Design Select는 Form.Item 안에서 label prop으로 사용하거나 aria-label을 직접 지정하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Ant Design Select',
+          code: `import { Select, Form } from 'antd';
+
+<Form.Item label="과일 선택" name="fruit">
+  <Select
+    placeholder="선택하세요"
+    options={[
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana' },
+      { value: 'cherry', label: 'Cherry' },
+    ]}
+  />
+</Form.Item>`
+        },
+        notes: [
+          'Form.Item을 사용하면 label과 input이 htmlFor로 자동 연결됩니다.',
+          'showSearch prop으로 검색 기능 추가 시 combobox 패턴으로 전환됩니다.',
+          'virtual={false}로 가상 스크롤을 비활성화하면 스크린리더 호환성이 향상됩니다.'
+        ]
+      }
+    }
+  },
+  {
+    slug: 'breadcrumb',
+    name: 'Breadcrumb',
+    description: '현재 페이지의 계층적 위치를 나타내는 탐색 경로 컴포넌트',
+    wcagCriteria: ['2.4.4 Link Purpose', '2.4.8 Location', '4.1.2 Name, Role, Value'],
+    tags: ['navigation', 'landmark'],
+    baseline: {
+      checklist: {
+        must: [
+          {
+            id: 'breadcrumb-m1',
+            title: '<nav> 랜드마크 사용',
+            description: '브레드크럼 전체를 <nav> 요소로 감싸고 aria-label="breadcrumb"로 레이블을 제공해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'breadcrumb-m2',
+            title: 'aria-current="page" 설정',
+            description: '현재 페이지를 나타내는 항목에 aria-current="page"를 설정해야 합니다.',
+            level: 'must'
+          },
+          {
+            id: 'breadcrumb-m3',
+            title: '<ol> 목록 사용',
+            description: '브레드크럼 항목은 <ol>로 마크업해야 스크린리더가 항목 수와 순서를 인식합니다.',
+            level: 'must'
+          }
+        ],
+        should: [
+          {
+            id: 'breadcrumb-s1',
+            title: '구분자를 aria-hidden으로 숨김',
+            description: '/ 또는 > 구분자는 CSS content로 생성하거나 aria-hidden="true"로 스크린리더에서 숨기세요.',
+            level: 'should'
+          },
+          {
+            id: 'breadcrumb-s2',
+            title: '마지막 항목은 링크 아닌 텍스트',
+            description: '현재 페이지는 링크 대신 일반 텍스트로 표현하는 것이 더 명확합니다.',
+            level: 'should'
+          }
+        ],
+        avoid: [
+          {
+            id: 'breadcrumb-a1',
+            title: 'div/span 나열로 구현',
+            description: '목록 마크업 없이 div/span만 사용하면 스크린리더 사용자가 항목 수와 구조를 파악할 수 없습니다.',
+            level: 'avoid'
+          },
+          {
+            id: 'breadcrumb-a2',
+            title: '구분자를 링크 텍스트에 포함',
+            description: '"> Home > Products"처럼 구분자가 링크 텍스트에 포함되면 스크린리더가 구분자까지 읽습니다.',
+            level: 'avoid'
+          }
+        ]
+      },
+      codeSample: {
+        language: 'tsx',
+        label: 'Baseline (HTML)',
+        code: `<nav aria-label="breadcrumb">
+  <ol className="flex items-center gap-2 text-sm">
+    <li>
+      <a href="/">홈</a>
+    </li>
+    <li aria-hidden="true">/</li>
+    <li>
+      <a href="/products">제품</a>
+    </li>
+    <li aria-hidden="true">/</li>
+    <li>
+      <a href="/products/shoes">신발</a>
+    </li>
+    <li aria-hidden="true">/</li>
+    <li aria-current="page">운동화</li>
+  </ol>
+</nav>`
+      }
+    },
+    designSystems: {
+      material: {
+        id: 'material',
+        name: 'Material Design (MUI)',
+        color: '#1976d2',
+        additionalChecks: [
+          {
+            id: 'breadcrumb-mui-1',
+            title: 'aria-label 직접 지정',
+            description: 'MUI Breadcrumbs는 <nav> 역할을 하지만 aria-label을 자동으로 추가하지 않습니다. aria-label="breadcrumb"를 직접 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'MUI Breadcrumbs',
+          code: `import { Breadcrumbs, Link, Typography } from '@mui/material';
+
+<Breadcrumbs aria-label="breadcrumb">
+  <Link href="/" underline="hover" color="inherit">
+    홈
+  </Link>
+  <Link href="/products" underline="hover" color="inherit">
+    제품
+  </Link>
+  <Link href="/products/shoes" underline="hover" color="inherit">
+    신발
+  </Link>
+  <Typography color="text.primary" aria-current="page">
+    운동화
+  </Typography>
+</Breadcrumbs>`
+        },
+        notes: [
+          'MUI Breadcrumbs는 자동으로 구분자를 렌더링하며 aria-hidden이 적용됩니다.',
+          'separator prop으로 구분자를 커스텀할 수 있습니다.',
+          '마지막 항목은 Typography로 처리해 링크가 아닌 텍스트로 표현하세요.'
+        ]
+      },
+      radix: {
+        id: 'radix',
+        name: 'Radix UI',
+        color: '#6e56cf',
+        additionalChecks: [
+          {
+            id: 'breadcrumb-radix-1',
+            title: '직접 구현 필요',
+            description: 'Radix UI에는 전용 Breadcrumb 컴포넌트가 없습니다. <nav>, <ol>, aria-current를 직접 구현하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Radix (직접 구현)',
+          code: `{/* Radix UI에 전용 컴포넌트 없음 — 시맨틱 HTML로 직접 구현 */}
+<nav aria-label="breadcrumb">
+  <ol className="flex items-center gap-1 text-sm">
+    {items.map((item, i) => (
+      <li key={item.href} className="flex items-center gap-1">
+        {i < items.length - 1 ? (
+          <>
+            <a href={item.href}>{item.label}</a>
+            <span aria-hidden="true">/</span>
+          </>
+        ) : (
+          <span aria-current="page">{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>`
+        },
+        notes: [
+          'Radix UI는 전용 Breadcrumb 컴포넌트를 제공하지 않습니다.',
+          'shadcn/ui의 Breadcrumb 컴포넌트는 Radix 기반으로 접근성이 잘 구현되어 있습니다.',
+          '구분자에 항상 aria-hidden을 추가하세요.'
+        ]
+      },
+      antd: {
+        id: 'antd',
+        name: 'Ant Design',
+        color: '#1677ff',
+        additionalChecks: [
+          {
+            id: 'breadcrumb-antd-1',
+            title: 'itemRender로 aria-current 추가',
+            description: 'Ant Design Breadcrumb는 현재 페이지에 aria-current를 자동으로 추가하지 않습니다. itemRender prop으로 커스텀하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Ant Design Breadcrumb',
+          code: `import { Breadcrumb } from 'antd';
+
+<Breadcrumb
+  aria-label="breadcrumb"
+  items={[
+    { title: <a href="/">홈</a> },
+    { title: <a href="/products">제품</a> },
+    { title: <a href="/products/shoes">신발</a> },
+    { title: '운동화' },
+  ]}
+  itemRender={(item, params, items) => {
+    const isLast = items.indexOf(item) === items.length - 1;
+    return isLast
+      ? <span aria-current="page">{item.title}</span>
+      : item.title;
+  }}
+/>`
+        },
+        notes: [
+          'Ant Design Breadcrumb에 aria-label 속성을 직접 추가해야 합니다.',
+          'itemRender prop으로 마지막 항목에 aria-current="page"를 추가하세요.',
+          'separator prop으로 구분자를 변경할 수 있으며, 기본 구분자는 aria-hidden이 적용됩니다.'
+        ]
+      }
+    }
   }
 ]
 

@@ -50,17 +50,18 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <div className='space-y-12'>
+        {/* ── 기본 코드 예시 (최상단) ── */}
+        <div>
+          <h3 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>기본 코드 예시</h3>
+          <CodeBlock sample={pattern.baseline.codeSample} />
+        </div>
+
         {/* ── SECTION 1: 공통 베이스라인 ── */}
         <section>
           <div className='flex items-center gap-3 mb-6'>
             <span className='w-2.5 h-2.5 rounded-full bg-navy' />
             <h2 className='font-semibold text-navy text-base'>공통 베이스라인</h2>
             <span className='text-xs px-2 py-0.5 rounded bg-pearl-200 text-mist-700'>모든 디자인 시스템에 적용</span>
-          </div>
-
-          <div className='mb-8'>
-            <h3 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>기본 코드 예시</h3>
-            <CodeBlock sample={pattern.baseline.codeSample} />
           </div>
 
           <ChecklistSection

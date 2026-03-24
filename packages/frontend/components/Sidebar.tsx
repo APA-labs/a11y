@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, ChevronDown, ExternalLink, Layers, Link2, List, ShieldCheck, Sparkles, Square, ToggleLeft, Type } from 'lucide-react'
+import { Bell, BookOpen, ChevronDown, ExternalLink, Layers, Link2, List, ShieldCheck, Sparkles, Square, ToggleLeft, Type } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -18,7 +18,10 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   combobox: <Type size={14} />,
   checkbox: <Square size={14} />,
   'radio-group': <Square size={14} />,
-  link: <Link2 size={14} />
+  link: <Link2 size={14} />,
+  alert: <Bell size={14} />,
+  select: <List size={14} />,
+  breadcrumb: <ChevronDown size={14} />
 }
 
 export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {

@@ -19,9 +19,8 @@ const SandpackPreviewBlock = dynamic(() => import('./SandpackPreview'), {
 
 export default function CodeBlock({ sample }: { sample: CodeSample }) {
   const [copied, setCopied] = useState(false)
-  const [tab, setTab] = useState<'code' | 'preview'>('code')
-
   const canPreview = ['tsx', 'jsx', 'ts', 'js', 'html'].includes(sample.language)
+  const [tab, setTab] = useState<'code' | 'preview'>(canPreview ? 'preview' : 'code')
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(sample.code)
