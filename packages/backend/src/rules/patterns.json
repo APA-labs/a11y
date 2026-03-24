@@ -101,6 +101,12 @@
       "name": "Breadcrumb",
       "description": "Hierarchical navigation trail showing current page location",
       "keywords": ["breadcrumb", "breadcrumbs", "navigation", "trail", "path", "hierarchy", "location", "current page"]
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "description": "Page navigation control for multi-page content",
+      "keywords": ["pagination", "paging", "page", "next", "previous", "page number", "page navigation", "pages"]
     }
   ]
 }
