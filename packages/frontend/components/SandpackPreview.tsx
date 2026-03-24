@@ -1,6 +1,32 @@
 'use client'
 
-import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react'
+import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider, UnstyledOpenInCodeSandboxButton } from '@codesandbox/sandpack-react'
+import { ExternalLink } from 'lucide-react'
+import { Component, type ReactNode } from 'react'
+
+class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
+  state = { error: false }
+  static getDerivedStateFromError() {
+    return { error: true }
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div
+          className='rounded-b-xl bg-slate-900 flex flex-col items-center justify-center gap-3'
+          style={{ height: 280 }}>
+          <p className='text-sm text-slate-400'>미리보기를 불러오지 못했습니다.</p>
+          <button
+            onClick={() => this.setState({ error: false })}
+            className='text-xs px-3 py-1.5 rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors'>
+            다시 시도
+          </button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 const DS_DEPS: Record<string, Record<string, string>> = {
   '@mui/material': {
@@ -94,14 +120,11 @@ export default function App() {
 }`
   }
 
-  // Raw JSX / snippet — extract imports, inject useState for detected variables
   const { imports, body } = extractImports(code)
   const stateDecls = buildStateDecls(body)
   const needsUseState = stateDecls.length > 0
   const reactImport = needsUseState ? `import { useState } from 'react'` : `import React from 'react'`
-
   const stateBlock = stateDecls.length > 0 ? `  ${stateDecls.join('\n  ')}\n` : ''
-
   const bodyIndented = body
     .split('\n')
     .map((l) => `      ${l}`)
@@ -119,6 +142,17 @@ ${stateBlock}
     </div>
   )
 }`
+}
+
+function OpenInCSBButton() {
+  return (
+    <UnstyledOpenInCodeSandboxButton>
+      <span className='flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 transition-colors'>
+        <ExternalLink size={12} />
+        CodeSandbox에서 열기
+      </span>
+    </UnstyledOpenInCodeSandboxButton>
+  )
 }
 
 interface Props {
@@ -146,21 +180,33 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
 
   const appCode = buildAppCode(code)
   const extraDeps = detectDeps(code)
+  const hasExternalDeps = Object.keys(extraDeps).length > 0
 
   return (
-    <SandpackProvider
-      template='react-ts'
-      files={{ '/App.tsx': appCode }}
-      theme='dark'
-      customSetup={{ dependencies: extraDeps }}
-      options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
-      <SandpackLayout style={{ borderRadius: '0 0 0.75rem 0.75rem', border: 'none' }}>
-        <SandpackCodeEditor style={{ height: 280 }} />
-        <SandpackPreview
-          style={{ height: 280 }}
-          showNavigator={false}
-        />
-      </SandpackLayout>
-    </SandpackProvider>
+    <SandpackErrorBoundary>
+      <SandpackProvider
+        template='react-ts'
+        files={{ '/App.tsx': appCode }}
+        theme='dark'
+        customSetup={{ dependencies: extraDeps }}
+        options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
+        <SandpackLayout style={{ borderRadius: '0 0 0.75rem 0.75rem', border: 'none' }}>
+          <SandpackCodeEditor style={{ height: hasExternalDeps ? 320 : 280 }} />
+          {!hasExternalDeps && (
+            <SandpackPreview
+              style={{ height: 280 }}
+              showNavigator={false}
+            />
+          )}
+        </SandpackLayout>
+
+        {hasExternalDeps && (
+          <div className='flex items-center justify-between px-4 py-2 bg-[#151515] rounded-b-xl border-t border-slate-700/40'>
+            <span className='text-xs text-slate-500'>외부 패키지 포함 — 인라인 미리보기 불가</span>
+            <OpenInCSBButton />
+          </div>
+        )}
+      </SandpackProvider>
+    </SandpackErrorBoundary>
   )
 }
