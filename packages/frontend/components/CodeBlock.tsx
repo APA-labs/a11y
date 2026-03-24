@@ -91,6 +91,7 @@ export default function CodeBlock({ sample }: { sample: CodeSample }) {
         </pre>
       ) : (
         <SandpackPreviewBlock
+          key={sample.code}
           code={sample.code}
           language={sample.language}
         />

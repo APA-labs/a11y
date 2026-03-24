@@ -79,6 +79,33 @@ function extractImports(code: string): { imports: string; body: string } {
   return { imports: importLines.join('\n'), body: bodyLines.join('\n').trim() }
 }
 
+function splitDeclsAndJsx(body: string): { decls: string; jsx: string } {
+  const lines = body.split('\n')
+  const declLines: string[] = []
+  const jsxLines: string[] = []
+  let depth = 0
+  let inDecl = false
+
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (!inDecl && depth === 0 && /^(const|let|var)\s/.test(trimmed)) {
+      inDecl = true
+    }
+    if (inDecl) {
+      declLines.push(line)
+      for (const ch of line) {
+        if (ch === '[' || ch === '{' || ch === '(') depth++
+        else if (ch === ']' || ch === '}' || ch === ')') depth--
+      }
+      if (depth === 0) inDecl = false
+    } else {
+      jsxLines.push(line)
+    }
+  }
+
+  return { decls: declLines.join('\n').trim(), jsx: jsxLines.join('\n').trim() }
+}
+
 const STATE_VAR_RE = /\b(is[A-Z]\w*|has[A-Z]\w*|show[A-Z]\w*|open|active|enabled|checked|loading|selected)\b/g
 
 function buildStateDecls(code: string): string[] {
@@ -120,11 +147,13 @@ export default function App() {
   }
 
   const { imports, body } = extractImports(code)
-  const stateDecls = buildStateDecls(body)
+  const { decls, jsx } = splitDeclsAndJsx(body)
+  const stateDecls = buildStateDecls(jsx)
   const needsUseState = stateDecls.length > 0
   const reactImport = needsUseState ? `import { useState } from 'react'` : `import React from 'react'`
   const stateBlock = stateDecls.length > 0 ? `  ${stateDecls.join('\n  ')}\n` : ''
-  const bodyIndented = body
+  const declBlock = decls ? `  ${decls.split('\n').join('\n  ')}\n` : ''
+  const jsxIndented = jsx
     .split('\n')
     .map((l) => `      ${l}`)
     .join('\n')
@@ -134,10 +163,10 @@ export default function App() {
 ${imports}
 
 export default function App() {
-${stateBlock}
+${stateBlock}${declBlock}
   return (
     <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
-      ${bodyIndented}
+      ${jsxIndented}
     </div>
   )
 }`
