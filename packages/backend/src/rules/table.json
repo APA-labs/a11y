@@ -1,0 +1,70 @@
+{
+  "pattern": "Table",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "table-m1",
+        "title": "테이블에 레이블 제공",
+        "description": "테이블에 aria-label 또는 aria-labelledby로 레이블을 제공해야 합니다. 어떤 데이터를 담은 테이블인지 스크린리더 사용자가 알 수 있어야 합니다."
+      },
+      {
+        "id": "table-m2",
+        "title": "th 요소에 scope 속성",
+        "description": "th 요소에 scope=\"col\" 또는 scope=\"row\"를 사용해 헤더가 어느 방향을 대표하는지 명시해야 합니다."
+      },
+      {
+        "id": "table-m3",
+        "title": "복잡한 테이블에 id/headers 연결",
+        "description": "행/열 헤더가 중첩된 복잡한 테이블에서는 th에 id를 부여하고 td에 headers 속성으로 연결해야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "table-s1",
+        "title": "caption 요소로 설명 제공",
+        "description": "table 요소 바로 아래 caption을 추가해 테이블 목적을 설명하세요. 시각적으로 숨겨도 스크린리더에 전달됩니다."
+      },
+      {
+        "id": "table-s2",
+        "title": "정렬 가능한 열에 aria-sort",
+        "description": "정렬 기능이 있는 열 헤더에 aria-sort=\"ascending\" 또는 aria-sort=\"descending\"을 설정하세요."
+      },
+      {
+        "id": "table-s3",
+        "title": "빈 셀에 내용 제공",
+        "description": "빈 td에는 시각적으로는 안 보이더라도 스크린리더용 설명(예: '해당 없음')을 sr-only 텍스트로 제공하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "table-a1",
+        "title": "레이아웃 목적으로 table 사용",
+        "description": "레이아웃을 위해 table을 사용하지 마세요. 레이아웃 테이블이라면 role=\"presentation\"을 추가해 스크린리더가 테이블로 인식하지 않도록 해야 합니다."
+      },
+      {
+        "id": "table-a2",
+        "title": "th 없이 td만 사용",
+        "description": "모든 셀을 td로만 만들면 스크린리더가 행/열 관계를 파악할 수 없습니다. 헤더 행과 열에는 반드시 th를 사용하세요."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function TableDemo() {\n  const [sortDir, setSortDir] = useState('none');\n\n  const handleSort = () => {\n    setSortDir(d => d === 'ascending' ? 'descending' : 'ascending');\n  };\n\n  return (\n    <table aria-label=\"직원 목록\">\n      <caption>2024년 직원 현황</caption>\n      <thead>\n        <tr>\n          <th scope=\"col\">\n            <button\n              onClick={handleSort}\n              aria-sort={sortDir}\n            >\n              이름 {sortDir === 'ascending' ? '▲' : sortDir === 'descending' ? '▼' : '⇅'}\n            </button>\n          </th>\n          <th scope=\"col\">부서</th>\n          <th scope=\"col\">직급</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>홍길동</td>\n          <td>개발팀</td>\n          <td>시니어</td>\n        </tr>\n        <tr>\n          <td>김철수</td>\n          <td>디자인팀</td>\n          <td>주니어</td>\n        </tr>\n      </tbody>\n    </table>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "스크린리더 테이블 탐색",
+      "steps": [
+        "테이블에 진입 시 레이블과 크기(행×열)를 읽는지 확인",
+        "셀 탐색 시 행/열 헤더가 함께 읽히는지 확인",
+        "정렬 버튼 클릭 시 aria-sort 변경이 읽히는지 확인"
+      ],
+      "tools": ["VoiceOver", "NVDA", "Keyboard only"]
+    }
+  ],
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/table", "https://www.w3.org/WAI/tutorials/tables/"]
+}

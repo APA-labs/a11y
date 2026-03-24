@@ -107,6 +107,77 @@
       "name": "Pagination",
       "description": "Page navigation control for multi-page content",
       "keywords": ["pagination", "paging", "page", "next", "previous", "page number", "page navigation", "pages"]
+    },
+    {
+      "id": "navigation-menu",
+      "name": "Navigation Menu",
+      "description": "Site navigation with optional dropdown submenus",
+      "keywords": ["navigation", "nav", "menu", "navbar", "header", "submenu", "dropdown nav", "site navigation", "menubar"]
+    },
+    {
+      "id": "form-validation",
+      "name": "Form Validation",
+      "description": "Accessible form with inline error messages and validation",
+      "keywords": [
+        "form",
+        "validation",
+        "error",
+        "invalid",
+        "required",
+        "input error",
+        "form error",
+        "error message",
+        "aria-invalid",
+        "aria-describedby"
+      ]
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "description": "Interactive floating panel triggered by a button",
+      "keywords": ["popover", "floating", "popup", "overlay panel", "panel", "flyout", "trigger", "anchor"]
+    },
+    {
+      "id": "drawer",
+      "name": "Drawer",
+      "description": "Side panel that slides in from the edge of the screen",
+      "keywords": ["drawer", "side panel", "sidebar", "slide panel", "offcanvas", "side menu", "slide out", "fly in"]
+    },
+    {
+      "id": "date-picker",
+      "name": "Date Picker",
+      "description": "Calendar-based date selection input with accessible navigation",
+      "keywords": ["date picker", "calendar", "date input", "date selection", "datepicker", "date range", "calendar grid", "schedule"]
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "description": "Binary on/off toggle input with switch role",
+      "keywords": ["switch", "toggle", "on/off", "binary", "lights", "enable", "disable", "notification", "setting"]
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "description": "Range input with draggable thumb for selecting a value",
+      "keywords": ["slider", "range", "volume", "brightness", "rating", "seek", "scrubber", "price range", "temperature"]
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "description": "Static tabular data structure with accessible headers",
+      "keywords": ["table", "data table", "grid", "rows", "columns", "sortable", "thead", "th", "headers", "data"]
+    },
+    {
+      "id": "menu-button",
+      "name": "Menu Button",
+      "description": "Button that opens a popup menu of actions",
+      "keywords": ["menu button", "action menu", "dropdown menu", "context menu", "more actions", "kebab menu", "ellipsis menu", "options"]
+    },
+    {
+      "id": "toolbar",
+      "name": "Toolbar",
+      "description": "Container grouping related action controls with arrow key navigation",
+      "keywords": ["toolbar", "action bar", "button group", "formatting", "editor toolbar", "controls", "tool group"]
     }
   ]
 }

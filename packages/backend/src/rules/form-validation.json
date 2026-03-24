@@ -1,0 +1,90 @@
+{
+  "pattern": "Form Validation",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "form-m1",
+        "title": "에러 메시지를 aria-describedby로 연결",
+        "description": "입력 필드와 에러 메시지를 aria-describedby로 연결해야 합니다. 스크린리더가 필드에 포커스할 때 에러 내용을 자동으로 읽습니다."
+      },
+      {
+        "id": "form-m2",
+        "title": "유효하지 않은 필드에 aria-invalid",
+        "description": "유효성 검사에 실패한 필드에 aria-invalid=\"true\"를 설정해야 합니다."
+      },
+      {
+        "id": "form-m3",
+        "title": "필수 필드에 aria-required 또는 required",
+        "description": "필수 입력 필드에 required 또는 aria-required=\"true\"를 설정해야 합니다. 별표(*)만으로는 충분하지 않습니다."
+      },
+      {
+        "id": "form-m4",
+        "title": "에러 발생 시 포커스 이동",
+        "description": "폼 제출 실패 시 첫 번째 에러 필드나 에러 요약 메시지로 포커스를 이동해야 합니다."
+      },
+      {
+        "id": "form-m5",
+        "title": "모든 입력에 레이블 연결",
+        "description": "모든 입력 필드에 <label>의 htmlFor 또는 aria-label/aria-labelledby로 레이블을 연결해야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "form-s1",
+        "title": "에러 메시지는 구체적으로",
+        "description": "'잘못된 입력'보다 '이메일 주소 형식이 올바르지 않습니다'처럼 구체적인 에러 메시지를 제공하세요."
+      },
+      {
+        "id": "form-s2",
+        "title": "에러 요약 제공",
+        "description": "여러 에러가 있을 때 페이지 상단에 모든 에러를 나열한 요약을 제공하세요. role=\"alert\"로 자동 안내하세요."
+      },
+      {
+        "id": "form-s3",
+        "title": "입력 형식 힌트 제공",
+        "description": "날짜, 전화번호 등 특정 형식이 필요한 경우 aria-describedby로 형식 힌트(예: YYYY-MM-DD)를 제공하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "form-a1",
+        "title": "색상만으로 에러 표시",
+        "description": "빨간 테두리만으로 에러를 표시하면 색맹 사용자가 인식하기 어렵습니다. 아이콘과 텍스트 메시지를 함께 제공하세요."
+      },
+      {
+        "id": "form-a2",
+        "title": "실시간 검증으로 입력 방해",
+        "description": "사용자가 입력 중에 실시간으로 에러를 표시하면 혼란을 줍니다. blur 이벤트 또는 제출 시점에 검증하세요."
+      },
+      {
+        "id": "form-a3",
+        "title": "placeholder를 레이블로 사용",
+        "description": "placeholder는 포커스 시 사라지므로 레이블 대용으로 사용하지 마세요. 별도의 <label>을 항상 제공해야 합니다."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function FormWithValidation() {\n  const [email, setEmail] = useState('');\n  const [error, setError] = useState('');\n  const errorId = 'email-error';\n\n  const validate = () => {\n    if (!email) return '이메일을 입력해주세요.';\n    if (!/^[^@]+@[^@]+\\.[^@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다.';\n    return '';\n  };\n\n  const handleSubmit = (e) => {\n    e.preventDefault();\n    const err = validate();\n    setError(err);\n    if (err) {\n      document.getElementById('email-input')?.focus();\n    }\n  };\n\n  return (\n    <form onSubmit={handleSubmit} noValidate>\n      <div>\n        <label htmlFor=\"email-input\">이메일 <span aria-hidden>*</span></label>\n        <input\n          id=\"email-input\"\n          type=\"email\"\n          value={email}\n          onChange={(e) => setEmail(e.target.value)}\n          aria-required=\"true\"\n          aria-invalid={!!error}\n          aria-describedby={error ? errorId : undefined}\n        />\n        {error && (\n          <p id={errorId} role=\"alert\">\n            {error}\n          </p>\n        )}\n      </div>\n      <button type=\"submit\">제출</button>\n    </form>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "스크린리더 에러 안내 확인",
+      "steps": [
+        "빈 폼 제출",
+        "스크린리더가 에러 메시지를 즉시 읽는지 확인",
+        "에러 필드로 포커스가 이동하는지 확인",
+        "필드에 포커스 시 에러 설명이 함께 읽히는지 확인"
+      ],
+      "tools": ["VoiceOver", "NVDA", "axe DevTools"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/WCAG21/Understanding/error-identification.html",
+    "https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html",
+    "https://www.radix-ui.com/primitives/docs/components/form"
+  ]
+}

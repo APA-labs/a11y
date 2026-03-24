@@ -1,0 +1,76 @@
+{
+  "pattern": "Drawer",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "drawer-m1",
+        "title": "role=\"dialog\"와 aria-modal=\"true\"",
+        "description": "드로어 패널에 role=\"dialog\"와 aria-modal=\"true\"를 설정해야 합니다. 모달처럼 동작하므로 스크린리더에 올바르게 전달되어야 합니다."
+      },
+      {
+        "id": "drawer-m2",
+        "title": "레이블 제공",
+        "description": "드로어에 aria-labelledby 또는 aria-label로 레이블을 제공해야 합니다."
+      },
+      {
+        "id": "drawer-m3",
+        "title": "포커스 트랩",
+        "description": "드로어가 열렸을 때 Tab/Shift+Tab이 드로어 내부에서만 순환해야 합니다."
+      },
+      {
+        "id": "drawer-m4",
+        "title": "Escape로 닫기",
+        "description": "Escape 키로 드로어를 닫을 수 있어야 합니다."
+      },
+      {
+        "id": "drawer-m5",
+        "title": "포커스 관리",
+        "description": "드로어 열릴 때 내부 첫 포커스 가능 요소로 포커스 이동, 닫힐 때 트리거로 포커스 복귀해야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "drawer-s1",
+        "title": "배경 inert 처리",
+        "description": "드로어가 열려 있을 때 배경 콘텐츠에 inert 속성 또는 aria-hidden=\"true\"를 설정해 스크린리더가 배경을 읽지 못하게 하세요."
+      },
+      {
+        "id": "drawer-s2",
+        "title": "배경 오버레이 클릭으로 닫기",
+        "description": "드로어 외부 오버레이를 클릭하면 닫히도록 구현하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "drawer-a1",
+        "title": "포커스 트랩 없이 배경 포커스 허용",
+        "description": "드로어가 열린 상태에서 배경 요소에 Tab으로 이동할 수 있으면 스크린리더 사용자가 드로어와 배경의 경계를 파악하기 어렵습니다."
+      },
+      {
+        "id": "drawer-a2",
+        "title": "닫기 버튼 없이 Escape만으로 닫기",
+        "description": "모바일 사용자는 Escape 키가 없을 수 있으므로 항상 시각적 닫기 버튼을 제공하세요."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function DrawerDemo() {\n  const [isOpen, setIsOpen] = useState(false);\n  const triggerRef = useRef(null);\n  const titleId = 'drawer-title';\n\n  return (\n    <>\n      <button ref={triggerRef} onClick={() => setIsOpen(true)}>\n        메뉴 열기\n      </button>\n\n      {isOpen && (\n        <>\n          <div\n            role=\"dialog\"\n            aria-modal=\"true\"\n            aria-labelledby={titleId}\n            onKeyDown={(e) => {\n              if (e.key === 'Escape') {\n                setIsOpen(false);\n                triggerRef.current?.focus();\n              }\n            }}\n          >\n            <h2 id={titleId}>메뉴</h2>\n            <nav>\n              <a href=\"/\">홈</a>\n              <a href=\"/about\">소개</a>\n            </nav>\n            <button onClick={() => { setIsOpen(false); triggerRef.current?.focus(); }}>\n              닫기\n            </button>\n          </div>\n          {/* 배경 오버레이 */}\n          <div onClick={() => setIsOpen(false)} aria-hidden=\"true\" />\n        </>\n      )}\n    </>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "포커스 트랩 확인",
+      "steps": [
+        "드로어 열기",
+        "Tab을 반복해서 눌러 포커스가 드로어 내부에서만 순환하는지 확인",
+        "Escape 또는 닫기 버튼으로 닫기",
+        "트리거 버튼으로 포커스가 복귀하는지 확인"
+      ],
+      "tools": ["Keyboard only", "VoiceOver", "NVDA"]
+    }
+  ],
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/", "https://mui.com/material-ui/react-drawer/"]
+}
