@@ -9,10 +9,12 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const aiEnabled = !!process.env.ANTHROPIC_API_KEY
+
   return (
     <html lang='ko'>
       <body className='flex h-screen bg-slate-50 text-slate-900 overflow-hidden'>
-        <Sidebar />
+        <Sidebar aiEnabled={aiEnabled} />
         <main className='flex-1 overflow-y-auto'>{children}</main>
       </body>
     </html>

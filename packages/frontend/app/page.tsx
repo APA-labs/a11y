@@ -31,14 +31,16 @@ export default function Home() {
           <p className='text-2xl font-bold text-slate-700'>{patterns.reduce((sum, p) => sum + p.baseline.checklist.must.length, 0)}</p>
           <p className='text-xs text-slate-500 mt-0.5'>Must Rules</p>
         </div>
-        <div className='ml-auto'>
-          <Link
-            href='/analyze'
-            className='flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors'>
-            <Sparkles size={14} />
-            AI 분석
-          </Link>
-        </div>
+        {process.env.ANTHROPIC_API_KEY && (
+          <div className='ml-auto'>
+            <Link
+              href='/analyze'
+              className='flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors'>
+              <Sparkles size={14} />
+              AI 분석
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Pattern grid */}

@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, Sparkles, Square, ToggleLeft, Type } from 'lucide-react'
+import { BookOpen, ShieldCheck, Sparkles, Square, ToggleLeft, Type } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -13,7 +13,7 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   toggle: <ToggleLeft size={14} />
 }
 
-export default function Sidebar() {
+export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
   const pathname = usePathname()
 
   return (
@@ -58,18 +58,34 @@ export default function Sidebar() {
         <div>
           <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500'>Tools</p>
           <ul className='space-y-0.5'>
+            {aiEnabled && (
+              <li>
+                <Link
+                  href='/analyze'
+                  className={`
+                    flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
+                    ${pathname === '/analyze' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-700/60 hover:text-slate-200'}
+                  `}>
+                  <Sparkles
+                    size={14}
+                    className={pathname === '/analyze' ? 'text-white' : 'text-slate-500'}
+                  />
+                  AI 분석
+                </Link>
+              </li>
+            )}
             <li>
               <Link
-                href='/analyze'
+                href='/wcag'
                 className={`
                   flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                  ${pathname === '/analyze' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-700/60 hover:text-slate-200'}
+                  ${pathname === '/wcag' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-700/60 hover:text-slate-200'}
                 `}>
-                <Sparkles
+                <ShieldCheck
                   size={14}
-                  className={pathname === '/analyze' ? 'text-white' : 'text-slate-500'}
+                  className={pathname === '/wcag' ? 'text-white' : 'text-slate-500'}
                 />
-                AI 분석
+                WCAG 레퍼런스
               </Link>
             </li>
           </ul>
