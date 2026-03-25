@@ -6,16 +6,17 @@ import Link from 'next/link'
 
 import { DS_META, DS_ORDER } from '../lib/types'
 
+import type { Lang } from '../lib/i18n'
 import type { Pattern } from '../lib/types'
 
-export default function PatternCard({ pattern }: { pattern: Pattern }) {
+export default function PatternCard({ pattern, lang }: { pattern: Pattern; lang: Lang }) {
   const mustCount = pattern.baseline.checklist.must.length
   const shouldCount = pattern.baseline.checklist.should.length
   const previewSrc = `/previews/${pattern.slug}.png`
 
   return (
     <Link
-      href={`/patterns/${pattern.slug}`}
+      href={`/${lang}/patterns/${pattern.slug}`}
       className='group block bg-white rounded-xl border border-mist-200 hover:border-violet-300 hover:shadow-sm transition-all overflow-hidden'>
       {/* 썸네일 */}
       <div
@@ -23,7 +24,7 @@ export default function PatternCard({ pattern }: { pattern: Pattern }) {
         style={{ height: 100 }}>
         <Image
           src={previewSrc}
-          alt={`${pattern.name} 미리보기`}
+          alt={`${pattern.name} preview`}
           fill
           className='object-cover scale-100 hover:scale-105 transition-transform'
           onError={(e) => {

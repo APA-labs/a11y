@@ -1,1 +1,1 @@
-export { patterns, getPattern } from './patterns/index'
+export { patterns, getPattern, getPatterns } from './patterns/index'
