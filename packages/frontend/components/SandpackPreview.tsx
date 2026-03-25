@@ -46,9 +46,29 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@radix-ui/react-switch': '1.0.3',
     '@radix-ui/react-dialog': '1.0.5',
     '@radix-ui/react-popover': '1.0.7',
+    '@radix-ui/react-dropdown-menu': '2.0.6',
+    '@radix-ui/react-slider': '1.1.2',
+    '@radix-ui/react-toolbar': '1.0.4',
+    '@radix-ui/react-select': '2.0.0',
+    '@radix-ui/react-navigation-menu': '1.1.4',
     '@radix-ui/react-icons': '1.3.0'
   },
-  antd: { antd: '5.16.4' }
+  antd: { antd: '5.16.4' },
+  '@chakra-ui': {
+    '@chakra-ui/react': '2.8.2',
+    '@emotion/react': '11.11.4',
+    '@emotion/styled': '11.11.0',
+    'framer-motion': '10.18.0'
+  },
+  '@react-spectrum': {
+    '@adobe/react-spectrum': '3.33.1',
+    '@spectrum-css/vars': '7.0.0'
+  },
+  'class-variance-authority': {
+    'class-variance-authority': '0.7.0',
+    clsx: '2.1.0',
+    'tailwind-merge': '2.2.1'
+  }
 }
 
 function detectDeps(code: string): Record<string, string> {

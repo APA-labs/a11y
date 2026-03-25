@@ -11,8 +11,10 @@ export interface CodeSample {
   code: string
 }
 
+export type DesignSystemId = 'material' | 'radix' | 'antd' | 'shadcn' | 'chakra' | 'spectrum'
+
 export interface DesignSystemVariant {
-  id: 'material' | 'radix' | 'antd'
+  id: DesignSystemId
   name: string
   color: string
   additionalChecks: ChecklistItem[]
@@ -34,9 +36,5 @@ export interface Pattern {
     }
     codeSample: CodeSample
   }
-  designSystems: {
-    material: DesignSystemVariant
-    radix: DesignSystemVariant
-    antd: DesignSystemVariant
-  }
+  designSystems: Partial<Record<DesignSystemId, DesignSystemVariant>>
 }

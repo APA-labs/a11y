@@ -5,28 +5,28 @@ import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
 
-import type { DesignSystemVariant } from '../lib/types'
+import type { DesignSystemId, DesignSystemVariant, Pattern } from '../lib/types'
 
-const DS_ORDER: Array<'material' | 'radix' | 'antd'> = ['material', 'radix', 'antd']
+const DS_ORDER: DesignSystemId[] = ['material', 'radix', 'antd', 'shadcn', 'chakra', 'spectrum']
 
 interface Props {
-  designSystems: {
-    material: DesignSystemVariant
-    radix: DesignSystemVariant
-    antd: DesignSystemVariant
-  }
+  designSystems: Pattern['designSystems']
 }
 
 export default function DesignSystemTabs({ designSystems }: Props) {
-  const [active, setActive] = useState<'material' | 'radix' | 'antd'>('material')
-  const current = designSystems[active]
+  const availableIds = DS_ORDER.filter((id) => designSystems[id] != null)
+  const [active, setActive] = useState<DesignSystemId>(availableIds[0] ?? 'material')
+
+  if (availableIds.length === 0) return null
+
+  const current = designSystems[active] as DesignSystemVariant
 
   return (
     <div>
       {/* Tabs */}
-      <div className='flex gap-1 p-1 bg-pearl-200 rounded-lg mb-6 w-fit'>
-        {DS_ORDER.map((id) => {
-          const ds = designSystems[id]
+      <div className='flex gap-1 p-1 bg-pearl-200 rounded-lg mb-6 w-fit flex-wrap'>
+        {availableIds.map((id) => {
+          const ds = designSystems[id] as DesignSystemVariant
           const isActive = active === id
           return (
             <button

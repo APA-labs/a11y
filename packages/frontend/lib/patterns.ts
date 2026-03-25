@@ -113,32 +113,42 @@ export const patterns: Pattern[] = [
           label: 'Radix + Tailwind',
           code: `import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
-import { cn } from '@/lib/utils'
+
+const cn = (...c: string[]) => c.filter(Boolean).join(' ')
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
   isLoading?: boolean
+  children?: React.ReactNode
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ asChild, isLoading, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-    return (
-      <Comp
-        ref={ref}
-        aria-busy={isLoading}
-        aria-disabled={isLoading || props.disabled}
-        className={cn(
-          'focus-visible:ring-2 focus-visible:ring-offset-2',
-          'min-h-[44px] min-w-[44px]'
-        )}
-        {...props}
-      >
-        {children}
-      </Comp>
-    )
-  }
-)`
+function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
+  const Comp = asChild ? Slot : 'button'
+  return (
+    <Comp
+      aria-busy={isLoading}
+      aria-disabled={isLoading || props.disabled}
+      className={cn(
+        'focus-visible:ring-2 focus-visible:ring-offset-2',
+        'min-h-[44px] min-w-[44px]'
+      )}
+      {...props}
+    >
+      {children}
+    </Comp>
+  )
+}
+
+export default function App() {
+  const [isLoading, setIsLoading] = React.useState(false)
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
+      <Button isLoading={isLoading} onClick={() => setIsLoading(!isLoading)}>
+        {isLoading ? '저장 중...' : '저장'}
+      </Button>
+    </div>
+  )
+}`
         },
         notes: [
           'Radix는 headless 컴포넌트로 스타일을 직접 제어합니다.',
@@ -192,6 +202,104 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           'Ant Design Button은 내부적으로 <button> 요소를 사용합니다.',
           'htmlType prop으로 submit/reset/button type을 지정하세요.',
           'Block prop으로 full-width 버튼 구현 시 레이아웃 맥락을 고려하세요.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'btn-shadcn-1',
+            title: 'asChild로 시맨틱 유지',
+            description:
+              'shadcn Button에 asChild prop을 사용하면 Link 컴포넌트와 조합할 수 있습니다. 이때 button이 아닌 a 요소로 렌더링되므로 역할이 올바른지 확인하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Button',
+          code: `import { Button } from '@/components/ui/button'
+
+// 기본 버튼
+<Button onClick={() => {}}>저장</Button>
+
+// 로딩 상태
+<Button disabled={isLoading} aria-busy={isLoading}>
+  {isLoading ? '저장 중...' : '저장'}
+</Button>
+
+// 아이콘 전용 버튼
+<Button size="icon" aria-label="설정">
+  <Settings className="h-4 w-4" aria-hidden />
+</Button>`
+        },
+        notes: [
+          'shadcn/ui Button은 Radix UI Slot을 기반으로 하며 내부적으로 <button>을 렌더링합니다.',
+          'variant와 size prop으로 시각적 스타일을 지정하세요.',
+          '아이콘 전용 버튼에는 반드시 aria-label을 추가하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'btn-chakra-1',
+            title: 'isLoading 시 loadingText 제공',
+            description: 'Chakra Button의 isLoading prop 사용 시 loadingText로 스크린리더에 의미 있는 메시지를 전달하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Button',
+          code: `import { Button } from '@chakra-ui/react'
+
+function ButtonDemo() {
+  const [isLoading, setIsLoading] = useState(false);
+  return (
+    <Button
+      colorScheme="blue"
+      isLoading={isLoading}
+      loadingText="저장 중"
+      onClick={() => setIsLoading(true)}
+    >
+      저장
+    </Button>
+  );
+}`
+        },
+        notes: [
+          'Chakra Button은 내부적으로 <button> 요소를 사용합니다.',
+          'isLoading prop이 true일 때 버튼이 자동으로 disabled 처리됩니다.',
+          'loadingText를 설정하면 스피너와 함께 텍스트가 표시됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Spectrum Button',
+          code: `import { Button } from '@adobe/react-spectrum'
+
+function ButtonDemo() {
+  return (
+    <Button variant="cta" onPress={() => {}}>
+      저장
+    </Button>
+  );
+}`
+        },
+        notes: [
+          'React Spectrum Button은 onPress를 사용합니다 (onClick 대신).',
+          'variant로 cta, primary, secondary, negative를 지정할 수 있습니다.',
+          '키보드, 마우스, 터치 모두 자동으로 처리됩니다.'
         ]
       }
     }
@@ -479,7 +587,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         code: `function Modal({ isOpen, onClose, title, children }) {
   const titleId = useId()
   const descId = useId()
-  const triggerRef = useRef(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (!isOpen) return
@@ -702,19 +810,12 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
   role="switch"
   aria-checked={isEnabled}
   onClick={() => setIsEnabled(!isEnabled)}
-  className={cn(
-    'relative inline-flex h-6 w-11 rounded-full transition-colors',
-    'focus-visible:ring-2 focus-visible:ring-offset-2',
-    isEnabled ? 'bg-blue-600' : 'bg-gray-300'
-  )}
+  className={'relative inline-flex h-6 w-11 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 ' + (isEnabled ? 'bg-blue-600' : 'bg-gray-300')}
 >
   <span className="sr-only">{isEnabled ? '켜짐' : '꺼짐'}</span>
   <span
     aria-hidden
-    className={cn(
-      'inline-block h-5 w-5 rounded-full bg-white shadow transition-transform',
-      isEnabled ? 'translate-x-5' : 'translate-x-0'
-    )}
+    className={'inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ' + (isEnabled ? 'translate-x-5' : 'translate-x-0')}
   />
 </button>`
       }
@@ -791,17 +892,10 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
     id="notifications"
     checked={isEnabled}
     onCheckedChange={setIsEnabled}
-    className={cn(
-      'w-11 h-6 rounded-full transition-colors',
-      'focus-visible:ring-2 focus-visible:ring-offset-2',
-      isEnabled ? 'bg-blue-600' : 'bg-gray-200'
-    )}
+    className={'w-11 h-6 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 ' + (isEnabled ? 'bg-blue-600' : 'bg-gray-200')}
   >
     <Switch.Thumb
-      className={cn(
-        'block w-5 h-5 bg-white rounded-full shadow transition-transform',
-        isEnabled ? 'translate-x-5' : 'translate-x-0'
-      )}
+      className={'block w-5 h-5 bg-white rounded-full shadow transition-transform ' + (isEnabled ? 'translate-x-5' : 'translate-x-0')}
     />
   </Switch.Root>
 </div>`
@@ -3563,14 +3657,26 @@ import koKR from 'antd/locale/ko_KR';
         ]
       },
       codeSample: {
-        language: 'tsx',
+        language: 'jsx',
         label: 'Baseline (React)',
-        code: `function NavigationMenu({ items, currentPath }) {
+        code: `function NavigationMenuDemo() {
   const [openMenu, setOpenMenu] = useState(null);
+  const currentPath = '/about';
+  const items = [
+    { id: 'home', label: '홈', href: '/' },
+    {
+      id: 'about', label: '소개', href: '/about',
+      children: [
+        { id: 'team', label: '팀', href: '/about/team' },
+        { id: 'history', label: '연혁', href: '/about/history' }
+      ]
+    },
+    { id: 'contact', label: '문의', href: '/contact' }
+  ];
 
   return (
     <nav aria-label="메인 내비게이션">
-      <ul>
+      <ul style={{ listStyle: 'none', display: 'flex', gap: '8px', padding: 0, margin: 0 }}>
         {items.map(item => (
           <li key={item.id}>
             {item.children ? (
@@ -3581,15 +3687,17 @@ import koKR from 'antd/locale/ko_KR';
                   onClick={() => setOpenMenu(openMenu === item.id ? null : item.id)}
                   onKeyDown={e => e.key === 'Escape' && setOpenMenu(null)}
                 >
-                  {item.label}
+                  {item.label} ▾
                 </button>
                 {openMenu === item.id && (
-                  <ul>
+                  <ul role="menu" style={{ listStyle: 'none', padding: '4px', margin: 0, border: '1px solid #ccc', borderRadius: '4px', position: 'absolute', background: 'white' }}>
                     {item.children.map(child => (
-                      <li key={child.id}>
+                      <li key={child.id} role="none">
                         <a
                           href={child.href}
+                          role="menuitem"
                           aria-current={currentPath === child.href ? 'page' : undefined}
+                          style={{ display: 'block', padding: '4px 8px', textDecoration: 'none', color: currentPath === child.href ? '#6d28d9' : 'inherit' }}
                         >
                           {child.label}
                         </a>
@@ -3602,6 +3710,7 @@ import koKR from 'antd/locale/ko_KR';
               <a
                 href={item.href}
                 aria-current={currentPath === item.href ? 'page' : undefined}
+                style={{ textDecoration: 'none', color: currentPath === item.href ? '#6d28d9' : 'inherit', fontWeight: currentPath === item.href ? 'bold' : 'normal' }}
               >
                 {item.label}
               </a>
@@ -3632,8 +3741,9 @@ import koKR from 'antd/locale/ko_KR';
           label: 'MUI AppBar Navigation',
           code: `import { AppBar, Toolbar, Button, Menu, MenuItem } from '@mui/material';
 
-function Navigation({ currentPath }) {
+function NavigationMuiDemo() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const currentPath = '/';
 
   return (
     <AppBar position="static" component="header">
@@ -4103,7 +4213,7 @@ function MuiForm() {
         label: 'Baseline (React)',
         code: `function PopoverDemo() {
   const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div>
@@ -4351,7 +4461,7 @@ function AntdPopoverDemo() {
         label: 'Baseline (React)',
         code: `function DrawerDemo() {
   const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const titleId = 'drawer-title';
 
   return (
@@ -5496,15 +5606,15 @@ function TableDemo() {
         ]
       },
       codeSample: {
-        language: 'jsx',
+        language: 'tsx',
         label: 'React 예제',
         code: `function MenuButtonDemo() {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
-  const triggerRef = useRef(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const items = ['수정', '복사', '삭제'];
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setFocusedIndex(i => Math.min(items.length - 1, i + 1));
@@ -5726,20 +5836,20 @@ function MenuButtonDemo() {
         ]
       },
       codeSample: {
-        language: 'jsx',
+        language: 'tsx',
         label: 'React 예제',
         code: `function ToolbarDemo() {
   const [focusedIdx, setFocusedIdx] = useState(0);
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
-  const itemRefs = useRef([]);
+  const itemRefs = useRef<HTMLButtonElement[]>([]);
   const items = [
     { label: '굵게', action: () => setBold(b => !b), pressed: bold },
     { label: '기울임', action: () => setItalic(i => !i), pressed: italic },
     { label: '취소선', action: () => {}, pressed: false },
   ];
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowRight') {
       e.preventDefault();
       const next = (focusedIdx + 1) % items.length;
@@ -5758,7 +5868,7 @@ function MenuButtonDemo() {
       {items.map((item, i) => (
         <button
           key={item.label}
-          ref={el => itemRefs.current[i] = el}
+          ref={el => { if (el) itemRefs.current[i] = el }}
           tabIndex={focusedIdx === i ? 0 : -1}
           aria-pressed={item.pressed}
           onClick={item.action}

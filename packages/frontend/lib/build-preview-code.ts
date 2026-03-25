@@ -75,10 +75,46 @@ function parseDestructuredProps(code: string, funcName: string): string[] {
     .filter((p) => p && /^[a-z]/.test(p) && !p.startsWith('...'))
 }
 
+const REACT_HOOKS = [
+  'useState',
+  'useRef',
+  'useEffect',
+  'useCallback',
+  'useMemo',
+  'useId',
+  'useReducer',
+  'useContext',
+  'useLayoutEffect',
+  'useImperativeHandle'
+]
+
+function buildReactImport(code: string): string {
+  const existingReactImportMatch = code.match(/import\s+\{([^}]+)\}\s+from\s+['"]react['"]/)
+  const alreadyImportsReact = /from\s+['"]react['"]/.test(code)
+
+  const neededHooks = REACT_HOOKS.filter((h) => new RegExp(`\\b${h}\\b`).test(code))
+
+  if (existingReactImportMatch) {
+    const existingHooks = existingReactImportMatch[1]!
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+    const missing = neededHooks.filter((h) => !existingHooks.includes(h))
+    if (missing.length === 0) return ''
+    // Return a line to prepend that patches in missing hooks
+    return `import { ${missing.join(', ')} } from 'react'\n`
+  }
+
+  if (alreadyImportsReact) return ''
+
+  return neededHooks.length > 0 ? `import { ${neededHooks.join(', ')} } from 'react'\n` : `import React from 'react'\n`
+}
+
 export function buildAppCode(code: string): string {
   if (/export\s+default\s+function\s+App/.test(code)) return code
 
-  const namedExportMatch = code.match(/export\s+(?:default\s+)?function\s+(\w+)/)
+  // Match both exported and non-exported top-level function definitions
+  const namedExportMatch = code.match(/(?:export\s+(?:default\s+)?)?function\s+(\w+)/)
 
   if (namedExportMatch) {
     const name = namedExportMatch[1] ?? ''
@@ -121,8 +157,9 @@ export function buildAppCode(code: string): string {
     const inner = hasChildren ? `<p style={{ margin: 0 }}>예시 내용입니다.</p>` : ''
     const propsStr = propBindings.join(' ')
     const renderCall = inner ? `<${name} ${propsStr}>${inner}</${name}>` : `<${name} ${propsStr} />`
+    const reactImport = buildReactImport(code)
 
-    return `${code}
+    return `${reactImport}${code}
 
 export default function App() {
   return (
