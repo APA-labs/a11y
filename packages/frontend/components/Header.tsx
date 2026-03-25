@@ -1,6 +1,6 @@
 'use client'
 
-import { Github, Globe, Menu, MousePointer2, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { Github, Menu, MousePointer2, ShieldCheck, Sparkles, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -10,7 +10,6 @@ import { patterns } from '../lib/patterns'
 
 export default function Header({ aiEnabled = true }: { aiEnabled?: boolean }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [lang, setLang] = useState<'ko' | 'en'>('ko')
   const pathname = usePathname()
 
   useEffect(() => {
@@ -30,9 +29,8 @@ export default function Header({ aiEnabled = true }: { aiEnabled?: boolean }) {
         {/* 로고 */}
         <Link
           href='/'
-          className='flex items-center gap-2.5'>
-          <div className='w-7 h-7 rounded-md bg-violet-600 flex items-center justify-center text-white font-bold text-sm select-none'>A</div>
-          <span className='font-semibold text-navy-800 text-sm tracking-tight'>A11y Patterns</span>
+          className='flex items-center gap-2 sm:gap-2.5 min-w-0 shrink-0'>
+          <span className='font-semibold text-navy-800 text-sm tracking-tight whitespace-nowrap'>A11y Patterns</span>
         </Link>
 
         <div className='flex-1' />
@@ -46,16 +44,6 @@ export default function Header({ aiEnabled = true }: { aiEnabled?: boolean }) {
             className='hidden sm:flex px-3 py-1.5 text-sm text-mist-700 hover:text-navy hover:bg-mist-100 rounded-md transition-colors'>
             홈
           </Link>
-
-          {/* 번역 토글 */}
-          <button
-            type='button'
-            onClick={() => setLang((l) => (l === 'ko' ? 'en' : 'ko'))}
-            className='hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-sm text-mist-700 hover:text-navy hover:bg-mist-100 rounded-md transition-colors'
-            aria-label='언어 변경'>
-            <Globe size={14} />
-            <span>{lang === 'ko' ? '한국어' : 'English'}</span>
-          </button>
 
           {/* GitHub */}
           <a
@@ -100,22 +88,6 @@ export default function Header({ aiEnabled = true }: { aiEnabled?: boolean }) {
           ${drawerOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
         <div className='px-3 py-4 space-y-6'>
-          {/* 모바일 전용: 홈·번역 */}
-          <div className='flex items-center gap-2 sm:hidden px-2'>
-            <Link
-              href='/'
-              className='flex-1 py-1.5 text-sm text-center text-mist-700 hover:text-navy hover:bg-mist-100 rounded-md transition-colors'>
-              홈
-            </Link>
-            <button
-              type='button'
-              onClick={() => setLang((l) => (l === 'ko' ? 'en' : 'ko'))}
-              className='flex-1 flex items-center justify-center gap-1.5 py-1.5 text-sm text-mist-700 hover:text-navy hover:bg-mist-100 rounded-md transition-colors'>
-              <Globe size={13} />
-              {lang === 'ko' ? '한국어' : 'English'}
-            </button>
-          </div>
-
           <section>
             <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-mist-400'>Docs</p>
             <ul className='space-y-0.5'>
