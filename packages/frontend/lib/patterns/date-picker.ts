@@ -218,7 +218,7 @@ function AntdDatePickerDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI DatePicker',
-        code: `import { DatePicker, Portal } from '@chakra-ui/react'
+        code: `import { DatePicker } from '@chakra-ui/react'
 <DatePicker.Root>
   <DatePicker.Label>날짜 선택</DatePicker.Label>
   <DatePicker.Control>
@@ -229,30 +229,25 @@ function AntdDatePickerDemo() {
       </DatePicker.Trigger>
     </DatePicker.IndicatorGroup>
   </DatePicker.Control>
-  <Portal>
-    <DatePicker.Positioner>
-      <DatePicker.Content>
-        <DatePicker.View view='day'>
-          <DatePicker.Header />
-          <DatePicker.DayTable />
-        </DatePicker.View>
-        <DatePicker.View view='month'>
-          <DatePicker.Header />
-          <DatePicker.MonthTable />
-        </DatePicker.View>
-        <DatePicker.View view='year'>
-          <DatePicker.Header />
-          <DatePicker.YearTable />
-        </DatePicker.View>
-      </DatePicker.Content>
-    </DatePicker.Positioner>
-  </Portal>
+  <DatePicker.Positioner>
+    <DatePicker.Content>
+      <DatePicker.View view='day'>
+        <DatePicker.ViewControl>
+          <DatePicker.PrevTrigger aria-label='이전 달' />
+          <DatePicker.ViewTrigger>
+            <DatePicker.RangeText />
+          </DatePicker.ViewTrigger>
+          <DatePicker.NextTrigger aria-label='다음 달' />
+        </DatePicker.ViewControl>
+      </DatePicker.View>
+    </DatePicker.Content>
+  </DatePicker.Positioner>
 </DatePicker.Root>`
       },
       notes: [
-        'DatePicker.Header는 이전/다음 달 버튼과 현재 월/연도 텍스트를 자동으로 렌더링합니다.',
-        'day/month/year 세 가지 View를 모두 포함해야 월·연도 선택이 가능합니다.',
-        '@internationalized/date 패키지로 날짜 타입을 관리합니다. Portal로 감싸면 z-index 문제를 방지할 수 있습니다.'
+        'Chakra DatePicker는 달력과 텍스트 입력 두 가지 방법으로 날짜를 입력할 수 있습니다.',
+        '달력 버튼과 이전/다음 달 버튼에 aria-label을 추가하세요.',
+        '@internationalized/date 패키지로 날짜 타입을 관리합니다.'
       ]
     },
     spectrum: {
@@ -270,43 +265,36 @@ function AntdDatePickerDemo() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria DatePicker',
-        code: `import { DatePicker, Label, Group, DateInput, DateSegment, Button, Popover, Dialog, Heading } from 'react-aria-components'
-import { Calendar, CalendarGrid, CalendarCell } from 'react-aria-components'
-
-const fieldStyle = { display: 'inline-flex', alignItems: 'center', gap: 2, border: '1px solid #d1d5db', borderRadius: 6, padding: '4px 8px', background: '#fff' }
-const segStyle = { padding: '1px 2px', borderRadius: 2, outline: 'none' }
-const btnStyle = { background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px', borderRadius: 4, fontSize: 16 }
-const headerStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }
-const cellStyle = { textAlign: 'center' as const, padding: 6, borderRadius: 4, cursor: 'pointer' }
-
-<DatePicker>
-  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>날짜 선택</Label>
-  <Group style={fieldStyle}>
-    <DateInput style={{ display: 'flex', gap: 1 }}>
-      {(segment) => <DateSegment segment={segment} style={segStyle} />}
-    </DateInput>
-    <Button aria-label='달력 열기' style={btnStyle}>📅</Button>
-  </Group>
+        code: `import { DatePicker, DateInput, DateSegment, Button, Heading } from 'react-aria-components'
+import { Calendar, CalendarGrid, CalendarCell, CalendarGridBody } from 'react-aria-components'
+import { Popover } from 'react-aria-components'
+<DatePicker aria-label='날짜 선택'>
+  <DateInput>{(segment) => <DateSegment segment={segment} />}</DateInput>
+  <Button aria-label='달력 열기'>📅</Button>
   <Popover>
-    <Dialog style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none' }}>
-      <Calendar>
-        <header style={headerStyle}>
-          <Button slot='previous' aria-label='이전 달' style={btnStyle}>‹</Button>
-          <Heading style={{ fontWeight: 600, fontSize: 14 }} />
-          <Button slot='next' aria-label='다음 달' style={btnStyle}>›</Button>
-        </header>
-        <CalendarGrid style={{ borderCollapse: 'collapse' }}>
-          {(date) => <CalendarCell date={date} style={cellStyle} />}
-        </CalendarGrid>
-      </Calendar>
-    </Dialog>
+    <Calendar>
+      <Heading />
+      <Button
+        slot='previous'
+        aria-label='이전 달'>
+        ‹
+      </Button>
+      <Button
+        slot='next'
+        aria-label='다음 달'>
+        ›
+      </Button>
+      <CalendarGrid>
+        <CalendarGridBody>{(date) => <CalendarCell date={date} />}</CalendarGridBody>
+      </CalendarGrid>
+    </Calendar>
   </Popover>
 </DatePicker>`
       },
       notes: [
-        'Popover 안에 Dialog를 감싸야 접근성 트리가 올바르게 구성됩니다.',
-        'Group으로 DateInput과 Button을 감싸면 시각적·의미적으로 하나의 입력 필드로 인식됩니다.',
-        'Label 컴포넌트를 사용하면 모든 하위 요소의 aria 연결이 자동 처리됩니다.'
+        'React Aria DatePicker는 날짜 입력 필드와 달력 버튼을 자동으로 렌더링합니다.',
+        'label prop을 제공하면 모든 하위 요소의 aria 연결이 자동 처리됩니다.',
+        '각 날짜 세그먼트(연/월/일)를 개별적으로 키보드로 편집할 수 있습니다.'
       ]
     }
   }
