@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import ChecklistSection from '../../../components/ChecklistSection'
 import CodeBlock from '../../../components/CodeBlock'
 import DesignSystemTabs from '../../../components/DesignSystemTabs'
+import WcagBadge from '../../../components/WcagBadge'
 import { getPattern, patterns } from '../../../lib/patterns'
 
 export const dynamic = 'force-static'
@@ -38,14 +39,16 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
         <h1 className='text-2xl font-bold text-navy mb-1.5'>{pattern.name}</h1>
         <p className='text-mist-700 text-sm'>{pattern.description}</p>
 
-        <div className='flex flex-wrap gap-2 mt-4'>
-          {pattern.wcagCriteria.map((criterion) => (
-            <span
-              key={criterion}
-              className='text-xs px-2.5 py-1 rounded-full bg-violet-50 text-violet-700 font-mono border border-violet-200'>
-              {criterion}
-            </span>
-          ))}
+        <div className='mt-4'>
+          <p className='text-[11px] text-mist-500 mb-2'>관련 WCAG 기준 — 클릭하여 상세 보기</p>
+          <div className='flex flex-wrap gap-2'>
+            {pattern.wcagCriteria.map((criterion) => (
+              <WcagBadge
+                key={criterion}
+                criterion={criterion}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
