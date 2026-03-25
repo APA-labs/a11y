@@ -63,11 +63,15 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
         <Tooltip.Trigger asChild>{link}</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
-            side="right"
+            side='right'
             sideOffset={8}
             className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-mist-200 bg-white px-2.5 py-1.5 text-xs font-medium leading-snug text-navy shadow-md select-none'>
             {label}
-            <Tooltip.Arrow className='fill-white' width={10} height={5} />
+            <Tooltip.Arrow
+              className='fill-white'
+              width={10}
+              height={5}
+            />
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>
@@ -97,7 +101,11 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
                 sideOffset={8}
                 className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-mist-200 bg-white px-2.5 py-1.5 text-xs font-medium leading-snug text-navy shadow-md select-none'>
                 {collapsed ? '사이드바 펼치기' : '사이드바 접기'}
-                <Tooltip.Arrow className='fill-white' width={10} height={5} />
+                <Tooltip.Arrow
+                  className='fill-white'
+                  width={10}
+                  height={5}
+                />
               </Tooltip.Content>
             </Tooltip.Portal>
           </Tooltip.Root>
@@ -118,7 +126,9 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
             <SectionLabel>Patterns</SectionLabel>
             <ul className='space-y-0.5'>
               {patterns.map((pattern) => (
-                <li key={pattern.slug}>{navItem(`/patterns/${pattern.slug}`, ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />, pattern.name)}</li>
+                <li key={pattern.slug}>
+                  {navItem(`/patterns/${pattern.slug}`, ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />, pattern.name)}
+                </li>
               ))}
             </ul>
           </div>
