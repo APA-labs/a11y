@@ -3,11 +3,15 @@ export const dynamic = 'force-static'
 import { Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
+import DSLegendFloat from '../components/DSLegendFloat'
 import PatternCard from '../components/PatternCard'
 import { patterns } from '../lib/patterns'
+import { DS_ORDER } from '../lib/types'
 
 export default function Home() {
   const totalMust = patterns.reduce((sum, p) => sum + p.baseline.checklist.must.length, 0)
+  const totalShould = patterns.reduce((sum, p) => sum + p.baseline.checklist.should.length, 0)
+  const dsCount = DS_ORDER.filter((id) => patterns.some((p) => p.designSystems[id] != null)).length
 
   return (
     <div className='max-w-4xl mx-auto px-8 py-12'>
@@ -24,12 +28,16 @@ export default function Home() {
           <p className='text-xs text-mist-700 mt-1 uppercase tracking-wider'>Patterns</p>
         </div>
         <div>
-          <p className='text-3xl font-bold text-navy'>{3}</p>
+          <p className='text-3xl font-bold text-navy'>{dsCount}</p>
           <p className='text-xs text-mist-700 mt-1 uppercase tracking-wider'>Design Systems</p>
         </div>
         <div>
-          <p className='text-3xl font-bold text-navy'>{totalMust}</p>
+          <p className='text-3xl font-bold text-red-500'>{totalMust}</p>
           <p className='text-xs text-mist-700 mt-1 uppercase tracking-wider'>Must Rules</p>
+        </div>
+        <div>
+          <p className='text-3xl font-bold text-amber-500'>{totalShould}</p>
+          <p className='text-xs text-mist-700 mt-1 uppercase tracking-wider'>Should Rules</p>
         </div>
         {process.env.ANTHROPIC_API_KEY && (
           <div className='ml-auto'>
@@ -54,6 +62,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+      <DSLegendFloat />
     </div>
   )
 }
