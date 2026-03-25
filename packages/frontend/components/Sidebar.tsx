@@ -44,7 +44,6 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   popover: <ExternalLink size={14} />,
   drawer: <Layers size={14} />,
   'date-picker': <Type size={14} />,
-  switch: <ToggleLeft size={14} />,
   slider: <Sliders size={14} />,
   table: <Table size={14} />,
   'menu-button': <List size={14} />,
