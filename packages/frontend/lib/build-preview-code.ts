@@ -8,7 +8,12 @@ function extractImports(code: string): { imports: string; body: string } {
     const trimmed = line.trim()
     if (trimmed.startsWith('import ')) {
       importLines.push(line)
-      inImport = trimmed.endsWith('{') || !trimmed.includes('from')
+      // Side-effect imports (import 'xxx') end with a quote and have no `from`
+      if (trimmed.endsWith("'") || trimmed.endsWith('"')) {
+        inImport = false
+      } else {
+        inImport = trimmed.endsWith('{') || !trimmed.includes('from')
+      }
     } else if (inImport) {
       importLines.push(line)
       if (trimmed.endsWith("'") || trimmed.endsWith('"')) inImport = false

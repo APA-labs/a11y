@@ -4,6 +4,8 @@ import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { DS_META, DS_ORDER } from '../lib/types'
+
 import type { Pattern } from '../lib/types'
 
 const TAG_COLORS: Record<string, string> = {
@@ -15,8 +17,6 @@ const TAG_COLORS: Record<string, string> = {
   action: 'bg-violet-100 text-violet-600',
   input: 'bg-mist-50 text-mist-700'
 }
-
-const DS_COLORS = ['#1976d2', '#6e56cf', '#1677ff']
 
 export default function PatternCard({ pattern }: { pattern: Pattern }) {
   const mustCount = pattern.baseline.checklist.must.length
@@ -76,11 +76,12 @@ export default function PatternCard({ pattern }: { pattern: Pattern }) {
             </span>
           </div>
           <div className='flex items-center gap-1'>
-            {DS_COLORS.map((color, i) => (
+            {DS_ORDER.filter((id) => pattern.designSystems[id] != null).map((id) => (
               <span
-                key={i}
+                key={id}
                 className='w-2 h-2 rounded-full'
-                style={{ backgroundColor: color }}
+                title={DS_META[id].name}
+                style={{ backgroundColor: DS_META[id].color }}
               />
             ))}
           </div>

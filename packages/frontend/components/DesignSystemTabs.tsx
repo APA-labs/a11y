@@ -5,9 +5,8 @@ import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
 
+import { DS_ORDER } from '../lib/types'
 import type { DesignSystemId, DesignSystemVariant, Pattern } from '../lib/types'
-
-const DS_ORDER: DesignSystemId[] = ['material', 'radix', 'antd', 'shadcn', 'chakra', 'spectrum']
 
 interface Props {
   designSystems: Pattern['designSystems']

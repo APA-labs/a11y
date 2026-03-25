@@ -66,11 +66,11 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@radix-ui/react-slot': '1.0.2',
     '@radix-ui/react-label': '2.0.2'
   },
-  antd: { antd: '5.16.4' },
+  antd: { antd: '5.16.4', dayjs: '1.11.10' },
   '@chakra-ui': {
-    '@chakra-ui/react': '3.2.3',
-    '@emotion/react': '11.11.4',
-    '@emotion/styled': '11.11.0'
+    '@chakra-ui/react': '3.34.0',
+    '@emotion/react': '11.14.0',
+    '@emotion/styled': '11.14.0'
   },
   '@adobe/react-spectrum': {
     '@adobe/react-spectrum': '3.33.1',
@@ -143,14 +143,11 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
     : appCode
 
   if (hasChakra) {
+    const WRAPPER_DIV = `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
+
     appCodeFinal =
-      `import { Provider as __ChakraProvider } from '@chakra-ui/react'\n` +
-      appCodeFinal
-        .replace(
-          `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`,
-          `<__ChakraProvider><div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
-        )
-        .replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </div></__ChakraProvider>\n  )\n}`)
+      `import { ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'\n` +
+      appCodeFinal.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </ChakraProvider>\n  )\n}`)
   }
 
   const sandpackFiles: Record<string, string> = { '/App.tsx': appCodeFinal }
