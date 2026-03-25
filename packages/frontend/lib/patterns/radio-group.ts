@@ -129,19 +129,19 @@ export function RadioGroup({ legend }: { legend: string }) {
         label: 'MUI Radio Group',
         code: `import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
 <FormControl>
-  <FormLabel id='shipping-label'>배송 속도</FormLabel>
+  <FormLabel id='shipping-label'>Shipping Speed</FormLabel>
   <RadioGroup
     aria-labelledby='shipping-label'
     defaultValue='standard'>
     <FormControlLabel
       value='standard'
       control={<Radio />}
-      label='일반 배송 (3–5일)'
+      label='Standard shipping (3–5 days)'
     />
     <FormControlLabel
       value='express'
       control={<Radio />}
-      label='빠른 배송 (1–2일)'
+      label='Express shipping (1–2 days)'
     />
   </RadioGroup>
 </FormControl>`
@@ -172,19 +172,19 @@ export function RadixRadioGroup() {
   return (
     <RadioGroup.Root
       defaultValue='standard'
-      aria-label='배송 속도'>
+      aria-label='Shipping speed'>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         <label>
           <RadioGroup.Item value='standard'>
             <RadioGroup.Indicator />
           </RadioGroup.Item>
-          일반 배송
+          Standard shipping
         </label>
         <label>
           <RadioGroup.Item value='express'>
             <RadioGroup.Indicator />
           </RadioGroup.Item>
-          빠른 배송
+          Express shipping
         </label>
       </div>
     </RadioGroup.Root>
@@ -214,12 +214,12 @@ export function RadixRadioGroup() {
         code: `import { Radio } from 'antd'
 
 const OPTIONS = [
-{ label: '일반 배송', value: 'standard' },
-{ label: '빠른 배송', value: 'express' },
+{ label: 'Standard shipping', value: 'standard' },
+{ label: 'Express shipping', value: 'express' },
 ]
 
 <div>
-<p id="shipping-label">배송 속도</p>
+<p id="shipping-label">Shipping speed</p>
 <Radio.Group
   options={OPTIONS}
   defaultValue="standard"
@@ -255,22 +255,22 @@ function RadioDemo() {
     <RadioGroup.Root
       value={value}
       onValueChange={(e) => setValue(e.value)}
-      aria-label='옵션 선택'>
+      aria-label='Select option'>
       <HStack gap={4}>
         <RadioGroup.Item value='option-1'>
           <RadioGroup.ItemHiddenInput />
           <RadioGroup.ItemIndicator />
-          <RadioGroup.ItemText>옵션 1</RadioGroup.ItemText>
+          <RadioGroup.ItemText>Option 1</RadioGroup.ItemText>
         </RadioGroup.Item>
         <RadioGroup.Item value='option-2'>
           <RadioGroup.ItemHiddenInput />
           <RadioGroup.ItemIndicator />
-          <RadioGroup.ItemText>옵션 2</RadioGroup.ItemText>
+          <RadioGroup.ItemText>Option 2</RadioGroup.ItemText>
         </RadioGroup.Item>
         <RadioGroup.Item value='option-3'>
           <RadioGroup.ItemHiddenInput />
           <RadioGroup.ItemIndicator />
-          <RadioGroup.ItemText>옵션 3</RadioGroup.ItemText>
+          <RadioGroup.ItemText>Option 3</RadioGroup.ItemText>
         </RadioGroup.Item>
       </HStack>
     </RadioGroup.Root>
@@ -297,12 +297,12 @@ function RadioDemo() {
   const [value, setValue] = useState('option-1')
   return (
     <RadioGroup
-      label='옵션 선택'
+      label='Select option'
       value={value}
       onChange={setValue}>
-      <Radio value='option-1'>옵션 1</Radio>
-      <Radio value='option-2'>옵션 2</Radio>
-      <Radio value='option-3'>옵션 3</Radio>
+      <Radio value='option-1'>Option 1</Radio>
+      <Radio value='option-2'>Option 2</Radio>
+      <Radio value='option-3'>Option 3</Radio>
     </RadioGroup>
   )
 }`

@@ -90,8 +90,8 @@ export const formValidationPattern: Pattern = {
   const errorId = 'email-error'
 
   const validate = () => {
-    if (!email) return '이메일을 입력해주세요.'
-    if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다.'
+    if (!email) return 'Please enter your email.'
+    if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) return 'Please enter a valid email address.'
     return ''
   }
 
@@ -108,7 +108,7 @@ export const formValidationPattern: Pattern = {
       noValidate>
       <div>
         <label htmlFor='email-input'>
-          이메일 <span aria-hidden>*</span>
+          Email <span aria-hidden>*</span>
         </label>
         <input
           id='email-input'
@@ -127,7 +127,7 @@ export const formValidationPattern: Pattern = {
           </p>
         )}
       </div>
-      <button type='submit'>제출</button>
+      <button type='submit'>Submit</button>
     </form>
   )
 }`
@@ -158,7 +158,7 @@ function MuiForm() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!email.includes('@')) {
-      setError('올바른 이메일 형식이 아닙니다.')
+      setError('Please enter a valid email address.')
     }
   }
 
@@ -167,7 +167,7 @@ function MuiForm() {
       onSubmit={handleSubmit}
       noValidate>
       <TextField
-        label='이메일'
+        label='Email'
         type='email'
         required
         value={email}
@@ -176,13 +176,13 @@ function MuiForm() {
           setError('')
         }}
         error={!!error}
-        helperText={error || '예: user@example.com'}
+        helperText={error || 'e.g. user@example.com'}
         inputProps={{ 'aria-required': true }}
       />
       <Button
         type='submit'
         variant='contained'>
-        제출
+        Submit
       </Button>
     </form>
   )
@@ -219,18 +219,18 @@ function RadixFormDemo() {
   return (
     <Form.Root onSubmit={handleSubmit}>
       <Form.Field name='email'>
-        <Form.Label>이메일</Form.Label>
+        <Form.Label>Email</Form.Label>
         <Form.Control asChild>
           <input
             type='email'
             required
           />
         </Form.Control>
-        <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>
-        <Form.Message match='typeMismatch'>올바른 이메일 형식이 아닙니다.</Form.Message>
+        <Form.Message match='valueMissing'>Please enter your email.</Form.Message>
+        <Form.Message match='typeMismatch'>Please enter a valid email address.</Form.Message>
       </Form.Field>
       <Form.Submit asChild>
-        <button type='submit'>제출</button>
+        <button type='submit'>Submit</button>
       </Form.Submit>
     </Form.Root>
   )
@@ -271,11 +271,11 @@ function AntdFormDemo() {
         if (first) form.scrollToField(first.name)
       }}>
       <Form.Item
-        label='이메일'
+        label='Email'
         name='email'
         rules={[
-          { required: true, message: '이메일을 입력해주세요.' },
-          { type: 'email', message: '올바른 이메일 형식이 아닙니다.' }
+          { required: true, message: 'Please enter your email.' },
+          { type: 'email', message: 'Please enter a valid email address.' }
         ]}
         validateTrigger='onBlur'>
         <Input type='email' />
@@ -284,7 +284,7 @@ function AntdFormDemo() {
         <Button
           type='primary'
           htmlType='submit'>
-          제출
+          Submit
         </Button>
       </Form.Item>
     </Form>
@@ -321,7 +321,7 @@ export default function App() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!email.includes('@')) {
-      setError('올바른 이메일 형식을 입력해주세요.')
+      setError('Please enter a valid email address.')
       return
     }
     setError('')
@@ -332,7 +332,7 @@ export default function App() {
         required
         invalid={!!error}>
         <Field.Label>
-          이메일 <Field.RequiredIndicator />
+          Email <Field.RequiredIndicator />
         </Field.Label>
         <Input
           type='email'
@@ -344,7 +344,7 @@ export default function App() {
       <Button
         type='submit'
         mt={4}>
-        제출
+        Submit
       </Button>
     </form>
   )
@@ -379,12 +379,12 @@ const btnStyle = { marginTop: 12, padding: '8px 20px', borderRadius: 6, border: 
 export default function App() {
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
-      <TextField name='email' isRequired validate={(v) => (v.includes('@') ? null : '올바른 이메일 형식을 입력해주세요.')}>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>이메일</Label>
+      <TextField name='email' isRequired validate={(v) => (v.includes('@') ? null : 'Please enter a valid email address.')}>
+        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Email</Label>
         <Input type='email' style={inputStyle} />
         <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
       </TextField>
-      <Button type='submit' style={btnStyle}>제출</Button>
+      <Button type='submit' style={btnStyle}>Submit</Button>
     </Form>
   )
 }`

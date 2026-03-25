@@ -77,7 +77,7 @@ export const drawerPattern: Pattern = {
       <button
         ref={triggerRef}
         onClick={() => setIsOpen(true)}>
-        메뉴 열기
+        Open menu
       </button>
 
       {isOpen && (
@@ -92,17 +92,17 @@ export const drawerPattern: Pattern = {
                 triggerRef.current?.focus()
               }
             }}>
-            <h2 id={titleId}>메뉴</h2>
+            <h2 id={titleId}>Menu</h2>
             <nav>
-              <a href='/'>홈</a>
-              <a href='/about'>소개</a>
+              <a href='/'>Home</a>
+              <a href='/about'>About</a>
             </nav>
             <button
               onClick={() => {
                 setIsOpen(false)
                 triggerRef.current?.focus()
               }}>
-              닫기
+              Close
             </button>
           </div>
           <div
@@ -140,7 +140,7 @@ function MuiDrawerDemo() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>메뉴 열기</Button>
+      <Button onClick={() => setIsOpen(true)}>Open menu</Button>
       <Drawer
         open={open}
         onClose={() => setIsOpen(false)}
@@ -152,17 +152,17 @@ function MuiDrawerDemo() {
             <Typography
               id='drawer-title'
               variant='h6'>
-              메뉴
+              Menu
             </Typography>
             <IconButton
               onClick={() => setIsOpen(false)}
-              aria-label='드로어 닫기'>
+              aria-label='Close drawer'>
               <CloseIcon />
             </IconButton>
           </Box>
           <nav>
-            <a href='/'>홈</a>
-            <a href='/about'>소개</a>
+            <a href='/'>Home</a>
+            <a href='/about'>About</a>
           </nav>
         </Box>
       </Drawer>
@@ -194,16 +194,16 @@ function MuiDrawerDemo() {
         label: 'Ant Design Drawer',
         code: `import { Drawer, Button } from 'antd'
 <>
-  <Button onClick={() => setIsOpen(true)}>메뉴 열기</Button>
+  <Button onClick={() => setIsOpen(true)}>Open menu</Button>
   <Drawer
-    title='메뉴'
+    title='Menu'
     open={isOpen}
     onClose={() => setIsOpen(false)}
     placement='left'
-    closeIcon={<span aria-label='드로어 닫기'>×</span>}>
+    closeIcon={<span aria-label='Close drawer'>×</span>}>
     <nav>
-      <a href='/'>홈</a>
-      <a href='/about'>소개</a>
+      <a href='/'>Home</a>
+      <a href='/about'>About</a>
     </nav>
   </Drawer>
 </>`
@@ -232,7 +232,7 @@ function MuiDrawerDemo() {
         code: `import { Drawer, Button } from '@chakra-ui/react'
 <Drawer.Root>
   <Drawer.Trigger asChild>
-    <Button variant='outline'>메뉴 열기</Button>
+    <Button variant='outline'>Open menu</Button>
   </Drawer.Trigger>
   <Drawer.Backdrop />
   <Drawer.Positioner>
@@ -240,7 +240,7 @@ function MuiDrawerDemo() {
       <Drawer.CloseTrigger asChild>
         <Button
           variant='ghost'
-          aria-label='닫기'
+          aria-label='Close'
           position='absolute'
           top={2}
           right={2}>
@@ -248,15 +248,15 @@ function MuiDrawerDemo() {
         </Button>
       </Drawer.CloseTrigger>
       <Drawer.Header>
-        <Drawer.Title>내비게이션 메뉴</Drawer.Title>
+        <Drawer.Title>Navigation Menu</Drawer.Title>
       </Drawer.Header>
       <Drawer.Body>
-        <a href='/home'>홈</a>
-        <a href='/about'>소개</a>
+        <a href='/home'>Home</a>
+        <a href='/about'>About</a>
       </Drawer.Body>
       <Drawer.Footer>
         <Drawer.ActionTrigger asChild>
-          <Button variant='outline'>닫기</Button>
+          <Button variant='outline'>Close</Button>
         </Drawer.ActionTrigger>
       </Drawer.Footer>
     </Drawer.Content>

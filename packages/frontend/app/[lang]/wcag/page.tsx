@@ -30,15 +30,36 @@ const PRINCIPLES = {
   ]
 }
 
+const LEVEL_STYLES = {
+  A: {
+    color: 'text-emerald-700 dark:text-emerald-400',
+    bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+    border: 'border-emerald-200 dark:border-emerald-900/50',
+    badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-400',
+    icon: CheckCircle
+  },
+  AA: {
+    color: 'text-indigo-700 dark:text-indigo-400',
+    bg: 'bg-indigo-50 dark:bg-indigo-950/30',
+    border: 'border-indigo-200 dark:border-indigo-900/50',
+    badge: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-400',
+    icon: Info
+  },
+  AAA: {
+    color: 'text-amber-700 dark:text-amber-400',
+    bg: 'bg-amber-50 dark:bg-amber-950/30',
+    border: 'border-amber-200 dark:border-amber-900/50',
+    badge: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-400',
+    icon: AlertTriangle
+  }
+}
+
 const LEVELS = {
   ko: [
     {
       level: 'A',
       label: 'Level A',
-      color: 'text-emerald-700',
-      bg: 'bg-emerald-50',
-      border: 'border-emerald-200',
-      badge: 'bg-emerald-100 text-emerald-800',
+      ...LEVEL_STYLES.A,
       icon: CheckCircle,
       description: '최소 기준. 이 기준을 충족하지 못하면 일부 사용자가 콘텐츠에 전혀 접근할 수 없다.',
       principles: [
@@ -54,11 +75,7 @@ const LEVELS = {
     {
       level: 'AA',
       label: 'Level AA',
-      color: 'text-indigo-700',
-      bg: 'bg-indigo-50',
-      border: 'border-indigo-200',
-      badge: 'bg-indigo-100 text-indigo-800',
-      icon: Info,
+      ...LEVEL_STYLES.AA,
       description: '사실상의 표준. 대부분의 법규 및 기업 정책이 AA 준수를 요구한다. 이 프로젝트의 기준.',
       principles: [
         { id: '1.4.3', title: '명도 대비 (텍스트)', desc: '일반 텍스트 4.5:1, 큰 텍스트 3:1 이상' },
@@ -76,11 +93,7 @@ const LEVELS = {
     {
       level: 'AAA',
       label: 'Level AAA',
-      color: 'text-amber-700',
-      bg: 'bg-amber-50',
-      border: 'border-amber-200',
-      badge: 'bg-amber-100 text-amber-800',
-      icon: AlertTriangle,
+      ...LEVEL_STYLES.AAA,
       description: '최상위 기준. 모든 콘텐츠에 일괄 적용하기 어려우므로, 특정 상황에서 선택적으로 적용한다.',
       principles: [
         { id: '1.4.6', title: '명도 대비 (강화)', desc: '일반 텍스트 7:1, 큰 텍스트 4.5:1 이상' },
@@ -96,11 +109,7 @@ const LEVELS = {
     {
       level: 'A',
       label: 'Level A',
-      color: 'text-emerald-700',
-      bg: 'bg-emerald-50',
-      border: 'border-emerald-200',
-      badge: 'bg-emerald-100 text-emerald-800',
-      icon: CheckCircle,
+      ...LEVEL_STYLES.A,
       description: 'The minimum level. Failing to meet these criteria means some users cannot access content at all.',
       principles: [
         { id: '1.1.1', title: 'Non-text Content', desc: 'Provide alt text for all non-text content (images, icons).' },
@@ -115,11 +124,7 @@ const LEVELS = {
     {
       level: 'AA',
       label: 'Level AA',
-      color: 'text-indigo-700',
-      bg: 'bg-indigo-50',
-      border: 'border-indigo-200',
-      badge: 'bg-indigo-100 text-indigo-800',
-      icon: Info,
+      ...LEVEL_STYLES.AA,
       description: 'The de-facto standard. Most laws and corporate policies require AA conformance. This project targets AA.',
       principles: [
         { id: '1.4.3', title: 'Contrast (Minimum)', desc: 'Normal text 4.5:1, large text 3:1 minimum contrast ratio.' },
@@ -145,11 +150,7 @@ const LEVELS = {
     {
       level: 'AAA',
       label: 'Level AAA',
-      color: 'text-amber-700',
-      bg: 'bg-amber-50',
-      border: 'border-amber-200',
-      badge: 'bg-amber-100 text-amber-800',
-      icon: AlertTriangle,
+      ...LEVEL_STYLES.AAA,
       description: 'The highest level. Difficult to apply to all content universally — applied selectively in specific contexts.',
       principles: [
         { id: '1.4.6', title: 'Contrast (Enhanced)', desc: 'Normal text 7:1, large text 4.5:1 minimum contrast ratio.' },
@@ -176,30 +177,30 @@ export default async function WcagPage({ params }: { params: Promise<{ lang: Lan
   return (
     <div className='max-w-4xl mx-auto px-6 sm:px-10 py-10 sm:py-14'>
       <div className='mb-8'>
-        <h1 className='text-2xl font-bold text-navy mb-2'>{t.wcag.title}</h1>
-        <p className='text-mist-600 text-sm leading-relaxed'>{t.wcag.subtitle}</p>
+        <h1 className='text-2xl font-bold text-body mb-2'>{t.wcag.title}</h1>
+        <p className='text-soft text-sm leading-relaxed'>{t.wcag.subtitle}</p>
       </div>
 
       <section className='mb-10'>
-        <h2 className='text-sm font-semibold text-mist-600 uppercase tracking-wider mb-3'>{t.wcag.principles}</h2>
+        <h2 className='text-sm font-semibold text-soft uppercase tracking-wider mb-3'>{t.wcag.principles}</h2>
         <div className='grid grid-cols-2 gap-3'>
           {principles.map((p) => (
             <div
               key={p.id}
-              className='bg-white border border-mist-200 rounded-xl p-4'>
+              className='bg-surface border border-outline rounded-xl p-4'>
               <div className='flex items-center gap-2 mb-1'>
-                <span className='text-xs font-mono text-mist-400'>{p.id}</span>
-                <span className='font-semibold text-navy text-sm'>{p.name}</span>
-                {p.local && <span className='text-mist-400 text-sm'>· {p.local}</span>}
+                <span className='text-xs font-mono text-faint'>{p.id}</span>
+                <span className='font-semibold text-body text-sm'>{p.name}</span>
+                {p.local && <span className='text-faint text-sm'>· {p.local}</span>}
               </div>
-              <p className='text-xs text-mist-600 leading-relaxed'>{p.desc}</p>
+              <p className='text-xs text-soft leading-relaxed'>{p.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section className='space-y-6'>
-        <h2 className='text-sm font-semibold text-mist-600 uppercase tracking-wider'>{t.wcag.levels}</h2>
+        <h2 className='text-sm font-semibold text-soft uppercase tracking-wider'>{t.wcag.levels}</h2>
         {levels.map(({ level, label, color, bg, border, badge, icon: Icon, description, principles: criterions }) => (
           <div
             key={level}
@@ -213,26 +214,26 @@ export default async function WcagPage({ params }: { params: Promise<{ lang: Lan
                 <div className='flex items-center gap-2 mb-1'>
                   <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badge}`}>{label}</span>
                 </div>
-                <p className='text-sm text-mist-700 leading-relaxed'>{description}</p>
+                <p className='text-sm text-soft leading-relaxed'>{description}</p>
               </div>
             </div>
-            <div className='bg-white/70 border-t border-mist-200/60'>
+            <div className='bg-surface/70 border-t border-outline/60'>
               <table className='w-full text-sm'>
                 <thead>
-                  <tr className='border-b border-mist-200/60'>
-                    <th className='text-left px-5 py-2.5 text-xs font-semibold text-mist-500 w-24'>{t.wcag.colCriterion}</th>
-                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-mist-500 w-36'>{t.wcag.colTitle}</th>
-                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-mist-500'>{t.wcag.colRequirement}</th>
+                  <tr className='border-b border-outline/60'>
+                    <th className='text-left px-5 py-2.5 text-xs font-semibold text-faint w-24'>{t.wcag.colCriterion}</th>
+                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-faint w-36'>{t.wcag.colTitle}</th>
+                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-faint'>{t.wcag.colRequirement}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {criterions.map((item, i) => (
                     <tr
                       key={item.id}
-                      className={i < criterions.length - 1 ? 'border-b border-mist-100' : ''}>
-                      <td className='px-5 py-2.5 font-mono text-xs text-mist-400'>{item.id}</td>
-                      <td className='px-4 py-2.5 text-xs font-medium text-navy-700'>{item.title}</td>
-                      <td className='px-4 py-2.5 text-xs text-mist-600 leading-relaxed'>{item.desc}</td>
+                      className={i < criterions.length - 1 ? 'border-b border-divider' : ''}>
+                      <td className='px-5 py-2.5 font-mono text-xs text-faint'>{item.id}</td>
+                      <td className='px-4 py-2.5 text-xs font-medium text-body'>{item.title}</td>
+                      <td className='px-4 py-2.5 text-xs text-soft leading-relaxed'>{item.desc}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -242,13 +243,13 @@ export default async function WcagPage({ params }: { params: Promise<{ lang: Lan
         ))}
       </section>
 
-      <p className='mt-8 text-xs text-mist-400'>
+      <p className='mt-8 text-xs text-faint'>
         {t.wcag.fullSpec}:{' '}
         <a
           href='https://www.w3.org/TR/WCAG21/'
           target='_blank'
           rel='noreferrer'
-          className='underline hover:text-mist-700'>
+          className='underline hover:text-body'>
           W3C WCAG 2.1
         </a>
       </p>

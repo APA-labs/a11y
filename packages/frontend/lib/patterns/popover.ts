@@ -74,28 +74,28 @@ export const popoverPattern: Pattern = {
         aria-haspopup='dialog'
         aria-controls='popover-content'
         onClick={() => setIsOpen(!isOpen)}>
-        설정 열기
+        Open settings
       </button>
 
       {isOpen && (
         <div
           id='popover-content'
           role='dialog'
-          aria-label='설정'
+          aria-label='Settings'
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               setIsOpen(false)
               triggerRef.current?.focus()
             }
           }}>
-          <h3>설정</h3>
-          <button>알림 켜기</button>
+          <h3>Settings</h3>
+          <button>Enable notifications</button>
           <button
             onClick={() => {
               setIsOpen(false)
               triggerRef.current?.focus()
             }}>
-            닫기
+            Close
           </button>
         </div>
       )}
@@ -133,7 +133,7 @@ function MuiPopoverDemo() {
         aria-describedby={id}
         aria-expanded={open}
         onClick={(e) => setAnchorEl(e.currentTarget)}>
-        설정 열기
+        Open settings
       </Button>
       <Popover
         id={id}
@@ -141,7 +141,7 @@ function MuiPopoverDemo() {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-        <Typography sx={{ p: 2 }}>설정 내용</Typography>
+        <Typography sx={{ p: 2 }}>Settings content</Typography>
       </Popover>
     </>
   )
@@ -171,15 +171,15 @@ function MuiPopoverDemo() {
         code: `import * as Popover from '@radix-ui/react-popover'
 <Popover.Root>
   <Popover.Trigger asChild>
-    <button>설정 열기</button>
+    <button>Open settings</button>
   </Popover.Trigger>
   <Popover.Portal>
     <Popover.Content
       sideOffset={5}
-      aria-label='설정'>
-      <h3>설정</h3>
-      <button>알림 켜기</button>
-      <Popover.Close aria-label='닫기'>×</Popover.Close>
+      aria-label='Settings'>
+      <h3>Settings</h3>
+      <button>Enable notifications</button>
+      <Popover.Close aria-label='Close'>×</Popover.Close>
       <Popover.Arrow />
     </Popover.Content>
   </Popover.Portal>
@@ -213,22 +213,22 @@ function AntdPopoverDemo() {
 
   const content = (
     <div>
-      <p>설정 내용</p>
-      <Button onClick={() => setOpen(false)}>닫기</Button>
+      <p>Settings content</p>
+      <Button onClick={() => setOpen(false)}>Close</Button>
     </div>
   )
 
   return (
     <Popover
       content={content}
-      title='설정'
+      title='Settings'
       open={open}
       onOpenChange={setOpen}
       trigger='click'>
       <Button
         aria-expanded={open}
         aria-haspopup='dialog'>
-        설정 열기
+        Open settings
       </Button>
     </Popover>
   )
@@ -258,7 +258,7 @@ function AntdPopoverDemo() {
         code: `import { Popover, Button } from '@chakra-ui/react'
 <Popover.Root>
   <Popover.Trigger asChild>
-    <Button variant='outline'>설정 열기</Button>
+    <Button variant='outline'>Open settings</Button>
   </Popover.Trigger>
   <Popover.Positioner>
     <Popover.Content>
@@ -266,14 +266,14 @@ function AntdPopoverDemo() {
         <Popover.ArrowTip />
       </Popover.Arrow>
       <Popover.Body>
-        <Popover.Title>알림 설정</Popover.Title>
-        <p>알림 수신 방법을 설정하세요.</p>
+        <Popover.Title>Notification Settings</Popover.Title>
+        <p>Configure your notification preferences.</p>
       </Popover.Body>
       <Popover.CloseTrigger asChild>
         <Button
           variant='ghost'
           size='sm'
-          aria-label='닫기'>
+          aria-label='Close'>
           ✕
         </Button>
       </Popover.CloseTrigger>
@@ -301,11 +301,11 @@ const btnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d
 const popoverStyle = { background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none', maxWidth: 280 }
 
 <DialogTrigger>
-  <Button style={btnStyle}>설정 열기</Button>
+  <Button style={btnStyle}>Open settings</Button>
   <Popover style={popoverStyle}>
     <Dialog style={{ outline: 'none' }}>
-      <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 15, fontWeight: 600 }}>알림 설정</Heading>
-      <p style={{ margin: 0, fontSize: 13, color: '#4b5563' }}>알림 수신 방법을 설정하세요.</p>
+      <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 15, fontWeight: 600 }}>Notification Settings</Heading>
+      <p style={{ margin: 0, fontSize: 13, color: '#4b5563' }}>Configure your notification preferences.</p>
     </Dialog>
   </Popover>
 </DialogTrigger>`

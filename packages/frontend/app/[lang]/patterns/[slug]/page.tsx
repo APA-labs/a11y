@@ -35,22 +35,23 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
     <div className='max-w-4xl mx-auto px-6 sm:px-10 py-10 sm:py-14'>
       <Link
         href={`/${lang}`}
-        className='inline-flex items-center gap-1.5 text-sm text-mist-600 hover:text-navy transition-colors mb-8'>
+        className='inline-flex items-center gap-1.5 text-sm text-soft hover:text-navy transition-colors mb-8'>
         <ArrowLeft size={14} />
         {t.pattern.backToAll}
       </Link>
 
       <div className='mb-10'>
-        <h1 className='text-2xl font-bold text-navy mb-1.5'>{pattern.name}</h1>
-        <p className='text-mist-700 text-sm'>{pattern.description}</p>
+        <h1 className='text-2xl font-bold text-body mb-1.5'>{pattern.name}</h1>
+        <p className='text-soft text-sm'>{pattern.description}</p>
 
         <div className='mt-4'>
-          <p className='text-[11px] text-mist-500 mb-2'>{t.pattern.wcagHint}</p>
+          <p className='text-[11px] text-faint mb-2'>{t.pattern.wcagHint}</p>
           <div className='flex flex-wrap gap-2'>
             {pattern.wcagCriteria.map((criterion) => (
               <WcagBadge
                 key={criterion}
                 criterion={criterion}
+                lang={lang}
               />
             ))}
           </div>
@@ -59,15 +60,18 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
 
       <div className='space-y-12'>
         <div>
-          <h3 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>{t.pattern.codeExample}</h3>
-          <CodeBlock sample={pattern.baseline.codeSample} />
+          <h3 className='text-xs font-semibold text-soft uppercase tracking-wider mb-3'>{t.pattern.codeExample}</h3>
+          <CodeBlock
+            sample={pattern.baseline.codeSample}
+            lang={lang}
+          />
         </div>
 
         <section>
           <div className='flex items-center gap-3 mb-6'>
-            <span className='w-2.5 h-2.5 rounded-full bg-navy' />
-            <h2 className='font-semibold text-navy text-base'>{t.pattern.baseline}</h2>
-            <span className='text-xs px-2 py-0.5 rounded bg-pearl-200 text-mist-700'>{t.pattern.appliesTo}</span>
+            <span className='w-2.5 h-2.5 rounded-full bg-body' />
+            <h2 className='font-semibold text-body text-base'>{t.pattern.baseline}</h2>
+            <span className='text-xs px-2 py-0.5 rounded bg-inset text-soft'>{t.pattern.appliesTo}</span>
           </div>
 
           <ChecklistSection
@@ -78,9 +82,9 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
         </section>
 
         <div className='flex items-center gap-4'>
-          <div className='flex-1 h-px bg-mist-200' />
-          <span className='text-xs text-mist-500 font-medium uppercase tracking-wider'>{t.pattern.dsSectionDivider}</span>
-          <div className='flex-1 h-px bg-mist-200' />
+          <div className='flex-1 h-px bg-outline' />
+          <span className='text-xs text-faint font-medium uppercase tracking-wider'>{t.pattern.dsSectionDivider}</span>
+          <div className='flex-1 h-px bg-outline' />
         </div>
 
         <section>
@@ -90,8 +94,8 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
           />
         </section>
 
-        <section className='pt-6 border-t border-mist-200'>
-          <h2 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-4'>{t.pattern.references}</h2>
+        <section className='pt-6 border-t border-outline'>
+          <h2 className='text-xs font-semibold text-soft uppercase tracking-wider mb-4'>{t.pattern.references}</h2>
           <ul className='space-y-2'>
             {[
               { label: `WAI-ARIA APG — ${pattern.name}`, href: 'https://www.w3.org/WAI/ARIA/apg/patterns/' },
@@ -103,7 +107,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
                   href={ref.href}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='inline-flex items-center gap-1.5 text-sm text-violet-600 hover:text-violet-700 transition-colors'>
+                  className='inline-flex items-center gap-1.5 text-sm text-violet-600 hover:text-violet-700 transition-colors dark:text-violet-400 dark:hover:text-violet-300'>
                   {ref.label}
                   <ExternalLink size={12} />
                 </a>

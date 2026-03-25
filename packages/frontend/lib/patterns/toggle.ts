@@ -36,7 +36,7 @@ export const togglePattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `<label htmlFor="notifications">알림 설정</label>
+      code: `<label htmlFor="notifications">Notification settings</label>
 <button
   id="notifications"
   role="switch"
@@ -49,7 +49,7 @@ export const togglePattern: Pattern = {
     transition: 'background-color 0.2s', cursor: 'pointer'
   }}>
   <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
-    {isEnabled ? '켜짐' : '꺼짐'}
+    {isEnabled ? 'On' : 'Off'}
   </span>
   <span
     aria-hidden
@@ -91,10 +91,10 @@ export const togglePattern: Pattern = {
     <Switch
       checked={isEnabled}
       onChange={(e) => setIsEnabled(e.target.checked)}
-      inputProps={{ 'aria-label': '알림 설정' }}
+      inputProps={{ 'aria-label': 'Notification settings' }}
     />
   }
-  label='알림 설정'
+  label='Notification settings'
 />`
       },
       notes: [
@@ -129,7 +129,7 @@ export const togglePattern: Pattern = {
   <label
     htmlFor='notifications'
     style={{ fontSize: 14, fontWeight: 500 }}>
-    알림 설정
+    Notification settings
   </label>
   <Switch.Root
     id='notifications'
@@ -178,14 +178,14 @@ export const togglePattern: Pattern = {
         label: 'Ant Design Switch',
         code: `import { Switch } from 'antd'
 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-  <label htmlFor='notifications'>알림 설정</label>
+  <label htmlFor='notifications'>Notification settings</label>
   <Switch
     id='notifications'
     checked={isEnabled}
     onChange={setIsEnabled}
-    checkedChildren='켜짐'
-    unCheckedChildren='꺼짐'
-    aria-label='알림 설정'
+    checkedChildren='On'
+    unCheckedChildren='Off'
+    aria-label='Notification settings'
   />
 </div>`
       },
@@ -218,7 +218,7 @@ export const togglePattern: Pattern = {
   <Switch.Control>
     <Switch.Thumb />
   </Switch.Control>
-  <Switch.Label>알림 설정</Switch.Label>
+  <Switch.Label>Notification settings</Switch.Label>
 </Switch.Root>`
       },
       notes: [
@@ -244,7 +244,7 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
 <Switch isSelected={isEnabled} onChange={setIsEnabled} style={switchStyle}>
   {({ isSelected }) => (<>
     <div style={trackStyle(isSelected)}><div style={thumbStyle(isSelected)} /></div>
-    알림 설정
+    Notification settings
   </>)}
 </Switch>`
       },

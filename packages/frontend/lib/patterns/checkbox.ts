@@ -69,7 +69,7 @@ export const checkboxPattern: Pattern = {
       label: 'Baseline (React)',
       code: `import { useState } from 'react'
 
-export function Checkbox({ id = 'cb-example', label = '레이블', indeterminate = false }: { id?: string; label?: string; indeterminate?: boolean }) {
+export function Checkbox({ id = 'cb-example', label = 'Label', indeterminate = false }: { id?: string; label?: string; indeterminate?: boolean }) {
   const [checked, setChecked] = useState(false)
   return (
     <label htmlFor={id}>
@@ -112,7 +112,7 @@ export function Checkbox({ id = 'cb-example', label = '레이블', indeterminate
         label: 'MUI Checkbox',
         code: `import { Checkbox, FormControlLabel, FormGroup, FormLabel } from '@mui/material'
 <FormGroup>
-  <FormLabel component='legend'>알림 설정</FormLabel>
+  <FormLabel component='legend'>Notification Settings</FormLabel>
   <FormControlLabel
     control={
       <Checkbox
@@ -120,7 +120,7 @@ export function Checkbox({ id = 'cb-example', label = '레이블', indeterminate
         onChange={(e) => setEmailChecked(e.target.checked)}
       />
     }
-    label='이메일 알림'
+    label='Email notifications'
   />
   <FormControlLabel
     control={
@@ -129,7 +129,7 @@ export function Checkbox({ id = 'cb-example', label = '레이블', indeterminate
         onChange={(e) => setSmsChecked(e.target.checked)}
       />
     }
-    label='SMS 알림'
+    label='SMS notifications'
   />
 </FormGroup>`
       },
@@ -191,14 +191,14 @@ export function RadixCheckbox({ id, label }) {
         code: `import { Checkbox } from 'antd'
 
 const OPTIONS = [
-{ label: '이메일', value: 'email' },
+{ label: 'Email', value: 'email' },
 { label: 'SMS', value: 'sms' },
 ]
 
 <Checkbox.Group
 options={OPTIONS}
 onChange={(values) => console.log(values)}
-aria-label="알림 수신 방법"
+aria-label="Notification method"
 />`
       },
       notes: ['Ant Design Checkbox는 네이티브 input을 사용해 접근성을 유지합니다.', 'indeterminate prop으로 중간 선택 상태를 표현할 수 있습니다.']
@@ -230,7 +230,7 @@ function CheckboxDemo() {
       <Checkbox.Control>
         <Checkbox.Indicator />
       </Checkbox.Control>
-      <Checkbox.Label>이용약관에 동의합니다</Checkbox.Label>
+      <Checkbox.Label>I agree to the terms of service</Checkbox.Label>
     </Checkbox.Root>
   )
 }`
@@ -257,7 +257,7 @@ function CheckboxDemo() {
     <Checkbox
       isSelected={isSelected}
       onChange={setIsSelected}>
-      이용약관에 동의합니다
+      I agree to the terms of service
     </Checkbox>
   )
 }`

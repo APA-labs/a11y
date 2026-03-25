@@ -32,9 +32,9 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
 
   const SectionLabel = ({ children }: { children: string }) =>
     collapsed ? (
-      <div className='mx-3 my-2 border-t border-mist-200' />
+      <div className='mx-3 my-2 border-t border-outline' />
     ) : (
-      <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-mist-400'>{children}</p>
+      <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-faint'>{children}</p>
     )
 
   const navItem = (href: string, icon: React.ReactNode, label: string) => {
@@ -42,7 +42,7 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
     const linkClass = `
           flex items-center py-1.5 rounded-md text-sm transition-colors
           ${collapsed ? 'justify-center px-0' : 'gap-2.5 px-2'}
-          ${isActive ? 'bg-violet-50 text-violet-700' : 'text-mist-700 hover:bg-mist-100 hover:text-navy'}
+          ${isActive ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-300' : 'text-soft hover:bg-inset hover:text-body'}
         `
     const link = (
       <Link
@@ -50,7 +50,7 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
         aria-current={isActive ? 'page' : undefined}
         aria-label={collapsed ? label : undefined}
         className={linkClass}>
-        <span className={`shrink-0 ${isActive ? 'text-violet-600' : 'text-mist-500'}`}>{icon}</span>
+        <span className={`shrink-0 ${isActive ? 'text-violet-600 dark:text-violet-300' : 'text-faint'}`}>{icon}</span>
         <span
           aria-hidden={collapsed}
           className={`whitespace-nowrap overflow-hidden transition-opacity duration-150 ${collapsed ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}>
@@ -70,10 +70,10 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
           <Tooltip.Content
             side='right'
             sideOffset={8}
-            className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-mist-200 bg-white px-2.5 py-1.5 text-xs font-medium leading-snug text-navy shadow-md select-none'>
+            className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-outline bg-float px-2.5 py-1.5 text-xs font-medium leading-snug text-body shadow-md select-none'>
             {label}
             <Tooltip.Arrow
-              className='fill-white'
+              className='fill-float'
               width={10}
               height={5}
             />
@@ -87,14 +87,14 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
     <Tooltip.Provider delayDuration={200}>
       <aside
         style={{ width: collapsed ? 52 : 240 }}
-        className='hidden lg:flex flex-col h-full bg-white shrink-0 overflow-y-auto overflow-x-hidden scrollbar-thin transition-[width] duration-200 ease-in-out border-r border-mist-200'>
+        className='hidden lg:flex flex-col h-full bg-surface shrink-0 overflow-y-auto overflow-x-hidden scrollbar-thin transition-[width] duration-200 ease-in-out border-r border-outline'>
         <div className={`flex ${collapsed ? 'justify-center' : 'justify-end'} px-2 pt-3 pb-1`}>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
               <button
                 type='button'
                 onClick={toggle}
-                className='p-1.5 rounded-md text-mist-400 hover:text-navy hover:bg-mist-100 transition-colors'
+                className='p-1.5 rounded-md text-faint hover:text-navy hover:bg-mist-100 dark:hover:bg-[#1E2E40] dark:hover:text-white transition-colors'
                 aria-label={collapsed ? t.nav.sidebarExpand : t.nav.sidebarCollapse}>
                 {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
               </button>
@@ -103,10 +103,10 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
               <Tooltip.Content
                 side='right'
                 sideOffset={8}
-                className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-mist-200 bg-white px-2.5 py-1.5 text-xs font-medium leading-snug text-navy shadow-md select-none'>
+                className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-outline bg-float px-2.5 py-1.5 text-xs font-medium leading-snug text-body shadow-md select-none'>
                 {collapsed ? t.nav.sidebarExpand : t.nav.sidebarCollapse}
                 <Tooltip.Arrow
-                  className='fill-white'
+                  className='fill-float'
                   width={10}
                   height={5}
                 />

@@ -132,6 +132,59 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Snackbar + Alert combination',
+            description: 'When using Snackbar, set autoHideDuration to at least 5000ms to give users enough time to read the message.'
+          },
+          {
+            title: 'Set minimum autoHideDuration',
+            description: 'Ensure autoHideDuration is at least 5000ms so users have sufficient time to read the alert.'
+          }
+        ],
+        notes: [
+          'MUI Alert used standalone automatically receives role="alert".',
+          'Snackbar onClose responds to Escape key and outside clicks.',
+          'The severity prop (success/info/warning/error) automatically applies icons and colors.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          { title: 'Hotkey hint in Toast.Viewport', description: 'Inform users of the keyboard shortcut (F8) to move focus to the toast viewport.' },
+          { title: 'Set urgency with type prop', description: 'Use type="foreground" for urgent alerts and type="background" for non-critical ones.' }
+        ],
+        notes: [
+          'Radix Toast supports moving focus to the viewport with the F8 shortcut.',
+          'swipeDirection controls the swipe gesture direction.',
+          'aria-live requirements are handled internally.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Accessibility limitations of message/notification',
+            description: 'The message and notification APIs have limited screen reader support; use Alert component for critical messages.'
+          }
+        ],
+        notes: [
+          'The showIcon prop automatically displays an icon matching the severity type.',
+          'Setting duration={0} in the notification API keeps it until manually closed.',
+          'The closable prop automatically adds a close button.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          { title: 'Set role per status', description: 'Use role="alert" for critical statuses and role="status" for informational ones.' }
+        ],
+        notes: [
+          'The status prop on Chakra Alert.Root determines visual styles and aria attributes.',
+          'For dynamically added alerts, explicitly set role="alert".',
+          'Alert.Indicator is automatically given aria-hidden.'
+        ]
+      }
     }
   },
 
@@ -171,6 +224,55 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Specify aria-label directly',
+            description: 'MUI Breadcrumbs does not add an accessible name by default. Add aria-label="Breadcrumb" to the component.'
+          }
+        ],
+        notes: [
+          'MUI Breadcrumbs automatically renders separators with aria-hidden applied.',
+          'The separator prop allows customizing the separator.',
+          'Render the last item as Typography (not a link) to indicate the current page.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Add aria-current with itemRender',
+            description: 'Use the itemRender prop to add aria-current="page" to the last breadcrumb item.'
+          }
+        ],
+        notes: [
+          'You must manually add the aria-label attribute to Ant Design Breadcrumb.',
+          'Use the itemRender prop to add aria-current="page" to the last item.',
+          'The separator prop can change the separator; the default separator has aria-hidden applied.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Show current position with isCurrentPage',
+            description: 'The isCurrentPage prop automatically sets aria-current="page" on the current breadcrumb item.'
+          }
+        ],
+        notes: [
+          'Chakra Breadcrumb automatically generates nav and ol markup.',
+          'The isCurrentPage prop automatically sets aria-current="page".',
+          'Customize the separator with the separator prop.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Spectrum Breadcrumbs automatically treats the last Item as the current page (aria-current="page").',
+          'The key prop is used as the unique identifier for each item.',
+          'Folding (multiline) behavior is supported automatically.'
+        ]
+      }
     }
   },
 
@@ -193,6 +295,77 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         avoid: [
           { title: 'Do not implement buttons with div/span', description: '<div onClick> has no keyboard accessibility. Use <button> instead.' },
           { title: 'Do not distinguish state with color alone', description: 'Do not rely solely on color to indicate active/inactive state.' }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Ripple effect accessibility',
+            description: 'The ripple effect is purely visual and does not affect accessibility. Use disableRipple to remove it if needed.'
+          },
+          {
+            title: 'Verify contrast per variant',
+            description: 'Check that each variant (contained, outlined, text) meets the 4.5:1 contrast ratio requirement.'
+          }
+        ],
+        notes: [
+          'MUI Button renders a <button> element by default.',
+          'When changing to <a> via the component prop, explicitly manage href and role.',
+          'The disableRipple prop can be used without affecting accessibility.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Be careful with asChild pattern',
+            description: 'When using asChild, ensure the child element is a valid interactive element (button or a).'
+          },
+          { title: 'Verify Slot accessibility', description: 'With asChild, confirm that the child element correctly inherits all ARIA attributes.' }
+        ],
+        notes: [
+          'Radix is a headless component — you control the styles directly.',
+          'Use focus-visible:ring classes to show focus only for keyboard navigation.',
+          "@radix-ui/react-slot's Slot forwards props to the child element."
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Supplement aria on danger button',
+            description: 'For danger buttons, communicate the destructive nature via aria-label or visible text, not just color.'
+          },
+          {
+            title: 'Hide loading spinner',
+            description: 'When loading={true}, ensure the spinner is aria-hidden so screen readers do not announce it.'
+          }
+        ],
+        notes: [
+          'Ant Design Button uses a <button> element internally.',
+          'Use the htmlType prop to specify submit/reset/button type.',
+          'Consider layout context when using the block prop for full-width buttons.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Provide loadingText when isLoading',
+            description: 'Set loadingText so screen readers announce the loading state instead of staying silent.'
+          }
+        ],
+        notes: [
+          'Chakra Button uses a <button> element internally.',
+          'When isLoading is true, the button is automatically disabled.',
+          'Setting loadingText displays text alongside the spinner.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Spectrum Button uses onPress instead of onClick.',
+          'Use variant to specify cta, primary, secondary, or negative.',
+          'Keyboard, mouse, and touch interactions are all handled automatically.'
         ]
       }
     }
@@ -224,6 +397,60 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Connect label with FormControlLabel',
+            description: 'Always wrap Checkbox with FormControlLabel to properly associate the label.'
+          },
+          { title: 'Handle indeterminate state', description: 'Use the indeterminate prop to represent a partially-selected parent checkbox.' }
+        ],
+        notes: [
+          'MUI Checkbox uses a native input, so basic accessibility is guaranteed.',
+          'When changing the color prop, verify the 4.5:1 contrast ratio.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Handle Checkbox.Indicator visibility',
+            description: 'Checkbox.Indicator is shown only when checked. Ensure focus styles are visible in both checked and unchecked states.'
+          }
+        ],
+        notes: [
+          'Radix Checkbox automatically handles role="checkbox" and aria-checked.',
+          'The value from onCheckedChange is boolean | "indeterminate" — handle the type accordingly.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Group with Checkbox.Group', description: 'Use Checkbox.Group to group related checkboxes and provide a shared label.' }
+        ],
+        notes: [
+          'Ant Design Checkbox uses a native input to maintain accessibility.',
+          'The indeterminate prop can represent a partial selection state.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          { title: 'Pass error state with isInvalid', description: 'Use isInvalid to communicate validation errors to assistive technologies.' }
+        ],
+        notes: [
+          'Chakra Checkbox uses <input type="checkbox"> internally.',
+          'The isIndeterminate prop represents a partial selection state.',
+          'Use CheckboxGroup to manage multiple checkboxes together.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Spectrum Checkbox automatically handles keyboard, mouse, and touch accessibility.',
+          'The isIndeterminate prop supports partial selection state.',
+          'Use validationState="invalid" to represent an error state.'
+        ]
+      }
     }
   },
 
@@ -249,6 +476,50 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             description: 'The popup must also be openable via keyboard (e.g., arrow key or Enter).'
           },
           { title: 'Do not trap focus in the dropdown', description: 'Focus must remain on the combobox input while navigating the dropdown list.' }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          { title: 'Connect Autocomplete label', description: 'Always pass the renderInput prop with a TextField that includes a label.' }
+        ],
+        notes: [
+          'MUI Autocomplete automatically handles the combobox role and aria-expanded.',
+          'When using freeSolo, inform screen reader users how their typed value will be handled.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Configure showSearch and filterOption',
+            description: 'When enabling search, set filterOption or use the default filtering to ensure options update correctly.'
+          }
+        ],
+        notes: [
+          'Ant Design AutoComplete automatically handles accessibility attributes.',
+          'Set notFoundContent to inform users when no results are found.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Provide aria-label on ClearTrigger and Trigger',
+            description: 'Add aria-label="Clear" and aria-label="Toggle" to the clear and dropdown trigger buttons.'
+          }
+        ],
+        notes: [
+          'Chakra Combobox.Root fully implements the WAI-ARIA Combobox pattern.',
+          'Manage item collections with useListCollection.',
+          'Combobox.Empty handles the empty search state accessibly.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Aria ComboBox automatically handles autocomplete, keyboard navigation, and ARIA.',
+          'Setting the label prop automatically connects it via aria-label.',
+          'The allowsCustomValue prop controls whether free-form input is allowed.'
         ]
       }
     }
@@ -279,6 +550,54 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             title: 'Do not show only numbers in date cells',
             description: 'Day cells must have accessible names that include full date context (e.g., "March 1, 2025").'
           }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Use @mui/x-date-pickers',
+            description: 'Use @mui/x-date-pickers instead of a custom date input for built-in accessibility support.'
+          }
+        ],
+        notes: [
+          'Setting adapterLocale on LocalizationProvider displays the calendar UI in the correct locale.',
+          '@mui/x-date-pickers automatically handles ARIA for keyboard navigation and screen readers.',
+          'Customize input field accessibility attributes via slotProps.textField.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Set locale for language', description: 'Use ConfigProvider locale to display the calendar in the correct language.' }
+        ],
+        notes: [
+          'Use ConfigProvider locale={koKR} or locale={enUS} to change the calendar UI language.',
+          'Ant Design DatePicker supports keyboard navigation but screen reader support may be incomplete.',
+          'For important date inputs, also provide a direct text input option.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Add aria-label to prev/next month buttons',
+            description: 'Ensure the previous and next month navigation buttons have descriptive aria-labels.'
+          }
+        ],
+        notes: [
+          'DatePicker.Header automatically renders prev/next month buttons and the current month/year text.',
+          'Include day, month, and year Views to enable full date selection.',
+          'Use the @internationalized/date package for date types. Wrap in Portal to avoid z-index issues.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          { title: 'aria-label prop is required', description: 'React Aria DatePicker requires an aria-label or Label component to be accessible.' }
+        ],
+        notes: [
+          'Wrap Popover around Dialog to correctly construct the accessibility tree.',
+          'Wrapping DateInput and Button in Group makes them recognized as a single input field.',
+          'Using the Label component automatically handles all child aria connections.'
         ]
       }
     }
@@ -312,6 +631,43 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Use Collapse component',
+            description: 'Use MUI Collapse for expand/collapse animations. Add unmountOnExit to remove content from the DOM when closed.'
+          }
+        ],
+        notes: [
+          'Add unmountOnExit to MUI Collapse to fully remove content from the DOM when in={false}.',
+          'When using IconButton instead of Button, always add an aria-label.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          { title: 'Use Collapsible.Root', description: 'Use Radix Collapsible for a disclosure pattern with built-in accessibility.' }
+        ],
+        notes: ['Radix Collapsible.Trigger automatically sets aria-expanded.', 'Collapsible.Content is set to display:none when closed.']
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Verify Collapse panel accessibility', description: 'Check that aria-expanded is correctly applied to the panel trigger.' }
+        ],
+        notes: [
+          'Ant Design Collapse manages aria-expanded internally.',
+          'Control whether closed panel DOM is removed via the destroyInactivePanel prop.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Aria Disclosure fully implements the WAI-ARIA Disclosure pattern.',
+          'You must set slot="trigger" on the Button inside DisclosureHeader.',
+          'Set the initial open state with the defaultExpanded prop.'
+        ]
+      }
     }
   },
 
@@ -339,6 +695,42 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         avoid: [
           { title: 'Do not omit the focus trap', description: 'Without a focus trap, keyboard users can accidentally navigate behind the drawer.' },
           { title: 'Do not hide the visual close button', description: 'The close button must be visible so all users can easily close the drawer.' }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Use variant="temporary" for modal behavior',
+            description: 'Use variant="temporary" so the Drawer behaves as a modal with focus trapping and backdrop.'
+          }
+        ],
+        notes: [
+          'MUI Drawer variant="temporary" is Modal-based and automatically handles focus trapping and Escape to close.',
+          'Connect aria-labelledby to the drawer title ID.',
+          'Set keepMounted={false} to remove the drawer from the DOM when closed.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Verify close button aria-label',
+            description: 'Ensure the default close button has a descriptive aria-label, or customize it via closeIcon.'
+          }
+        ],
+        notes: [
+          'Ant Design Drawer automatically closes on Escape key.',
+          'Set the placement prop to left/right/top/bottom.',
+          'Customize the close button via closeIcon to add an aria-label.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [{ title: 'CloseTrigger aria-label', description: 'Add aria-label="Close drawer" to the CloseTrigger button.' }],
+        notes: [
+          'Chakra Drawer.Root automatically handles focus trapping and aria-modal.',
+          'Specify the direction with the placement prop (bottom, left, right, top).',
+          'Always add an aria-label to the close button.'
         ]
       }
     }
@@ -376,6 +768,70 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             description: 'Triggering errors before users finish typing causes frustration. Validate on blur or submit.'
           },
           { title: 'Do not use placeholder as a label', description: 'Placeholder text disappears on focus, causing users to lose context.' }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Use helperText and error props together',
+            description: 'Set error={true} on TextField and provide the error message via helperText for linked error announcements.'
+          }
+        ],
+        notes: [
+          'The error prop on MUI TextField automatically sets aria-invalid.',
+          'helperText renders as FormHelperText and is automatically connected via aria-describedby.',
+          'The required prop automatically adds an asterisk to the label and sets aria-required.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          { title: 'Use Form.Message for error linking', description: 'Radix Form.Message automatically connects to the input via aria-describedby.' }
+        ],
+        notes: [
+          'Radix Form follows the "inline errors" pattern — error messages and inputs are automatically connected via aria-describedby.',
+          'On submission failure, focus automatically moves to the first invalid field.',
+          'The match prop supports HTML5 built-in validation types.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Set validateTrigger to onBlur',
+            description: 'Triggering validation on blur reduces interruptions during input compared to onChange.'
+          }
+        ],
+        notes: [
+          'Ant Design Form automatically sets aria-invalid and aria-describedby.',
+          'In onFinishFailed, scroll/focus to the first error field.',
+          'Using layout="vertical" displays labels above inputs for better visual clarity.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Add role="alert" to Field.ErrorText',
+            description: 'Add role="alert" to Field.ErrorText so screen readers immediately announce the error.'
+          }
+        ],
+        notes: [
+          'The invalid prop on Chakra Field.Root automatically sets aria-invalid on the Input.',
+          'Add role="alert" to Field.ErrorText to immediately notify screen readers.',
+          'Field.RequiredIndicator sets the visual required indicator along with aria-required.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          {
+            title: 'Configure Form validationBehavior',
+            description: 'Set validationBehavior="aria" to use ARIA-based validation instead of native HTML5 validation.'
+          }
+        ],
+        notes: [
+          'react-aria-components Form integrates HTML5 validation with ARIA.',
+          'Combine Label, Input, and FieldError as compound components inside TextField.',
+          'Add custom validation with the validate function; FieldError automatically displays error messages.'
         ]
       }
     }
@@ -417,6 +873,47 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             title: 'Do not omit alt text on image links',
             description: 'An image inside a link must have descriptive alt text; an empty alt="" will leave the link without an accessible name.'
           }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          { title: 'Use MUI Link component', description: 'Use MUI Link instead of a plain <a> tag to ensure consistent styles and accessibility.' }
+        ],
+        notes: [
+          'MUI Link can integrate with routers like Next.js Link via the component prop.',
+          'Verify contrast ratio when changing the color prop.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Use Typography.Link', description: 'Use Typography.Link for consistent accessible link styling in Ant Design.' }
+        ],
+        notes: [
+          'Ant Design Typography.Link without href acts like a button when only onClick is provided.',
+          'Check color contrast when using the disabled prop.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Announce new tab with isExternal',
+            description: 'Using isExternal adds target="_blank" — also provide a visual indicator and screen-reader text for new tab behavior.'
+          }
+        ],
+        notes: [
+          'Chakra Link renders an <a> element by default.',
+          'Use the isExternal prop to handle opening in a new tab.',
+          'Use as={NextLink} prop when integrating with Next.js.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Spectrum Link automatically handles keyboard accessibility and focus management.',
+          'Apply secondary styles with variant="secondary".',
+          'When opening in a new tab, add visual guidance alongside target="_blank".'
         ]
       }
     }
@@ -552,6 +1049,64 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'AppBar + Drawer combination',
+            description: 'For mobile navigation, combine AppBar with a Drawer and ensure focus management between the two.'
+          }
+        ],
+        notes: [
+          'Use component="header" on AppBar for semantic markup.',
+          'MUI Menu automatically handles focus management and keyboard navigation.',
+          'You must manually add aria-current to the current page link.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Use NavigationMenu.Indicator',
+            description: 'NavigationMenu.Indicator visually shows the active trigger and enhances orientation for keyboard users.'
+          }
+        ],
+        notes: [
+          'Radix NavigationMenu follows the WAI-ARIA disclosure navigation pattern.',
+          'Space/Enter activates triggers, ArrowDown enters content, Escape closes — all built in.',
+          'NavigationMenu.Viewport handles animations and focus management.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Add aria-label directly', description: 'Wrap Ant Design Menu in a <nav> element and add aria-label="Main navigation".' }
+        ],
+        notes: [
+          'Wrap Ant Design Menu in a <nav> element and add aria-label.',
+          'mode="horizontal" suits top navigation; mode="inline" suits sidebars.',
+          'Use selectedKeys to indicate the currently active item.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          { title: 'Wrap in nav element', description: 'When using Chakra Menu as navigation, wrap it in a <nav> landmark with aria-label.' }
+        ],
+        notes: [
+          'Chakra Menu implements the dropdown menu pattern. Wrap in <nav> for navigation use.',
+          'Menu.Trigger automatically manages aria-haspopup="menu" and aria-expanded.',
+          'Arrow key navigation is automatically applied to Menu.Item.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          { title: 'Wrap in nav element', description: 'When using React Aria Menu as navigation, wrap it in <nav aria-label="...">.' }
+        ],
+        notes: [
+          'React Aria Menu/MenuTrigger fully implements the WAI-ARIA Menu pattern.',
+          'For navigation use, wrap in <nav aria-label>.',
+          'Handle menu item selection with the onAction callback.'
+        ]
+      }
     }
   },
 
@@ -584,6 +1139,47 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             title: 'Do not remove focus from disabled buttons entirely',
             description: 'Disabled navigation buttons should remain in the tab order with aria-disabled rather than being removed.'
           }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Customize aria-label with getItemAriaLabel',
+            description: 'Use getItemAriaLabel to provide descriptive labels for all pagination buttons (e.g., "Go to page 3").'
+          }
+        ],
+        notes: [
+          'MUI Pagination automatically uses a <nav role="navigation"> landmark.',
+          'aria-current is automatically applied to the current page.',
+          'Use getItemAriaLabel to customize all button aria-labels at once.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Set locale for aria-labels',
+            description: 'Configure the locale in ConfigProvider to get localized aria-labels for pagination controls.'
+          }
+        ],
+        notes: [
+          'Setting locale in ConfigProvider updates aria-labels to the selected language.',
+          'Ant Design Pagination automatically uses a <ul> list structure.',
+          'aria-current is automatically applied to the current page.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Add aria-label to page buttons',
+            description: 'Add aria-label="Page 1", aria-label="Page 2", etc. to each page button for screen reader clarity.'
+          }
+        ],
+        notes: [
+          'Chakra Pagination.Root automatically manages page state.',
+          'Calculate total pages using count and pageSize.',
+          'Add aria-label to each page button to improve accessibility.'
         ]
       }
     }
@@ -621,6 +1217,63 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Connect trigger with Popover anchorEl',
+            description: 'Use anchorEl to associate the popover with its trigger element for proper ARIA relationships.'
+          }
+        ],
+        notes: [
+          'MUI Popover automatically closes on Escape key and outside clicks.',
+          'Connect the trigger and popover via aria-describedby.',
+          'Focus management inside the popover must be implemented manually.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Accessibility handled automatically',
+            description: 'Radix Popover automatically manages aria-expanded, focus trapping, and Escape to close.'
+          }
+        ],
+        notes: [
+          'Radix Popover automatically handles Space/Enter to open, Escape to close, and focus return to trigger.',
+          'aria-expanded is automatically applied to Popover.Trigger.',
+          'Wrap in Popover.Portal to render at the DOM root without z-index issues.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Add aria-expanded directly to trigger',
+            description: 'Ant Design Popover does not automatically manage aria-expanded — add it manually to the trigger.'
+          }
+        ],
+        notes: [
+          'With trigger="click", the popover can also be opened with Enter/Space.',
+          'Manually add aria-expanded and aria-haspopup to the trigger button.',
+          'Ant Design Popover does not close on Escape — include a close button inside the content.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [{ title: 'CloseTrigger aria-label', description: 'Add aria-label="Close popover" to Popover.CloseTrigger.' }],
+        notes: [
+          'Chakra Popover.Root automatically handles focus trapping and aria attributes.',
+          'Add aria-label to Popover.CloseTrigger.',
+          'Control outside click closing with the closeOnInteractOutside prop.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Aria Popover is used with DialogTrigger.',
+          'Setting slot="title" on a Heading inside Dialog automatically connects aria-labelledby.',
+          'Popover automatically handles focus management and aria attributes.'
+        ]
+      }
     }
   },
 
@@ -656,6 +1309,57 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ]
       }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Connect RadioGroup with FormLabel',
+            description: 'Pair RadioGroup with FormControl and FormLabel to provide a group label readable by screen readers.'
+          }
+        ],
+        notes: [
+          'MUI RadioGroup automatically handles roving tabindex and arrow key navigation.',
+          'The row prop enables horizontal layout — up/down arrow keys still work.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Add aria-label to RadioGroup.Root',
+            description: 'Add aria-label or aria-labelledby to RadioGroup.Root to provide a group label.'
+          }
+        ],
+        notes: [
+          'Radix RadioGroup automatically handles role="radiogroup", roving tabindex, and arrow key navigation.',
+          'RadioGroup.Indicator only provides the visual selected state and is aria-hidden.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Provide label for Radio.Group', description: 'Wrap Radio.Group in a Form.Item with a label, or add aria-label directly.' }
+        ],
+        notes: [
+          'Ant Design Radio.Group uses native input to maintain basic accessibility.',
+          'When using optionType="button", always provide a label for button-style radios.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [{ title: 'Group with RadioGroup', description: 'Use RadioGroup to wrap related Radio items and manage shared state.' }],
+        notes: [
+          'Chakra Radio uses <input type="radio"> internally.',
+          "Use RadioGroup's onChange to control the selected value.",
+          'Use isDisabled to disable individual items or the entire group.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Spectrum RadioGroup sets the group label via the label prop.',
+          'Arrow key navigation and focus management are handled automatically.',
+          'isDisabled and isRequired props are supported.'
+        ]
+      }
     }
   },
 
@@ -687,6 +1391,60 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             title: 'Do not auto-select on arrow key press',
             description: 'Navigating through options with arrow keys should not automatically confirm the selection.'
           }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'FormControl + InputLabel combination is required',
+            description: "Always wrap MUI Select in FormControl with InputLabel. The labelId must match the Select's labelId prop."
+          }
+        ],
+        notes: [
+          'The labelId on Select and the id on InputLabel must match for screen readers to read the label.',
+          "Using the native prop renders the browser's default <select>.",
+          'Disabled options automatically receive aria-disabled.'
+        ]
+      },
+      radix: {
+        additionalChecks: [
+          { title: 'Use with Label component', description: 'Connect a Label component to Select.Trigger via htmlFor and id for proper labeling.' }
+        ],
+        notes: [
+          'Radix Select follows the W3C ListBox and Select-Only Combobox patterns.',
+          'Adding the disabled prop to Select.Item automatically applies aria-disabled.',
+          'Adjust positioning with position="popper" on Select.Content.'
+        ]
+      },
+      antd: {
+        additionalChecks: [{ title: 'Connect label', description: 'Use Form.Item to automatically connect label and select via htmlFor.' }],
+        notes: [
+          'Using Form.Item automatically connects label and input via htmlFor.',
+          'Adding showSearch switches to the combobox pattern.',
+          'Setting virtual={false} improves screen reader compatibility by disabling virtual scrolling.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'HiddenSelect for form accessibility',
+            description: 'Chakra Select.HiddenSelect is a native element needed for form submission — do not remove it.'
+          }
+        ],
+        notes: [
+          'Chakra Select.Root meets WAI-ARIA requirements with the listbox pattern.',
+          'Select.HiddenSelect is the native element for form submission.',
+          'Manage item collections with useListCollection.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'react-aria-components Select combines Label, Button, SelectValue, Popover, and ListBox as compound components.',
+          'SelectValue automatically displays the currently selected value.',
+          'Use selectedKey/onSelectionChange for controlled usage.'
         ]
       }
     }
@@ -1003,6 +1761,47 @@ export const patternTranslationsEn: Record<string, PatternT> = {
             title: 'Do not rely on title attribute alone',
             description: 'The HTML title attribute is not reliably announced by screen readers. Use role="tooltip" with aria-describedby.'
           }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          { title: 'Set enterDelay', description: 'Set enterDelay to at least 300ms so the tooltip does not appear on accidental hover.' }
+        ],
+        notes: ['MUI Tooltip automatically handles role="tooltip" and aria-describedby.', 'When using custom children, implement forwardRef.']
+      },
+      radix: {
+        additionalChecks: [
+          { title: 'Place TooltipProvider at the top level', description: 'Wrap your app with TooltipProvider to manage tooltip behavior globally.' }
+        ],
+        notes: ['Radix Tooltip automatically handles role="tooltip" and aria-describedby.', 'Rendering via Portal prevents z-index issues.']
+      },
+      antd: {
+        additionalChecks: [
+          { title: 'Set mouseEnterDelay', description: 'Set mouseEnterDelay to at least 0.3 seconds to prevent accidental tooltip triggers.' }
+        ],
+        notes: ['Ant Design Tooltip handles accessibility attributes internally.', 'Re-verify text contrast ratio when changing the color prop.']
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'aria-label on trigger element',
+            description: 'If the trigger is an icon-only button, provide aria-label on the trigger instead of relying solely on the tooltip.'
+          }
+        ],
+        notes: [
+          'Chakra Tooltip automatically handles hover/focus events.',
+          'Adjust display timing with the showDelay/closeDelay props.',
+          'Provide the tooltip text via the content prop.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [],
+        notes: [
+          'React Aria TooltipTrigger handles hover, focus, and keyboard interactions.',
+          'Set display delay with the delay prop (default 1200ms).',
+          'Tooltip is automatically connected to the trigger via aria-describedby.'
         ]
       }
     }

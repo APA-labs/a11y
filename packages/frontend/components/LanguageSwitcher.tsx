@@ -43,19 +43,21 @@ export default function LanguageSwitcher({ currentLang }: { currentLang: Lang })
         onClick={() => setOpen((v) => !v)}
         aria-label='Language'
         aria-expanded={open}
-        className='flex items-center gap-1 px-2 py-1 rounded-md text-mist-500 hover:text-navy hover:bg-mist-100 transition-colors'>
+        className='flex items-center gap-1 px-2 py-1 rounded-md text-faint hover:text-navy hover:bg-mist-100 dark:hover:bg-[#1E2E40] dark:hover:text-white transition-colors'>
         <Languages size={15} />
       </button>
 
       {open && (
-        <div className='absolute right-0 top-full mt-1 w-28 bg-white border border-mist-200 rounded-lg shadow-md z-50 py-1'>
+        <div className='absolute right-0 top-full mt-1 w-28 bg-float border border-outline rounded-lg shadow-md z-50 py-1'>
           {SUPPORTED_LANGS.map((lang) => (
             <button
               key={lang}
               type='button'
               onClick={() => switchTo(lang)}
               className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
-                currentLang === lang ? 'text-violet-600 font-medium bg-violet-50' : 'text-navy hover:bg-mist-50'
+                currentLang === lang
+                  ? 'text-violet-600 font-medium bg-violet-50 dark:text-violet-400 dark:bg-violet-900/30'
+                  : 'text-body hover:bg-mist-50'
               }`}>
               {LANG_LABELS[lang]}
             </button>

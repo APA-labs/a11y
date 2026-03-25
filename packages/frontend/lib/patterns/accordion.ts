@@ -230,20 +230,20 @@ export function AntAccordion() {
   defaultValue={['item-1']}>
   <Accordion.Item value='item-1'>
     <Accordion.ItemTrigger>
-      배송 정보
+      Shipping Info
       <Accordion.ItemIndicator />
     </Accordion.ItemTrigger>
     <Accordion.ItemContent>
-      <Accordion.ItemBody>주문 후 2-3 영업일 내 배송됩니다.</Accordion.ItemBody>
+      <Accordion.ItemBody>Ships within 2–3 business days after order.</Accordion.ItemBody>
     </Accordion.ItemContent>
   </Accordion.Item>
   <Accordion.Item value='item-2'>
     <Accordion.ItemTrigger>
-      반품 정책
+      Return Policy
       <Accordion.ItemIndicator />
     </Accordion.ItemTrigger>
     <Accordion.ItemContent>
-      <Accordion.ItemBody>수령 후 7일 이내 반품 가능합니다.</Accordion.ItemBody>
+      <Accordion.ItemBody>Returns accepted within 7 days of receipt.</Accordion.ItemBody>
     </Accordion.ItemContent>
   </Accordion.Item>
 </Accordion.Root>`
@@ -252,44 +252,6 @@ export function AntAccordion() {
         'Chakra Accordion.Root는 키보드 네비게이션과 aria 속성을 자동 처리합니다.',
         'ItemIndicator는 시각적 화살표로 aria-hidden 처리됩니다.',
         'collapsible prop으로 모든 항목을 닫을 수 있는 옵션을 추가하세요.'
-      ]
-    },
-    spectrum: {
-      id: 'spectrum',
-      name: 'React Spectrum',
-      color: '#e03',
-      additionalChecks: [],
-      codeSample: {
-        language: 'tsx',
-        label: 'React Aria DisclosureGroup',
-        code: `import { DisclosureGroup, Disclosure, DisclosurePanel, Button, Heading } from 'react-aria-components'
-
-const triggerStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '10px 14px', background: 'none', border: 'none', borderBottom: '1px solid #e5e7eb', cursor: 'pointer', fontSize: 14, fontWeight: 600, textAlign: 'left' as const }
-const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563', borderBottom: '1px solid #e5e7eb' }
-
-function AccordionDemo() {
-  return (
-    <DisclosureGroup defaultExpandedKeys={['delivery']}>
-      <Disclosure id='delivery'>
-        <Heading>
-          <Button slot='trigger' style={triggerStyle}>배송 정보</Button>
-        </Heading>
-        <DisclosurePanel style={panelStyle}>주문 후 2-3 영업일 내 배송됩니다.</DisclosurePanel>
-      </Disclosure>
-      <Disclosure id='returns'>
-        <Heading>
-          <Button slot='trigger' style={triggerStyle}>반품 정책</Button>
-        </Heading>
-        <DisclosurePanel style={panelStyle}>수령 후 7일 이내 반품 가능합니다.</DisclosurePanel>
-      </Disclosure>
-    </DisclosureGroup>
-  )
-}`
-      },
-      notes: [
-        'React Aria DisclosureGroup은 WAI-ARIA Accordion 패턴을 구현합니다.',
-        'defaultExpandedKeys/expandedKeys로 초기/제어 열기 상태를 설정하세요.',
-        'allowsMultipleExpanded prop으로 여러 항목 동시 열기를 허용하세요.'
       ]
     }
   }

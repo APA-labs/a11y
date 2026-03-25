@@ -1,7 +1,7 @@
 'use client'
 
 import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react'
-import { Component, type ReactNode } from 'react'
+import { Component, useEffect, useState, type ReactNode } from 'react'
 
 import { buildAppCode } from '../lib/build-preview-code'
 import { SHADCN_FILES } from '../lib/sandpack-shadcn'
@@ -15,13 +15,13 @@ class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: 
     if (this.state.error) {
       return (
         <div
-          className='rounded-b-xl bg-slate-900 flex flex-col items-center justify-center gap-3'
+          className='rounded-b-xl bg-mist-50 flex flex-col items-center justify-center gap-3 dark:bg-navy-900'
           style={{ height: 280 }}>
-          <p className='text-sm text-slate-400'>미리보기를 불러오지 못했습니다.</p>
+          <p className='text-sm text-mist-500 dark:text-mist-400'>Preview failed to load.</p>
           <button
             onClick={() => this.setState({ error: false })}
-            className='text-xs px-3 py-1.5 rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors'>
-            다시 시도
+            className='text-xs px-3 py-1.5 rounded bg-mist-200 text-mist-700 hover:bg-mist-300 transition-colors dark:bg-navy-700 dark:text-mist-300'>
+            Retry
           </button>
         </div>
       )
@@ -114,7 +114,71 @@ interface Props {
   language: string
 }
 
+const LIGHT_THEME = {
+  colors: {
+    surface1: '#f8f9fc',
+    surface2: '#eef0f5',
+    surface3: '#e4e7ef',
+    clickable: '#6b7280',
+    base: '#1e293b',
+    disabled: '#9ca3af',
+    hover: '#374151',
+    accent: '#7c3aed',
+    error: '#ef4444',
+    errorSurface: '#fef2f2'
+  },
+  syntax: {
+    plain: '#1e293b',
+    comment: { color: '#94a3b8', fontStyle: 'italic' as const },
+    keyword: '#7c3aed',
+    tag: '#0369a1',
+    punctuation: '#64748b',
+    definition: '#0369a1',
+    property: '#0369a1',
+    static: '#b45309',
+    string: '#059669'
+  },
+  font: { body: 'inherit', mono: 'ui-monospace, monospace', size: '13px', lineHeight: '1.6' }
+}
+
+const DARK_THEME = {
+  colors: {
+    surface1: '#0d0d0d',
+    surface2: '#161616',
+    surface3: '#1f1f1f',
+    clickable: '#8a8a8a',
+    base: '#f0f0f3',
+    disabled: '#555555',
+    hover: '#c8c7d2',
+    accent: '#a78bfa',
+    error: '#f87171',
+    errorSurface: '#1a0a0a'
+  },
+  syntax: {
+    plain: '#e2e8f0',
+    comment: { color: '#555555', fontStyle: 'italic' as const },
+    keyword: '#a78bfa',
+    tag: '#60a5fa',
+    punctuation: '#6b6b6b',
+    definition: '#60a5fa',
+    property: '#60a5fa',
+    static: '#fbbf24',
+    string: '#34d399'
+  },
+  font: { body: 'inherit', mono: 'ui-monospace, monospace', size: '13px', lineHeight: '1.6' }
+}
+
 export default function SandpackPreviewBlock({ code, language }: Props) {
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const update = () => setIsDark(document.documentElement.classList.contains('dark'))
+    update()
+    const observer = new MutationObserver(update)
+    observer.observe(document.documentElement, { attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+
   const isHtml = language === 'html'
 
   if (isHtml) {
@@ -207,7 +271,7 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
       <SandpackProvider
         template='react-ts'
         files={{ ...sandpackFiles, '/index.html': indexHtml }}
-        theme='dark'
+        theme={isDark ? DARK_THEME : LIGHT_THEME}
         customSetup={{ dependencies: extraDeps }}
         options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
         <SandpackLayout style={{ borderRadius: '0 0 0.75rem 0.75rem', border: 'none' }}>

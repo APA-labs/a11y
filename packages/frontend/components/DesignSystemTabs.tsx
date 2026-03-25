@@ -27,7 +27,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
   return (
     <div>
       {/* Tabs */}
-      <div className='flex gap-1 p-1 bg-pearl-200 rounded-lg mb-6 w-fit flex-wrap'>
+      <div className='flex gap-1 p-1 bg-inset rounded-lg mb-6 w-fit flex-wrap'>
         {availableIds.map((id) => {
           const ds = designSystems[id] as DesignSystemVariant
           const isActive = active === id
@@ -37,11 +37,11 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
               onClick={() => setActive(id)}
               className={`
                 flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-medium transition-all
-                ${isActive ? 'bg-white shadow-sm text-navy' : 'text-mist-600 hover:text-navy'}
+                ${isActive ? 'bg-surface shadow-sm text-body' : 'text-soft hover:text-navy dark:hover:text-white'}
               `}>
               <span
                 className='w-2 h-2 rounded-full shrink-0'
-                style={{ backgroundColor: isActive ? ds.color : '#C8C7D2' }}
+                style={{ backgroundColor: ds.color }}
               />
               {ds.name}
             </button>
@@ -52,7 +52,9 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
       <div className='space-y-6'>
         {current.additionalChecks.length > 0 && (
           <div>
-            <h4 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3 flex items-center gap-2'>
+            <h4
+              className='text-xs font-semibold uppercase tracking-wider mb-3 flex items-center gap-2'
+              style={{ color: current.color }}>
               <span
                 className='w-2 h-2 rounded-full'
                 style={{ backgroundColor: current.color }}
@@ -65,21 +67,21 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
                 return (
                   <li
                     key={item.id}
-                    className={`flex gap-3 p-3 rounded-lg border text-sm ${isMust ? 'bg-red-50 border-red-100' : 'bg-amber-50 border-amber-100'}`}>
+                    className={`flex gap-3 p-3 rounded-lg border text-sm ${isMust ? 'bg-red-50 border-red-100 dark:bg-red-950/30 dark:border-red-900/50' : 'bg-amber-50 border-amber-100 dark:bg-amber-950/30 dark:border-amber-900/50'}`}>
                     {isMust ? (
                       <AlertCircle
                         size={14}
-                        className='shrink-0 mt-0.5 text-red-500'
+                        className='shrink-0 mt-0.5 text-red-500 dark:text-red-400'
                       />
                     ) : (
                       <CheckCircle2
                         size={14}
-                        className='shrink-0 mt-0.5 text-amber-500'
+                        className='shrink-0 mt-0.5 text-amber-500 dark:text-amber-400'
                       />
                     )}
                     <div>
-                      <p className='font-medium text-navy text-[13px]'>{item.title}</p>
-                      <p className='text-xs text-mist-600 mt-0.5 leading-relaxed'>{item.description}</p>
+                      <p className='font-medium text-body text-[13px]'>{item.title}</p>
+                      <p className='text-xs text-soft mt-0.5 leading-relaxed'>{item.description}</p>
                     </div>
                   </li>
                 )
@@ -89,25 +91,34 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
         )}
 
         <div>
-          <h4 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3 flex items-center gap-2'>
+          <h4
+            className='text-xs font-semibold uppercase tracking-wider mb-3 flex items-center gap-2'
+            style={{ color: current.color }}>
             <span
               className='w-2 h-2 rounded-full'
               style={{ backgroundColor: current.color }}
             />
             {t.pattern.codeSample}
           </h4>
-          <CodeBlock sample={current.codeSample} />
+          <CodeBlock
+            sample={current.codeSample}
+            lang={lang}
+          />
         </div>
 
         {current.notes.length > 0 && (
           <div>
-            <h4 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>{t.pattern.implNotes}</h4>
+            <h4
+              className='text-xs font-semibold uppercase tracking-wider mb-3'
+              style={{ color: current.color }}>
+              {t.pattern.implNotes}
+            </h4>
             <ul className='space-y-1.5'>
               {current.notes.map((note, i) => (
                 <li
                   key={i}
-                  className='flex gap-2 text-sm text-mist-700'>
-                  <span className='text-mist-300 shrink-0 mt-0.5'>–</span>
+                  className='flex gap-2 text-sm text-soft'>
+                  <span className='text-faint shrink-0 mt-0.5'>–</span>
                   {note}
                 </li>
               ))}

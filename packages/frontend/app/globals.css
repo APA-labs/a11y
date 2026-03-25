@@ -31,6 +31,29 @@
     --color-text-primary: var(--color-navy);
     --color-text-secondary: var(--color-mist-dark);
     --color-border: var(--color-mist-light);
+
+    /* Semantic tokens — Light */
+    --canvas: #F6F7F7;
+    --surface: #FFFFFF;
+    --float: #FFFFFF;
+    --inset: #EAECEC;
+    --outline: #C8C7D2;
+    --divider: #E2E2E8;
+    --body: #2C435D;
+    --soft: #7E7D8E;
+    --faint: #9A99A7;
+  }
+
+  .dark {
+    --canvas: #111A24;
+    --surface: #1E2E40;
+    --float: #2C435D;
+    --inset: #111A24;
+    --outline: #2C435D;
+    --divider: #1E2E40;
+    --body: #F6F7F7;
+    --soft: #A29FB0;
+    --faint: #9A99A7;
   }
 
   * {
