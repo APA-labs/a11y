@@ -25,5 +25,7 @@ Thumbs.db
 # Turbo
 .turbo/
 
-# Claude
+# Claude Local settings
+
 CLAUDE.local.md
+.claude/settings.local.json
