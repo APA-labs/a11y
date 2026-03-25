@@ -57,8 +57,13 @@ export default function Home() {
           <p className='text-[10px] font-semibold uppercase tracking-wider text-mist-500 mb-2'>지원하는 디자인시스템</p>
           <div className='flex flex-wrap gap-x-4 gap-y-1.5'>
             {DS_ORDER.map((id) => (
-              <div key={id} className='flex items-center gap-1.5'>
-                <span className='w-2 h-2 rounded-full shrink-0' style={{ backgroundColor: DS_META[id].color }} />
+              <div
+                key={id}
+                className='flex items-center gap-1.5'>
+                <span
+                  className='w-2 h-2 rounded-full shrink-0'
+                  style={{ backgroundColor: DS_META[id].color }}
+                />
                 <span className='text-xs text-navy-700'>{DS_META[id].name}</span>
               </div>
             ))}
