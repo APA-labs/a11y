@@ -68,10 +68,7 @@ const DS_DEPS: Record<string, Record<string, string>> = {
   },
   antd: { antd: '5.16.4' },
   '@chakra-ui': {
-    '@chakra-ui/react': '2.8.2',
-    '@emotion/react': '11.11.4',
-    '@emotion/styled': '11.11.0',
-    'framer-motion': '10.18.0'
+    '@chakra-ui/react': '3.2.3'
   },
   '@adobe/react-spectrum': {
     '@adobe/react-spectrum': '3.33.1'
@@ -128,18 +125,34 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
   const extraDeps = detectDeps(code)
 
   const hasShadcn = code.includes('@/components/ui')
-  const appCodeFinal = hasShadcn
+  const hasChakra = code.includes('@chakra-ui')
+
+  let appCodeFinal = hasShadcn
     ? appCode.replace(/from '@\/components\/ui\//g, "from './components/ui/").replace(/from '@\/lib\//g, "from './lib/")
     : appCode
+
+  if (hasChakra) {
+    appCodeFinal =
+      `import { Provider as __ChakraProvider } from '@chakra-ui/react'\n` +
+      appCodeFinal
+        .replace(
+          `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`,
+          `<__ChakraProvider><div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
+        )
+        .replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </div></__ChakraProvider>\n  )\n}`)
+  }
 
   const sandpackFiles: Record<string, string> = { '/App.tsx': appCodeFinal }
   if (hasShadcn) {
     Object.assign(sandpackFiles, SHADCN_FILES)
-    Object.assign(extraDeps, {
+    // Include all Radix packages needed by shadcn stubs
+    Object.assign(extraDeps, DS_DEPS['@radix-ui'], {
       'class-variance-authority': '0.7.0',
       clsx: '2.1.0',
       'tailwind-merge': '2.2.1',
-      '@radix-ui/react-slot': '1.0.2'
+      'react-hook-form': '7.51.0',
+      '@hookform/resolvers': '3.3.4',
+      zod: '3.22.4'
     })
   }
 

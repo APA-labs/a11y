@@ -26,10 +26,18 @@ function splitDeclsAndJsx(body: string): { decls: string; jsx: string } {
   const jsxLines: string[] = []
   let depth = 0
   let inDecl = false
+  let jsxStarted = false
 
   for (const line of lines) {
     const trimmed = line.trim()
+
+    if (jsxStarted) {
+      jsxLines.push(line)
+      continue
+    }
+
     if (!inDecl && depth === 0 && /^(const|let|var)\s/.test(trimmed)) inDecl = true
+
     if (inDecl) {
       declLines.push(line)
       for (const ch of line) {
@@ -37,8 +45,12 @@ function splitDeclsAndJsx(body: string): { decls: string; jsx: string } {
         else if (ch === ']' || ch === '}' || ch === ')') depth--
       }
       if (depth === 0) inDecl = false
-    } else {
+    } else if (trimmed.startsWith('<') || trimmed.startsWith('(')) {
+      jsxStarted = true
       jsxLines.push(line)
+    } else {
+      // Expression statements before JSX (e.g. dayjs.locale('ko')) → treat as setup
+      declLines.push(line)
     }
   }
 
