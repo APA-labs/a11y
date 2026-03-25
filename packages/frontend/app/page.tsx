@@ -14,7 +14,7 @@ export default function Home() {
   const dsCount = DS_ORDER.filter((id) => patterns.some((p) => p.designSystems[id] != null)).length
 
   return (
-    <div className='max-w-4xl mx-auto px-8 py-12'>
+    <div className='max-w-7xl mx-auto px-8 py-12'>
       <div className='mb-10'>
         <h1 className='text-3xl font-bold text-navy mb-3'>Accessibility Pattern Hub</h1>
         <p className='text-mist-700 text-sm leading-relaxed'>
@@ -53,7 +53,7 @@ export default function Home() {
 
       <div>
         <h2 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-5'>모든 패턴</h2>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
           {patterns.map((pattern) => (
             <PatternCard
               key={pattern.slug}
