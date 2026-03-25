@@ -61,7 +61,7 @@ export const breadcrumbPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML)',
       code: `<nav aria-label="breadcrumb">
-<ol className="flex items-center gap-2 text-sm">
+<ol className="flex items-center gap-2 text-sm list-none p-0">
   <li>
     <a href="/">홈</a>
   </li>

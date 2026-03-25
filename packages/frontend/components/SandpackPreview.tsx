@@ -137,11 +137,23 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
   const appCode = buildAppCode(code)
   const extraDeps = detectDeps(code)
 
+  const indexHtml = `<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>`
+
   return (
     <SandpackErrorBoundary>
       <SandpackProvider
         template='react-ts'
-        files={{ '/App.tsx': appCode }}
+        files={{ '/App.tsx': appCode, '/index.html': indexHtml }}
         theme='dark'
         customSetup={{ dependencies: extraDeps }}
         options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
