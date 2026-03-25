@@ -262,22 +262,25 @@ export function AntAccordion() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria DisclosureGroup',
-        code: `import { UNSTABLE_DisclosureGroup as DisclosureGroup, UNSTABLE_Disclosure as Disclosure, UNSTABLE_DisclosurePanel as DisclosurePanel, Button, Heading } from 'react-aria-components'
+        code: `import { DisclosureGroup, Disclosure, DisclosurePanel, Button, Heading } from 'react-aria-components'
+
+const triggerStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '10px 14px', background: 'none', border: 'none', borderBottom: '1px solid #e5e7eb', cursor: 'pointer', fontSize: 14, fontWeight: 600, textAlign: 'left' as const }
+const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563', borderBottom: '1px solid #e5e7eb' }
 
 function AccordionDemo() {
   return (
     <DisclosureGroup defaultExpandedKeys={['delivery']}>
       <Disclosure id='delivery'>
         <Heading>
-          <Button slot='trigger'>배송 정보</Button>
+          <Button slot='trigger' style={triggerStyle}>배송 정보</Button>
         </Heading>
-        <DisclosurePanel>주문 후 2-3 영업일 내 배송됩니다.</DisclosurePanel>
+        <DisclosurePanel style={panelStyle}>주문 후 2-3 영업일 내 배송됩니다.</DisclosurePanel>
       </Disclosure>
       <Disclosure id='returns'>
         <Heading>
-          <Button slot='trigger'>반품 정책</Button>
+          <Button slot='trigger' style={triggerStyle}>반품 정책</Button>
         </Heading>
-        <DisclosurePanel>수령 후 7일 이내 반품 가능합니다.</DisclosurePanel>
+        <DisclosurePanel style={panelStyle}>수령 후 7일 이내 반품 가능합니다.</DisclosurePanel>
       </Disclosure>
     </DisclosureGroup>
   )

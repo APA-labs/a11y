@@ -266,15 +266,29 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria ComboBox',
-        code: `import { ComboBox, ComboBoxItem } from 'react-aria-components'
+        code: `import { ComboBox, Label, Group, Input, Button, Popover, ListBox, ListBoxItem } from 'react-aria-components'
+
+const fieldStyle = { display: 'inline-flex', alignItems: 'center', border: '1px solid #d1d5db', borderRadius: 6, padding: '4px 8px', background: '#fff' }
+const btnStyle = { background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px', fontSize: 14 }
+const popoverStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
+const itemStyle = { padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
 
 export default function App() {
   return (
-    <ComboBox label='프레임워크 선택'>
-      <ComboBoxItem id='react'>React</ComboBoxItem>
-      <ComboBoxItem id='vue'>Vue</ComboBoxItem>
-      <ComboBoxItem id='angular'>Angular</ComboBoxItem>
-      <ComboBoxItem id='svelte'>Svelte</ComboBoxItem>
+    <ComboBox>
+      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>프레임워크 선택</Label>
+      <Group style={fieldStyle}>
+        <Input style={{ border: 'none', outline: 'none', fontSize: 14 }} />
+        <Button style={btnStyle}>▼</Button>
+      </Group>
+      <Popover style={popoverStyle}>
+        <ListBox>
+          <ListBoxItem id='react' style={itemStyle}>React</ListBoxItem>
+          <ListBoxItem id='vue' style={itemStyle}>Vue</ListBoxItem>
+          <ListBoxItem id='angular' style={itemStyle}>Angular</ListBoxItem>
+          <ListBoxItem id='svelte' style={itemStyle}>Svelte</ListBoxItem>
+        </ListBox>
+      </Popover>
     </ComboBox>
   )
 }`

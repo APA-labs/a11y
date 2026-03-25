@@ -302,16 +302,19 @@ export function AntTabs() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Tabs',
-        code: `import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'react-aria-components'
+        code: `import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components'
+
+const tabListStyle = { display: 'flex', gap: 0, borderBottom: '2px solid #e5e7eb' }
+const tabStyle = { padding: '8px 16px', cursor: 'pointer', fontSize: 14, fontWeight: 500, border: 'none', background: 'none', borderBottom: '2px solid transparent', marginBottom: -2, outline: 'none' }
+const panelStyle = { padding: '16px 0', fontSize: 14 }
+
 <Tabs>
-  <TabList aria-label='계정 설정'>
-    <Tab id='account'>계정</Tab>
-    <Tab id='password'>비밀번호</Tab>
+  <TabList aria-label='계정 설정' style={tabListStyle}>
+    <Tab id='account' style={tabStyle}>계정</Tab>
+    <Tab id='password' style={tabStyle}>비밀번호</Tab>
   </TabList>
-  <TabPanels>
-    <TabPanel id='account'>계정 설정 내용</TabPanel>
-    <TabPanel id='password'>비밀번호 변경 내용</TabPanel>
-  </TabPanels>
+  <TabPanel id='account' style={panelStyle}>계정 설정 내용</TabPanel>
+  <TabPanel id='password' style={panelStyle}>비밀번호 변경 내용</TabPanel>
 </Tabs>`
       },
       notes: [

@@ -200,12 +200,16 @@ export function AntDisclosure() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Disclosure',
-        code: `import { Disclosure, DisclosureHeader, DisclosurePanel, Button } from 'react-aria-components'
+        code: `import { Disclosure, Heading, DisclosurePanel, Button } from 'react-aria-components'
+
+const triggerStyle = { display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: 'none', border: '1px solid #e5e7eb', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600, width: '100%', textAlign: 'left' as const }
+const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
+
 <Disclosure>
-  <DisclosureHeader>
-    <Button slot='trigger'>시스템 요구사항</Button>
-  </DisclosureHeader>
-  <DisclosurePanel>운영체제: Windows 10 이상, macOS 10.15 이상</DisclosurePanel>
+  <Heading>
+    <Button slot='trigger' style={triggerStyle}>시스템 요구사항</Button>
+  </Heading>
+  <DisclosurePanel style={panelStyle}>운영체제: Windows 10 이상, macOS 10.15 이상</DisclosurePanel>
 </Disclosure>`
       },
       notes: [

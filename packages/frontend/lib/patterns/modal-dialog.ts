@@ -315,17 +315,23 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
         language: 'tsx',
         label: 'React Aria Modal',
         code: `import { Button, DialogTrigger, Modal, Dialog, Heading } from 'react-aria-components'
+
+const openBtnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #dc2626', background: '#fff', color: '#dc2626', cursor: 'pointer', fontSize: 14, fontWeight: 500 }
+const overlayStyle = { position: 'fixed' as const, inset: 0, background: 'rgba(0,0,0,.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }
+const dialogStyle = { background: '#fff', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', outline: 'none', boxShadow: '0 8px 32px rgba(0,0,0,.15)' }
+const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 13 }
+
 <DialogTrigger>
-  <Button>파일 삭제</Button>
-  <Modal isDismissable>
-    <Dialog>
+  <Button style={openBtnStyle}>파일 삭제</Button>
+  <Modal isDismissable style={overlayStyle}>
+    <Dialog style={dialogStyle}>
       {({ close }) => (
         <>
-          <Heading slot='title'>파일 삭제</Heading>
-          <p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+          <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 16 }}>파일 삭제</Heading>
+          <p style={{ margin: '0 0 16px', fontSize: 14, color: '#4b5563' }}>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-            <Button onPress={close}>취소</Button>
-            <Button onPress={close}>삭제</Button>
+            <Button onPress={close} style={btnStyle}>취소</Button>
+            <Button onPress={close} style={{ ...btnStyle, background: '#dc2626', color: '#fff', border: 'none' }}>삭제</Button>
           </div>
         </>
       )}

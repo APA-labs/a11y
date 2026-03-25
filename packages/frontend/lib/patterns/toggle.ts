@@ -236,10 +236,16 @@ export const togglePattern: Pattern = {
         language: 'tsx',
         label: 'React Aria Switch',
         code: `import { Switch } from 'react-aria-components'
-<Switch
-  isSelected={isEnabled}
-  onChange={setIsEnabled}>
-  알림 설정
+
+const switchStyle = { display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, cursor: 'pointer' }
+const trackStyle = (on: boolean) => ({ width: 40, height: 22, borderRadius: 11, background: on ? '#4f46e5' : '#d1d5db', padding: 2, transition: 'background .2s' })
+const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%', background: '#fff', transform: on ? 'translateX(18px)' : 'translateX(0)', transition: 'transform .2s' })
+
+<Switch isSelected={isEnabled} onChange={setIsEnabled} style={switchStyle}>
+  {({ isSelected }) => (<>
+    <div style={trackStyle(isSelected)}><div style={thumbStyle(isSelected)} /></div>
+    알림 설정
+  </>)}
 </Switch>`
       },
       notes: [

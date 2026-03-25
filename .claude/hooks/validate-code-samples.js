@@ -195,8 +195,10 @@ process.stdin.on('end', () => {
       // 5. Bare JSX with undeclared variables that buildStateDecls won't auto-detect
       const hasNamedFunc = /(?:export\s+)?(?:default\s+)?function\s+\w+/.test(code)
       if (!hasNamedFunc) {
-        const STATE_VAR_RE = /\b(is[A-Z]\w*|has[A-Z]\w*|show[A-Z]\w*|\w+Checked|\w+Open|\w+Visible|\w+Selected|\w+Enabled|\w+Active|open|active|enabled|checked|loading|selected)\b/
-        const jsxVarRe = /(?:value|page|currentPage|totalPages|date|keyword|email|form|anchorEl|currentKey|query|searchTerm|count|text|name|content)=\{([a-zA-Z_$]\w*)\}/g
+        const STATE_VAR_RE =
+          /\b(is[A-Z]\w*|has[A-Z]\w*|show[A-Z]\w*|\w+Checked|\w+Open|\w+Visible|\w+Selected|\w+Enabled|\w+Active|open|active|enabled|checked|loading|selected)\b/
+        const jsxVarRe =
+          /(?:value|page|currentPage|totalPages|date|keyword|email|form|anchorEl|currentKey|query|searchTerm|count|text|name|content)=\{([a-zA-Z_$]\w*)\}/g
         let jv
         while ((jv = jsxVarRe.exec(code)) !== null) {
           const v = jv[1]
@@ -204,7 +206,9 @@ process.stdin.on('end', () => {
           if (/^set[A-Z]/.test(v)) continue
           const declaredInCode = new RegExp(`(?:const|let|var)\\s+(?:\\[\\s*)?${v}\\b`).test(code)
           if (!declaredInCode && !STATE_VAR_RE.test(v)) {
-            issues.push(`${label}: bare JSX에서 \`${v}\` 사용하지만 선언 없음. buildStateDecls 자동 감지 대상도 아님. 함수 래퍼를 추가하고 useState로 직접 선언하세요.`)
+            issues.push(
+              `${label}: bare JSX에서 \`${v}\` 사용하지만 선언 없음. buildStateDecls 자동 감지 대상도 아님. 함수 래퍼를 추가하고 useState로 직접 선언하세요.`
+            )
           }
         }
       }
@@ -214,7 +218,9 @@ process.stdin.on('end', () => {
         const hooks = ['useState', 'useRef', 'useEffect', 'useCallback', 'useMemo', 'useId', 'useReducer']
         for (const hook of hooks) {
           if (new RegExp(`\\b${hook}\\b`).test(code) && !new RegExp(`import\\s+.*\\b${hook}\\b.*from\\s+['"]react['"]`).test(code)) {
-            issues.push(`${label}: \`export default function App\`에서 \`${hook}\`을 사용하지만 react에서 import하지 않았습니다. buildAppCode가 이 코드를 그대로 반환하므로 직접 import해야 합니다.`)
+            issues.push(
+              `${label}: \`export default function App\`에서 \`${hook}\`을 사용하지만 react에서 import하지 않았습니다. buildAppCode가 이 코드를 그대로 반환하므로 직접 import해야 합니다.`
+            )
           }
         }
       }
@@ -226,7 +232,9 @@ process.stdin.on('end', () => {
         const t = line.trim()
         if (!t || t.startsWith('//') || t.startsWith('/*') || t.startsWith('*')) continue
         if (t.startsWith('import ') && sawNonImport) {
-          issues.push(`${label}: JSX/코드 뒤에 \`import\` 문이 있습니다. ES 모듈에서는 import가 최상단에만 올 수 있습니다. 모든 import를 코드 시작 부분으로 이동하세요.`)
+          issues.push(
+            `${label}: JSX/코드 뒤에 \`import\` 문이 있습니다. ES 모듈에서는 import가 최상단에만 올 수 있습니다. 모든 import를 코드 시작 부분으로 이동하세요.`
+          )
           break
         }
         if (!t.startsWith('import ') && !t.startsWith('}') && t.length > 0) sawNonImport = true

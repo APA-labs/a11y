@@ -227,9 +227,13 @@ export function RadixTooltip({ label, children }) {
         language: 'tsx',
         label: 'React Aria Tooltip',
         code: `import { TooltipTrigger, Tooltip, Button } from 'react-aria-components'
+
+const btnStyle = { padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, background: '#fff', cursor: 'pointer', fontSize: 16 }
+const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', borderRadius: 4, fontSize: 12 }
+
 <TooltipTrigger delay={500}>
-  <Button aria-label='설정'>⚙️</Button>
-  <Tooltip>설정 열기</Tooltip>
+  <Button aria-label='설정' style={btnStyle}>⚙️</Button>
+  <Tooltip style={tipStyle}>설정 열기</Tooltip>
 </TooltipTrigger>`
       },
       notes: [

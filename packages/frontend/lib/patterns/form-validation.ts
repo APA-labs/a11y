@@ -371,28 +371,28 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Form',
-        code: `import { Form, TextField, Button } from 'react-aria-components'
+        code: `import { Form, TextField, Label, Input, FieldError, Button } from 'react-aria-components'
+
+const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 10px', fontSize: 14, outline: 'none' }
+const btnStyle = { marginTop: 12, padding: '8px 20px', borderRadius: 6, border: 'none', background: '#4f46e5', color: '#fff', fontSize: 14, cursor: 'pointer' }
 
 export default function App() {
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
-      <TextField
-        type='email'
-        name='email'
-        label='이메일'
-        isRequired
-        validate={(v) => (v.includes('@') ? null : '올바른 이메일 형식을 입력해주세요.')}
-        errorMessage={(e) => e.validationErrors}
-      />
-      <Button type='submit'>제출</Button>
+      <TextField name='email' isRequired validate={(v) => (v.includes('@') ? null : '올바른 이메일 형식을 입력해주세요.')}>
+        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>이메일</Label>
+        <Input type='email' style={inputStyle} />
+        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+      </TextField>
+      <Button type='submit' style={btnStyle}>제출</Button>
     </Form>
   )
 }`
       },
       notes: [
-        'React Aria Form은 HTML5 validation과 aria를 통합합니다.',
-        'TextField의 validate 함수로 커스텀 검증을 추가하세요.',
-        "validationBehavior='aria'로 스크린리더 오류 공지를 최적화하세요."
+        'react-aria-components Form은 HTML5 validation과 aria를 통합합니다.',
+        'TextField 안에 Label, Input, FieldError를 compound component로 조합합니다.',
+        'validate 함수로 커스텀 검증을 추가하고, FieldError가 오류 메시지를 자동 표시합니다.'
       ]
     }
   }

@@ -322,27 +322,36 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Select',
-        code: `import { Select, SelectItem } from 'react-aria-components'
+        code: `import { Select, Label, Button, SelectValue, Popover, ListBox, ListBoxItem } from 'react-aria-components'
+
+const triggerStyle = { display: 'inline-flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 12px', background: '#fff', cursor: 'pointer', fontSize: 14, minWidth: 180 }
+const popoverStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
+const itemStyle = { padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
 
 function SpectrumSelectDemo() {
   const [value, setValue] = useState('')
 
   return (
-    <Select
-      label='국가'
-      placeholder='국가를 선택하세요'
-      selectedKey={value}
-      onSelectionChange={setValue}>
-      <SelectItem id='kr'>대한민국</SelectItem>
-      <SelectItem id='us'>미국</SelectItem>
-      <SelectItem id='jp'>일본</SelectItem>
+    <Select selectedKey={value} onSelectionChange={setValue}>
+      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>국가</Label>
+      <Button style={triggerStyle}>
+        <SelectValue>{value || '국가를 선택하세요'}</SelectValue>
+        <span aria-hidden>▼</span>
+      </Button>
+      <Popover style={popoverStyle}>
+        <ListBox>
+          <ListBoxItem id='kr' style={itemStyle}>대한민국</ListBoxItem>
+          <ListBoxItem id='us' style={itemStyle}>미국</ListBoxItem>
+          <ListBoxItem id='jp' style={itemStyle}>일본</ListBoxItem>
+        </ListBox>
+      </Popover>
     </Select>
   )
 }`
       },
       notes: [
-        'React Aria Select는 listbox 패턴과 모든 키보드 상호작용을 자동 구현합니다.',
-        'label prop으로 레이블을 설정하면 aria-labelledby가 자동 연결됩니다.',
+        'react-aria-components Select는 compound component로 Label, Button, SelectValue, Popover, ListBox를 조합합니다.',
+        'SelectValue는 현재 선택된 값을 자동으로 표시합니다.',
         'selectedKey/onSelectionChange로 제어 컴포넌트로 사용하세요.'
       ]
     }

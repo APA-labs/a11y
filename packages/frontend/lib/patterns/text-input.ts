@@ -265,21 +265,21 @@ export const textInputPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'React Aria TextField',
-        code: `import { TextField } from 'react-aria-components'
-<TextField
-  type='email'
-  label='이메일'
-  isRequired
-  isInvalid={hasError}
-  autoComplete='email'
-  errorMessage='올바른 이메일 형식을 입력해주세요.'
-  description='예: user@example.com'
-/>`
+        code: `import { TextField, Label, Input, Text, FieldError } from 'react-aria-components'
+
+const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 10px', fontSize: 14, outline: 'none' }
+
+<TextField isRequired>
+  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>이메일</Label>
+  <Input type='email' autoComplete='email' style={inputStyle} />
+  <Text slot='description' style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>예: user@example.com</Text>
+  <FieldError style={{ fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+</TextField>`
       },
       notes: [
-        'React Aria TextField는 label, error, description의 aria 연결을 모두 자동 처리합니다.',
-        'isRequired prop이 true면 화면에 표시와 aria-required 모두 적용됩니다.',
-        'errorMessage는 aria-describedby로 자동 연결됩니다.'
+        'react-aria-components TextField는 compound component로 Label, Input, Text, FieldError를 조합합니다.',
+        'isRequired prop이 true면 aria-required가 자동 적용됩니다.',
+        'FieldError는 validation 실패 시 자동으로 aria-describedby로 연결됩니다.'
       ]
     }
   }

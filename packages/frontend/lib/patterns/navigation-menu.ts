@@ -376,14 +376,21 @@ function AntdNavDemo() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria MenuTrigger',
-        code: `import { MenuTrigger, Menu, MenuItem, Button } from 'react-aria-components'
+        code: `import { MenuTrigger, Menu, MenuItem, Button, Popover } from 'react-aria-components'
+
+const btnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 500 }
+const menuStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
+const itemStyle = { padding: '8px 14px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
+
 <nav aria-label='메인 내비게이션'>
   <MenuTrigger>
-    <Button>제품</Button>
-    <Menu onAction={() => {}}>
-      <MenuItem id='web'>웹 제품</MenuItem>
-      <MenuItem id='mobile'>모바일 제품</MenuItem>
-    </Menu>
+    <Button style={btnStyle}>제품 ▾</Button>
+    <Popover style={menuStyle}>
+      <Menu onAction={() => {}}>
+        <MenuItem id='web' style={itemStyle}>웹 제품</MenuItem>
+        <MenuItem id='mobile' style={itemStyle}>모바일 제품</MenuItem>
+      </Menu>
+    </Popover>
   </MenuTrigger>
 </nav>`
       },

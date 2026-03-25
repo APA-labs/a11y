@@ -296,12 +296,16 @@ function AntdPopoverDemo() {
         language: 'tsx',
         label: 'React Aria Popover',
         code: `import { DialogTrigger, Button, Popover, Dialog, Heading } from 'react-aria-components'
+
+const btnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 14 }
+const popoverStyle = { background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none', maxWidth: 280 }
+
 <DialogTrigger>
-  <Button>설정 열기</Button>
-  <Popover>
-    <Dialog>
-      <Heading slot='title'>알림 설정</Heading>
-      <p>알림 수신 방법을 설정하세요.</p>
+  <Button style={btnStyle}>설정 열기</Button>
+  <Popover style={popoverStyle}>
+    <Dialog style={{ outline: 'none' }}>
+      <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 15, fontWeight: 600 }}>알림 설정</Heading>
+      <p style={{ margin: 0, fontSize: 13, color: '#4b5563' }}>알림 수신 방법을 설정하세요.</p>
     </Dialog>
   </Popover>
 </DialogTrigger>`
