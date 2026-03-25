@@ -73,66 +73,86 @@ export const navigationMenuPattern: Pattern = {
       language: 'jsx',
       label: 'Baseline (React)',
       code: `function NavigationMenuDemo() {
-const [openMenu, setOpenMenu] = useState(null);
-const currentPath = '/about';
-const items = [
-  { id: 'home', label: '홈', href: '/' },
-  {
-    id: 'about', label: '소개', href: '/about',
-    children: [
-      { id: 'team', label: '팀', href: '/about/team' },
-      { id: 'history', label: '연혁', href: '/about/history' }
-    ]
-  },
-  { id: 'contact', label: '문의', href: '/contact' }
-];
+  const [openMenu, setOpenMenu] = useState(null)
+  const currentPath = '/about'
+  const items = [
+    { id: 'home', label: '홈', href: '/' },
+    {
+      id: 'about',
+      label: '소개',
+      href: '/about',
+      children: [
+        { id: 'team', label: '팀', href: '/about/team' },
+        { id: 'history', label: '연혁', href: '/about/history' }
+      ]
+    },
+    { id: 'contact', label: '문의', href: '/contact' }
+  ]
 
-return (
-  <nav aria-label="메인 내비게이션">
-    <ul style={{ listStyle: 'none', display: 'flex', gap: '8px', padding: 0, margin: 0 }}>
-      {items.map(item => (
-        <li key={item.id}>
-          {item.children ? (
-            <>
-              <button
-                aria-haspopup="menu"
-                aria-expanded={openMenu === item.id}
-                onClick={() => setOpenMenu(openMenu === item.id ? null : item.id)}
-                onKeyDown={e => e.key === 'Escape' && setOpenMenu(null)}
-              >
-                {item.label} ▾
-              </button>
-              {openMenu === item.id && (
-                <ul role="menu" style={{ listStyle: 'none', padding: '4px', margin: 0, border: '1px solid #ccc', borderRadius: '4px', position: 'absolute', background: 'white' }}>
-                  {item.children.map(child => (
-                    <li key={child.id} role="none">
-                      <a
-                        href={child.href}
-                        role="menuitem"
-                        aria-current={currentPath === child.href ? 'page' : undefined}
-                        style={{ display: 'block', padding: '4px 8px', textDecoration: 'none', color: currentPath === child.href ? '#6d28d9' : 'inherit' }}
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
-          ) : (
-            <a
-              href={item.href}
-              aria-current={currentPath === item.href ? 'page' : undefined}
-              style={{ textDecoration: 'none', color: currentPath === item.href ? '#6d28d9' : 'inherit', fontWeight: currentPath === item.href ? 'bold' : 'normal' }}
-            >
-              {item.label}
-            </a>
-          )}
-        </li>
-      ))}
-    </ul>
-  </nav>
-);
+  return (
+    <nav aria-label='메인 내비게이션'>
+      <ul style={{ listStyle: 'none', display: 'flex', gap: '8px', padding: 0, margin: 0 }}>
+        {items.map((item) => (
+          <li key={item.id}>
+            {item.children ? (
+              <>
+                <button
+                  aria-haspopup='menu'
+                  aria-expanded={openMenu === item.id}
+                  onClick={() => setOpenMenu(openMenu === item.id ? null : item.id)}
+                  onKeyDown={(e) => e.key === 'Escape' && setOpenMenu(null)}>
+                  {item.label} ▾
+                </button>
+                {openMenu === item.id && (
+                  <ul
+                    role='menu'
+                    style={{
+                      listStyle: 'none',
+                      padding: '4px',
+                      margin: 0,
+                      border: '1px solid #ccc',
+                      borderRadius: '4px',
+                      position: 'absolute',
+                      background: 'white'
+                    }}>
+                    {item.children.map((child) => (
+                      <li
+                        key={child.id}
+                        role='none'>
+                        <a
+                          href={child.href}
+                          role='menuitem'
+                          aria-current={currentPath === child.href ? 'page' : undefined}
+                          style={{
+                            display: 'block',
+                            padding: '4px 8px',
+                            textDecoration: 'none',
+                            color: currentPath === child.href ? '#6d28d9' : 'inherit'
+                          }}>
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            ) : (
+              <a
+                href={item.href}
+                aria-current={currentPath === item.href ? 'page' : undefined}
+                style={{
+                  textDecoration: 'none',
+                  color: currentPath === item.href ? '#6d28d9' : 'inherit',
+                  fontWeight: currentPath === item.href ? 'bold' : 'normal'
+                }}>
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
 }`
     }
   },
@@ -152,41 +172,50 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI AppBar Navigation',
-        code: `import { AppBar, Toolbar, Button, Menu, MenuItem } from '@mui/material';
+        code: `import { AppBar, Toolbar, Button, Menu, MenuItem } from '@mui/material'
 
 function NavigationMuiDemo() {
-const [anchorEl, setAnchorEl] = useState(null);
-const currentPath = '/';
+  const [anchorEl, setAnchorEl] = useState(null)
+  const currentPath = '/'
 
-return (
-  <AppBar position="static" component="header">
-    <Toolbar component="nav" aria-label="메인 내비게이션">
-      <Button
-        color="inherit"
-        href="/"
-        aria-current={currentPath === '/' ? 'page' : undefined}
-      >
-        홈
-      </Button>
-      <Button
-        color="inherit"
-        aria-haspopup="menu"
-        aria-expanded={Boolean(anchorEl)}
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-      >
-        제품
-      </Button>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-      >
-        <MenuItem component="a" href="/products/all">전체 제품</MenuItem>
-        <MenuItem component="a" href="/products/new">신규</MenuItem>
-      </Menu>
-    </Toolbar>
-  </AppBar>
-);
+  return (
+    <AppBar
+      position='static'
+      component='header'>
+      <Toolbar
+        component='nav'
+        aria-label='메인 내비게이션'>
+        <Button
+          color='inherit'
+          href='/'
+          aria-current={currentPath === '/' ? 'page' : undefined}>
+          홈
+        </Button>
+        <Button
+          color='inherit'
+          aria-haspopup='menu'
+          aria-expanded={Boolean(anchorEl)}
+          onClick={(e) => setAnchorEl(e.currentTarget)}>
+          제품
+        </Button>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={() => setAnchorEl(null)}>
+          <MenuItem
+            component='a'
+            href='/products/all'>
+            전체 제품
+          </MenuItem>
+          <MenuItem
+            component='a'
+            href='/products/new'>
+            신규
+          </MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
+  )
 }`
       },
       notes: [
@@ -210,35 +239,36 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Radix NavigationMenu',
-        code: `import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+        code: `import * as NavigationMenu from '@radix-ui/react-navigation-menu'
+<NavigationMenu.Root aria-label='메인 내비게이션'>
+  <NavigationMenu.List>
+    <NavigationMenu.Item>
+      <NavigationMenu.Link
+        href='/'
+        aria-current='page'>
+        홈
+      </NavigationMenu.Link>
+    </NavigationMenu.Item>
 
-<NavigationMenu.Root aria-label="메인 내비게이션">
-<NavigationMenu.List>
-  <NavigationMenu.Item>
-    <NavigationMenu.Link href="/" aria-current="page">
-      홈
-    </NavigationMenu.Link>
-  </NavigationMenu.Item>
+    <NavigationMenu.Item>
+      <NavigationMenu.Trigger>
+        제품
+        <span aria-hidden>▾</span>
+      </NavigationMenu.Trigger>
+      <NavigationMenu.Content>
+        <ul>
+          <li>
+            <NavigationMenu.Link href='/products/all'>전체 제품</NavigationMenu.Link>
+          </li>
+          <li>
+            <NavigationMenu.Link href='/products/new'>신규</NavigationMenu.Link>
+          </li>
+        </ul>
+      </NavigationMenu.Content>
+    </NavigationMenu.Item>
+  </NavigationMenu.List>
 
-  <NavigationMenu.Item>
-    <NavigationMenu.Trigger>
-      제품
-      <span aria-hidden>▾</span>
-    </NavigationMenu.Trigger>
-    <NavigationMenu.Content>
-      <ul>
-        <li>
-          <NavigationMenu.Link href="/products/all">전체 제품</NavigationMenu.Link>
-        </li>
-        <li>
-          <NavigationMenu.Link href="/products/new">신규</NavigationMenu.Link>
-        </li>
-      </ul>
-    </NavigationMenu.Content>
-  </NavigationMenu.Item>
-</NavigationMenu.List>
-
-<NavigationMenu.Viewport />
+  <NavigationMenu.Viewport />
 </NavigationMenu.Root>`
       },
       notes: [
@@ -262,26 +292,26 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Menu',
-        code: `import { Menu } from 'antd';
+        code: `import { Menu } from 'antd'
 
 const items = [
-{ key: 'home', label: <a href="/">홈</a> },
-{
-  key: 'products',
-  label: '제품',
-  children: [
-    { key: 'all', label: <a href="/products/all">전체 제품</a> },
-    { key: 'new', label: <a href="/products/new">신규</a> },
-  ],
-},
-];
+  { key: 'home', label: <a href='/'>홈</a> },
+  {
+    key: 'products',
+    label: '제품',
+    children: [
+      { key: 'all', label: <a href='/products/all'>전체 제품</a> },
+      { key: 'new', label: <a href='/products/new'>신규</a> }
+    ]
+  }
+]
 
-<nav aria-label="메인 내비게이션">
-<Menu
-  mode="horizontal"
-  items={items}
-  selectedKeys={[currentKey]}
-/>
+<nav aria-label='메인 내비게이션'>
+  <Menu
+    mode='horizontal'
+    items={items}
+    selectedKeys={[currentKey]}
+  />
 </nav>`
       },
       notes: [
@@ -306,27 +336,26 @@ const items = [
         language: 'tsx',
         label: 'shadcn/ui NavigationMenu',
         code: `import {
-NavigationMenu,
-NavigationMenuContent,
-NavigationMenuItem,
-NavigationMenuLink,
-NavigationMenuList,
-NavigationMenuTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger
 } from '@/components/ui/navigation-menu'
-
-<NavigationMenu aria-label="메인 내비게이션">
-<NavigationMenuList>
-  <NavigationMenuItem>
-    <NavigationMenuTrigger>제품</NavigationMenuTrigger>
-    <NavigationMenuContent>
-      <NavigationMenuLink href="/products/web">웹 제품</NavigationMenuLink>
-      <NavigationMenuLink href="/products/mobile">모바일 제품</NavigationMenuLink>
-    </NavigationMenuContent>
-  </NavigationMenuItem>
-  <NavigationMenuItem>
-    <NavigationMenuLink href="/about">회사 소개</NavigationMenuLink>
-  </NavigationMenuItem>
-</NavigationMenuList>
+<NavigationMenu aria-label='메인 내비게이션'>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>제품</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href='/products/web'>웹 제품</NavigationMenuLink>
+        <NavigationMenuLink href='/products/mobile'>모바일 제품</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href='/about'>회사 소개</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
 </NavigationMenu>`
       },
       notes: [
@@ -351,19 +380,18 @@ NavigationMenuTrigger,
         language: 'tsx',
         label: 'Chakra UI Menu',
         code: `import { Menu, Button } from '@chakra-ui/react'
-
-<nav aria-label="메인 내비게이션">
-<Menu.Root>
-  <Menu.Trigger asChild>
-    <Button variant="ghost">제품 ▾</Button>
-  </Menu.Trigger>
-  <Menu.Positioner>
-    <Menu.Content>
-      <Menu.Item value="web">웹 제품</Menu.Item>
-      <Menu.Item value="mobile">모바일 제품</Menu.Item>
-    </Menu.Content>
-  </Menu.Positioner>
-</Menu.Root>
+<nav aria-label='메인 내비게이션'>
+  <Menu.Root>
+    <Menu.Trigger asChild>
+      <Button variant='ghost'>제품 ▾</Button>
+    </Menu.Trigger>
+    <Menu.Positioner>
+      <Menu.Content>
+        <Menu.Item value='web'>웹 제품</Menu.Item>
+        <Menu.Item value='mobile'>모바일 제품</Menu.Item>
+      </Menu.Content>
+    </Menu.Positioner>
+  </Menu.Root>
 </nav>`
       },
       notes: [
@@ -388,15 +416,14 @@ NavigationMenuTrigger,
         language: 'tsx',
         label: 'React Aria MenuTrigger',
         code: `import { MenuTrigger, Menu, MenuItem, Button } from 'react-aria-components'
-
-<nav aria-label="메인 내비게이션">
-<MenuTrigger>
-  <Button>제품</Button>
-  <Menu onAction={() => {}}>
-    <MenuItem id="web">웹 제품</MenuItem>
-    <MenuItem id="mobile">모바일 제품</MenuItem>
-  </Menu>
-</MenuTrigger>
+<nav aria-label='메인 내비게이션'>
+  <MenuTrigger>
+    <Button>제품</Button>
+    <Menu onAction={() => {}}>
+      <MenuItem id='web'>웹 제품</MenuItem>
+      <MenuItem id='mobile'>모바일 제품</MenuItem>
+    </Menu>
+  </MenuTrigger>
 </nav>`
       },
       notes: [

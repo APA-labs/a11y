@@ -63,42 +63,44 @@ export const popoverPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `function PopoverDemo() {
-const [isOpen, setIsOpen] = useState(false);
-const triggerRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
-return (
-  <div>
-    <button
-      ref={triggerRef}
-      aria-expanded={isOpen}
-      aria-haspopup="dialog"
-      aria-controls="popover-content"
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      설정 열기
-    </button>
+  return (
+    <div>
+      <button
+        ref={triggerRef}
+        aria-expanded={isOpen}
+        aria-haspopup='dialog'
+        aria-controls='popover-content'
+        onClick={() => setIsOpen(!isOpen)}>
+        설정 열기
+      </button>
 
-    {isOpen && (
-      <div
-        id="popover-content"
-        role="dialog"
-        aria-label="설정"
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') {
-            setIsOpen(false);
-            triggerRef.current?.focus();
-          }
-        }}
-      >
-        <h3>설정</h3>
-        <button>알림 켜기</button>
-        <button onClick={() => { setIsOpen(false); triggerRef.current?.focus(); }}>
-          닫기
-        </button>
-      </div>
-    )}
-  </div>
-);
+      {isOpen && (
+        <div
+          id='popover-content'
+          role='dialog'
+          aria-label='설정'
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setIsOpen(false)
+              triggerRef.current?.focus()
+            }
+          }}>
+          <h3>설정</h3>
+          <button>알림 켜기</button>
+          <button
+            onClick={() => {
+              setIsOpen(false)
+              triggerRef.current?.focus()
+            }}>
+            닫기
+          </button>
+        </div>
+      )}
+    </div>
+  )
 }`
     }
   },
@@ -118,33 +120,31 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Popover',
-        code: `import { Button, Popover, Typography } from '@mui/material';
+        code: `import { Button, Popover, Typography } from '@mui/material'
 
 function MuiPopoverDemo() {
-const [anchorEl, setAnchorEl] = useState(null);
-const open = Boolean(anchorEl);
-const id = open ? 'popover' : undefined;
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const id = open ? 'popover' : undefined
 
-return (
-  <>
-    <Button
-      aria-describedby={id}
-      aria-expanded={open}
-      onClick={(e) => setAnchorEl(e.currentTarget)}
-    >
-      설정 열기
-    </Button>
-    <Popover
-      id={id}
-      open={open}
-      anchorEl={anchorEl}
-      onClose={() => setAnchorEl(null)}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-    >
-      <Typography sx={{ p: 2 }}>설정 내용</Typography>
-    </Popover>
-  </>
-);
+  return (
+    <>
+      <Button
+        aria-describedby={id}
+        aria-expanded={open}
+        onClick={(e) => setAnchorEl(e.currentTarget)}>
+        설정 열기
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+        <Typography sx={{ p: 2 }}>설정 내용</Typography>
+      </Popover>
+    </>
+  )
 }`
       },
       notes: [
@@ -168,23 +168,21 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Radix Popover',
-        code: `import * as Popover from '@radix-ui/react-popover';
-
+        code: `import * as Popover from '@radix-ui/react-popover'
 <Popover.Root>
-<Popover.Trigger asChild>
-  <button>설정 열기</button>
-</Popover.Trigger>
-<Popover.Portal>
-  <Popover.Content
-    sideOffset={5}
-    aria-label="설정"
-  >
-    <h3>설정</h3>
-    <button>알림 켜기</button>
-    <Popover.Close aria-label="닫기">×</Popover.Close>
-    <Popover.Arrow />
-  </Popover.Content>
-</Popover.Portal>
+  <Popover.Trigger asChild>
+    <button>설정 열기</button>
+  </Popover.Trigger>
+  <Popover.Portal>
+    <Popover.Content
+      sideOffset={5}
+      aria-label='설정'>
+      <h3>설정</h3>
+      <button>알림 켜기</button>
+      <Popover.Close aria-label='닫기'>×</Popover.Close>
+      <Popover.Arrow />
+    </Popover.Content>
+  </Popover.Portal>
 </Popover.Root>`
       },
       notes: [
@@ -208,31 +206,32 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Popover',
-        code: `import { Popover, Button } from 'antd';
+        code: `import { Popover, Button } from 'antd'
 
 function AntdPopoverDemo() {
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-const content = (
-  <div>
-    <p>설정 내용</p>
-    <Button onClick={() => setOpen(false)}>닫기</Button>
-  </div>
-);
+  const content = (
+    <div>
+      <p>설정 내용</p>
+      <Button onClick={() => setOpen(false)}>닫기</Button>
+    </div>
+  )
 
-return (
-  <Popover
-    content={content}
-    title="설정"
-    open={open}
-    onOpenChange={setOpen}
-    trigger="click"
-  >
-    <Button aria-expanded={open} aria-haspopup="dialog">
-      설정 열기
-    </Button>
-  </Popover>
-);
+  return (
+    <Popover
+      content={content}
+      title='설정'
+      open={open}
+      onOpenChange={setOpen}
+      trigger='click'>
+      <Button
+        aria-expanded={open}
+        aria-haspopup='dialog'>
+        설정 열기
+      </Button>
+    </Popover>
+  )
 }`
       },
       notes: [
@@ -257,22 +256,17 @@ return (
         language: 'tsx',
         label: 'shadcn/ui Popover',
         code: `import { Button } from '@/components/ui/button'
-import {
-Popover,
-PopoverContent,
-PopoverTrigger,
-} from '@/components/ui/popover'
-
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 <Popover>
-<PopoverTrigger asChild>
-  <Button variant="outline">설정 열기</Button>
-</PopoverTrigger>
-<PopoverContent>
-  <div>
-    <h4 className="font-semibold mb-1">알림 설정</h4>
-    <p className="text-sm text-muted-foreground">알림 수신 방법을 설정하세요.</p>
-  </div>
-</PopoverContent>
+  <PopoverTrigger asChild>
+    <Button variant='outline'>설정 열기</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <div>
+      <h4 className='font-semibold mb-1'>알림 설정</h4>
+      <p className='text-sm text-muted-foreground'>알림 수신 방법을 설정하세요.</p>
+    </div>
+  </PopoverContent>
 </Popover>`
       },
       notes: [
@@ -297,25 +291,29 @@ PopoverTrigger,
         language: 'tsx',
         label: 'Chakra UI Popover',
         code: `import { Popover, Button } from '@chakra-ui/react'
-
 <Popover.Root>
-<Popover.Trigger asChild>
-  <Button variant="outline">설정 열기</Button>
-</Popover.Trigger>
-<Popover.Positioner>
-  <Popover.Content>
-    <Popover.Arrow>
-      <Popover.ArrowTip />
-    </Popover.Arrow>
-    <Popover.Body>
-      <Popover.Title>알림 설정</Popover.Title>
-      <p>알림 수신 방법을 설정하세요.</p>
-    </Popover.Body>
-    <Popover.CloseTrigger asChild>
-      <Button variant="ghost" size="sm" aria-label="닫기">✕</Button>
-    </Popover.CloseTrigger>
-  </Popover.Content>
-</Popover.Positioner>
+  <Popover.Trigger asChild>
+    <Button variant='outline'>설정 열기</Button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.Arrow>
+        <Popover.ArrowTip />
+      </Popover.Arrow>
+      <Popover.Body>
+        <Popover.Title>알림 설정</Popover.Title>
+        <p>알림 수신 방법을 설정하세요.</p>
+      </Popover.Body>
+      <Popover.CloseTrigger asChild>
+        <Button
+          variant='ghost'
+          size='sm'
+          aria-label='닫기'>
+          ✕
+        </Button>
+      </Popover.CloseTrigger>
+    </Popover.Content>
+  </Popover.Positioner>
 </Popover.Root>`
       },
       notes: [
@@ -333,15 +331,14 @@ PopoverTrigger,
         language: 'tsx',
         label: 'React Aria Popover',
         code: `import { DialogTrigger, Button, Popover, Dialog, Heading } from 'react-aria-components'
-
 <DialogTrigger>
-<Button>설정 열기</Button>
-<Popover>
-  <Dialog>
-    <Heading slot="title">알림 설정</Heading>
-    <p>알림 수신 방법을 설정하세요.</p>
-  </Dialog>
-</Popover>
+  <Button>설정 열기</Button>
+  <Popover>
+    <Dialog>
+      <Heading slot='title'>알림 설정</Heading>
+      <p>알림 수신 방법을 설정하세요.</p>
+    </Dialog>
+  </Popover>
 </DialogTrigger>`
       },
       notes: [

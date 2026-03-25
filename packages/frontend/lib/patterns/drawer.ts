@@ -68,43 +68,51 @@ export const drawerPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `function DrawerDemo() {
-const [isOpen, setIsOpen] = useState(false);
-const triggerRef = useRef<HTMLButtonElement>(null);
-const titleId = 'drawer-title';
+  const [isOpen, setIsOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const titleId = 'drawer-title'
 
-return (
-  <>
-    <button ref={triggerRef} onClick={() => setIsOpen(true)}>
-      메뉴 열기
-    </button>
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        onClick={() => setIsOpen(true)}>
+        메뉴 열기
+      </button>
 
-    {isOpen && (
-      <>
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') {
-              setIsOpen(false);
-              triggerRef.current?.focus();
-            }
-          }}
-        >
-          <h2 id={titleId}>메뉴</h2>
-          <nav>
-            <a href="/">홈</a>
-            <a href="/about">소개</a>
-          </nav>
-          <button onClick={() => { setIsOpen(false); triggerRef.current?.focus(); }}>
-            닫기
-          </button>
-        </div>
-        <div onClick={() => setIsOpen(false)} aria-hidden="true" />
-      </>
-    )}
-  </>
-);
+      {isOpen && (
+        <>
+          <div
+            role='dialog'
+            aria-modal='true'
+            aria-labelledby={titleId}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setIsOpen(false)
+                triggerRef.current?.focus()
+              }
+            }}>
+            <h2 id={titleId}>메뉴</h2>
+            <nav>
+              <a href='/'>홈</a>
+              <a href='/about'>소개</a>
+            </nav>
+            <button
+              onClick={() => {
+                setIsOpen(false)
+                triggerRef.current?.focus()
+              }}>
+              닫기
+            </button>
+          </div>
+          <div
+            onClick={() => setIsOpen(false)}
+            aria-hidden='true'
+          />
+        </>
+      )}
+    </>
+  )
 }`
     }
   },
@@ -124,35 +132,42 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Drawer',
-        code: `import { Drawer, Box, Button, Typography, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+        code: `import { Drawer, Box, Button, Typography, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 
 function MuiDrawerDemo() {
-const [open, setIsOpen] = useState(false);
+  const [open, setIsOpen] = useState(false)
 
-return (
-  <>
-    <Button onClick={() => setIsOpen(true)}>메뉴 열기</Button>
-    <Drawer
-      open={open}
-      onClose={() => setIsOpen(false)}
-      aria-labelledby="drawer-title"
-    >
-      <Box sx={{ width: 280, p: 2 }} role="presentation">
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography id="drawer-title" variant="h6">메뉴</Typography>
-          <IconButton onClick={() => setIsOpen(false)} aria-label="드로어 닫기">
-            <CloseIcon />
-          </IconButton>
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>메뉴 열기</Button>
+      <Drawer
+        open={open}
+        onClose={() => setIsOpen(false)}
+        aria-labelledby='drawer-title'>
+        <Box
+          sx={{ width: 280, p: 2 }}
+          role='presentation'>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography
+              id='drawer-title'
+              variant='h6'>
+              메뉴
+            </Typography>
+            <IconButton
+              onClick={() => setIsOpen(false)}
+              aria-label='드로어 닫기'>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <nav>
+            <a href='/'>홈</a>
+            <a href='/about'>소개</a>
+          </nav>
         </Box>
-        <nav>
-          <a href="/">홈</a>
-          <a href="/about">소개</a>
-        </nav>
-      </Box>
-    </Drawer>
-  </>
-);
+      </Drawer>
+    </>
+  )
 }`
       },
       notes: [
@@ -176,27 +191,30 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Radix Dialog (Drawer 구현)',
-        code: `import * as Dialog from '@radix-ui/react-dialog';
+        code: `import * as Dialog from '@radix-ui/react-dialog'
 
-{/* Radix Dialog에 CSS transform으로 드로어 효과 */}
-<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-<Dialog.Trigger asChild>
-  <button>메뉴 열기</button>
-</Dialog.Trigger>
-<Dialog.Portal>
-  <Dialog.Overlay className="drawer-overlay" />
-  <Dialog.Content
-    className="drawer-content" /* translateX 애니메이션 */
-    aria-describedby={undefined}
-  >
-    <Dialog.Title>메뉴</Dialog.Title>
-    <nav>
-      <a href="/">홈</a>
-      <a href="/about">소개</a>
-    </nav>
-    <Dialog.Close aria-label="드로어 닫기">닫기</Dialog.Close>
-  </Dialog.Content>
-</Dialog.Portal>
+{
+  /* Radix Dialog에 CSS transform으로 드로어 효과 */
+}
+<Dialog.Root
+  open={isOpen}
+  onOpenChange={setIsOpen}>
+  <Dialog.Trigger asChild>
+    <button>메뉴 열기</button>
+  </Dialog.Trigger>
+  <Dialog.Portal>
+    <Dialog.Overlay className='drawer-overlay' />
+    <Dialog.Content
+      className='drawer-content' /* translateX 애니메이션 */
+      aria-describedby={undefined}>
+      <Dialog.Title>메뉴</Dialog.Title>
+      <nav>
+        <a href='/'>홈</a>
+        <a href='/about'>소개</a>
+      </nav>
+      <Dialog.Close aria-label='드로어 닫기'>닫기</Dialog.Close>
+    </Dialog.Content>
+  </Dialog.Portal>
 </Dialog.Root>`
       },
       notes: [
@@ -221,22 +239,20 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Drawer',
-        code: `import { Drawer, Button } from 'antd';
-
+        code: `import { Drawer, Button } from 'antd'
 <>
-<Button onClick={() => setIsOpen(true)}>메뉴 열기</Button>
-<Drawer
-  title="메뉴"
-  open={isOpen}
-  onClose={() => setIsOpen(false)}
-  placement="left"
-  closeIcon={<span aria-label="드로어 닫기">×</span>}
->
-  <nav>
-    <a href="/">홈</a>
-    <a href="/about">소개</a>
-  </nav>
-</Drawer>
+  <Button onClick={() => setIsOpen(true)}>메뉴 열기</Button>
+  <Drawer
+    title='메뉴'
+    open={isOpen}
+    onClose={() => setIsOpen(false)}
+    placement='left'
+    closeIcon={<span aria-label='드로어 닫기'>×</span>}>
+    <nav>
+      <a href='/'>홈</a>
+      <a href='/about'>소개</a>
+    </nav>
+  </Drawer>
 </>`
       },
       notes: [
@@ -260,34 +276,33 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Drawer',
-        code: `import {
-Drawer,
-DrawerClose,
-DrawerContent,
-DrawerDescription,
-DrawerHeader,
-DrawerTitle,
-DrawerTrigger,
-} from '@/components/ui/drawer'
+        code: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
-
 <Drawer>
-<DrawerTrigger asChild>
-  <Button variant="outline">메뉴 열기</Button>
-</DrawerTrigger>
-<DrawerContent>
-  <DrawerHeader>
-    <DrawerTitle>내비게이션 메뉴</DrawerTitle>
-    <DrawerDescription>원하는 페이지로 이동하세요.</DrawerDescription>
-  </DrawerHeader>
-  <div className="p-4">
-    <a href="/home" className="block py-2">홈</a>
-    <a href="/about" className="block py-2">소개</a>
-  </div>
-  <DrawerClose asChild>
-    <Button variant="outline">닫기</Button>
-  </DrawerClose>
-</DrawerContent>
+  <DrawerTrigger asChild>
+    <Button variant='outline'>메뉴 열기</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>내비게이션 메뉴</DrawerTitle>
+      <DrawerDescription>원하는 페이지로 이동하세요.</DrawerDescription>
+    </DrawerHeader>
+    <div className='p-4'>
+      <a
+        href='/home'
+        className='block py-2'>
+        홈
+      </a>
+      <a
+        href='/about'
+        className='block py-2'>
+        소개
+      </a>
+    </div>
+    <DrawerClose asChild>
+      <Button variant='outline'>닫기</Button>
+    </DrawerClose>
+  </DrawerContent>
 </Drawer>`
       },
       notes: [
@@ -312,31 +327,37 @@ import { Button } from '@/components/ui/button'
         language: 'tsx',
         label: 'Chakra UI Drawer',
         code: `import { Drawer, Button } from '@chakra-ui/react'
-
 <Drawer.Root>
-<Drawer.Trigger asChild>
-  <Button variant="outline">메뉴 열기</Button>
-</Drawer.Trigger>
-<Drawer.Backdrop />
-<Drawer.Positioner>
-  <Drawer.Content>
-    <Drawer.CloseTrigger asChild>
-      <Button variant="ghost" aria-label="닫기" position="absolute" top={2} right={2}>✕</Button>
-    </Drawer.CloseTrigger>
-    <Drawer.Header>
-      <Drawer.Title>내비게이션 메뉴</Drawer.Title>
-    </Drawer.Header>
-    <Drawer.Body>
-      <a href="/home">홈</a>
-      <a href="/about">소개</a>
-    </Drawer.Body>
-    <Drawer.Footer>
-      <Drawer.ActionTrigger asChild>
-        <Button variant="outline">닫기</Button>
-      </Drawer.ActionTrigger>
-    </Drawer.Footer>
-  </Drawer.Content>
-</Drawer.Positioner>
+  <Drawer.Trigger asChild>
+    <Button variant='outline'>메뉴 열기</Button>
+  </Drawer.Trigger>
+  <Drawer.Backdrop />
+  <Drawer.Positioner>
+    <Drawer.Content>
+      <Drawer.CloseTrigger asChild>
+        <Button
+          variant='ghost'
+          aria-label='닫기'
+          position='absolute'
+          top={2}
+          right={2}>
+          ✕
+        </Button>
+      </Drawer.CloseTrigger>
+      <Drawer.Header>
+        <Drawer.Title>내비게이션 메뉴</Drawer.Title>
+      </Drawer.Header>
+      <Drawer.Body>
+        <a href='/home'>홈</a>
+        <a href='/about'>소개</a>
+      </Drawer.Body>
+      <Drawer.Footer>
+        <Drawer.ActionTrigger asChild>
+          <Button variant='outline'>닫기</Button>
+        </Drawer.ActionTrigger>
+      </Drawer.Footer>
+    </Drawer.Content>
+  </Drawer.Positioner>
 </Drawer.Root>`
       },
       notes: [

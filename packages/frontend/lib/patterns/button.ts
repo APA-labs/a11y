@@ -39,13 +39,12 @@ export const buttonPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML)',
       code: `<button
-type="button"
-aria-label="파일 저장"
-aria-disabled={isLoading}
-aria-busy={isLoading}
-className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
->
-{isLoading ? <span aria-hidden>⏳</span> : '저장'}
+  type='button'
+  aria-label='파일 저장'
+  aria-disabled={isLoading}
+  aria-busy={isLoading}
+  className='focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2'>
+  {isLoading ? <span aria-hidden>⏳</span> : '저장'}
 </button>`
     }
   },
@@ -72,15 +71,20 @@ className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-o
         language: 'tsx',
         label: 'MUI Button',
         code: `import { Button, CircularProgress } from '@mui/material'
-
 <Button
-variant="contained"
-disabled={isLoading}
-aria-busy={isLoading}
-startIcon={isLoading ? <CircularProgress size={16} aria-hidden /> : undefined}
-sx={{ minWidth: 44, minHeight: 44 }}
->
-{isLoading ? '저장 중...' : '저장'}
+  variant='contained'
+  disabled={isLoading}
+  aria-busy={isLoading}
+  startIcon={
+    isLoading ? (
+      <CircularProgress
+        size={16}
+        aria-hidden
+      />
+    ) : undefined
+  }
+  sx={{ minWidth: 44, minHeight: 44 }}>
+  {isLoading ? '저장 중...' : '저장'}
 </Button>`
       },
       notes: [
@@ -116,37 +120,35 @@ import { Slot } from '@radix-ui/react-slot'
 const cn = (...c: string[]) => c.filter(Boolean).join(' ')
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-asChild?: boolean
-isLoading?: boolean
-children?: React.ReactNode
+  asChild?: boolean
+  isLoading?: boolean
+  children?: React.ReactNode
 }
 
 function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
-const Comp = asChild ? Slot : 'button'
-return (
-  <Comp
-    aria-busy={isLoading}
-    aria-disabled={isLoading || props.disabled}
-    className={cn(
-      'focus-visible:ring-2 focus-visible:ring-offset-2',
-      'min-h-[44px] min-w-[44px]'
-    )}
-    {...props}
-  >
-    {children}
-  </Comp>
-)
+  const Comp = asChild ? Slot : 'button'
+  return (
+    <Comp
+      aria-busy={isLoading}
+      aria-disabled={isLoading || props.disabled}
+      className={cn('focus-visible:ring-2 focus-visible:ring-offset-2', 'min-h-[44px] min-w-[44px]')}
+      {...props}>
+      {children}
+    </Comp>
+  )
 }
 
 export default function App() {
-const [isLoading, setIsLoading] = React.useState(false)
-return (
-  <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
-    <Button isLoading={isLoading} onClick={() => setIsLoading(!isLoading)}>
-      {isLoading ? '저장 중...' : '저장'}
-    </Button>
-  </div>
-)
+  const [isLoading, setIsLoading] = React.useState(false)
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
+      <Button
+        isLoading={isLoading}
+        onClick={() => setIsLoading(!isLoading)}>
+        {isLoading ? '저장 중...' : '저장'}
+      </Button>
+    </div>
+  )
 }`
       },
       notes: [
@@ -177,24 +179,23 @@ return (
         language: 'tsx',
         label: 'Ant Design Button',
         code: `import { Button } from 'antd'
-
 <Button
-type="primary"
-loading={isLoading}
-aria-label={isLoading ? '저장 중' : '저장'}
-style={{ minWidth: 44, minHeight: 44 }}
-onClick={() => {}}
->
-저장
+  type='primary'
+  loading={isLoading}
+  aria-label={isLoading ? '저장 중' : '저장'}
+  style={{ minWidth: 44, minHeight: 44 }}
+  onClick={() => {}}>
+  저장
 </Button>
 
-{/* 삭제 버튼: danger + 명시적 레이블 */}
+{
+  /* 삭제 버튼: danger + 명시적 레이블 */
+}
 <Button
-danger
-aria-label="항목 삭제"
-onClick={() => {}}
->
-삭제
+  danger
+  aria-label='항목 삭제'
+  onClick={() => {}}>
+  삭제
 </Button>`
       },
       notes: [
@@ -258,17 +259,16 @@ onClick={() => {}}
         code: `import { Button } from '@chakra-ui/react'
 
 function ButtonDemo() {
-const [isLoading, setIsLoading] = useState(false);
-return (
-  <Button
-    colorScheme="blue"
-    isLoading={isLoading}
-    loadingText="저장 중"
-    onClick={() => setIsLoading(true)}
-  >
-    저장
-  </Button>
-);
+  const [isLoading, setIsLoading] = useState(false)
+  return (
+    <Button
+      colorScheme='blue'
+      isLoading={isLoading}
+      loadingText='저장 중'
+      onClick={() => setIsLoading(true)}>
+      저장
+    </Button>
+  )
 }`
       },
       notes: [
@@ -288,11 +288,13 @@ return (
         code: `import { Button } from '@adobe/react-spectrum'
 
 function ButtonDemo() {
-return (
-  <Button variant="cta" onPress={() => {}}>
-    저장
-  </Button>
-);
+  return (
+    <Button
+      variant='cta'
+      onPress={() => {}}>
+      저장
+    </Button>
+  )
 }`
       },
       notes: [

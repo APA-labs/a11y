@@ -68,12 +68,15 @@ export const linkPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `export function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
-return (
-  <a href={href} target="_blank" rel="noreferrer noopener">
-    {children}
-    <span className="sr-only"> (새 탭에서 열림)</span>
-  </a>
-)
+  return (
+    <a
+      href={href}
+      target='_blank'
+      rel='noreferrer noopener'>
+      {children}
+      <span className='sr-only'> (새 탭에서 열림)</span>
+    </a>
+  )
 }`
     }
   },
@@ -94,15 +97,21 @@ return (
         language: 'tsx',
         label: 'MUI Link',
         code: `import { Link } from '@mui/material'
-
-<Link href="/about" underline="always">
-회사 소개
+<Link
+  href='/about'
+  underline='always'>
+  회사 소개
 </Link>
 
-{/* 외부 링크 */}
-<Link href="https://example.com" target="_blank" rel="noreferrer">
-외부 사이트
-<span className="sr-only"> (새 탭에서 열림)</span>
+{
+  /* 외부 링크 */
+}
+<Link
+  href='https://example.com'
+  target='_blank'
+  rel='noreferrer'>
+  외부 사이트
+  <span className='sr-only'> (새 탭에서 열림)</span>
 </Link>`
       },
       notes: ['MUI Link는 component prop으로 Next.js Link 등 라우터와 통합할 수 있습니다.', 'color prop 변경 시 대비율을 확인하세요.']
@@ -124,9 +133,13 @@ return (
         label: 'Radix + Next.js Link',
         code: `import NextLink from 'next/link'
 
-{/* Radix 컴포넌트 내 링크는 asChild 패턴 활용 */}
-<NextLink href="/patterns/button" className="text-indigo-600 hover:underline">
-Button 패턴 보기
+{
+  /* Radix 컴포넌트 내 링크는 asChild 패턴 활용 */
+}
+<NextLink
+  href='/patterns/button'
+  className='text-indigo-600 hover:underline'>
+  Button 패턴 보기
 </NextLink>`
       },
       notes: ['네이티브 <a>의 기본 접근성을 최대한 활용하세요.', 'Radix Themes를 사용하는 경우 Theme.Link 컴포넌트가 포함되어 있습니다.']

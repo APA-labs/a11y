@@ -85,45 +85,51 @@ export const formValidationPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `function FormWithValidation() {
-const [email, setEmail] = useState('');
-const [error, setError] = useState('');
-const errorId = 'email-error';
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+  const errorId = 'email-error'
 
-const validate = () => {
-  if (!email) return '이메일을 입력해주세요.';
-  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다.';
-  return '';
-};
+  const validate = () => {
+    if (!email) return '이메일을 입력해주세요.'
+    if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) return '올바른 이메일 형식이 아닙니다.'
+    return ''
+  }
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const err = validate();
-  setError(err);
-  if (err) document.getElementById('email-input')?.focus();
-};
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const err = validate()
+    setError(err)
+    if (err) document.getElementById('email-input')?.focus()
+  }
 
-return (
-  <form onSubmit={handleSubmit} noValidate>
-    <div>
-      <label htmlFor="email-input">
-        이메일 <span aria-hidden>*</span>
-      </label>
-      <input
-        id="email-input"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        aria-required="true"
-        aria-invalid={!!error}
-        aria-describedby={error ? errorId : undefined}
-      />
-      {error && (
-        <p id={errorId} role="alert">{error}</p>
-      )}
-    </div>
-    <button type="submit">제출</button>
-  </form>
-);
+  return (
+    <form
+      onSubmit={handleSubmit}
+      noValidate>
+      <div>
+        <label htmlFor='email-input'>
+          이메일 <span aria-hidden>*</span>
+        </label>
+        <input
+          id='email-input'
+          type='email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-required='true'
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
+        />
+        {error && (
+          <p
+            id={errorId}
+            role='alert'>
+            {error}
+          </p>
+        )}
+      </div>
+      <button type='submit'>제출</button>
+    </form>
+  )
 }`
     }
   },
@@ -143,34 +149,43 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI TextField with Validation',
-        code: `import { TextField, Button } from '@mui/material';
+        code: `import { TextField, Button } from '@mui/material'
 
 function MuiForm() {
-const [email, setEmail] = useState('');
-const [error, setError] = useState('');
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (!email.includes('@')) {
-    setError('올바른 이메일 형식이 아닙니다.');
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!email.includes('@')) {
+      setError('올바른 이메일 형식이 아닙니다.')
+    }
   }
-};
 
-return (
-  <form onSubmit={handleSubmit} noValidate>
-    <TextField
-      label="이메일"
-      type="email"
-      required
-      value={email}
-      onChange={(e) => { setEmail(e.target.value); setError(''); }}
-      error={!!error}
-      helperText={error || '예: user@example.com'}
-      inputProps={{ 'aria-required': true }}
-    />
-    <Button type="submit" variant="contained">제출</Button>
-  </form>
-);
+  return (
+    <form
+      onSubmit={handleSubmit}
+      noValidate>
+      <TextField
+        label='이메일'
+        type='email'
+        required
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value)
+          setError('')
+        }}
+        error={!!error}
+        helperText={error || '예: user@example.com'}
+        inputProps={{ 'aria-required': true }}
+      />
+      <Button
+        type='submit'
+        variant='contained'>
+        제출
+      </Button>
+    </form>
+  )
 }`
       },
       notes: [
@@ -194,24 +209,22 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Radix Form',
-        code: `import * as Form from '@radix-ui/react-form';
-
+        code: `import * as Form from '@radix-ui/react-form'
 <Form.Root onSubmit={handleSubmit}>
-<Form.Field name="email">
-  <Form.Label>이메일</Form.Label>
-  <Form.Control asChild>
-    <input type="email" required />
-  </Form.Control>
-  <Form.Message match="valueMissing">
-    이메일을 입력해주세요.
-  </Form.Message>
-  <Form.Message match="typeMismatch">
-    올바른 이메일 형식이 아닙니다.
-  </Form.Message>
-</Form.Field>
-<Form.Submit asChild>
-  <button type="submit">제출</button>
-</Form.Submit>
+  <Form.Field name='email'>
+    <Form.Label>이메일</Form.Label>
+    <Form.Control asChild>
+      <input
+        type='email'
+        required
+      />
+    </Form.Control>
+    <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>
+    <Form.Message match='typeMismatch'>올바른 이메일 형식이 아닙니다.</Form.Message>
+  </Form.Field>
+  <Form.Submit asChild>
+    <button type='submit'>제출</button>
+  </Form.Submit>
 </Form.Root>`
       },
       notes: [
@@ -235,29 +248,30 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Form',
-        code: `import { Form, Input, Button } from 'antd';
-
+        code: `import { Form, Input, Button } from 'antd'
 <Form
-layout="vertical"
-onFinishFailed={({ errorFields }) => {
-  const first = errorFields[0];
-  if (first) form.scrollToField(first.name);
-}}
->
-<Form.Item
-  label="이메일"
-  name="email"
-  rules={[
-    { required: true, message: '이메일을 입력해주세요.' },
-    { type: 'email', message: '올바른 이메일 형식이 아닙니다.' }
-  ]}
-  validateTrigger="onBlur"
->
-  <Input type="email" />
-</Form.Item>
-<Form.Item>
-  <Button type="primary" htmlType="submit">제출</Button>
-</Form.Item>
+  layout='vertical'
+  onFinishFailed={({ errorFields }) => {
+    const first = errorFields[0]
+    if (first) form.scrollToField(first.name)
+  }}>
+  <Form.Item
+    label='이메일'
+    name='email'
+    rules={[
+      { required: true, message: '이메일을 입력해주세요.' },
+      { type: 'email', message: '올바른 이메일 형식이 아닙니다.' }
+    ]}
+    validateTrigger='onBlur'>
+    <Input type='email' />
+  </Form.Item>
+  <Form.Item>
+    <Button
+      type='primary'
+      htmlType='submit'>
+      제출
+    </Button>
+  </Form.Item>
 </Form>`
       },
       notes: [
@@ -285,40 +299,40 @@ onFinishFailed={({ errorFields }) => {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
-import {
-Form,
-FormControl,
-FormField,
-FormItem,
-FormLabel,
-FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
 const schema = z.object({ email: z.string().email('올바른 이메일 형식을 입력해주세요.') })
 
 export default function App() {
-const form = useForm({ resolver: zodResolver(schema) })
-return (
-  <Form {...form}>
-    <form onSubmit={form.handleSubmit(() => {})}>
-      <FormField
-        control={form.control}
-        name="email"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>이메일</FormLabel>
-            <FormControl>
-              <Input type="email" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <Button type="submit" className="mt-4">제출</Button>
-    </form>
-  </Form>
-)
+  const form = useForm({ resolver: zodResolver(schema) })
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(() => {})}>
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>이메일</FormLabel>
+              <FormControl>
+                <Input
+                  type='email'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button
+          type='submit'
+          className='mt-4'>
+          제출
+        </Button>
+      </form>
+    </Form>
+  )
 }`
       },
       notes: [
@@ -346,26 +360,38 @@ return (
 import { useState } from 'react'
 
 export default function App() {
-const [email, setEmail] = useState('')
-const [error, setError] = useState('')
-const handleSubmit = (e) => {
-  e.preventDefault()
-  if (!email.includes('@')) {
-    setError('올바른 이메일 형식을 입력해주세요.')
-    return
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!email.includes('@')) {
+      setError('올바른 이메일 형식을 입력해주세요.')
+      return
+    }
+    setError('')
   }
-  setError('')
-}
-return (
-  <form onSubmit={handleSubmit}>
-    <Field.Root required invalid={!!error}>
-      <Field.Label>이메일 <Field.RequiredIndicator /></Field.Label>
-      <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      {error && <Field.ErrorText role="alert">{error}</Field.ErrorText>}
-    </Field.Root>
-    <Button type="submit" mt={4}>제출</Button>
-  </form>
-)
+  return (
+    <form onSubmit={handleSubmit}>
+      <Field.Root
+        required
+        invalid={!!error}>
+        <Field.Label>
+          이메일 <Field.RequiredIndicator />
+        </Field.Label>
+        <Input
+          type='email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        {error && <Field.ErrorText role='alert'>{error}</Field.ErrorText>}
+      </Field.Root>
+      <Button
+        type='submit'
+        mt={4}>
+        제출
+      </Button>
+    </form>
+  )
 }`
       },
       notes: [
@@ -392,19 +418,19 @@ return (
         code: `import { Form, TextField, Button } from 'react-aria-components'
 
 export default function App() {
-return (
-  <Form onSubmit={(e) => e.preventDefault()}>
-    <TextField
-      type="email"
-      name="email"
-      label="이메일"
-      isRequired
-      validate={(v) => v.includes('@') ? null : '올바른 이메일 형식을 입력해주세요.'}
-      errorMessage={(e) => e.validationErrors}
-    />
-    <Button type="submit">제출</Button>
-  </Form>
-)
+  return (
+    <Form onSubmit={(e) => e.preventDefault()}>
+      <TextField
+        type='email'
+        name='email'
+        label='이메일'
+        isRequired
+        validate={(v) => (v.includes('@') ? null : '올바른 이메일 형식을 입력해주세요.')}
+        errorMessage={(e) => e.validationErrors}
+      />
+      <Button type='submit'>제출</Button>
+    </Form>
+  )
 }`
       },
       notes: [

@@ -134,21 +134,18 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Snackbar + Alert',
-        code: `import { Snackbar, Alert } from '@mui/material';
-
+        code: `import { Snackbar, Alert } from '@mui/material'
 <Snackbar
-open={isOpen}
-autoHideDuration={5000}
-onClose={() => setIsOpen(false)}
-anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
->
-<Alert
+  open={isOpen}
+  autoHideDuration={5000}
   onClose={() => setIsOpen(false)}
-  severity="success"
-  variant="filled"
->
-  파일이 저장되었습니다.
-</Alert>
+  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+  <Alert
+    onClose={() => setIsOpen(false)}
+    severity='success'
+    variant='filled'>
+    파일이 저장되었습니다.
+  </Alert>
 </Snackbar>`
       },
       notes: [
@@ -178,32 +175,31 @@ anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       codeSample: {
         language: 'tsx',
         label: 'Radix Toast',
-        code: `import * as Toast from '@radix-ui/react-toast';
+        code: `import * as Toast from '@radix-ui/react-toast'
 
 function ToastDemo() {
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-return (
-  <Toast.Provider swipeDirection="right">
-    <button onClick={() => setOpen(true)}>저장</button>
+  return (
+    <Toast.Provider swipeDirection='right'>
+      <button onClick={() => setOpen(true)}>저장</button>
 
-    <Toast.Root
-      open={open}
-      onOpenChange={setOpen}
-      type="foreground"
-      duration={5000}
-    >
-      <Toast.Title>저장 완료</Toast.Title>
-      <Toast.Description>파일이 저장되었습니다.</Toast.Description>
-      <Toast.Close aria-label="닫기">×</Toast.Close>
-    </Toast.Root>
+      <Toast.Root
+        open={open}
+        onOpenChange={setOpen}
+        type='foreground'
+        duration={5000}>
+        <Toast.Title>저장 완료</Toast.Title>
+        <Toast.Description>파일이 저장되었습니다.</Toast.Description>
+        <Toast.Close aria-label='닫기'>×</Toast.Close>
+      </Toast.Root>
 
-    <Toast.Viewport
-      label="알림 목록. F8을 눌러 이동하세요."
-      className="toast-viewport"
-    />
-  </Toast.Provider>
-);
+      <Toast.Viewport
+        label='알림 목록. F8을 눌러 이동하세요.'
+        className='toast-viewport'
+      />
+    </Toast.Provider>
+  )
 }`
       },
       notes: [
@@ -228,28 +224,32 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Alert',
-        code: `import { Alert, Space } from 'antd';
+        code: `import { Alert, Space } from 'antd'
 
-{/* 인라인 Alert */}
+{
+  /* 인라인 Alert */
+}
 <Alert
-message="저장 완료"
-description="파일이 성공적으로 저장되었습니다."
-type="success"
-showIcon
-closable
-onClose={() => {}}
+  message='저장 완료'
+  description='파일이 성공적으로 저장되었습니다.'
+  type='success'
+  showIcon
+  closable
+  onClose={() => {}}
 />
 
-{/* 토스트형 - notification API */}
-import { notification } from 'antd';
+{
+  /* 토스트형 - notification API */
+}
+import { notification } from 'antd'
 
 const openNotification = () => {
-notification.success({
-  message: '저장 완료',
-  description: '파일이 저장되었습니다.',
-  duration: 5,
-});
-};`
+  notification.success({
+    message: '저장 완료',
+    description: '파일이 저장되었습니다.',
+    duration: 5
+  })
+}`
       },
       notes: [
         'Alert 컴포넌트의 showIcon prop은 severity 유형을 아이콘으로 자동 표시합니다.',
@@ -272,19 +272,17 @@ notification.success({
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Alert',
-        code: `import {
-Alert,
-AlertDescription,
-AlertTitle,
-} from '@/components/ui/alert'
+        code: `import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
-
-<Alert variant="destructive" role="alert">
-<AlertCircle className="h-4 w-4" aria-hidden />
-<AlertTitle>오류 발생</AlertTitle>
-<AlertDescription>
-  서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.
-</AlertDescription>
+<Alert
+  variant='destructive'
+  role='alert'>
+  <AlertCircle
+    className='h-4 w-4'
+    aria-hidden
+  />
+  <AlertTitle>오류 발생</AlertTitle>
+  <AlertDescription>서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.</AlertDescription>
 </Alert>`
       },
       notes: [
@@ -309,15 +307,14 @@ import { AlertCircle } from 'lucide-react'
         language: 'tsx',
         label: 'Chakra UI Alert',
         code: `import { Alert } from '@chakra-ui/react'
-
-<Alert.Root status="error" role="alert">
-<Alert.Indicator aria-hidden />
-<Alert.Content>
-  <Alert.Title>오류 발생</Alert.Title>
-  <Alert.Description>
-    서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.
-  </Alert.Description>
-</Alert.Content>
+<Alert.Root
+  status='error'
+  role='alert'>
+  <Alert.Indicator aria-hidden />
+  <Alert.Content>
+    <Alert.Title>오류 발생</Alert.Title>
+    <Alert.Description>서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.</Alert.Description>
+  </Alert.Content>
 </Alert.Root>`
       },
       notes: [

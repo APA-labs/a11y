@@ -69,28 +69,22 @@ export const checkboxPattern: Pattern = {
       label: 'Baseline (React)',
       code: `import { useState } from 'react'
 
-export function Checkbox({
-id = 'cb-example',
-label = '레이블',
-indeterminate = false,
-}: {
-id?: string
-label?: string
-indeterminate?: boolean
-}) {
-const [checked, setChecked] = useState(false)
-return (
-  <label htmlFor={id}>
-    <input
-      id={id}
-      type="checkbox"
-      checked={checked}
-      ref={(el) => { if (el) el.indeterminate = indeterminate }}
-      onChange={(e) => setChecked(e.target.checked)}
-    />
-    {label}
-  </label>
-)
+export function Checkbox({ id = 'cb-example', label = '레이블', indeterminate = false }: { id?: string; label?: string; indeterminate?: boolean }) {
+  const [checked, setChecked] = useState(false)
+  return (
+    <label htmlFor={id}>
+      <input
+        id={id}
+        type='checkbox'
+        checked={checked}
+        ref={(el) => {
+          if (el) el.indeterminate = indeterminate
+        }}
+        onChange={(e) => setChecked(e.target.checked)}
+      />
+      {label}
+    </label>
+  )
 }`
     }
   },
@@ -117,17 +111,26 @@ return (
         language: 'tsx',
         label: 'MUI Checkbox',
         code: `import { Checkbox, FormControlLabel, FormGroup, FormLabel } from '@mui/material'
-
 <FormGroup>
-<FormLabel component="legend">알림 설정</FormLabel>
-<FormControlLabel
-  control={<Checkbox checked={emailChecked} onChange={(e) => setEmailChecked(e.target.checked)} />}
-  label="이메일 알림"
-/>
-<FormControlLabel
-  control={<Checkbox checked={smsChecked} onChange={(e) => setSmsChecked(e.target.checked)} />}
-  label="SMS 알림"
-/>
+  <FormLabel component='legend'>알림 설정</FormLabel>
+  <FormControlLabel
+    control={
+      <Checkbox
+        checked={emailChecked}
+        onChange={(e) => setEmailChecked(e.target.checked)}
+      />
+    }
+    label='이메일 알림'
+  />
+  <FormControlLabel
+    control={
+      <Checkbox
+        checked={smsChecked}
+        onChange={(e) => setSmsChecked(e.target.checked)}
+      />
+    }
+    label='SMS 알림'
+  />
 </FormGroup>`
       },
       notes: ['MUI Checkbox는 네이티브 input을 사용하므로 기본 접근성이 보장됩니다.', 'color prop 변경 시 4.5:1 대비율을 확인하세요.']
@@ -151,16 +154,18 @@ return (
 import { CheckIcon } from '@radix-ui/react-icons'
 
 export function RadixCheckbox({ id, label }) {
-return (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-    <Checkbox.Root id={id} className="checkbox-root">
-      <Checkbox.Indicator>
-        <CheckIcon />
-      </Checkbox.Indicator>
-    </Checkbox.Root>
-    <label htmlFor={id}>{label}</label>
-  </div>
-)
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <Checkbox.Root
+        id={id}
+        className='checkbox-root'>
+        <Checkbox.Indicator>
+          <CheckIcon />
+        </Checkbox.Indicator>
+      </Checkbox.Root>
+      <label htmlFor={id}>{label}</label>
+    </div>
+  )
 }`
       },
       notes: [

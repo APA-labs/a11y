@@ -156,21 +156,40 @@ return (
 import { Tabs, Tab, Box } from '@mui/material'
 
 export function MuiTabs() {
-const [value, setValue] = useState(0)
-return (
-  <Box>
-    <Tabs value={value} onChange={(_, v) => setValue(v)} aria-label="content tabs">
-      <Tab label="Tab 1" id="tab-0" aria-controls="panel-0" />
-      <Tab label="Tab 2" id="tab-1" aria-controls="panel-1" />
-    </Tabs>
-    <div role="tabpanel" id="panel-0" aria-labelledby="tab-0" hidden={value !== 0}>
-      Panel 1
-    </div>
-    <div role="tabpanel" id="panel-1" aria-labelledby="tab-1" hidden={value !== 1}>
-      Panel 2
-    </div>
-  </Box>
-)
+  const [value, setValue] = useState(0)
+  return (
+    <Box>
+      <Tabs
+        value={value}
+        onChange={(_, v) => setValue(v)}
+        aria-label='content tabs'>
+        <Tab
+          label='Tab 1'
+          id='tab-0'
+          aria-controls='panel-0'
+        />
+        <Tab
+          label='Tab 2'
+          id='tab-1'
+          aria-controls='panel-1'
+        />
+      </Tabs>
+      <div
+        role='tabpanel'
+        id='panel-0'
+        aria-labelledby='tab-0'
+        hidden={value !== 0}>
+        Panel 1
+      </div>
+      <div
+        role='tabpanel'
+        id='panel-1'
+        aria-labelledby='tab-1'
+        hidden={value !== 1}>
+        Panel 2
+      </div>
+    </Box>
+  )
 }`
       },
       notes: [
@@ -196,16 +215,18 @@ return (
         code: `import * as Tabs from '@radix-ui/react-tabs'
 
 export function RadixTabs() {
-return (
-  <Tabs.Root defaultValue="tab1" activationMode="manual">
-    <Tabs.List aria-label="Content tabs">
-      <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
-      <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
-    </Tabs.List>
-    <Tabs.Content value="tab1">Panel 1 content</Tabs.Content>
-    <Tabs.Content value="tab2">Panel 2 content</Tabs.Content>
-  </Tabs.Root>
-)
+  return (
+    <Tabs.Root
+      defaultValue='tab1'
+      activationMode='manual'>
+      <Tabs.List aria-label='Content tabs'>
+        <Tabs.Trigger value='tab1'>Tab 1</Tabs.Trigger>
+        <Tabs.Trigger value='tab2'>Tab 2</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value='tab1'>Panel 1 content</Tabs.Content>
+      <Tabs.Content value='tab2'>Panel 2 content</Tabs.Content>
+    </Tabs.Root>
+  )
 }`
       },
       notes: ['Radix Tabs는 모든 ARIA 역할과 키보드 탐색을 자동으로 처리합니다.', 'Tabs.List에 aria-label을 추가해 탭 그룹의 목적을 명시하세요.']
@@ -228,12 +249,17 @@ return (
         code: `import { Tabs } from 'antd'
 
 const items = [
-{ key: '1', label: 'Tab 1', children: 'Panel 1 content' },
-{ key: '2', label: 'Tab 2', children: 'Panel 2 content' },
+  { key: '1', label: 'Tab 1', children: 'Panel 1 content' },
+  { key: '2', label: 'Tab 2', children: 'Panel 2 content' }
 ]
 
 export function AntTabs() {
-return <Tabs defaultActiveKey="1" items={items} />
+  return (
+    <Tabs
+      defaultActiveKey='1'
+      items={items}
+    />
+  )
 }`
       },
       notes: ['Ant Design Tabs는 기본적으로 접근성 속성을 처리합니다.', 'tabBarExtraContent 사용 시 해당 콘텐츠도 키보드로 접근 가능한지 확인하세요.']
@@ -254,14 +280,13 @@ return <Tabs defaultActiveKey="1" items={items} />
         language: 'tsx',
         label: 'shadcn/ui Tabs',
         code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
-<Tabs defaultValue="account">
-<TabsList aria-label="계정 설정">
-  <TabsTrigger value="account">계정</TabsTrigger>
-  <TabsTrigger value="password">비밀번호</TabsTrigger>
-</TabsList>
-<TabsContent value="account">계정 설정 내용</TabsContent>
-<TabsContent value="password">비밀번호 변경 내용</TabsContent>
+<Tabs defaultValue='account'>
+  <TabsList aria-label='계정 설정'>
+    <TabsTrigger value='account'>계정</TabsTrigger>
+    <TabsTrigger value='password'>비밀번호</TabsTrigger>
+  </TabsList>
+  <TabsContent value='account'>계정 설정 내용</TabsContent>
+  <TabsContent value='password'>비밀번호 변경 내용</TabsContent>
 </Tabs>`
       },
       notes: [
@@ -286,15 +311,14 @@ return <Tabs defaultActiveKey="1" items={items} />
         language: 'tsx',
         label: 'Chakra UI Tabs',
         code: `import { Tabs } from '@chakra-ui/react'
-
-<Tabs.Root defaultValue="account">
-<Tabs.List aria-label="계정 설정">
-  <Tabs.Trigger value="account">계정</Tabs.Trigger>
-  <Tabs.Trigger value="password">비밀번호</Tabs.Trigger>
-  <Tabs.Indicator />
-</Tabs.List>
-<Tabs.Content value="account">계정 설정 내용</Tabs.Content>
-<Tabs.Content value="password">비밀번호 변경 내용</Tabs.Content>
+<Tabs.Root defaultValue='account'>
+  <Tabs.List aria-label='계정 설정'>
+    <Tabs.Trigger value='account'>계정</Tabs.Trigger>
+    <Tabs.Trigger value='password'>비밀번호</Tabs.Trigger>
+    <Tabs.Indicator />
+  </Tabs.List>
+  <Tabs.Content value='account'>계정 설정 내용</Tabs.Content>
+  <Tabs.Content value='password'>비밀번호 변경 내용</Tabs.Content>
 </Tabs.Root>`
       },
       notes: [
@@ -312,16 +336,15 @@ return <Tabs defaultActiveKey="1" items={items} />
         language: 'tsx',
         label: 'React Aria Tabs',
         code: `import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'react-aria-components'
-
 <Tabs>
-<TabList aria-label="계정 설정">
-  <Tab id="account">계정</Tab>
-  <Tab id="password">비밀번호</Tab>
-</TabList>
-<TabPanels>
-  <TabPanel id="account">계정 설정 내용</TabPanel>
-  <TabPanel id="password">비밀번호 변경 내용</TabPanel>
-</TabPanels>
+  <TabList aria-label='계정 설정'>
+    <Tab id='account'>계정</Tab>
+    <Tab id='password'>비밀번호</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel id='account'>계정 설정 내용</TabPanel>
+    <TabPanel id='password'>비밀번호 변경 내용</TabPanel>
+  </TabPanels>
 </Tabs>`
       },
       notes: [

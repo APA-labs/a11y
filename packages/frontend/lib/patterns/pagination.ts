@@ -221,17 +221,16 @@ getItemAriaLabel={(type, page, selected) => {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Pagination',
-        code: `import { Pagination, ConfigProvider } from 'antd';
-import koKR from 'antd/locale/ko_KR';
-
+        code: `import { Pagination, ConfigProvider } from 'antd'
+import koKR from 'antd/locale/ko_KR'
 <ConfigProvider locale={koKR}>
-<Pagination
-  current={currentPage}
-  total={100}
-  pageSize={10}
-  onChange={(page) => setCurrentPage(page)}
-  showSizeChanger={false}
-/>
+  <Pagination
+    current={currentPage}
+    total={100}
+    pageSize={10}
+    onChange={(page) => setCurrentPage(page)}
+    showSizeChanger={false}
+  />
 </ConfigProvider>`
       },
       notes: [
@@ -255,33 +254,45 @@ import koKR from 'antd/locale/ko_KR';
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Pagination',
-        code: `import {
-Pagination,
-PaginationContent,
-PaginationItem,
-PaginationLink,
-PaginationNext,
-PaginationPrevious,
-} from '@/components/ui/pagination'
-
+        code: `import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination'
 <Pagination>
-<PaginationContent>
-  <PaginationItem>
-    <PaginationPrevious href="#" aria-label="이전 페이지" />
-  </PaginationItem>
-  <PaginationItem>
-    <PaginationLink href="#" aria-label="1페이지">1</PaginationLink>
-  </PaginationItem>
-  <PaginationItem>
-    <PaginationLink href="#" isActive aria-current="page" aria-label="현재 페이지, 2페이지">2</PaginationLink>
-  </PaginationItem>
-  <PaginationItem>
-    <PaginationLink href="#" aria-label="3페이지">3</PaginationLink>
-  </PaginationItem>
-  <PaginationItem>
-    <PaginationNext href="#" aria-label="다음 페이지" />
-  </PaginationItem>
-</PaginationContent>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious
+        href='#'
+        aria-label='이전 페이지'
+      />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink
+        href='#'
+        aria-label='1페이지'>
+        1
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink
+        href='#'
+        isActive
+        aria-current='page'
+        aria-label='현재 페이지, 2페이지'>
+        2
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink
+        href='#'
+        aria-label='3페이지'>
+        3
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext
+        href='#'
+        aria-label='다음 페이지'
+      />
+    </PaginationItem>
+  </PaginationContent>
 </Pagination>`
       },
       notes: [
@@ -306,17 +317,24 @@ PaginationPrevious,
         language: 'tsx',
         label: 'Chakra UI Pagination',
         code: `import { Pagination } from '@chakra-ui/react'
-
-<Pagination.Root count={50} pageSize={10} page={page} onPageChange={(e) => setPage(e.page)}>
-<Pagination.PrevTrigger aria-label="이전 페이지" />
-{[1, 2, 3, 4, 5].map((p) => (
-  <Pagination.Item key={p} value={p}>
-    <Pagination.Link aria-label={p + '페이지'} aria-current={p === page ? 'page' : undefined}>
-      {p}
-    </Pagination.Link>
-  </Pagination.Item>
-))}
-<Pagination.NextTrigger aria-label="다음 페이지" />
+<Pagination.Root
+  count={50}
+  pageSize={10}
+  page={page}
+  onPageChange={(e) => setPage(e.page)}>
+  <Pagination.PrevTrigger aria-label='이전 페이지' />
+  {[1, 2, 3, 4, 5].map((p) => (
+    <Pagination.Item
+      key={p}
+      value={p}>
+      <Pagination.Link
+        aria-label={p + '페이지'}
+        aria-current={p === page ? 'page' : undefined}>
+        {p}
+      </Pagination.Link>
+    </Pagination.Item>
+  ))}
+  <Pagination.NextTrigger aria-label='다음 페이지' />
 </Pagination.Root>`
       },
       notes: [

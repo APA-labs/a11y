@@ -189,26 +189,43 @@ import * as Popover from '@radix-ui/react-popover'
 import { Command } from 'cmdk'
 
 export function RadixCombobox() {
-const [open, setOpen] = useState(false)
-const [value, setValue] = useState('')
-return (
-  <Popover.Root open={open} onOpenChange={setOpen}>
-    <Popover.Trigger asChild>
-      <button role="combobox" aria-expanded={open} aria-haspopup="listbox">
-        {value || 'Select...'}
-      </button>
-    </Popover.Trigger>
-    <Popover.Content>
-      <Command>
-        <Command.Input />
-        <Command.List>
-          <Command.Item onSelect={(v) => { setValue(v); setOpen(false) }}>Apple</Command.Item>
-          <Command.Item onSelect={(v) => { setValue(v); setOpen(false) }}>Banana</Command.Item>
-        </Command.List>
-      </Command>
-    </Popover.Content>
-  </Popover.Root>
-)
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState('')
+  return (
+    <Popover.Root
+      open={open}
+      onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button
+          role='combobox'
+          aria-expanded={open}
+          aria-haspopup='listbox'>
+          {value || 'Select...'}
+        </button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <Command>
+          <Command.Input />
+          <Command.List>
+            <Command.Item
+              onSelect={(v) => {
+                setValue(v)
+                setOpen(false)
+              }}>
+              Apple
+            </Command.Item>
+            <Command.Item
+              onSelect={(v) => {
+                setValue(v)
+                setOpen(false)
+              }}>
+              Banana
+            </Command.Item>
+          </Command.List>
+        </Command>
+      </Popover.Content>
+    </Popover.Root>
+  )
 }`
       },
       notes: [
@@ -266,33 +283,37 @@ aria-label="과일 선택"
         label: 'Chakra UI Combobox',
         code: `import { Combobox, useListCollection } from '@chakra-ui/react'
 
-const frameworks = ['React', 'Vue', 'Angular', 'Svelte'].map(f => ({ label: f, value: f.toLowerCase() }))
+const frameworks = ['React', 'Vue', 'Angular', 'Svelte'].map((f) => ({ label: f, value: f.toLowerCase() }))
 
 export default function App() {
-const { collection } = useListCollection({ initialItems: frameworks })
-return (
-  <Combobox.Root collection={collection} placeholder="프레임워크 선택">
-    <Combobox.Label>프레임워크</Combobox.Label>
-    <Combobox.Control>
-      <Combobox.Input />
-      <Combobox.IndicatorGroup>
-        <Combobox.ClearTrigger aria-label="선택 초기화" />
-        <Combobox.Trigger aria-label="목록 열기" />
-      </Combobox.IndicatorGroup>
-    </Combobox.Control>
-    <Combobox.Positioner>
-      <Combobox.Content>
-        <Combobox.Empty>결과 없음</Combobox.Empty>
-        {collection.items.map((item) => (
-          <Combobox.Item key={item.value} item={item}>
-            {item.label}
-            <Combobox.ItemIndicator />
-          </Combobox.Item>
-        ))}
-      </Combobox.Content>
-    </Combobox.Positioner>
-  </Combobox.Root>
-)
+  const { collection } = useListCollection({ initialItems: frameworks })
+  return (
+    <Combobox.Root
+      collection={collection}
+      placeholder='프레임워크 선택'>
+      <Combobox.Label>프레임워크</Combobox.Label>
+      <Combobox.Control>
+        <Combobox.Input />
+        <Combobox.IndicatorGroup>
+          <Combobox.ClearTrigger aria-label='선택 초기화' />
+          <Combobox.Trigger aria-label='목록 열기' />
+        </Combobox.IndicatorGroup>
+      </Combobox.Control>
+      <Combobox.Positioner>
+        <Combobox.Content>
+          <Combobox.Empty>결과 없음</Combobox.Empty>
+          {collection.items.map((item) => (
+            <Combobox.Item
+              key={item.value}
+              item={item}>
+              {item.label}
+              <Combobox.ItemIndicator />
+            </Combobox.Item>
+          ))}
+        </Combobox.Content>
+      </Combobox.Positioner>
+    </Combobox.Root>
+  )
 }`
       },
       notes: [
@@ -312,14 +333,14 @@ return (
         code: `import { ComboBox, ComboBoxItem } from 'react-aria-components'
 
 export default function App() {
-return (
-  <ComboBox label="프레임워크 선택">
-    <ComboBoxItem id="react">React</ComboBoxItem>
-    <ComboBoxItem id="vue">Vue</ComboBoxItem>
-    <ComboBoxItem id="angular">Angular</ComboBoxItem>
-    <ComboBoxItem id="svelte">Svelte</ComboBoxItem>
-  </ComboBox>
-)
+  return (
+    <ComboBox label='프레임워크 선택'>
+      <ComboBoxItem id='react'>React</ComboBoxItem>
+      <ComboBoxItem id='vue'>Vue</ComboBoxItem>
+      <ComboBoxItem id='angular'>Angular</ComboBoxItem>
+      <ComboBoxItem id='svelte'>Svelte</ComboBoxItem>
+    </ComboBox>
+  )
 }`
       },
       notes: [

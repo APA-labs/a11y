@@ -75,16 +75,15 @@ className={'relative inline-flex h-6 w-11 rounded-full transition-colors focus-v
         language: 'tsx',
         label: 'MUI Switch',
         code: `import { Switch, FormControlLabel } from '@mui/material'
-
 <FormControlLabel
-control={
-  <Switch
-    checked={isEnabled}
-    onChange={(e) => setIsEnabled(e.target.checked)}
-    inputProps={{ 'aria-label': '알림 설정' }}
-  />
-}
-label="알림 설정"
+  control={
+    <Switch
+      checked={isEnabled}
+      onChange={(e) => setIsEnabled(e.target.checked)}
+      inputProps={{ 'aria-label': '알림 설정' }}
+    />
+  }
+  label='알림 설정'
 />`
       },
       notes: [
@@ -115,21 +114,21 @@ label="알림 설정"
         language: 'tsx',
         label: 'Radix Switch',
         code: `import * as Switch from '@radix-ui/react-switch'
-
-<div className="flex items-center gap-2">
-<label htmlFor="notifications" className="text-sm font-medium">
-  알림 설정
-</label>
-<Switch.Root
-  id="notifications"
-  checked={isEnabled}
-  onCheckedChange={setIsEnabled}
-  className={'w-11 h-6 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 ' + (isEnabled ? 'bg-blue-600' : 'bg-gray-200')}
->
-  <Switch.Thumb
-    className={'block w-5 h-5 bg-white rounded-full shadow transition-transform ' + (isEnabled ? 'translate-x-5' : 'translate-x-0')}
-  />
-</Switch.Root>
+<div className='flex items-center gap-2'>
+  <label
+    htmlFor='notifications'
+    className='text-sm font-medium'>
+    알림 설정
+  </label>
+  <Switch.Root
+    id='notifications'
+    checked={isEnabled}
+    onCheckedChange={setIsEnabled}
+    className={
+      'w-11 h-6 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 ' + (isEnabled ? 'bg-blue-600' : 'bg-gray-200')
+    }>
+    <Switch.Thumb className={'block w-5 h-5 bg-white rounded-full shadow transition-transform ' + (isEnabled ? 'translate-x-5' : 'translate-x-0')} />
+  </Switch.Root>
 </div>`
       },
       notes: [
@@ -160,17 +159,16 @@ label="알림 설정"
         language: 'tsx',
         label: 'Ant Design Switch',
         code: `import { Switch } from 'antd'
-
-<div className="flex items-center gap-2">
-<label htmlFor="notifications">알림 설정</label>
-<Switch
-  id="notifications"
-  checked={isEnabled}
-  onChange={setIsEnabled}
-  checkedChildren="켜짐"
-  unCheckedChildren="꺼짐"
-  aria-label="알림 설정"
-/>
+<div className='flex items-center gap-2'>
+  <label htmlFor='notifications'>알림 설정</label>
+  <Switch
+    id='notifications'
+    checked={isEnabled}
+    onChange={setIsEnabled}
+    checkedChildren='켜짐'
+    unCheckedChildren='꺼짐'
+    aria-label='알림 설정'
+  />
 </div>`
       },
       notes: [
@@ -196,14 +194,13 @@ label="알림 설정"
         label: 'shadcn/ui Switch',
         code: `import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-
-<div className="flex items-center gap-2">
-<Switch
-  id="notifications"
-  checked={isEnabled}
-  onCheckedChange={setIsEnabled}
-/>
-<Label htmlFor="notifications">알림 설정</Label>
+<div className='flex items-center gap-2'>
+  <Switch
+    id='notifications'
+    checked={isEnabled}
+    onCheckedChange={setIsEnabled}
+  />
+  <Label htmlFor='notifications'>알림 설정</Label>
 </div>`
       },
       notes: [
@@ -228,16 +225,14 @@ import { Label } from '@/components/ui/label'
         language: 'tsx',
         label: 'Chakra UI Switch',
         code: `import { Switch } from '@chakra-ui/react'
-
 <Switch.Root
-checked={isEnabled}
-onCheckedChange={(e) => setIsEnabled(e.checked)}
->
-<Switch.HiddenInput />
-<Switch.Control>
-  <Switch.Thumb />
-</Switch.Control>
-<Switch.Label>알림 설정</Switch.Label>
+  checked={isEnabled}
+  onCheckedChange={(e) => setIsEnabled(e.checked)}>
+  <Switch.HiddenInput />
+  <Switch.Control>
+    <Switch.Thumb />
+  </Switch.Control>
+  <Switch.Label>알림 설정</Switch.Label>
 </Switch.Root>`
       },
       notes: [
@@ -255,12 +250,10 @@ onCheckedChange={(e) => setIsEnabled(e.checked)}
         language: 'tsx',
         label: 'React Aria Switch',
         code: `import { Switch } from 'react-aria-components'
-
 <Switch
-isSelected={isEnabled}
-onChange={setIsEnabled}
->
-알림 설정
+  isSelected={isEnabled}
+  onChange={setIsEnabled}>
+  알림 설정
 </Switch>`
       },
       notes: [

@@ -77,37 +77,37 @@ export const radioGroupPattern: Pattern = {
 const OPTIONS = ['Option A', 'Option B', 'Option C']
 
 export function RadioGroup({ legend }: { legend: string }) {
-const [selected, setSelected] = useState(OPTIONS[0])
+  const [selected, setSelected] = useState(OPTIONS[0])
 
-const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-  let next = index
-  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (index + 1) % OPTIONS.length
-  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = (index - 1 + OPTIONS.length) % OPTIONS.length
-  if (next !== index) {
-    e.preventDefault()
-    setSelected(OPTIONS[next])
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    let next = index
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (index + 1) % OPTIONS.length
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = (index - 1 + OPTIONS.length) % OPTIONS.length
+    if (next !== index) {
+      e.preventDefault()
+      setSelected(OPTIONS[next])
+    }
   }
-}
 
-return (
-  <fieldset>
-    <legend>{legend}</legend>
-    {OPTIONS.map((opt, i) => (
-      <label key={opt}>
-        <input
-          type="radio"
-          name="group"
-          value={opt}
-          checked={selected === opt}
-          tabIndex={selected === opt ? 0 : -1}
-          onChange={() => setSelected(opt)}
-          onKeyDown={(e) => handleKeyDown(e, i)}
-        />
-        {opt}
-      </label>
-    ))}
-  </fieldset>
-)
+  return (
+    <fieldset>
+      <legend>{legend}</legend>
+      {OPTIONS.map((opt, i) => (
+        <label key={opt}>
+          <input
+            type='radio'
+            name='group'
+            value={opt}
+            checked={selected === opt}
+            tabIndex={selected === opt ? 0 : -1}
+            onChange={() => setSelected(opt)}
+            onKeyDown={(e) => handleKeyDown(e, i)}
+          />
+          {opt}
+        </label>
+      ))}
+    </fieldset>
+  )
 }`
     }
   },
@@ -128,13 +128,22 @@ return (
         language: 'tsx',
         label: 'MUI Radio Group',
         code: `import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
-
 <FormControl>
-<FormLabel id="shipping-label">배송 속도</FormLabel>
-<RadioGroup aria-labelledby="shipping-label" defaultValue="standard">
-  <FormControlLabel value="standard" control={<Radio />} label="일반 배송 (3–5일)" />
-  <FormControlLabel value="express" control={<Radio />} label="빠른 배송 (1–2일)" />
-</RadioGroup>
+  <FormLabel id='shipping-label'>배송 속도</FormLabel>
+  <RadioGroup
+    aria-labelledby='shipping-label'
+    defaultValue='standard'>
+    <FormControlLabel
+      value='standard'
+      control={<Radio />}
+      label='일반 배송 (3–5일)'
+    />
+    <FormControlLabel
+      value='express'
+      control={<Radio />}
+      label='빠른 배송 (1–2일)'
+    />
+  </RadioGroup>
 </FormControl>`
       },
       notes: [
@@ -160,24 +169,26 @@ return (
         code: `import * as RadioGroup from '@radix-ui/react-radio-group'
 
 export function RadixRadioGroup() {
-return (
-  <RadioGroup.Root defaultValue="standard" aria-label="배송 속도">
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <label>
-        <RadioGroup.Item value="standard">
-          <RadioGroup.Indicator />
-        </RadioGroup.Item>
-        일반 배송
-      </label>
-      <label>
-        <RadioGroup.Item value="express">
-          <RadioGroup.Indicator />
-        </RadioGroup.Item>
-        빠른 배송
-      </label>
-    </div>
-  </RadioGroup.Root>
-)
+  return (
+    <RadioGroup.Root
+      defaultValue='standard'
+      aria-label='배송 속도'>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <label>
+          <RadioGroup.Item value='standard'>
+            <RadioGroup.Indicator />
+          </RadioGroup.Item>
+          일반 배송
+        </label>
+        <label>
+          <RadioGroup.Item value='express'>
+            <RadioGroup.Indicator />
+          </RadioGroup.Item>
+          빠른 배송
+        </label>
+      </div>
+    </RadioGroup.Root>
+  )
 }`
       },
       notes: [

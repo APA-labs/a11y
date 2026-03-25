@@ -58,24 +58,26 @@ export const textInputPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML)',
       code: `<div>
-<label htmlFor="email">
-  이메일 <span aria-hidden>*</span>
-</label>
-<input
-  id="email"
-  type="email"
-  required
-  aria-required="true"
-  aria-invalid={hasError}
-  aria-describedby={hasError ? 'email-error' : 'email-hint'}
-  autoComplete="email"
-/>
-{hasError && (
-  <p id="email-error" role="alert">
-    올바른 이메일 형식을 입력해주세요.
-  </p>
-)}
-<p id="email-hint">예: user@example.com</p>
+  <label htmlFor='email'>
+    이메일 <span aria-hidden>*</span>
+  </label>
+  <input
+    id='email'
+    type='email'
+    required
+    aria-required='true'
+    aria-invalid={hasError}
+    aria-describedby={hasError ? 'email-error' : 'email-hint'}
+    autoComplete='email'
+  />
+  {hasError && (
+    <p
+      id='email-error'
+      role='alert'>
+      올바른 이메일 형식을 입력해주세요.
+    </p>
+  )}
+  <p id='email-hint'>예: user@example.com</p>
 </div>`
     }
   },
@@ -102,19 +104,18 @@ export const textInputPattern: Pattern = {
         language: 'tsx',
         label: 'MUI TextField',
         code: `import { TextField } from '@mui/material'
-
 <TextField
-id="email"
-label="이메일"
-type="email"
-required
-error={hasError}
-helperText={hasError ? '올바른 이메일 형식을 입력해주세요.' : '예: user@example.com'}
-inputProps={{
-  'aria-required': true,
-  autoComplete: 'email',
-}}
-fullWidth
+  id='email'
+  label='이메일'
+  type='email'
+  required
+  error={hasError}
+  helperText={hasError ? '올바른 이메일 형식을 입력해주세요.' : '예: user@example.com'}
+  inputProps={{
+    'aria-required': true,
+    autoComplete: 'email'
+  }}
+  fullWidth
 />`
       },
       notes: [
@@ -145,27 +146,22 @@ fullWidth
         language: 'tsx',
         label: 'Radix Form',
         code: `import * as Form from '@radix-ui/react-form'
-
 <Form.Root>
-<Form.Field name="email">
-  <Form.Label>
-    이메일 <span aria-hidden>*</span>
-  </Form.Label>
-  <Form.Control asChild>
-    <input
-      type="email"
-      required
-      autoComplete="email"
-      className="focus-visible:ring-2"
-    />
-  </Form.Control>
-  <Form.Message match="valueMissing">
-    이메일을 입력해주세요.
-  </Form.Message>
-  <Form.Message match="typeMismatch">
-    올바른 이메일 형식을 입력해주세요.
-  </Form.Message>
-</Form.Field>
+  <Form.Field name='email'>
+    <Form.Label>
+      이메일 <span aria-hidden>*</span>
+    </Form.Label>
+    <Form.Control asChild>
+      <input
+        type='email'
+        required
+        autoComplete='email'
+        className='focus-visible:ring-2'
+      />
+    </Form.Control>
+    <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>
+    <Form.Message match='typeMismatch'>올바른 이메일 형식을 입력해주세요.</Form.Message>
+  </Form.Field>
 </Form.Root>`
       },
       notes: [
@@ -196,21 +192,19 @@ fullWidth
         language: 'tsx',
         label: 'Ant Design Form.Item',
         code: `import { Form, Input } from 'antd'
-
 <Form.Item
-name="email"
-label="이메일"
-required
-rules={[
-  { required: true, message: '이메일을 입력해주세요.' },
-  { type: 'email', message: '올바른 이메일 형식을 입력해주세요.' },
-]}
->
-<Input
-  type="email"
-  autoComplete="email"
-  aria-required="true"
-/>
+  name='email'
+  label='이메일'
+  required
+  rules={[
+    { required: true, message: '이메일을 입력해주세요.' },
+    { type: 'email', message: '올바른 이메일 형식을 입력해주세요.' }
+  ]}>
+  <Input
+    type='email'
+    autoComplete='email'
+    aria-required='true'
+  />
 </Form.Item>`
       },
       notes: [
@@ -236,24 +230,26 @@ rules={[
         label: 'shadcn/ui Input',
         code: `import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-<div className="grid gap-1.5">
-<Label htmlFor="email">이메일</Label>
-<Input
-  id="email"
-  type="email"
-  required
-  aria-required="true"
-  aria-invalid={hasError}
-  aria-describedby={hasError ? 'email-error' : undefined}
-  autoComplete="email"
-  placeholder="user@example.com"
-/>
-{hasError && (
-  <p id="email-error" className="text-sm text-destructive" role="alert">
-    올바른 이메일 형식을 입력해주세요.
-  </p>
-)}
+<div className='grid gap-1.5'>
+  <Label htmlFor='email'>이메일</Label>
+  <Input
+    id='email'
+    type='email'
+    required
+    aria-required='true'
+    aria-invalid={hasError}
+    aria-describedby={hasError ? 'email-error' : undefined}
+    autoComplete='email'
+    placeholder='user@example.com'
+  />
+  {hasError && (
+    <p
+      id='email-error'
+      className='text-sm text-destructive'
+      role='alert'>
+      올바른 이메일 형식을 입력해주세요.
+    </p>
+  )}
 </div>`
       },
       notes: [
@@ -278,18 +274,19 @@ import { Label } from '@/components/ui/label'
         language: 'tsx',
         label: 'Chakra UI Field',
         code: `import { Field, Input } from '@chakra-ui/react'
-
-<Field.Root required invalid={hasError}>
-<Field.Label>
-  이메일 <Field.RequiredIndicator />
-</Field.Label>
-<Input
-  type="email"
-  autoComplete="email"
-  placeholder="user@example.com"
-/>
-{hasError && <Field.ErrorText>올바른 이메일 형식을 입력해주세요.</Field.ErrorText>}
-<Field.HelperText>예: user@example.com</Field.HelperText>
+<Field.Root
+  required
+  invalid={hasError}>
+  <Field.Label>
+    이메일 <Field.RequiredIndicator />
+  </Field.Label>
+  <Input
+    type='email'
+    autoComplete='email'
+    placeholder='user@example.com'
+  />
+  {hasError && <Field.ErrorText>올바른 이메일 형식을 입력해주세요.</Field.ErrorText>}
+  <Field.HelperText>예: user@example.com</Field.HelperText>
 </Field.Root>`
       },
       notes: [
@@ -314,15 +311,14 @@ import { Label } from '@/components/ui/label'
         language: 'tsx',
         label: 'React Aria TextField',
         code: `import { TextField } from 'react-aria-components'
-
 <TextField
-type="email"
-label="이메일"
-isRequired
-isInvalid={hasError}
-autoComplete="email"
-errorMessage="올바른 이메일 형식을 입력해주세요."
-description="예: user@example.com"
+  type='email'
+  label='이메일'
+  isRequired
+  isInvalid={hasError}
+  autoComplete='email'
+  errorMessage='올바른 이메일 형식을 입력해주세요.'
+  description='예: user@example.com'
 />`
       },
       notes: [

@@ -79,56 +79,62 @@ export const selectPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `function SelectDemo() {
-const [isOpen, setIsOpen] = useState(false);
-const [selected, setSelected] = useState(null);
-const [activeIndex, setActiveIndex] = useState(0);
-const options = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+  const [isOpen, setIsOpen] = useState(false)
+  const [selected, setSelected] = useState(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const options = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry']
 
-const handleKeyDown = (e) => {
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    if (!isOpen) setIsOpen(true);
-    setActiveIndex(i => Math.min(i + 1, options.length - 1));
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    setActiveIndex(i => Math.max(i - 1, 0));
-  } else if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    if (isOpen) { setSelected(options[activeIndex]); setIsOpen(false); }
-    else setIsOpen(true);
-  } else if (e.key === 'Escape') {
-    setIsOpen(false);
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (!isOpen) setIsOpen(true)
+      setActiveIndex((i) => Math.min(i + 1, options.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIndex((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      if (isOpen) {
+        setSelected(options[activeIndex])
+        setIsOpen(false)
+      } else setIsOpen(true)
+    } else if (e.key === 'Escape') {
+      setIsOpen(false)
+    }
   }
-};
 
-return (
-  <div>
-    <label id="fruit-label">과일 선택</label>
-    <button
-      aria-haspopup="listbox"
-      aria-expanded={isOpen}
-      aria-labelledby="fruit-label"
-      onKeyDown={handleKeyDown}
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      {selected ?? '선택하세요'}
-    </button>
-    {isOpen && (
-      <ul role="listbox" aria-labelledby="fruit-label" tabIndex={-1}>
-        {options.map((opt, i) => (
-          <li
-            key={opt}
-            role="option"
-            aria-selected={selected === opt}
-            onClick={() => { setSelected(opt); setIsOpen(false); }}
-          >
-            {opt}
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-);
+  return (
+    <div>
+      <label id='fruit-label'>과일 선택</label>
+      <button
+        aria-haspopup='listbox'
+        aria-expanded={isOpen}
+        aria-labelledby='fruit-label'
+        onKeyDown={handleKeyDown}
+        onClick={() => setIsOpen(!isOpen)}>
+        {selected ?? '선택하세요'}
+      </button>
+      {isOpen && (
+        <ul
+          role='listbox'
+          aria-labelledby='fruit-label'
+          tabIndex={-1}>
+          {options.map((opt, i) => (
+            <li
+              key={opt}
+              role='option'
+              aria-selected={selected === opt}
+              onClick={() => {
+                setSelected(opt)
+                setIsOpen(false)
+              }}>
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }`
     }
   },
@@ -148,20 +154,18 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Select',
-        code: `import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-
+        code: `import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 <FormControl fullWidth>
-<InputLabel id="fruit-label">과일 선택</InputLabel>
-<Select
-  labelId="fruit-label"
-  value={selected}
-  label="과일 선택"
-  onChange={(e) => setSelected(e.target.value)}
->
-  <MenuItem value="apple">Apple</MenuItem>
-  <MenuItem value="banana">Banana</MenuItem>
-  <MenuItem value="cherry">Cherry</MenuItem>
-</Select>
+  <InputLabel id='fruit-label'>과일 선택</InputLabel>
+  <Select
+    labelId='fruit-label'
+    value={selected}
+    label='과일 선택'
+    onChange={(e) => setSelected(e.target.value)}>
+    <MenuItem value='apple'>Apple</MenuItem>
+    <MenuItem value='banana'>Banana</MenuItem>
+    <MenuItem value='cherry'>Cherry</MenuItem>
+  </Select>
 </FormControl>`
       },
       notes: [
@@ -229,17 +233,18 @@ import * as Label from '@radix-ui/react-label';
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Select',
-        code: `import { Select, Form } from 'antd';
-
-<Form.Item label="과일 선택" name="fruit">
-<Select
-  placeholder="선택하세요"
-  options={[
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'cherry', label: 'Cherry' },
-  ]}
-/>
+        code: `import { Select, Form } from 'antd'
+<Form.Item
+  label='과일 선택'
+  name='fruit'>
+  <Select
+    placeholder='선택하세요'
+    options={[
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana' },
+      { value: 'cherry', label: 'Cherry' }
+    ]}
+  />
 </Form.Item>`
       },
       notes: [
@@ -263,27 +268,24 @@ import * as Label from '@radix-ui/react-label';
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Select',
-        code: `import {
-Select,
-SelectContent,
-SelectItem,
-SelectTrigger,
-SelectValue,
-} from '@/components/ui/select'
+        code: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
-
-<div className="grid gap-1.5">
-<Label htmlFor="country">국가</Label>
-<Select value={value} onValueChange={setValue}>
-  <SelectTrigger id="country" aria-label="국가 선택">
-    <SelectValue placeholder="국가를 선택하세요" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="kr">대한민국</SelectItem>
-    <SelectItem value="us">미국</SelectItem>
-    <SelectItem value="jp">일본</SelectItem>
-  </SelectContent>
-</Select>
+<div className='grid gap-1.5'>
+  <Label htmlFor='country'>국가</Label>
+  <Select
+    value={value}
+    onValueChange={setValue}>
+    <SelectTrigger
+      id='country'
+      aria-label='국가 선택'>
+      <SelectValue placeholder='국가를 선택하세요' />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value='kr'>대한민국</SelectItem>
+      <SelectItem value='us'>미국</SelectItem>
+      <SelectItem value='jp'>일본</SelectItem>
+    </SelectContent>
+  </Select>
 </div>`
       },
       notes: [
@@ -310,34 +312,39 @@ import { Label } from '@/components/ui/label'
         code: `import { Select, useListCollection } from '@chakra-ui/react'
 
 const countries = [
-{ label: '대한민국', value: 'kr' },
-{ label: '미국', value: 'us' },
-{ label: '일본', value: 'jp' },
+  { label: '대한민국', value: 'kr' },
+  { label: '미국', value: 'us' },
+  { label: '일본', value: 'jp' }
 ]
 
 export default function App() {
-const { collection } = useListCollection({ initialItems: countries })
-return (
-  <Select.Root collection={collection} value={[value]} onValueChange={(e) => setValue(e.value[0])}>
-    <Select.Label>국가</Select.Label>
-    <Select.Control>
-      <Select.Trigger>
-        <Select.ValueText placeholder="국가를 선택하세요" />
-      </Select.Trigger>
-    </Select.Control>
-    <Select.Positioner>
-      <Select.Content>
-        {collection.items.map((item) => (
-          <Select.Item key={item.value} item={item}>
-            {item.label}
-            <Select.ItemIndicator />
-          </Select.Item>
-        ))}
-      </Select.Content>
-    </Select.Positioner>
-    <Select.HiddenSelect />
-  </Select.Root>
-)
+  const { collection } = useListCollection({ initialItems: countries })
+  return (
+    <Select.Root
+      collection={collection}
+      value={[value]}
+      onValueChange={(e) => setValue(e.value[0])}>
+      <Select.Label>국가</Select.Label>
+      <Select.Control>
+        <Select.Trigger>
+          <Select.ValueText placeholder='국가를 선택하세요' />
+        </Select.Trigger>
+      </Select.Control>
+      <Select.Positioner>
+        <Select.Content>
+          {collection.items.map((item) => (
+            <Select.Item
+              key={item.value}
+              item={item}>
+              {item.label}
+              <Select.ItemIndicator />
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select.Positioner>
+      <Select.HiddenSelect />
+    </Select.Root>
+  )
 }`
       },
       notes: [
@@ -355,16 +362,14 @@ return (
         language: 'tsx',
         label: 'React Aria Select',
         code: `import { Select, SelectItem } from 'react-aria-components'
-
 <Select
-label="국가"
-placeholder="국가를 선택하세요"
-selectedKey={value}
-onSelectionChange={setValue}
->
-<SelectItem id="kr">대한민국</SelectItem>
-<SelectItem id="us">미국</SelectItem>
-<SelectItem id="jp">일본</SelectItem>
+  label='국가'
+  placeholder='국가를 선택하세요'
+  selectedKey={value}
+  onSelectionChange={setValue}>
+  <SelectItem id='kr'>대한민국</SelectItem>
+  <SelectItem id='us'>미국</SelectItem>
+  <SelectItem id='jp'>일본</SelectItem>
 </Select>`
       },
       notes: [

@@ -128,16 +128,18 @@ return (
         label: 'MUI Accordion',
         code: `import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
 import { ExpandMore } from '@mui/icons-material'
-
 <Accordion>
-<h3 style={{ margin: 0 }}>
-  <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel-content" id="panel-header">
-    Section 1
-  </AccordionSummary>
-</h3>
-<AccordionDetails id="panel-content">
-  <Typography>Content here.</Typography>
-</AccordionDetails>
+  <h3 style={{ margin: 0 }}>
+    <AccordionSummary
+      expandIcon={<ExpandMore />}
+      aria-controls='panel-content'
+      id='panel-header'>
+      Section 1
+    </AccordionSummary>
+  </h3>
+  <AccordionDetails id='panel-content'>
+    <Typography>Content here.</Typography>
+  </AccordionDetails>
 </Accordion>`
       },
       notes: ['MUI Accordion은 aria-expanded를 자동으로 처리합니다.', 'disableGutters와 square prop으로 스타일을 조정할 수 있습니다.']
@@ -160,16 +162,18 @@ import { ExpandMore } from '@mui/icons-material'
         code: `import * as Accordion from '@radix-ui/react-accordion'
 
 export function RadixAccordion() {
-return (
-  <Accordion.Root type="single" collapsible>
-    <Accordion.Item value="item-1">
-      <Accordion.Header>
-        <Accordion.Trigger>Section 1</Accordion.Trigger>
-      </Accordion.Header>
-      <Accordion.Content>Content for section 1</Accordion.Content>
-    </Accordion.Item>
-  </Accordion.Root>
-)
+  return (
+    <Accordion.Root
+      type='single'
+      collapsible>
+      <Accordion.Item value='item-1'>
+        <Accordion.Header>
+          <Accordion.Trigger>Section 1</Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Content>Content for section 1</Accordion.Content>
+      </Accordion.Item>
+    </Accordion.Root>
+  )
 }`
       },
       notes: ['Radix Accordion.Header는 h3를 기본으로 렌더링합니다.', 'aria-expanded와 data-state 속성이 자동으로 관리됩니다.']
@@ -192,12 +196,17 @@ return (
         code: `import { Collapse } from 'antd'
 
 const items = [
-{ key: '1', label: 'Section 1', children: <p>Content 1</p> },
-{ key: '2', label: 'Section 2', children: <p>Content 2</p> },
+  { key: '1', label: 'Section 1', children: <p>Content 1</p> },
+  { key: '2', label: 'Section 2', children: <p>Content 2</p> }
 ]
 
 export function AntAccordion() {
-return <Collapse accordion items={items} />
+  return (
+    <Collapse
+      accordion
+      items={items}
+    />
+  )
 }`
       },
       notes: ['Ant Design Collapse는 기본적으로 접근성 속성을 처리합니다.', 'showArrow={false}로 화살표를 숨기더라도 시각적 상태 변화는 유지하세요.']
@@ -217,26 +226,19 @@ return <Collapse accordion items={items} />
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Accordion',
-        code: `import {
-Accordion,
-AccordionContent,
-AccordionItem,
-AccordionTrigger,
-} from '@/components/ui/accordion'
-
-<Accordion type="single" collapsible defaultValue="item-1">
-<AccordionItem value="item-1">
-  <AccordionTrigger>배송 정보</AccordionTrigger>
-  <AccordionContent>
-    주문 후 2-3 영업일 내 배송됩니다.
-  </AccordionContent>
-</AccordionItem>
-<AccordionItem value="item-2">
-  <AccordionTrigger>반품 정책</AccordionTrigger>
-  <AccordionContent>
-    수령 후 7일 이내 반품 가능합니다.
-  </AccordionContent>
-</AccordionItem>
+        code: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+<Accordion
+  type='single'
+  collapsible
+  defaultValue='item-1'>
+  <AccordionItem value='item-1'>
+    <AccordionTrigger>배송 정보</AccordionTrigger>
+    <AccordionContent>주문 후 2-3 영업일 내 배송됩니다.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value='item-2'>
+    <AccordionTrigger>반품 정책</AccordionTrigger>
+    <AccordionContent>수령 후 7일 이내 반품 가능합니다.</AccordionContent>
+  </AccordionItem>
 </Accordion>`
       },
       notes: [
@@ -261,30 +263,27 @@ AccordionTrigger,
         language: 'tsx',
         label: 'Chakra UI Accordion',
         code: `import { Accordion } from '@chakra-ui/react'
-
-<Accordion.Root collapsible defaultValue={['item-1']}>
-<Accordion.Item value="item-1">
-  <Accordion.ItemTrigger>
-    배송 정보
-    <Accordion.ItemIndicator />
-  </Accordion.ItemTrigger>
-  <Accordion.ItemContent>
-    <Accordion.ItemBody>
-      주문 후 2-3 영업일 내 배송됩니다.
-    </Accordion.ItemBody>
-  </Accordion.ItemContent>
-</Accordion.Item>
-<Accordion.Item value="item-2">
-  <Accordion.ItemTrigger>
-    반품 정책
-    <Accordion.ItemIndicator />
-  </Accordion.ItemTrigger>
-  <Accordion.ItemContent>
-    <Accordion.ItemBody>
-      수령 후 7일 이내 반품 가능합니다.
-    </Accordion.ItemBody>
-  </Accordion.ItemContent>
-</Accordion.Item>
+<Accordion.Root
+  collapsible
+  defaultValue={['item-1']}>
+  <Accordion.Item value='item-1'>
+    <Accordion.ItemTrigger>
+      배송 정보
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      <Accordion.ItemBody>주문 후 2-3 영업일 내 배송됩니다.</Accordion.ItemBody>
+    </Accordion.ItemContent>
+  </Accordion.Item>
+  <Accordion.Item value='item-2'>
+    <Accordion.ItemTrigger>
+      반품 정책
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      <Accordion.ItemBody>수령 후 7일 이내 반품 가능합니다.</Accordion.ItemBody>
+    </Accordion.ItemContent>
+  </Accordion.Item>
 </Accordion.Root>`
       },
       notes: [
@@ -301,31 +300,20 @@ AccordionTrigger,
       codeSample: {
         language: 'tsx',
         label: 'React Aria DisclosureGroup',
-        code: `import {
-DisclosureGroup,
-Disclosure,
-DisclosureHeader,
-DisclosurePanel,
-Button
-} from 'react-aria-components'
-
+        code: `import { DisclosureGroup, Disclosure, DisclosureHeader, DisclosurePanel, Button } from 'react-aria-components'
 <DisclosureGroup defaultExpandedKeys={['delivery']}>
-<Disclosure id="delivery">
-  <DisclosureHeader>
-    <Button slot="trigger">배송 정보</Button>
-  </DisclosureHeader>
-  <DisclosurePanel>
-    주문 후 2-3 영업일 내 배송됩니다.
-  </DisclosurePanel>
-</Disclosure>
-<Disclosure id="returns">
-  <DisclosureHeader>
-    <Button slot="trigger">반품 정책</Button>
-  </DisclosureHeader>
-  <DisclosurePanel>
-    수령 후 7일 이내 반품 가능합니다.
-  </DisclosurePanel>
-</Disclosure>
+  <Disclosure id='delivery'>
+    <DisclosureHeader>
+      <Button slot='trigger'>배송 정보</Button>
+    </DisclosureHeader>
+    <DisclosurePanel>주문 후 2-3 영업일 내 배송됩니다.</DisclosurePanel>
+  </Disclosure>
+  <Disclosure id='returns'>
+    <DisclosureHeader>
+      <Button slot='trigger'>반품 정책</Button>
+    </DisclosureHeader>
+    <DisclosurePanel>수령 후 7일 이내 반품 가능합니다.</DisclosurePanel>
+  </Disclosure>
 </DisclosureGroup>`
       },
       notes: [

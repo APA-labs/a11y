@@ -69,22 +69,23 @@ export const disclosurePattern: Pattern = {
       code: `import { useState } from 'react'
 
 export function Disclosure({ title, children }: { title: string; children: React.ReactNode }) {
-const [open, setOpen] = useState(false)
-return (
-  <div>
-    <button
-      type="button"
-      aria-expanded={open}
-      aria-controls="disclosure-content"
-      onClick={() => setOpen(!open)}
-    >
-      {title}
-    </button>
-    <div id="disclosure-content" hidden={!open}>
-      {children}
+  const [open, setOpen] = useState(false)
+  return (
+    <div>
+      <button
+        type='button'
+        aria-expanded={open}
+        aria-controls='disclosure-content'
+        onClick={() => setOpen(!open)}>
+        {title}
+      </button>
+      <div
+        id='disclosure-content'
+        hidden={!open}>
+        {children}
+      </div>
     </div>
-  </div>
-)
+  )
 }`
     }
   },
@@ -108,22 +109,21 @@ return (
 import { Button, Collapse, Box } from '@mui/material'
 
 export function MuiDisclosure({ title, children }) {
-const [open, setOpen] = useState(false)
-return (
-  <Box>
-    <Button
-      aria-expanded={open}
-      aria-controls="mui-disclosure-content"
-      onClick={() => setOpen(!open)}
-      variant="text"
-    >
-      {title}
-    </Button>
-    <Collapse in={open}>
-      <Box id="mui-disclosure-content">{children}</Box>
-    </Collapse>
-  </Box>
-)
+  const [open, setOpen] = useState(false)
+  return (
+    <Box>
+      <Button
+        aria-expanded={open}
+        aria-controls='mui-disclosure-content'
+        onClick={() => setOpen(!open)}
+        variant='text'>
+        {title}
+      </Button>
+      <Collapse in={open}>
+        <Box id='mui-disclosure-content'>{children}</Box>
+      </Collapse>
+    </Box>
+  )
 }`
       },
       notes: [
@@ -149,14 +149,14 @@ return (
         code: `import * as Collapsible from '@radix-ui/react-collapsible'
 
 export function RadixDisclosure({ title, children }) {
-return (
-  <Collapsible.Root>
-    <Collapsible.Trigger asChild>
-      <button type="button">{title}</button>
-    </Collapsible.Trigger>
-    <Collapsible.Content>{children}</Collapsible.Content>
-  </Collapsible.Root>
-)
+  return (
+    <Collapsible.Root>
+      <Collapsible.Trigger asChild>
+        <button type='button'>{title}</button>
+      </Collapsible.Trigger>
+      <Collapsible.Content>{children}</Collapsible.Content>
+    </Collapsible.Root>
+  )
 }`
       },
       notes: ['Radix Collapsible.Trigger는 aria-expanded를 자동으로 설정합니다.', 'Collapsible.Content는 닫힐 때 display:none으로 처리됩니다.']
@@ -179,15 +179,15 @@ return (
         code: `import { Collapse } from 'antd'
 
 const items = [
-{
-  key: '1',
-  label: 'Section Title',
-  children: <p>Content goes here.</p>,
-},
+  {
+    key: '1',
+    label: 'Section Title',
+    children: <p>Content goes here.</p>
+  }
 ]
 
 export function AntDisclosure() {
-return <Collapse items={items} />
+  return <Collapse items={items} />
 }`
       },
       notes: ['Ant Design Collapse는 내부적으로 aria-expanded를 관리합니다.', 'destroyInactivePanel prop으로 닫힌 패널 DOM 제거 여부를 제어하세요.']
@@ -207,22 +207,17 @@ return <Collapse items={items} />
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Collapsible',
-        code: `import {
-Collapsible,
-CollapsibleContent,
-CollapsibleTrigger,
-} from '@/components/ui/collapsible'
+        code: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Button } from '@/components/ui/button'
-
-<Collapsible open={isOpen} onOpenChange={setIsOpen}>
-<CollapsibleTrigger asChild>
-  <Button variant="ghost">
-    시스템 요구사항 {isOpen ? '▲' : '▼'}
-  </Button>
-</CollapsibleTrigger>
-<CollapsibleContent>
-  <p>운영체제: Windows 10 이상, macOS 10.15 이상</p>
-</CollapsibleContent>
+<Collapsible
+  open={isOpen}
+  onOpenChange={setIsOpen}>
+  <CollapsibleTrigger asChild>
+    <Button variant='ghost'>시스템 요구사항 {isOpen ? '▲' : '▼'}</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <p>운영체제: Windows 10 이상, macOS 10.15 이상</p>
+  </CollapsibleContent>
 </Collapsible>`
       },
       notes: [
@@ -240,14 +235,11 @@ import { Button } from '@/components/ui/button'
         language: 'tsx',
         label: 'React Aria Disclosure',
         code: `import { Disclosure, DisclosureHeader, DisclosurePanel, Button } from 'react-aria-components'
-
 <Disclosure>
-<DisclosureHeader>
-  <Button slot="trigger">시스템 요구사항</Button>
-</DisclosureHeader>
-<DisclosurePanel>
-  운영체제: Windows 10 이상, macOS 10.15 이상
-</DisclosurePanel>
+  <DisclosureHeader>
+    <Button slot='trigger'>시스템 요구사항</Button>
+  </DisclosureHeader>
+  <DisclosurePanel>운영체제: Windows 10 이상, macOS 10.15 이상</DisclosurePanel>
 </Disclosure>`
       },
       notes: [

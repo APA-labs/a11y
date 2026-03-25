@@ -60,22 +60,22 @@ export const breadcrumbPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `<nav aria-label="breadcrumb">
-<ol className="flex items-center gap-2 text-sm list-none p-0">
-  <li>
-    <a href="/">홈</a>
-  </li>
-  <li aria-hidden="true">/</li>
-  <li>
-    <a href="/products">제품</a>
-  </li>
-  <li aria-hidden="true">/</li>
-  <li>
-    <a href="/products/shoes">신발</a>
-  </li>
-  <li aria-hidden="true">/</li>
-  <li aria-current="page">운동화</li>
-</ol>
+      code: `<nav aria-label='breadcrumb'>
+  <ol className='flex items-center gap-2 text-sm list-none p-0'>
+    <li>
+      <a href='/'>홈</a>
+    </li>
+    <li aria-hidden='true'>/</li>
+    <li>
+      <a href='/products'>제품</a>
+    </li>
+    <li aria-hidden='true'>/</li>
+    <li>
+      <a href='/products/shoes'>신발</a>
+    </li>
+    <li aria-hidden='true'>/</li>
+    <li aria-current='page'>운동화</li>
+  </ol>
 </nav>`
     }
   },
@@ -95,21 +95,31 @@ export const breadcrumbPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Breadcrumbs',
-        code: `import { Breadcrumbs, Link, Typography } from '@mui/material';
-
-<Breadcrumbs aria-label="breadcrumb">
-<Link href="/" underline="hover" color="inherit">
-  홈
-</Link>
-<Link href="/products" underline="hover" color="inherit">
-  제품
-</Link>
-<Link href="/products/shoes" underline="hover" color="inherit">
-  신발
-</Link>
-<Typography color="text.primary" aria-current="page">
-  운동화
-</Typography>
+        code: `import { Breadcrumbs, Link, Typography } from '@mui/material'
+<Breadcrumbs aria-label='breadcrumb'>
+  <Link
+    href='/'
+    underline='hover'
+    color='inherit'>
+    홈
+  </Link>
+  <Link
+    href='/products'
+    underline='hover'
+    color='inherit'>
+    제품
+  </Link>
+  <Link
+    href='/products/shoes'
+    underline='hover'
+    color='inherit'>
+    신발
+  </Link>
+  <Typography
+    color='text.primary'
+    aria-current='page'>
+    운동화
+  </Typography>
 </Breadcrumbs>`
       },
       notes: [
@@ -133,22 +143,26 @@ export const breadcrumbPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'Radix (직접 구현)',
-        code: `{/* Radix UI에 전용 컴포넌트 없음 — 시맨틱 HTML로 직접 구현 */}
-<nav aria-label="breadcrumb">
-<ol className="flex items-center gap-1 text-sm">
-  {items.map((item, i) => (
-    <li key={item.href} className="flex items-center gap-1">
-      {i < items.length - 1 ? (
-        <>
-          <a href={item.href}>{item.label}</a>
-          <span aria-hidden="true">/</span>
-        </>
-      ) : (
-        <span aria-current="page">{item.label}</span>
-      )}
-    </li>
-  ))}
-</ol>
+        code: `{
+  /* Radix UI에 전용 컴포넌트 없음 — 시맨틱 HTML로 직접 구현 */
+}
+<nav aria-label='breadcrumb'>
+  <ol className='flex items-center gap-1 text-sm'>
+    {items.map((item, i) => (
+      <li
+        key={item.href}
+        className='flex items-center gap-1'>
+        {i < items.length - 1 ? (
+          <>
+            <a href={item.href}>{item.label}</a>
+            <span aria-hidden='true'>/</span>
+          </>
+        ) : (
+          <span aria-current='page'>{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
 </nav>`
       },
       notes: [
@@ -172,22 +186,14 @@ export const breadcrumbPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Breadcrumb',
-        code: `import { Breadcrumb } from 'antd';
-
+        code: `import { Breadcrumb } from 'antd'
 <Breadcrumb
-aria-label="breadcrumb"
-items={[
-  { title: <a href="/">홈</a> },
-  { title: <a href="/products">제품</a> },
-  { title: <a href="/products/shoes">신발</a> },
-  { title: '운동화' },
-]}
-itemRender={(item, params, items) => {
-  const isLast = items.indexOf(item) === items.length - 1;
-  return isLast
-    ? <span aria-current="page">{item.title}</span>
-    : item.title;
-}}
+  aria-label='breadcrumb'
+  items={[{ title: <a href='/'>홈</a> }, { title: <a href='/products'>제품</a> }, { title: <a href='/products/shoes'>신발</a> }, { title: '운동화' }]}
+  itemRender={(item, params, items) => {
+    const isLast = items.indexOf(item) === items.length - 1
+    return isLast ? <span aria-current='page'>{item.title}</span> : item.title
+  }}
 />`
       },
       notes: [

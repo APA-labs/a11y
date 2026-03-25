@@ -70,32 +70,30 @@ export const tooltipPattern: Pattern = {
       code: `import { useState, useId } from 'react'
 
 export function Tooltip({ label, children }: { label: string; children: React.ReactNode }) {
-const [visible, setVisible] = useState(false)
-const id = useId()
+  const [visible, setVisible] = useState(false)
+  const id = useId()
 
-return (
-  <span style={{ position: 'relative', display: 'inline-block' }}>
-    <span
-      aria-describedby={visible ? id : undefined}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-      onFocus={() => setVisible(true)}
-      onBlur={() => setVisible(false)}
-      onKeyDown={(e) => e.key === 'Escape' && setVisible(false)}
-    >
-      {children}
-    </span>
-    {visible && (
+  return (
+    <span style={{ position: 'relative', display: 'inline-block' }}>
       <span
-        id={id}
-        role="tooltip"
-        style={{ position: 'absolute', bottom: '100%', left: 0, whiteSpace: 'nowrap' }}
-      >
-        {label}
+        aria-describedby={visible ? id : undefined}
+        onMouseEnter={() => setVisible(true)}
+        onMouseLeave={() => setVisible(false)}
+        onFocus={() => setVisible(true)}
+        onBlur={() => setVisible(false)}
+        onKeyDown={(e) => e.key === 'Escape' && setVisible(false)}>
+        {children}
       </span>
-    )}
-  </span>
-)
+      {visible && (
+        <span
+          id={id}
+          role='tooltip'
+          style={{ position: 'absolute', bottom: '100%', left: 0, whiteSpace: 'nowrap' }}>
+          {label}
+        </span>
+      )}
+    </span>
+  )
 }`
     }
   },
@@ -117,11 +115,13 @@ return (
         label: 'MUI Tooltip',
         code: `import { Tooltip, IconButton } from '@mui/material'
 import { InfoOutlined } from '@mui/icons-material'
-
-<Tooltip title="추가 정보입니다" enterDelay={300} arrow>
-<IconButton aria-label="정보">
-  <InfoOutlined />
-</IconButton>
+<Tooltip
+  title='추가 정보입니다'
+  enterDelay={300}
+  arrow>
+  <IconButton aria-label='정보'>
+    <InfoOutlined />
+  </IconButton>
 </Tooltip>`
       },
       notes: ['MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.', '커스텀 children을 사용할 경우 forwardRef를 구현해야 합니다.']
@@ -144,21 +144,21 @@ import { InfoOutlined } from '@mui/icons-material'
         code: `import * as Tooltip from '@radix-ui/react-tooltip'
 
 export function RadixTooltip({ label, children }) {
-return (
-  <Tooltip.Provider delayDuration={300}>
-    <Tooltip.Root>
-      <Tooltip.Trigger asChild>
-        {children}
-      </Tooltip.Trigger>
-      <Tooltip.Portal>
-        <Tooltip.Content side="top" sideOffset={4}>
-          {label}
-          <Tooltip.Arrow />
-        </Tooltip.Content>
-      </Tooltip.Portal>
-    </Tooltip.Root>
-  </Tooltip.Provider>
-)
+  return (
+    <Tooltip.Provider delayDuration={300}>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            side='top'
+            sideOffset={4}>
+            {label}
+            <Tooltip.Arrow />
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  )
 }`
       },
       notes: ['Radix Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.', 'Portal로 렌더링하면 z-index 문제를 방지할 수 있습니다.']
@@ -179,9 +179,10 @@ return (
         language: 'tsx',
         label: 'Ant Design Tooltip',
         code: `import { Tooltip, Button } from 'antd'
-
-<Tooltip title="저장합니다" mouseEnterDelay={0.3}>
-<Button>저장</Button>
+<Tooltip
+  title='저장합니다'
+  mouseEnterDelay={0.3}>
+  <Button>저장</Button>
 </Tooltip>`
       },
       notes: ['Ant Design Tooltip은 내부적으로 접근성 속성을 처리합니다.', 'color prop 변경 시 텍스트 대비율을 재확인하세요.']
@@ -201,25 +202,22 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'shadcn/ui Tooltip',
-        code: `import {
-Tooltip,
-TooltipContent,
-TooltipProvider,
-TooltipTrigger,
-} from '@/components/ui/tooltip'
+        code: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
-
 <TooltipProvider>
-<Tooltip>
-  <TooltipTrigger asChild>
-    <Button variant="outline" size="icon" aria-label="설정">
-      ⚙️
-    </Button>
-  </TooltipTrigger>
-  <TooltipContent>
-    <p>설정 열기</p>
-  </TooltipContent>
-</Tooltip>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button
+        variant='outline'
+        size='icon'
+        aria-label='설정'>
+        ⚙️
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>설정 열기</p>
+    </TooltipContent>
+  </Tooltip>
 </TooltipProvider>`
       },
       notes: [
@@ -244,11 +242,13 @@ import { Button } from '@/components/ui/button'
         language: 'tsx',
         label: 'Chakra UI Tooltip',
         code: `import { Tooltip, Button } from '@chakra-ui/react'
-
-<Tooltip content="설정 열기">
-<Button variant="outline" size="sm" aria-label="설정">
-  ⚙️
-</Button>
+<Tooltip content='설정 열기'>
+  <Button
+    variant='outline'
+    size='sm'
+    aria-label='설정'>
+    ⚙️
+  </Button>
 </Tooltip>`
       },
       notes: [
@@ -266,10 +266,9 @@ import { Button } from '@/components/ui/button'
         language: 'tsx',
         label: 'React Aria Tooltip',
         code: `import { TooltipTrigger, Tooltip, Button } from 'react-aria-components'
-
 <TooltipTrigger delay={500}>
-<Button aria-label="설정">⚙️</Button>
-<Tooltip>설정 열기</Tooltip>
+  <Button aria-label='설정'>⚙️</Button>
+  <Tooltip>설정 열기</Tooltip>
 </TooltipTrigger>`
       },
       notes: [

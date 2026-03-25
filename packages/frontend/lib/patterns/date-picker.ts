@@ -125,23 +125,24 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Date Picker',
-        code: `import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { ko } from 'date-fns/locale';
-
-<LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
-<DatePicker
-  label="날짜 선택"
-  value={date}
-  onChange={(newDate) => setDate(newDate)}
-  slotProps={{
-    textField: {
-      helperText: '형식: YYYY.MM.DD',
-      inputProps: { 'aria-describedby': 'date-hint' }
-    }
-  }}
-/>
+        code: `import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { ko } from 'date-fns/locale'
+<LocalizationProvider
+  dateAdapter={AdapterDateFns}
+  adapterLocale={ko}>
+  <DatePicker
+    label='날짜 선택'
+    value={date}
+    onChange={(newDate) => setDate(newDate)}
+    slotProps={{
+      textField: {
+        helperText: '형식: YYYY.MM.DD',
+        inputProps: { 'aria-describedby': 'date-hint' }
+      }
+    }}
+  />
 </LocalizationProvider>`
       },
       notes: [
@@ -166,29 +167,37 @@ import { ko } from 'date-fns/locale';
       codeSample: {
         language: 'tsx',
         label: 'shadcn Calendar + Popover',
-        code: `{/* shadcn/ui Calendar + Radix Popover 조합 */}
-import * as Popover from '@radix-ui/react-popover';
+        code: `{
+  /* shadcn/ui Calendar + Radix Popover 조합 */
+}
+import * as Popover from '@radix-ui/react-popover'
 
 function DatePickerWithCalendar() {
-const [date, setDate] = useState(null);
-const [open, setOpen] = useState(false);
+  const [date, setDate] = useState(null)
+  const [open, setOpen] = useState(false)
 
-return (
-  <Popover.Root open={open} onOpenChange={setOpen}>
-    <Popover.Trigger asChild>
-      <button aria-expanded={open} aria-haspopup="dialog">
-        {date ? date.toLocaleDateString('ko-KR') : '날짜 선택'}
-      </button>
-    </Popover.Trigger>
-    <Popover.Portal>
-      <Popover.Content role="dialog" aria-label="날짜 선택 캘린더">
-        {/* react-day-picker 또는 custom calendar 컴포넌트 */}
-        <p>캘린더 구현 위치</p>
-        <Popover.Close>닫기</Popover.Close>
-      </Popover.Content>
-    </Popover.Portal>
-  </Popover.Root>
-);
+  return (
+    <Popover.Root
+      open={open}
+      onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button
+          aria-expanded={open}
+          aria-haspopup='dialog'>
+          {date ? date.toLocaleDateString('ko-KR') : '날짜 선택'}
+        </button>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          role='dialog'
+          aria-label='날짜 선택 캘린더'>
+          {/* react-day-picker 또는 custom calendar 컴포넌트 */}
+          <p>캘린더 구현 위치</p>
+          <Popover.Close>닫기</Popover.Close>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
+  )
 }`
       },
       notes: [
@@ -212,22 +221,21 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design DatePicker',
-        code: `import { DatePicker, ConfigProvider } from 'antd';
-import koKR from 'antd/locale/ko_KR';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
+        code: `import { DatePicker, ConfigProvider } from 'antd'
+import koKR from 'antd/locale/ko_KR'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ko'
 
-dayjs.locale('ko');
-
+dayjs.locale('ko')
 <ConfigProvider locale={koKR}>
-<DatePicker
-  value={date}
-  onChange={(value) => setDate(value)}
-  placeholder="날짜 선택"
-  format="YYYY년 MM월 DD일"
-  aria-label="날짜 선택"
-  getPopupContainer={(trigger) => trigger.parentElement}
-/>
+  <DatePicker
+    value={date}
+    onChange={(value) => setDate(value)}
+    placeholder='날짜 선택'
+    format='YYYY년 MM월 DD일'
+    aria-label='날짜 선택'
+    getPopupContainer={(trigger) => trigger.parentElement}
+  />
 </ConfigProvider>`
       },
       notes: [
@@ -258,31 +266,30 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Label } from '@/components/ui/label'
 
 export default function App() {
-const [date, setDate] = useState(undefined)
-return (
-  <div className="grid gap-1.5">
-    <Label htmlFor="date-trigger">날짜 선택</Label>
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          id="date-trigger"
-          variant="outline"
-          aria-label={date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}
-        >
-          📅 {date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
-  </div>
-)
+  const [date, setDate] = useState(undefined)
+  return (
+    <div className='grid gap-1.5'>
+      <Label htmlFor='date-trigger'>날짜 선택</Label>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id='date-trigger'
+            variant='outline'
+            aria-label={date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}>
+            📅 {date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <Calendar
+            mode='single'
+            selected={date}
+            onSelect={setDate}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
 }`
       },
       notes: [
@@ -308,30 +315,29 @@ return (
         label: 'Chakra UI DatePicker',
         code: `import { DatePicker } from '@chakra-ui/react'
 import { LuCalendar } from 'react-icons/lu'
-
 <DatePicker.Root>
-<DatePicker.Label>날짜 선택</DatePicker.Label>
-<DatePicker.Control>
-  <DatePicker.Input />
-  <DatePicker.IndicatorGroup>
-    <DatePicker.Trigger aria-label="달력 열기">
-      <LuCalendar aria-hidden />
-    </DatePicker.Trigger>
-  </DatePicker.IndicatorGroup>
-</DatePicker.Control>
-<DatePicker.Positioner>
-  <DatePicker.Content>
-    <DatePicker.View view="day">
-      <DatePicker.ViewControl>
-        <DatePicker.PrevTrigger aria-label="이전 달" />
-        <DatePicker.ViewTrigger>
-          <DatePicker.RangeText />
-        </DatePicker.ViewTrigger>
-        <DatePicker.NextTrigger aria-label="다음 달" />
-      </DatePicker.ViewControl>
-    </DatePicker.View>
-  </DatePicker.Content>
-</DatePicker.Positioner>
+  <DatePicker.Label>날짜 선택</DatePicker.Label>
+  <DatePicker.Control>
+    <DatePicker.Input />
+    <DatePicker.IndicatorGroup>
+      <DatePicker.Trigger aria-label='달력 열기'>
+        <LuCalendar aria-hidden />
+      </DatePicker.Trigger>
+    </DatePicker.IndicatorGroup>
+  </DatePicker.Control>
+  <DatePicker.Positioner>
+    <DatePicker.Content>
+      <DatePicker.View view='day'>
+        <DatePicker.ViewControl>
+          <DatePicker.PrevTrigger aria-label='이전 달' />
+          <DatePicker.ViewTrigger>
+            <DatePicker.RangeText />
+          </DatePicker.ViewTrigger>
+          <DatePicker.NextTrigger aria-label='다음 달' />
+        </DatePicker.ViewControl>
+      </DatePicker.View>
+    </DatePicker.Content>
+  </DatePicker.Positioner>
 </DatePicker.Root>`
       },
       notes: [
@@ -358,24 +364,27 @@ import { LuCalendar } from 'react-icons/lu'
         code: `import { DatePicker, DateInput, DateSegment, Button, Heading } from 'react-aria-components'
 import { Calendar, CalendarGrid, CalendarCell, CalendarGridBody } from 'react-aria-components'
 import { Popover } from 'react-aria-components'
-
-<DatePicker aria-label="날짜 선택">
-<DateInput>
-  {(segment) => <DateSegment segment={segment} />}
-</DateInput>
-<Button aria-label="달력 열기">📅</Button>
-<Popover>
-  <Calendar>
-    <Heading />
-    <Button slot="previous" aria-label="이전 달">‹</Button>
-    <Button slot="next" aria-label="다음 달">›</Button>
-    <CalendarGrid>
-      <CalendarGridBody>
-        {(date) => <CalendarCell date={date} />}
-      </CalendarGridBody>
-    </CalendarGrid>
-  </Calendar>
-</Popover>
+<DatePicker aria-label='날짜 선택'>
+  <DateInput>{(segment) => <DateSegment segment={segment} />}</DateInput>
+  <Button aria-label='달력 열기'>📅</Button>
+  <Popover>
+    <Calendar>
+      <Heading />
+      <Button
+        slot='previous'
+        aria-label='이전 달'>
+        ‹
+      </Button>
+      <Button
+        slot='next'
+        aria-label='다음 달'>
+        ›
+      </Button>
+      <CalendarGrid>
+        <CalendarGridBody>{(date) => <CalendarCell date={date} />}</CalendarGridBody>
+      </CalendarGrid>
+    </Calendar>
+  </Popover>
 </DatePicker>`
       },
       notes: [

@@ -60,33 +60,38 @@ export const modalDialogPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML)',
       code: `function Modal({ isOpen, onClose, title, children }) {
-const titleId = useId()
-const descId = useId()
-const triggerRef = useRef<HTMLButtonElement>(null)
+  const titleId = useId()
+  const descId = useId()
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
-useEffect(() => {
-  if (!isOpen) return
-  // 포커스 이동
-  document.getElementById('modal-close')?.focus()
-  // 배경 inert
-  document.getElementById('root').inert = true
-  return () => { document.getElementById('root').inert = false }
-}, [isOpen])
+  useEffect(() => {
+    if (!isOpen) return
+    // 포커스 이동
+    document.getElementById('modal-close')?.focus()
+    // 배경 inert
+    document.getElementById('root').inert = true
+    return () => {
+      document.getElementById('root').inert = false
+    }
+  }, [isOpen])
 
-if (!isOpen) return null
-return (
-  <div
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby={titleId}
-    aria-describedby={descId}
-    onKeyDown={(e) => e.key === 'Escape' && onClose()}
-  >
-    <h2 id={titleId}>{title}</h2>
-    <div id={descId}>{children}</div>
-    <button id="modal-close" onClick={onClose}>닫기</button>
-  </div>
-)
+  if (!isOpen) return null
+  return (
+    <div
+      role='dialog'
+      aria-modal='true'
+      aria-labelledby={titleId}
+      aria-describedby={descId}
+      onKeyDown={(e) => e.key === 'Escape' && onClose()}>
+      <h2 id={titleId}>{title}</h2>
+      <div id={descId}>{children}</div>
+      <button
+        id='modal-close'
+        onClick={onClose}>
+        닫기
+      </button>
+    </div>
+  )
 }`
     }
   },
@@ -113,28 +118,26 @@ return (
         language: 'tsx',
         label: 'MUI Dialog',
         code: `import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
-
 <Dialog
-open={isOpen}
-onClose={() => setIsOpen(false)}
-aria-labelledby="dialog-title"
-aria-describedby="dialog-description"
-// keepMounted 사용 주의!
+  open={isOpen}
+  onClose={() => setIsOpen(false)}
+  aria-labelledby='dialog-title'
+  aria-describedby='dialog-description'
+  // keepMounted 사용 주의!
 >
-<DialogTitle id="dialog-title">
-  파일 삭제
-</DialogTitle>
-<DialogContent>
-  <p id="dialog-description">
-    이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-  </p>
-</DialogContent>
-<DialogActions>
-  <Button onClick={() => setIsOpen(false)}>취소</Button>
-  <Button onClick={() => {}} color="error" autoFocus>
-    삭제
-  </Button>
-</DialogActions>
+  <DialogTitle id='dialog-title'>파일 삭제</DialogTitle>
+  <DialogContent>
+    <p id='dialog-description'>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setIsOpen(false)}>취소</Button>
+    <Button
+      onClick={() => {}}
+      color='error'
+      autoFocus>
+      삭제
+    </Button>
+  </DialogActions>
 </Dialog>`
       },
       notes: [
@@ -166,27 +169,25 @@ aria-describedby="dialog-description"
         label: 'Radix Dialog',
         code: `import * as Dialog from '@radix-ui/react-dialog'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-
-<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-<Dialog.Trigger asChild>
-  <button>파일 삭제</button>
-</Dialog.Trigger>
-<Dialog.Portal>
-  <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-  <Dialog.Content
-    className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-    onInteractOutside={(e) => e.preventDefault()}
-  >
-    <Dialog.Title>파일 삭제</Dialog.Title>
-    <Dialog.Description>
-      이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-    </Dialog.Description>
-    <Dialog.Close asChild>
-      <button>취소</button>
-    </Dialog.Close>
-    <button onClick={() => {}}>삭제</button>
-  </Dialog.Content>
-</Dialog.Portal>
+<Dialog.Root
+  open={isOpen}
+  onOpenChange={setIsOpen}>
+  <Dialog.Trigger asChild>
+    <button>파일 삭제</button>
+  </Dialog.Trigger>
+  <Dialog.Portal>
+    <Dialog.Overlay className='fixed inset-0 bg-black/50' />
+    <Dialog.Content
+      className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+      onInteractOutside={(e) => e.preventDefault()}>
+      <Dialog.Title>파일 삭제</Dialog.Title>
+      <Dialog.Description>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</Dialog.Description>
+      <Dialog.Close asChild>
+        <button>취소</button>
+      </Dialog.Close>
+      <button onClick={() => {}}>삭제</button>
+    </Dialog.Content>
+  </Dialog.Portal>
 </Dialog.Root>`
       },
       notes: [
@@ -217,22 +218,26 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
         language: 'tsx',
         label: 'Ant Design Modal',
         code: `import { Modal, Button } from 'antd'
-
 <Modal
-open={isOpen}
-onCancel={() => setIsOpen(false)}
-title="파일 삭제"
-destroyOnClose
-footer={[
-  <Button key="cancel" onClick={() => setIsOpen(false)}>
-    취소
-  </Button>,
-  <Button key="delete" type="primary" danger onClick={() => {}}>
-    삭제
-  </Button>,
-]}
->
-<p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+  open={isOpen}
+  onCancel={() => setIsOpen(false)}
+  title='파일 삭제'
+  destroyOnClose
+  footer={[
+    <Button
+      key='cancel'
+      onClick={() => setIsOpen(false)}>
+      취소
+    </Button>,
+    <Button
+      key='delete'
+      type='primary'
+      danger
+      onClick={() => {}}>
+      삭제
+    </Button>
+  ]}>
+  <p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
 </Modal>`
       },
       notes: [
@@ -257,31 +262,21 @@ footer={[
         language: 'tsx',
         label: 'shadcn/ui Dialog',
         code: `import { Button } from '@/components/ui/button'
-import {
-Dialog,
-DialogContent,
-DialogDescription,
-DialogHeader,
-DialogTitle,
-DialogTrigger,
-} from '@/components/ui/dialog'
-
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 <Dialog>
-<DialogTrigger asChild>
-  <Button variant="outline">파일 삭제</Button>
-</DialogTrigger>
-<DialogContent>
-  <DialogHeader>
-    <DialogTitle>파일 삭제</DialogTitle>
-    <DialogDescription>
-      이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-    </DialogDescription>
-  </DialogHeader>
-  <div className="flex justify-end gap-2">
-    <Button variant="outline">취소</Button>
-    <Button variant="destructive">삭제</Button>
-  </div>
-</DialogContent>
+  <DialogTrigger asChild>
+    <Button variant='outline'>파일 삭제</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>파일 삭제</DialogTitle>
+      <DialogDescription>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</DialogDescription>
+    </DialogHeader>
+    <div className='flex justify-end gap-2'>
+      <Button variant='outline'>취소</Button>
+      <Button variant='destructive'>삭제</Button>
+    </div>
+  </DialogContent>
 </Dialog>`
       },
       notes: [
@@ -306,33 +301,35 @@ DialogTrigger,
         language: 'tsx',
         label: 'Chakra UI Dialog',
         code: `import { Button, Dialog } from '@chakra-ui/react'
-
 <Dialog.Root>
-<Dialog.Trigger asChild>
-  <Button variant="outline">파일 삭제</Button>
-</Dialog.Trigger>
-<Dialog.Backdrop />
-<Dialog.Positioner>
-  <Dialog.Content>
-    <Dialog.Header>
-      <Dialog.Title>파일 삭제</Dialog.Title>
-      <Dialog.CloseTrigger asChild>
-        <Button variant="ghost" size="sm" aria-label="닫기">✕</Button>
-      </Dialog.CloseTrigger>
-    </Dialog.Header>
-    <Dialog.Body>
-      <Dialog.Description>
-        이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
-      </Dialog.Description>
-    </Dialog.Body>
-    <Dialog.Footer>
-      <Dialog.ActionTrigger asChild>
-        <Button variant="outline">취소</Button>
-      </Dialog.ActionTrigger>
-      <Button colorPalette="red">삭제</Button>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog.Positioner>
+  <Dialog.Trigger asChild>
+    <Button variant='outline'>파일 삭제</Button>
+  </Dialog.Trigger>
+  <Dialog.Backdrop />
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.Header>
+        <Dialog.Title>파일 삭제</Dialog.Title>
+        <Dialog.CloseTrigger asChild>
+          <Button
+            variant='ghost'
+            size='sm'
+            aria-label='닫기'>
+            ✕
+          </Button>
+        </Dialog.CloseTrigger>
+      </Dialog.Header>
+      <Dialog.Body>
+        <Dialog.Description>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</Dialog.Description>
+      </Dialog.Body>
+      <Dialog.Footer>
+        <Dialog.ActionTrigger asChild>
+          <Button variant='outline'>취소</Button>
+        </Dialog.ActionTrigger>
+        <Button colorPalette='red'>삭제</Button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  </Dialog.Positioner>
 </Dialog.Root>`
       },
       notes: [
@@ -357,23 +354,22 @@ DialogTrigger,
         language: 'tsx',
         label: 'React Aria Modal',
         code: `import { Button, DialogTrigger, Modal, Dialog, Heading } from 'react-aria-components'
-
 <DialogTrigger>
-<Button>파일 삭제</Button>
-<Modal isDismissable>
-  <Dialog>
-    {({ close }) => (
-      <>
-        <Heading slot="title">파일 삭제</Heading>
-        <p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-          <Button onPress={close}>취소</Button>
-          <Button onPress={close}>삭제</Button>
-        </div>
-      </>
-    )}
-  </Dialog>
-</Modal>
+  <Button>파일 삭제</Button>
+  <Modal isDismissable>
+    <Dialog>
+      {({ close }) => (
+        <>
+          <Heading slot='title'>파일 삭제</Heading>
+          <p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <Button onPress={close}>취소</Button>
+            <Button onPress={close}>삭제</Button>
+          </div>
+        </>
+      )}
+    </Dialog>
+  </Modal>
 </DialogTrigger>`
       },
       notes: [
