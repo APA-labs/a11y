@@ -12,8 +12,7 @@ export const formValidationPattern: Pattern = {
         {
           id: 'form-m1',
           title: '에러 메시지를 aria-describedby로 연결',
-          description:
-            '입력 필드와 에러 메시지를 aria-describedby로 연결해야 합니다. 스크린리더가 필드에 포커스할 때 에러 내용을 자동으로 읽습니다.',
+          description: '입력 필드와 에러 메시지를 aria-describedby로 연결해야 합니다. 스크린리더가 필드에 포커스할 때 에러 내용을 자동으로 읽습니다.',
           level: 'must'
         },
         {
@@ -229,8 +228,7 @@ return (
         {
           id: 'form-antd-1',
           title: 'validateTrigger를 onBlur로 설정',
-          description:
-            'Ant Design Form의 기본 validateTrigger는 onChange입니다. 입력 중 에러 표시를 방지하려면 onBlur 또는 onSubmit으로 변경하세요.',
+          description: 'Ant Design Form의 기본 validateTrigger는 onChange입니다. 입력 중 에러 표시를 방지하려면 onBlur 또는 onSubmit으로 변경하세요.',
           level: 'should'
         }
       ],

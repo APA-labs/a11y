@@ -236,10 +236,7 @@ export function AntTabs() {
 return <Tabs defaultActiveKey="1" items={items} />
 }`
       },
-      notes: [
-        'Ant Design Tabs는 기본적으로 접근성 속성을 처리합니다.',
-        'tabBarExtraContent 사용 시 해당 콘텐츠도 키보드로 접근 가능한지 확인하세요.'
-      ]
+      notes: ['Ant Design Tabs는 기본적으로 접근성 속성을 처리합니다.', 'tabBarExtraContent 사용 시 해당 콘텐츠도 키보드로 접근 가능한지 확인하세요.']
     },
     shadcn: {
       id: 'shadcn',

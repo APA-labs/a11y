@@ -169,8 +169,7 @@ return (
         {
           id: 'drawer-radix-1',
           title: 'Dialog 기반으로 구현',
-          description:
-            'Radix UI에는 전용 Drawer가 없습니다. Dialog 컴포넌트에 CSS로 슬라이드 애니메이션을 추가하거나 vaul 라이브러리를 사용하세요.',
+          description: 'Radix UI에는 전용 Drawer가 없습니다. Dialog 컴포넌트에 CSS로 슬라이드 애니메이션을 추가하거나 vaul 라이브러리를 사용하세요.',
           level: 'should'
         }
       ],

@@ -200,10 +200,7 @@ export function AntAccordion() {
 return <Collapse accordion items={items} />
 }`
       },
-      notes: [
-        'Ant Design Collapse는 기본적으로 접근성 속성을 처리합니다.',
-        'showArrow={false}로 화살표를 숨기더라도 시각적 상태 변화는 유지하세요.'
-      ]
+      notes: ['Ant Design Collapse는 기본적으로 접근성 속성을 처리합니다.', 'showArrow={false}로 화살표를 숨기더라도 시각적 상태 변화는 유지하세요.']
     },
     shadcn: {
       id: 'shadcn',

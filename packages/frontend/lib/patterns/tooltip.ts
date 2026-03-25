@@ -124,10 +124,7 @@ import { InfoOutlined } from '@mui/icons-material'
 </IconButton>
 </Tooltip>`
       },
-      notes: [
-        'MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.',
-        '커스텀 children을 사용할 경우 forwardRef를 구현해야 합니다.'
-      ]
+      notes: ['MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.', '커스텀 children을 사용할 경우 forwardRef를 구현해야 합니다.']
     },
     radix: {
       id: 'radix',

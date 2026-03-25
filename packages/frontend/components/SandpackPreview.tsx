@@ -36,6 +36,13 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@emotion/styled': '11.11.0',
     '@mui/icons-material': '5.15.14'
   },
+  '@mui/x-date-pickers': {
+    '@mui/x-date-pickers': '6.20.2',
+    '@mui/material': '5.15.14',
+    '@emotion/react': '11.11.4',
+    '@emotion/styled': '11.11.0',
+    'date-fns': '2.30.0'
+  },
   '@radix-ui': {
     '@radix-ui/react-collapsible': '1.0.3',
     '@radix-ui/react-tabs': '1.0.4',
@@ -51,7 +58,12 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@radix-ui/react-toolbar': '1.0.4',
     '@radix-ui/react-select': '2.0.0',
     '@radix-ui/react-navigation-menu': '1.1.4',
-    '@radix-ui/react-icons': '1.3.0'
+    '@radix-ui/react-icons': '1.3.0',
+    '@radix-ui/react-form': '0.0.3',
+    '@radix-ui/react-toast': '1.1.5',
+    '@radix-ui/react-visually-hidden': '1.0.3',
+    '@radix-ui/react-slot': '1.0.2',
+    '@radix-ui/react-label': '2.0.2'
   },
   antd: { antd: '5.16.4' },
   '@chakra-ui': {
@@ -60,9 +72,18 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@emotion/styled': '11.11.0',
     'framer-motion': '10.18.0'
   },
-  '@react-spectrum': {
-    '@adobe/react-spectrum': '3.33.1',
-    '@spectrum-css/vars': '7.0.0'
+  '@adobe/react-spectrum': {
+    '@adobe/react-spectrum': '3.33.1'
+  },
+  'react-hook-form': {
+    'react-hook-form': '7.51.0',
+    '@hookform/resolvers': '3.3.4',
+    zod: '3.22.4'
+  },
+  '@hookform/resolvers': {
+    'react-hook-form': '7.51.0',
+    '@hookform/resolvers': '3.3.4',
+    zod: '3.22.4'
   },
   'class-variance-authority': {
     'class-variance-authority': '0.7.0',
@@ -98,6 +119,17 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
           className='w-full h-full border-0'
           sandbox='allow-scripts'
         />
+      </div>
+    )
+  }
+
+  if (code.includes('@/components/ui')) {
+    return (
+      <div
+        className='rounded-b-xl bg-slate-900 flex flex-col items-center justify-center gap-2'
+        style={{ height: 280 }}>
+        <p className='text-sm text-slate-400'>shadcn/ui 컴포넌트는 인라인 미리보기를 지원하지 않습니다.</p>
+        <p className='text-xs text-slate-500'>로컬 프로젝트에 설치 후 확인하세요.</p>
       </div>
     )
   }
