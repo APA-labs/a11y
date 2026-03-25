@@ -231,6 +231,133 @@ const OPTIONS = [
         'Ant Design Radio.Group은 네이티브 input을 사용해 기본 접근성을 유지합니다.',
         'optionType="button"으로 버튼 스타일 라디오를 사용할 때도 레이블을 반드시 제공하세요.'
       ]
+    },
+    shadcn: {
+      id: 'shadcn',
+      name: 'shadcn/ui',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'radio-shadcn-1',
+          title: 'RadioGroup value 제어',
+          description: 'RadioGroup의 value와 onValueChange로 선택값을 제어하세요. value가 없으면 비제어 컴포넌트로 동작합니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'shadcn/ui RadioGroup',
+        code: `import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+
+function RadioDemo() {
+  const [value, setValue] = useState('option-1')
+  return (
+    <RadioGroup
+      value={value}
+      onValueChange={setValue}
+      aria-label='옵션 선택'>
+      <div className='flex items-center gap-2'>
+        <RadioGroupItem
+          value='option-1'
+          id='r1'
+        />
+        <Label htmlFor='r1'>옵션 1</Label>
+      </div>
+      <div className='flex items-center gap-2'>
+        <RadioGroupItem
+          value='option-2'
+          id='r2'
+        />
+        <Label htmlFor='r2'>옵션 2</Label>
+      </div>
+      <div className='flex items-center gap-2'>
+        <RadioGroupItem
+          value='option-3'
+          id='r3'
+        />
+        <Label htmlFor='r3'>옵션 3</Label>
+      </div>
+    </RadioGroup>
+  )
+}`
+      },
+      notes: [
+        'shadcn RadioGroup은 Radix UI RadioGroup을 기반으로 합니다.',
+        '화살표 키로 옵션 간 이동이 자동으로 지원됩니다.',
+        'RadioGroup에 aria-label 또는 aria-labelledby를 반드시 추가하세요.'
+      ]
+    },
+    chakra: {
+      id: 'chakra',
+      name: 'Chakra UI',
+      color: '#319795',
+      additionalChecks: [
+        {
+          id: 'radio-chakra-1',
+          title: 'RadioGroup으로 그룹화',
+          description: 'Chakra Radio는 반드시 RadioGroup으로 감싸야 방향키 탐색이 올바르게 동작합니다.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Chakra UI RadioGroup',
+        code: `import { RadioGroup, Radio, Stack } from '@chakra-ui/react'
+
+function RadioDemo() {
+  const [value, setValue] = useState('option-1')
+  return (
+    <RadioGroup
+      value={value}
+      onChange={setValue}
+      aria-label='옵션 선택'>
+      <Stack
+        direction='column'
+        gap={2}>
+        <Radio value='option-1'>옵션 1</Radio>
+        <Radio value='option-2'>옵션 2</Radio>
+        <Radio value='option-3'>옵션 3</Radio>
+      </Stack>
+    </RadioGroup>
+  )
+}`
+      },
+      notes: [
+        'Chakra Radio는 내부적으로 <input type="radio">를 사용합니다.',
+        'RadioGroup의 onChange로 선택값을 제어하세요.',
+        'isDisabled prop으로 개별 또는 그룹 전체를 비활성화할 수 있습니다.'
+      ]
+    },
+    spectrum: {
+      id: 'spectrum',
+      name: 'React Spectrum',
+      color: '#e03',
+      additionalChecks: [],
+      codeSample: {
+        language: 'tsx',
+        label: 'React Spectrum RadioGroup',
+        code: `import { RadioGroup, Radio } from '@adobe/react-spectrum'
+
+function RadioDemo() {
+  const [value, setValue] = useState('option-1')
+  return (
+    <RadioGroup
+      label='옵션 선택'
+      value={value}
+      onChange={setValue}>
+      <Radio value='option-1'>옵션 1</Radio>
+      <Radio value='option-2'>옵션 2</Radio>
+      <Radio value='option-3'>옵션 3</Radio>
+    </RadioGroup>
+  )
+}`
+      },
+      notes: [
+        'React Spectrum RadioGroup은 label prop으로 그룹 레이블을 설정합니다.',
+        '방향키 탐색과 포커스 관리가 자동으로 처리됩니다.',
+        'isDisabled, isRequired prop을 지원합니다.'
+      ]
     }
   }
 }

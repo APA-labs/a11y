@@ -175,6 +175,114 @@ const { Link } = Typography
         'Ant Design Typography.Link는 href 없이 onClick만 사용하면 <button>처럼 동작합니다.',
         'disabled prop을 사용할 때 색상 대비를 확인하세요.'
       ]
+    },
+    shadcn: {
+      id: 'shadcn',
+      name: 'shadcn/ui',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'link-shadcn-1',
+          title: 'Button asChild로 링크 스타일 적용',
+          description:
+            'shadcn/ui는 별도 Link 컴포넌트 없이 Button의 asChild prop과 Next.js Link를 조합합니다. 이때 실제 렌더링 요소는 <a>이므로 시맨틱이 올바릅니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'shadcn/ui Link',
+        code: `import { Button } from '@/components/ui/button'
+
+// Next.js Link와 조합
+// <Button asChild variant="link">
+//   <Link href="/page">페이지로 이동</Link>
+// </Button>
+
+// 인라인 텍스트 링크 (직접 <a> 사용)
+function LinkDemo() {
+  return (
+    <p>
+      자세한 내용은{' '}
+      <a
+        href='#'
+        className='underline underline-offset-4 hover:text-primary font-medium'>
+        공식 문서
+      </a>
+      를 참고하세요.
+    </p>
+  )
+}`
+      },
+      notes: [
+        'shadcn/ui는 별도 Link 컴포넌트를 제공하지 않습니다.',
+        'Button variant="link"는 링크 스타일의 버튼으로, <a>가 아닌 <button>을 렌더링합니다.',
+        'Next.js Link와 asChild를 조합하면 실제 <a> 요소로 렌더링됩니다.'
+      ]
+    },
+    chakra: {
+      id: 'chakra',
+      name: 'Chakra UI',
+      color: '#319795',
+      additionalChecks: [
+        {
+          id: 'link-chakra-1',
+          title: 'isExternal로 새 탭 안내',
+          description:
+            'isExternal prop 사용 시 target="_blank"와 rel="noopener noreferrer"가 자동 설정되지만, 스크린리더 사용자를 위한 "(새 탭에서 열림)" 안내는 별도로 추가해야 합니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Chakra UI Link',
+        code: `import { Link } from '@chakra-ui/react'
+
+function LinkDemo() {
+  return (
+    <p>
+      자세한 내용은{' '}
+      <Link
+        href='#'
+        color='teal.500'
+        isExternal>
+        공식 문서
+        <span className='sr-only'>(새 탭에서 열림)</span>
+      </Link>
+      를 참고하세요.
+    </p>
+  )
+}`
+      },
+      notes: [
+        'Chakra Link는 기본적으로 <a> 요소를 렌더링합니다.',
+        'isExternal prop으로 새 탭 열기를 처리하세요.',
+        'Next.js와 함께 사용 시 as={NextLink} prop을 활용하세요.'
+      ]
+    },
+    spectrum: {
+      id: 'spectrum',
+      name: 'React Spectrum',
+      color: '#e03',
+      additionalChecks: [],
+      codeSample: {
+        language: 'tsx',
+        label: 'React Spectrum Link',
+        code: `import { Link } from '@adobe/react-spectrum'
+
+function LinkDemo() {
+  return (
+    <p>
+      자세한 내용은 <Link href='#'>공식 문서</Link>를 참고하세요.
+    </p>
+  )
+}`
+      },
+      notes: [
+        'React Spectrum Link는 키보드 접근성과 포커스 관리를 자동으로 처리합니다.',
+        'variant="secondary"로 보조 스타일을 적용할 수 있습니다.',
+        '새 탭으로 열릴 경우 target="_blank"와 함께 시각적 안내를 추가하세요.'
+      ]
     }
   }
 }
