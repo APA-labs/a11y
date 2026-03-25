@@ -23,27 +23,27 @@ import { tooltipPattern } from './tooltip'
 import type { Pattern } from '../types'
 
 export const patterns: Pattern[] = [
-  buttonPattern,
-  textInputPattern,
-  modalDialogPattern,
-  togglePattern,
-  disclosurePattern,
-  tabsPattern,
-  tooltipPattern,
   accordionPattern,
-  comboboxPattern,
-  checkboxPattern,
-  radioGroupPattern,
-  linkPattern,
   alertPattern,
-  selectPattern,
   breadcrumbPattern,
-  paginationPattern,
-  navigationMenuPattern,
-  formValidationPattern,
-  popoverPattern,
+  buttonPattern,
+  checkboxPattern,
+  comboboxPattern,
+  datePickerPattern,
+  disclosurePattern,
   drawerPattern,
-  datePickerPattern
+  formValidationPattern,
+  linkPattern,
+  modalDialogPattern,
+  navigationMenuPattern,
+  paginationPattern,
+  popoverPattern,
+  radioGroupPattern,
+  selectPattern,
+  tabsPattern,
+  textInputPattern,
+  togglePattern,
+  tooltipPattern
 ]
 
 export function getPattern(slug: string): Pattern | undefined {

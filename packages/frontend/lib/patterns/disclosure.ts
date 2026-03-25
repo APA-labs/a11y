@@ -192,40 +192,6 @@ export function AntDisclosure() {
       },
       notes: ['Ant Design Collapse는 내부적으로 aria-expanded를 관리합니다.', 'destroyInactivePanel prop으로 닫힌 패널 DOM 제거 여부를 제어하세요.']
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'disc-shadcn-1',
-          title: 'CollapsibleTrigger aria 관리',
-          description: 'CollapsibleTrigger는 aria-expanded를 자동 관리합니다. asChild 패턴 사용 시에도 button 요소를 유지하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Collapsible',
-        code: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { Button } from '@/components/ui/button'
-<Collapsible
-  open={isOpen}
-  onOpenChange={setIsOpen}>
-  <CollapsibleTrigger asChild>
-    <Button variant='ghost'>시스템 요구사항 {isOpen ? '▲' : '▼'}</Button>
-  </CollapsibleTrigger>
-  <CollapsibleContent>
-    <p>운영체제: Windows 10 이상, macOS 10.15 이상</p>
-  </CollapsibleContent>
-</Collapsible>`
-      },
-      notes: [
-        'shadcn Collapsible은 Radix UI 기반으로 aria-expanded를 자동 관리합니다.',
-        'open/onOpenChange로 제어 컴포넌트로 사용 가능합니다.',
-        'CollapsibleTrigger에 asChild를 사용해 시맨틱 button을 유지하세요.'
-      ]
-    },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',

@@ -156,7 +156,7 @@ export const textInputPattern: Pattern = {
         type='email'
         required
         autoComplete='email'
-        className='focus-visible:ring-2'
+        style={{ padding: '6px 8px', border: '1px solid #d1d5db', borderRadius: 4 }}
       />
     </Form.Control>
     <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>

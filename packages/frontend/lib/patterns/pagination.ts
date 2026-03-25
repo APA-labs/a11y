@@ -66,42 +66,58 @@ export const paginationPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (React)',
-      code: `function Pagination({ currentPage, totalPages, onPageChange }) {
+      code: `function PaginationDemo() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = 5
+
+  const btnStyle = (active) => ({
+    padding: '6px 12px',
+    border: '1px solid #d1d5db',
+    borderRadius: 6,
+    background: active ? '#2563eb' : '#fff',
+    color: active ? '#fff' : '#374151',
+    fontWeight: active ? 700 : 400,
+    cursor: 'pointer'
+  })
+
   return (
     <nav aria-label='페이지 탐색'>
-      <ul className='flex gap-1'>
+      <ul style={{ display: 'flex', gap: 4, listStyle: 'none', padding: 0, margin: 0 }}>
         <li>
           <button
-            onClick={() => onPageChange(currentPage - 1)}
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
             aria-label='이전 페이지'
             aria-disabled={currentPage === 1}
-            disabled={currentPage === 1}>
-            &laquo;
+            disabled={currentPage === 1}
+            style={{ ...btnStyle(false), opacity: currentPage === 1 ? 0.4 : 1 }}>
+            ‹
           </button>
         </li>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <li key={page}>
             <button
-              onClick={() => onPageChange(page)}
+              onClick={() => setCurrentPage(page)}
               aria-label={\`\${page}페이지로 이동\`}
-              aria-current={page === currentPage ? 'page' : undefined}>
+              aria-current={page === currentPage ? 'page' : undefined}
+              style={btnStyle(page === currentPage)}>
               {page}
             </button>
           </li>
         ))}
         <li>
           <button
-            onClick={() => onPageChange(currentPage + 1)}
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
             aria-label='다음 페이지'
             aria-disabled={currentPage === totalPages}
-            disabled={currentPage === totalPages}>
-            &raquo;
+            disabled={currentPage === totalPages}
+            style={{ ...btnStyle(false), opacity: currentPage === totalPages ? 0.4 : 1 }}>
+            ›
           </button>
         </li>
       </ul>
       <div
         role='status'
-        className='sr-only'>
+        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
         {totalPages}페이지 중 {currentPage}페이지
       </div>
     </nav>
@@ -127,19 +143,25 @@ export const paginationPattern: Pattern = {
         label: 'MUI Pagination',
         code: `import { Pagination } from '@mui/material'
 
-<Pagination
-  count={10}
-  page={currentPage}
-  onChange={(_, page) => setCurrentPage(page)}
-  getItemAriaLabel={(type, page, selected) => {
-    if (type === 'page') return \`\${page}페이지로 이동\${selected ? ' (현재 페이지)' : ''}\`
-    if (type === 'first') return '첫 페이지로 이동'
-    if (type === 'last') return '마지막 페이지로 이동'
-    if (type === 'next') return '다음 페이지'
-    if (type === 'previous') return '이전 페이지'
-    return ''
-  }}
-/>`
+function MuiPaginationDemo() {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  return (
+    <Pagination
+      count={10}
+      page={currentPage}
+      onChange={(_, page) => setCurrentPage(page)}
+      getItemAriaLabel={(type, page, selected) => {
+        if (type === 'page') return \`\${page}페이지로 이동\${selected ? ' (현재 페이지)' : ''}\`
+        if (type === 'first') return '첫 페이지로 이동'
+        if (type === 'last') return '마지막 페이지로 이동'
+        if (type === 'next') return '다음 페이지'
+        if (type === 'previous') return '이전 페이지'
+        return ''
+      }}
+    />
+  )
+}`
       },
       notes: [
         'MUI Pagination은 자동으로 <nav role="navigation"> 랜드마크를 사용합니다.',
@@ -164,15 +186,22 @@ export const paginationPattern: Pattern = {
         label: 'Ant Design Pagination',
         code: `import { Pagination, ConfigProvider } from 'antd'
 import koKR from 'antd/locale/ko_KR'
-<ConfigProvider locale={koKR}>
-  <Pagination
-    current={currentPage}
-    total={100}
-    pageSize={10}
-    onChange={(page) => setCurrentPage(page)}
-    showSizeChanger={false}
-  />
-</ConfigProvider>`
+
+function AntdPaginationDemo() {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  return (
+    <ConfigProvider locale={koKR}>
+      <Pagination
+        current={currentPage}
+        total={100}
+        pageSize={10}
+        onChange={(page) => setCurrentPage(page)}
+        showSizeChanger={false}
+      />
+    </ConfigProvider>
+  )
+}`
       },
       notes: [
         'ConfigProvider의 locale을 koKR로 설정하면 aria-label이 한국어로 변경됩니다.',
@@ -196,25 +225,30 @@ import koKR from 'antd/locale/ko_KR'
         language: 'tsx',
         label: 'Chakra UI Pagination',
         code: `import { Pagination } from '@chakra-ui/react'
-<Pagination.Root
-  count={50}
-  pageSize={10}
-  page={page}
-  onPageChange={(e) => setPage(e.page)}>
-  <Pagination.PrevTrigger aria-label='이전 페이지' />
-  {[1, 2, 3, 4, 5].map((p) => (
-    <Pagination.Item
-      key={p}
-      value={p}>
-      <Pagination.Link
-        aria-label={p + '페이지'}
-        aria-current={p === page ? 'page' : undefined}>
-        {p}
-      </Pagination.Link>
-    </Pagination.Item>
-  ))}
-  <Pagination.NextTrigger aria-label='다음 페이지' />
-</Pagination.Root>`
+
+function ChakraPaginationDemo() {
+  const [page, setPage] = useState(1)
+
+  return (
+    <Pagination.Root
+      count={50}
+      pageSize={10}
+      page={page}
+      onPageChange={(e) => setPage(e.page)}>
+      <Pagination.PrevTrigger aria-label='이전 페이지' />
+      {[1, 2, 3, 4, 5].map((p) => (
+        <Pagination.Item
+          key={p}
+          value={p}
+          aria-label={p + '페이지'}
+          aria-current={p === page ? 'page' : undefined}>
+          {p}
+        </Pagination.Item>
+      ))}
+      <Pagination.NextTrigger aria-label='다음 페이지' />
+    </Pagination.Root>
+  )
+}`
       },
       notes: [
         'Chakra Pagination.Root는 페이지 상태를 자동 관리합니다.',

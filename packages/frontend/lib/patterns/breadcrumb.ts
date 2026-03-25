@@ -61,7 +61,7 @@ export const breadcrumbPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML)',
       code: `<nav aria-label='breadcrumb'>
-  <ol className='flex items-center gap-2 text-sm list-none p-0'>
+  <ol style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, listStyle: 'none', padding: 0, margin: 0 }}>
     <li>
       <a href='/'>홈</a>
     </li>
@@ -159,49 +159,6 @@ export const breadcrumbPattern: Pattern = {
         'separator prop으로 구분자를 변경할 수 있으며, 기본 구분자는 aria-hidden이 적용됩니다.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'breadcrumb-shadcn-1',
-          title: 'BreadcrumbPage로 현재 페이지 명시',
-          description: 'shadcn BreadcrumbPage는 자동으로 aria-current="page"를 설정합니다. BreadcrumbLink 대신 반드시 BreadcrumbPage를 사용하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Breadcrumb',
-        code: `import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-
-function BreadcrumbDemo() {
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href='/'>홈</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink href='/products'>제품</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>운동화</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-  )
-}`
-      },
-      notes: [
-        'shadcn Breadcrumb은 자동으로 nav와 ol 마크업을 생성합니다.',
-        'BreadcrumbPage는 aria-current="page"를 자동으로 설정합니다.',
-        'BreadcrumbSeparator는 기본적으로 aria-hidden 처리됩니다.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',
@@ -217,21 +174,25 @@ function BreadcrumbDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Breadcrumb',
-        code: `import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
+        code: `import { Breadcrumb } from '@chakra-ui/react'
 
 function BreadcrumbDemo() {
   return (
-    <Breadcrumb separator='/'>
-      <BreadcrumbItem>
-        <BreadcrumbLink href='/'>홈</BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem>
-        <BreadcrumbLink href='/products'>제품</BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem isCurrentPage>
-        <BreadcrumbLink href='/products/shoes'>운동화</BreadcrumbLink>
-      </BreadcrumbItem>
-    </Breadcrumb>
+    <Breadcrumb.Root separator='/'>
+      <Breadcrumb.List>
+        <Breadcrumb.Item>
+          <Breadcrumb.Link href='/'>홈</Breadcrumb.Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Separator />
+        <Breadcrumb.Item>
+          <Breadcrumb.Link href='/products'>제품</Breadcrumb.Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Separator />
+        <Breadcrumb.Item>
+          <Breadcrumb.CurrentLink>운동화</Breadcrumb.CurrentLink>
+        </Breadcrumb.Item>
+      </Breadcrumb.List>
+    </Breadcrumb.Root>
   )
 }`
       },

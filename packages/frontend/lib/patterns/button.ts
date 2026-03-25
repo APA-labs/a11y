@@ -43,7 +43,7 @@ export const buttonPattern: Pattern = {
   aria-label='파일 저장'
   aria-disabled={isLoading}
   aria-busy={isLoading}
-  className='focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2'>
+  style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}>
   {isLoading ? <span aria-hidden>⏳</span> : '저장'}
 </button>`
     }
@@ -113,11 +113,9 @@ export const buttonPattern: Pattern = {
       ],
       codeSample: {
         language: 'tsx',
-        label: 'Radix + Tailwind',
+        label: 'Radix Slot',
         code: `import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
-
-const cn = (...c: string[]) => c.filter(Boolean).join(' ')
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
@@ -131,7 +129,7 @@ function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
     <Comp
       aria-busy={isLoading}
       aria-disabled={isLoading || props.disabled}
-      className={cn('focus-visible:ring-2 focus-visible:ring-offset-2', 'min-h-[44px] min-w-[44px]')}
+      style={{ minHeight: 44, minWidth: 44, padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}
       {...props}>
       {children}
     </Comp>
@@ -225,8 +223,8 @@ function ButtonDemo() {
   const [isLoading, setIsLoading] = useState(false)
   return (
     <Button
-      colorScheme='blue'
-      isLoading={isLoading}
+      colorPalette='blue'
+      loading={isLoading}
       loadingText='저장 중'
       onClick={() => setIsLoading(true)}>
       저장

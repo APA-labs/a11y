@@ -176,9 +176,9 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
     <button>파일 삭제</button>
   </Dialog.Trigger>
   <Dialog.Portal>
-    <Dialog.Overlay className='fixed inset-0 bg-black/50' />
+    <Dialog.Overlay style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} />
     <Dialog.Content
-      className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+      style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', backgroundColor: 'white', padding: 24, borderRadius: 8, minWidth: 320 }}
       onInteractOutside={(e) => e.preventDefault()}>
       <Dialog.Title>파일 삭제</Dialog.Title>
       <Dialog.Description>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</Dialog.Description>

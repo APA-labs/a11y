@@ -268,7 +268,8 @@ import * as Label from '@radix-ui/react-label';
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Select',
-        code: `import { Select, useListCollection } from '@chakra-ui/react'
+        code: `import { useState } from 'react'
+import { Select, useListCollection } from '@chakra-ui/react'
 
 const countries = [
   { label: '대한민국', value: 'kr' },
@@ -277,6 +278,7 @@ const countries = [
 ]
 
 export default function App() {
+  const [value, setValue] = useState('')
   const { collection } = useListCollection({ initialItems: countries })
   return (
     <Select.Root
@@ -321,15 +323,22 @@ export default function App() {
         language: 'tsx',
         label: 'React Aria Select',
         code: `import { Select, SelectItem } from 'react-aria-components'
-<Select
-  label='국가'
-  placeholder='국가를 선택하세요'
-  selectedKey={value}
-  onSelectionChange={setValue}>
-  <SelectItem id='kr'>대한민국</SelectItem>
-  <SelectItem id='us'>미국</SelectItem>
-  <SelectItem id='jp'>일본</SelectItem>
-</Select>`
+
+function SpectrumSelectDemo() {
+  const [value, setValue] = useState('')
+
+  return (
+    <Select
+      label='국가'
+      placeholder='국가를 선택하세요'
+      selectedKey={value}
+      onSelectionChange={setValue}>
+      <SelectItem id='kr'>대한민국</SelectItem>
+      <SelectItem id='us'>미국</SelectItem>
+      <SelectItem id='jp'>일본</SelectItem>
+    </Select>
+  )
+}`
       },
       notes: [
         'React Aria Select는 listbox 패턴과 모든 키보드 상호작용을 자동 구현합니다.',

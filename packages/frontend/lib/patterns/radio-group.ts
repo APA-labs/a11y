@@ -247,23 +247,33 @@ const OPTIONS = [
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI RadioGroup',
-        code: `import { RadioGroup, Radio, Stack } from '@chakra-ui/react'
+        code: `import { RadioGroup, HStack } from '@chakra-ui/react'
 
 function RadioDemo() {
   const [value, setValue] = useState('option-1')
   return (
-    <RadioGroup
+    <RadioGroup.Root
       value={value}
-      onChange={setValue}
+      onValueChange={(e) => setValue(e.value)}
       aria-label='옵션 선택'>
-      <Stack
-        direction='column'
-        gap={2}>
-        <Radio value='option-1'>옵션 1</Radio>
-        <Radio value='option-2'>옵션 2</Radio>
-        <Radio value='option-3'>옵션 3</Radio>
-      </Stack>
-    </RadioGroup>
+      <HStack gap={4}>
+        <RadioGroup.Item value='option-1'>
+          <RadioGroup.ItemHiddenInput />
+          <RadioGroup.ItemIndicator />
+          <RadioGroup.ItemText>옵션 1</RadioGroup.ItemText>
+        </RadioGroup.Item>
+        <RadioGroup.Item value='option-2'>
+          <RadioGroup.ItemHiddenInput />
+          <RadioGroup.ItemIndicator />
+          <RadioGroup.ItemText>옵션 2</RadioGroup.ItemText>
+        </RadioGroup.Item>
+        <RadioGroup.Item value='option-3'>
+          <RadioGroup.ItemHiddenInput />
+          <RadioGroup.ItemIndicator />
+          <RadioGroup.ItemText>옵션 3</RadioGroup.ItemText>
+        </RadioGroup.Item>
+      </HStack>
+    </RadioGroup.Root>
   )
 }`
       },

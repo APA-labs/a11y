@@ -74,7 +74,7 @@ export const linkPattern: Pattern = {
       target='_blank'
       rel='noreferrer noopener'>
       {children}
-      <span className='sr-only'> (새 탭에서 열림)</span>
+      <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
     </a>
   )
 }`
@@ -111,38 +111,10 @@ export const linkPattern: Pattern = {
   target='_blank'
   rel='noreferrer'>
   외부 사이트
-  <span className='sr-only'> (새 탭에서 열림)</span>
+  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
 </Link>`
       },
       notes: ['MUI Link는 component prop으로 Next.js Link 등 라우터와 통합할 수 있습니다.', 'color prop 변경 시 대비율을 확인하세요.']
-    },
-    radix: {
-      id: 'radix',
-      name: 'Radix UI',
-      color: '#6e56cf',
-      additionalChecks: [
-        {
-          id: 'link-radix-1',
-          title: 'asChild로 라우터 링크 통합',
-          description: 'Radix는 별도 Link 컴포넌트가 없으므로 네이티브 <a>나 Next.js Link를 직접 사용하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'Radix + Next.js Link',
-        code: `import NextLink from 'next/link'
-
-{
-  /* Radix 컴포넌트 내 링크는 asChild 패턴 활용 */
-}
-<NextLink
-  href='/patterns/button'
-  className='text-indigo-600 hover:underline'>
-  Button 패턴 보기
-</NextLink>`
-      },
-      notes: ['네이티브 <a>의 기본 접근성을 최대한 활용하세요.', 'Radix Themes를 사용하는 경우 Theme.Link 컴포넌트가 포함되어 있습니다.']
     },
     antd: {
       id: 'antd',
@@ -168,56 +140,12 @@ const { Link } = Typography
 {/* 외부 링크 */}
 <Link href="https://example.com" target="_blank">
 외부 사이트
-<span className="sr-only"> (새 탭에서 열림)</span>
+<span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
 </Link>`
       },
       notes: [
         'Ant Design Typography.Link는 href 없이 onClick만 사용하면 <button>처럼 동작합니다.',
         'disabled prop을 사용할 때 색상 대비를 확인하세요.'
-      ]
-    },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'link-shadcn-1',
-          title: 'Button asChild로 링크 스타일 적용',
-          description:
-            'shadcn/ui는 별도 Link 컴포넌트 없이 Button의 asChild prop과 Next.js Link를 조합합니다. 이때 실제 렌더링 요소는 <a>이므로 시맨틱이 올바릅니다.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Link',
-        code: `import { Button } from '@/components/ui/button'
-
-// Next.js Link와 조합
-// <Button asChild variant="link">
-//   <Link href="/page">페이지로 이동</Link>
-// </Button>
-
-// 인라인 텍스트 링크 (직접 <a> 사용)
-function LinkDemo() {
-  return (
-    <p>
-      자세한 내용은{' '}
-      <a
-        href='#'
-        className='underline underline-offset-4 hover:text-primary font-medium'>
-        공식 문서
-      </a>
-      를 참고하세요.
-    </p>
-  )
-}`
-      },
-      notes: [
-        'shadcn/ui는 별도 Link 컴포넌트를 제공하지 않습니다.',
-        'Button variant="link"는 링크 스타일의 버튼으로, <a>가 아닌 <button>을 렌더링합니다.',
-        'Next.js Link와 asChild를 조합하면 실제 <a> 요소로 렌더링됩니다.'
       ]
     },
     chakra: {
@@ -243,11 +171,12 @@ function LinkDemo() {
     <p>
       자세한 내용은{' '}
       <Link
-        href='#'
-        color='teal.500'
-        isExternal>
+        href='https://example.com'
+        colorPalette='teal'
+        target='_blank'
+        rel='noopener noreferrer'>
         공식 문서
-        <span className='sr-only'>(새 탭에서 열림)</span>
+        <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
       </Link>
       를 참고하세요.
     </p>

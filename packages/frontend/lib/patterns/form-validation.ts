@@ -210,22 +210,31 @@ function MuiForm() {
         language: 'tsx',
         label: 'Radix Form',
         code: `import * as Form from '@radix-ui/react-form'
-<Form.Root onSubmit={handleSubmit}>
-  <Form.Field name='email'>
-    <Form.Label>이메일</Form.Label>
-    <Form.Control asChild>
-      <input
-        type='email'
-        required
-      />
-    </Form.Control>
-    <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>
-    <Form.Message match='typeMismatch'>올바른 이메일 형식이 아닙니다.</Form.Message>
-  </Form.Field>
-  <Form.Submit asChild>
-    <button type='submit'>제출</button>
-  </Form.Submit>
-</Form.Root>`
+
+function RadixFormDemo() {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
+  return (
+    <Form.Root onSubmit={handleSubmit}>
+      <Form.Field name='email'>
+        <Form.Label>이메일</Form.Label>
+        <Form.Control asChild>
+          <input
+            type='email'
+            required
+          />
+        </Form.Control>
+        <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>
+        <Form.Message match='typeMismatch'>올바른 이메일 형식이 아닙니다.</Form.Message>
+      </Form.Field>
+      <Form.Submit asChild>
+        <button type='submit'>제출</button>
+      </Form.Submit>
+    </Form.Root>
+  )
+}`
       },
       notes: [
         'Radix Form은 "inline errors" 패턴을 따릅니다. 에러 메시지와 입력이 자동으로 aria-describedby로 연결됩니다.',
@@ -249,30 +258,38 @@ function MuiForm() {
         language: 'tsx',
         label: 'Ant Design Form',
         code: `import { Form, Input, Button } from 'antd'
-<Form
-  layout='vertical'
-  onFinishFailed={({ errorFields }) => {
-    const first = errorFields[0]
-    if (first) form.scrollToField(first.name)
-  }}>
-  <Form.Item
-    label='이메일'
-    name='email'
-    rules={[
-      { required: true, message: '이메일을 입력해주세요.' },
-      { type: 'email', message: '올바른 이메일 형식이 아닙니다.' }
-    ]}
-    validateTrigger='onBlur'>
-    <Input type='email' />
-  </Form.Item>
-  <Form.Item>
-    <Button
-      type='primary'
-      htmlType='submit'>
-      제출
-    </Button>
-  </Form.Item>
-</Form>`
+
+function AntdFormDemo() {
+  const [form] = Form.useForm()
+
+  return (
+    <Form
+      form={form}
+      layout='vertical'
+      onFinishFailed={({ errorFields }) => {
+        const first = errorFields[0]
+        if (first) form.scrollToField(first.name)
+      }}>
+      <Form.Item
+        label='이메일'
+        name='email'
+        rules={[
+          { required: true, message: '이메일을 입력해주세요.' },
+          { type: 'email', message: '올바른 이메일 형식이 아닙니다.' }
+        ]}
+        validateTrigger='onBlur'>
+        <Input type='email' />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          type='primary'
+          htmlType='submit'>
+          제출
+        </Button>
+      </Form.Item>
+    </Form>
+  )
+}`
       },
       notes: [
         'Ant Design Form은 aria-invalid와 aria-describedby를 자동으로 설정합니다.',

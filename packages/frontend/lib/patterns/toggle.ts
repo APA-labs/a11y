@@ -38,17 +38,28 @@ export const togglePattern: Pattern = {
       label: 'Baseline (HTML)',
       code: `<label htmlFor="notifications">알림 설정</label>
 <button
-id="notifications"
-role="switch"
-aria-checked={isEnabled}
-onClick={() => setIsEnabled(!isEnabled)}
-className={'relative inline-flex h-6 w-11 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 ' + (isEnabled ? 'bg-blue-600' : 'bg-gray-300')}
->
-<span className="sr-only">{isEnabled ? '켜짐' : '꺼짐'}</span>
-<span
-  aria-hidden
-  className={'inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ' + (isEnabled ? 'translate-x-5' : 'translate-x-0')}
-/>
+  id="notifications"
+  role="switch"
+  aria-checked={isEnabled}
+  onClick={() => setIsEnabled(!isEnabled)}
+  style={{
+    position: 'relative', display: 'inline-flex', alignItems: 'center',
+    height: 24, width: 44, borderRadius: 9999, border: 'none', padding: 2,
+    backgroundColor: isEnabled ? '#2563eb' : '#d1d5db',
+    transition: 'background-color 0.2s', cursor: 'pointer'
+  }}>
+  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+    {isEnabled ? '켜짐' : '꺼짐'}
+  </span>
+  <span
+    aria-hidden
+    style={{
+      display: 'inline-block', height: 20, width: 20, borderRadius: 9999,
+      backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+      transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
+      transition: 'transform 0.2s'
+    }}
+  />
 </button>`
     }
   },
@@ -114,20 +125,27 @@ className={'relative inline-flex h-6 w-11 rounded-full transition-colors focus-v
         language: 'tsx',
         label: 'Radix Switch',
         code: `import * as Switch from '@radix-ui/react-switch'
-<div className='flex items-center gap-2'>
+<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
   <label
     htmlFor='notifications'
-    className='text-sm font-medium'>
+    style={{ fontSize: 14, fontWeight: 500 }}>
     알림 설정
   </label>
   <Switch.Root
     id='notifications'
     checked={isEnabled}
     onCheckedChange={setIsEnabled}
-    className={
-      'w-11 h-6 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 ' + (isEnabled ? 'bg-blue-600' : 'bg-gray-200')
-    }>
-    <Switch.Thumb className={'block w-5 h-5 bg-white rounded-full shadow transition-transform ' + (isEnabled ? 'translate-x-5' : 'translate-x-0')} />
+    style={{
+      width: 44, height: 24, borderRadius: 9999, border: 'none', padding: 2,
+      backgroundColor: isEnabled ? '#2563eb' : '#e5e7eb',
+      transition: 'background-color 0.2s', cursor: 'pointer'
+    }}>
+    <Switch.Thumb style={{
+      display: 'block', width: 20, height: 20, borderRadius: 9999,
+      backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+      transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
+      transition: 'transform 0.2s'
+    }} />
   </Switch.Root>
 </div>`
       },
@@ -159,7 +177,7 @@ className={'relative inline-flex h-6 w-11 rounded-full transition-colors focus-v
         language: 'tsx',
         label: 'Ant Design Switch',
         code: `import { Switch } from 'antd'
-<div className='flex items-center gap-2'>
+<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
   <label htmlFor='notifications'>알림 설정</label>
   <Switch
     id='notifications'
@@ -175,38 +193,6 @@ className={'relative inline-flex h-6 w-11 rounded-full transition-colors focus-v
         'Ant Design Switch는 내부적으로 role="switch"를 사용합니다.',
         'checkedChildren/unCheckedChildren으로 상태를 텍스트로 나타내면 색맹 사용자에게 유용합니다.',
         'loading prop 사용 시 aria-busy를 함께 설정하세요.'
-      ]
-    },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'tog-shadcn-1',
-          title: 'Label 연결 필수',
-          description: 'shadcn Switch에 Label을 htmlFor/id로 연결하거나 aria-label을 직접 제공하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Switch',
-        code: `import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
-<div className='flex items-center gap-2'>
-  <Switch
-    id='notifications'
-    checked={isEnabled}
-    onCheckedChange={setIsEnabled}
-  />
-  <Label htmlFor='notifications'>알림 설정</Label>
-</div>`
-      },
-      notes: [
-        "shadcn Switch는 Radix UI 기반으로 role='switch'와 aria-checked를 자동 관리합니다.",
-        'onCheckedChange 콜백으로 상태를 제어하세요.',
-        'Label 컴포넌트와 함께 사용하면 클릭 영역이 확장됩니다.'
       ]
     },
     chakra: {

@@ -98,19 +98,19 @@ export const alertPattern: Pattern = {
         role='status'
         aria-live='polite'
         aria-atomic='true'
-        className='sr-only'>
+        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
         {alerts.map((a) => a.message).join('. ')}
       </div>
 
       {/* 시각적 토스트 */}
       <div
-        className='toast-container'
+        style={{ position: 'fixed', top: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8 }}
         aria-label='알림'>
         {alerts.map((alert) => (
           <div
             key={alert.id}
             role='alert'
-            className={\`toast toast-\${alert.type}\`}>
+            style={{ padding: '12px 16px', borderRadius: 8, backgroundColor: alert.type === 'success' ? '#dcfce7' : '#fee2e2', border: '1px solid', borderColor: alert.type === 'success' ? '#86efac' : '#fca5a5', display: 'flex', alignItems: 'center', gap: 8 }}>
             <span>{alert.message}</span>
             <button
               onClick={() => removeAlert(alert.id)}
@@ -209,7 +209,7 @@ function ToastDemo() {
 
       <Toast.Viewport
         label='알림 목록. F8을 눌러 이동하세요.'
-        className='toast-viewport'
+        style={{ position: 'fixed', bottom: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 50, maxWidth: 360 }}
       />
     </Toast.Provider>
   )
@@ -237,31 +237,30 @@ function ToastDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Alert',
-        code: `import { Alert, Space } from 'antd'
+        code: `import { Alert, notification, Button, Space } from 'antd'
 
-{
-  /* 인라인 Alert */
-}
-<Alert
-  message='저장 완료'
-  description='파일이 성공적으로 저장되었습니다.'
-  type='success'
-  showIcon
-  closable
-  onClose={() => {}}
-/>
+function AntdAlertDemo() {
+  const openNotification = () => {
+    notification.success({
+      message: '저장 완료',
+      description: '파일이 저장되었습니다.',
+      duration: 5
+    })
+  }
 
-{
-  /* 토스트형 - notification API */
-}
-import { notification } from 'antd'
-
-const openNotification = () => {
-  notification.success({
-    message: '저장 완료',
-    description: '파일이 저장되었습니다.',
-    duration: 5
-  })
+  return (
+    <Space direction='vertical' style={{ width: '100%' }}>
+      <Alert
+        message='저장 완료'
+        description='파일이 성공적으로 저장되었습니다.'
+        type='success'
+        showIcon
+        closable
+        onClose={() => {}}
+      />
+      <Button onClick={openNotification}>토스트 알림 열기</Button>
+    </Space>
+  )
 }`
       },
       notes: [

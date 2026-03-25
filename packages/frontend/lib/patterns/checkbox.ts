@@ -158,7 +158,7 @@ export function RadixCheckbox({ id, label }) {
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
       <Checkbox.Root
         id={id}
-        className='checkbox-root'>
+        style={{ width: 20, height: 20, borderRadius: 4, border: '2px solid #6e56cf', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backgroundColor: 'white' }}>
         <Checkbox.Indicator>
           <CheckIcon />
         </Checkbox.Indicator>
@@ -223,11 +223,15 @@ aria-label="알림 수신 방법"
 function CheckboxDemo() {
   const [checked, setChecked] = useState(false)
   return (
-    <Checkbox
-      isChecked={checked}
-      onChange={(e) => setChecked(e.target.checked)}>
-      이용약관에 동의합니다
-    </Checkbox>
+    <Checkbox.Root
+      checked={checked}
+      onCheckedChange={(e) => setChecked(!!e.checked)}>
+      <Checkbox.HiddenInput />
+      <Checkbox.Control>
+        <Checkbox.Indicator />
+      </Checkbox.Control>
+      <Checkbox.Label>이용약관에 동의합니다</Checkbox.Label>
+    </Checkbox.Root>
   )
 }`
       },

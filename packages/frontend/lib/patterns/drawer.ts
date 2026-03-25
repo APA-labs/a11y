@@ -176,53 +176,6 @@ function MuiDrawerDemo() {
         'keepMounted={false}로 설정하면 닫혔을 때 DOM에서 제거됩니다.'
       ]
     },
-    radix: {
-      id: 'radix',
-      name: 'Radix UI',
-      color: '#6e56cf',
-      additionalChecks: [
-        {
-          id: 'drawer-radix-1',
-          title: 'Dialog 기반으로 구현',
-          description: 'Radix UI에는 전용 Drawer가 없습니다. Dialog 컴포넌트에 CSS로 슬라이드 애니메이션을 추가하거나 vaul 라이브러리를 사용하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'Radix Dialog (Drawer 구현)',
-        code: `import * as Dialog from '@radix-ui/react-dialog'
-
-{
-  /* Radix Dialog에 CSS transform으로 드로어 효과 */
-}
-<Dialog.Root
-  open={isOpen}
-  onOpenChange={setIsOpen}>
-  <Dialog.Trigger asChild>
-    <button>메뉴 열기</button>
-  </Dialog.Trigger>
-  <Dialog.Portal>
-    <Dialog.Overlay className='drawer-overlay' />
-    <Dialog.Content
-      className='drawer-content' /* translateX 애니메이션 */
-      aria-describedby={undefined}>
-      <Dialog.Title>메뉴</Dialog.Title>
-      <nav>
-        <a href='/'>홈</a>
-        <a href='/about'>소개</a>
-      </nav>
-      <Dialog.Close aria-label='드로어 닫기'>닫기</Dialog.Close>
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>`
-      },
-      notes: [
-        'Radix Dialog는 포커스 트랩, Escape 닫기, 트리거로 포커스 복귀를 자동 처리합니다.',
-        'CSS transform translateX로 슬라이드 인 효과를 구현하세요.',
-        'shadcn/ui의 Sheet 컴포넌트가 이 패턴의 완성된 구현입니다.'
-      ]
-    },
     antd: {
       id: 'antd',
       name: 'Ant Design',
@@ -259,56 +212,6 @@ function MuiDrawerDemo() {
         'Ant Design Drawer는 Escape 키로 자동으로 닫힙니다.',
         'placement prop으로 left/right/top/bottom 위치를 설정합니다.',
         'closeIcon prop으로 닫기 버튼을 커스텀하여 aria-label을 추가하세요.'
-      ]
-    },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'drw-shadcn-1',
-          title: 'DrawerTitle과 DrawerDescription 제공',
-          description: 'DrawerTitle은 aria-labelledby로 자동 연결됩니다. 항상 제목을 제공하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Drawer',
-        code: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
-<Drawer>
-  <DrawerTrigger asChild>
-    <Button variant='outline'>메뉴 열기</Button>
-  </DrawerTrigger>
-  <DrawerContent>
-    <DrawerHeader>
-      <DrawerTitle>내비게이션 메뉴</DrawerTitle>
-      <DrawerDescription>원하는 페이지로 이동하세요.</DrawerDescription>
-    </DrawerHeader>
-    <div className='p-4'>
-      <a
-        href='/home'
-        className='block py-2'>
-        홈
-      </a>
-      <a
-        href='/about'
-        className='block py-2'>
-        소개
-      </a>
-    </div>
-    <DrawerClose asChild>
-      <Button variant='outline'>닫기</Button>
-    </DrawerClose>
-  </DrawerContent>
-</Drawer>`
-      },
-      notes: [
-        'shadcn Drawer는 Vaul 기반으로 모바일 친화적인 바텀 시트를 제공합니다.',
-        'DrawerTitle은 aria-labelledby로 자동 연결됩니다.',
-        '포커스 트랩과 ESC 닫기가 자동 처리됩니다.'
       ]
     },
     chakra: {

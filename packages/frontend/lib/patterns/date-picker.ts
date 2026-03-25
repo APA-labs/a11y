@@ -79,7 +79,7 @@ export const datePickerPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML5 date input)',
       code: `function DatePickerDemo() {
-const [date, setDate] = useState(new Date());
+const [date, setDate] = useState('');
 const [error, setError] = useState('');
 const hintId = 'date-format-hint';
 const errorId = 'date-error';
@@ -179,75 +179,28 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 
 dayjs.locale('ko')
-<ConfigProvider locale={koKR}>
-  <DatePicker
-    value={date}
-    onChange={(value) => setDate(value)}
-    placeholder='날짜 선택'
-    format='YYYY년 MM월 DD일'
-    aria-label='날짜 선택'
-    getPopupContainer={(trigger) => trigger.parentElement}
-  />
-</ConfigProvider>`
+
+function AntdDatePickerDemo() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <ConfigProvider locale={koKR}>
+      <DatePicker
+        value={date}
+        onChange={(value) => setDate(value)}
+        placeholder='날짜 선택'
+        format='YYYY년 MM월 DD일'
+        aria-label='날짜 선택'
+        getPopupContainer={(trigger) => trigger.parentElement}
+      />
+    </ConfigProvider>
+  )
+}`
       },
       notes: [
         'ConfigProvider locale={koKR}으로 캘린더 UI를 한국어로 변경하세요.',
         'Ant Design DatePicker는 키보드 내비게이션을 지원하지만 스크린리더 지원이 완전하지 않을 수 있습니다.',
         '중요한 날짜 입력에는 직접 텍스트 입력 옵션도 함께 제공하세요.'
-      ]
-    },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'dp-shadcn-1',
-          title: '트리거 버튼 aria-label 동적 업데이트',
-          description: '날짜가 선택되면 트리거 버튼의 aria-label을 선택된 날짜로 업데이트하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Calendar',
-        code: `import { useState } from 'react'
-import { Calendar } from '@/components/ui/calendar'
-import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Label } from '@/components/ui/label'
-
-export default function App() {
-  const [date, setDate] = useState(undefined)
-  return (
-    <div className='grid gap-1.5'>
-      <Label htmlFor='date-trigger'>날짜 선택</Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id='date-trigger'
-            variant='outline'
-            aria-label={date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}>
-            📅 {date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <Calendar
-            mode='single'
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
-  )
-}`
-      },
-      notes: [
-        'shadcn에 전용 DatePicker가 없으므로 Calendar + Popover를 조합해 구현합니다.',
-        '트리거 버튼에 선택된 날짜를 aria-label로 업데이트하세요.',
-        'Calendar의 initialFocus prop으로 열릴 때 자동 포커스를 설정하세요.'
       ]
     },
     chakra: {
@@ -266,14 +219,13 @@ export default function App() {
         language: 'tsx',
         label: 'Chakra UI DatePicker',
         code: `import { DatePicker } from '@chakra-ui/react'
-import { LuCalendar } from 'react-icons/lu'
 <DatePicker.Root>
   <DatePicker.Label>날짜 선택</DatePicker.Label>
   <DatePicker.Control>
     <DatePicker.Input />
     <DatePicker.IndicatorGroup>
       <DatePicker.Trigger aria-label='달력 열기'>
-        <LuCalendar aria-hidden />
+        <span aria-hidden>📅</span>
       </DatePicker.Trigger>
     </DatePicker.IndicatorGroup>
   </DatePicker.Control>

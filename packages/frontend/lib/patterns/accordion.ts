@@ -262,21 +262,26 @@ export function AntAccordion() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria DisclosureGroup',
-        code: `import { DisclosureGroup, Disclosure, DisclosureHeader, DisclosurePanel, Button } from 'react-aria-components'
-<DisclosureGroup defaultExpandedKeys={['delivery']}>
-  <Disclosure id='delivery'>
-    <DisclosureHeader>
-      <Button slot='trigger'>배송 정보</Button>
-    </DisclosureHeader>
-    <DisclosurePanel>주문 후 2-3 영업일 내 배송됩니다.</DisclosurePanel>
-  </Disclosure>
-  <Disclosure id='returns'>
-    <DisclosureHeader>
-      <Button slot='trigger'>반품 정책</Button>
-    </DisclosureHeader>
-    <DisclosurePanel>수령 후 7일 이내 반품 가능합니다.</DisclosurePanel>
-  </Disclosure>
-</DisclosureGroup>`
+        code: `import { UNSTABLE_DisclosureGroup as DisclosureGroup, UNSTABLE_Disclosure as Disclosure, UNSTABLE_DisclosurePanel as DisclosurePanel, Button, Heading } from 'react-aria-components'
+
+function AccordionDemo() {
+  return (
+    <DisclosureGroup defaultExpandedKeys={['delivery']}>
+      <Disclosure id='delivery'>
+        <Heading>
+          <Button slot='trigger'>배송 정보</Button>
+        </Heading>
+        <DisclosurePanel>주문 후 2-3 영업일 내 배송됩니다.</DisclosurePanel>
+      </Disclosure>
+      <Disclosure id='returns'>
+        <Heading>
+          <Button slot='trigger'>반품 정책</Button>
+        </Heading>
+        <DisclosurePanel>수령 후 7일 이내 반품 가능합니다.</DisclosurePanel>
+      </Disclosure>
+    </DisclosureGroup>
+  )
+}`
       },
       notes: [
         'React Aria DisclosureGroup은 WAI-ARIA Accordion 패턴을 구현합니다.',

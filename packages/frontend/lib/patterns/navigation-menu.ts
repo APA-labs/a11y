@@ -294,25 +294,30 @@ function NavigationMuiDemo() {
         label: 'Ant Design Menu',
         code: `import { Menu } from 'antd'
 
-const items = [
-  { key: 'home', label: <a href='/'>홈</a> },
-  {
-    key: 'products',
-    label: '제품',
-    children: [
-      { key: 'all', label: <a href='/products/all'>전체 제품</a> },
-      { key: 'new', label: <a href='/products/new'>신규</a> }
-    ]
-  }
-]
+function AntdNavDemo() {
+  const currentKey = 'home'
+  const items = [
+    { key: 'home', label: <a href='/'>홈</a> },
+    {
+      key: 'products',
+      label: '제품',
+      children: [
+        { key: 'all', label: <a href='/products/all'>전체 제품</a> },
+        { key: 'new', label: <a href='/products/new'>신규</a> }
+      ]
+    }
+  ]
 
-<nav aria-label='메인 내비게이션'>
-  <Menu
-    mode='horizontal'
-    items={items}
-    selectedKeys={[currentKey]}
-  />
-</nav>`
+  return (
+    <nav aria-label='메인 내비게이션'>
+      <Menu
+        mode='horizontal'
+        items={items}
+        selectedKeys={[currentKey]}
+      />
+    </nav>
+  )
+}`
       },
       notes: [
         'Ant Design Menu를 <nav> 요소로 감싸고 aria-label을 추가하세요.',
