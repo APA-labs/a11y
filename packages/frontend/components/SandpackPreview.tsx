@@ -68,7 +68,9 @@ const DS_DEPS: Record<string, Record<string, string>> = {
   },
   antd: { antd: '5.16.4' },
   '@chakra-ui': {
-    '@chakra-ui/react': '3.2.3'
+    '@chakra-ui/react': '3.2.3',
+    '@emotion/react': '11.11.4',
+    '@emotion/styled': '11.11.0'
   },
   '@adobe/react-spectrum': {
     '@adobe/react-spectrum': '3.33.1',
