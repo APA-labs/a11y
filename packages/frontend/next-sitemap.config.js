@@ -26,7 +26,7 @@ const PATTERN_SLUGS = [
   'tooltip'
 ]
 
-const siteUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
 
 const defaultConfig = {
   siteUrl,

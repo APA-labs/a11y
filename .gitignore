@@ -25,6 +25,11 @@ Thumbs.db
 # Turbo
 .turbo/
 
+# env
+.env
+.env.local
+.env.*.local
+
 # Claude Local settings
 
 CLAUDE.local.md
