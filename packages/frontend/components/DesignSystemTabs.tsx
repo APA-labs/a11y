@@ -4,8 +4,8 @@ import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
-
 import { DS_ORDER } from '../lib/types'
+
 import type { DesignSystemId, DesignSystemVariant, Pattern } from '../lib/types'
 
 interface Props {

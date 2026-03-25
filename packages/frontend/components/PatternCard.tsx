@@ -8,7 +8,6 @@ import { DS_META, DS_ORDER } from '../lib/types'
 
 import type { Pattern } from '../lib/types'
 
-
 export default function PatternCard({ pattern }: { pattern: Pattern }) {
   const mustCount = pattern.baseline.checklist.must.length
   const shouldCount = pattern.baseline.checklist.should.length
@@ -49,8 +48,12 @@ export default function PatternCard({ pattern }: { pattern: Pattern }) {
 
         <div className='flex items-center justify-between pt-2 border-t border-mist-100'>
           <div className='flex items-center gap-2 text-[11px] text-mist-600'>
-            <span><span className='font-semibold text-red-500'>{mustCount}</span> must</span>
-            <span><span className='font-semibold text-amber-500'>{shouldCount}</span> should</span>
+            <span>
+              <span className='font-semibold text-red-500'>{mustCount}</span> must
+            </span>
+            <span>
+              <span className='font-semibold text-amber-500'>{shouldCount}</span> should
+            </span>
           </div>
           <div className='flex items-center gap-0.5'>
             {DS_ORDER.filter((id) => pattern.designSystems[id] != null).map((id) => (

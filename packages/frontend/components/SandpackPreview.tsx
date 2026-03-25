@@ -166,7 +166,9 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
     if (appCodeFinal.includes(WRAPPER_DIV)) {
       appCodeFinal =
         `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` +
-        appCodeFinal.replace(WRAPPER_DIV, `<__RAProvider theme={__RATheme} locale="ko-KR">`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </__RAProvider>\n  )\n}`)
+        appCodeFinal
+          .replace(WRAPPER_DIV, `<__RAProvider theme={__RATheme} locale="ko-KR">`)
+          .replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </__RAProvider>\n  )\n}`)
     } else {
       appCodeFinal = `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` + appCodeFinal
       appCodeFinal = appCodeFinal.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<__RAProvider theme={__RATheme} locale="ko-KR">\n$3$4')
