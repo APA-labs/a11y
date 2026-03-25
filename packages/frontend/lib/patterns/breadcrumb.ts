@@ -158,6 +158,122 @@ export const breadcrumbPattern: Pattern = {
         'itemRender prop으로 마지막 항목에 aria-current="page"를 추가하세요.',
         'separator prop으로 구분자를 변경할 수 있으며, 기본 구분자는 aria-hidden이 적용됩니다.'
       ]
+    },
+    shadcn: {
+      id: 'shadcn',
+      name: 'shadcn/ui',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'breadcrumb-shadcn-1',
+          title: 'BreadcrumbPage로 현재 페이지 명시',
+          description: 'shadcn BreadcrumbPage는 자동으로 aria-current="page"를 설정합니다. BreadcrumbLink 대신 반드시 BreadcrumbPage를 사용하세요.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'shadcn/ui Breadcrumb',
+        code: `import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+
+function BreadcrumbDemo() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='/'>홈</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href='/products'>제품</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>운동화</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  )
+}`
+      },
+      notes: [
+        'shadcn Breadcrumb은 자동으로 nav와 ol 마크업을 생성합니다.',
+        'BreadcrumbPage는 aria-current="page"를 자동으로 설정합니다.',
+        'BreadcrumbSeparator는 기본적으로 aria-hidden 처리됩니다.'
+      ]
+    },
+    chakra: {
+      id: 'chakra',
+      name: 'Chakra UI',
+      color: '#319795',
+      additionalChecks: [
+        {
+          id: 'breadcrumb-chakra-1',
+          title: 'isCurrentPage로 현재 위치 표시',
+          description: 'Chakra BreadcrumbItem의 isCurrentPage prop이 true이면 aria-current="page"가 자동 설정됩니다.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Chakra UI Breadcrumb',
+        code: `import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
+
+function BreadcrumbDemo() {
+  return (
+    <Breadcrumb separator='/'>
+      <BreadcrumbItem>
+        <BreadcrumbLink href='/'>홈</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbItem>
+        <BreadcrumbLink href='/products'>제품</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbItem isCurrentPage>
+        <BreadcrumbLink href='/products/shoes'>운동화</BreadcrumbLink>
+      </BreadcrumbItem>
+    </Breadcrumb>
+  )
+}`
+      },
+      notes: [
+        'Chakra Breadcrumb은 자동으로 nav와 ol 마크업을 생성합니다.',
+        'isCurrentPage prop으로 현재 페이지를 표시하면 aria-current="page"가 자동 설정됩니다.',
+        'separator prop으로 구분자를 커스터마이즈하세요.'
+      ]
+    },
+    spectrum: {
+      id: 'spectrum',
+      name: 'React Spectrum',
+      color: '#e03',
+      additionalChecks: [],
+      codeSample: {
+        language: 'tsx',
+        label: 'React Spectrum Breadcrumbs',
+        code: `import { Breadcrumbs, Item } from '@adobe/react-spectrum'
+
+function BreadcrumbDemo() {
+  return (
+    <Breadcrumbs>
+      <Item
+        key='home'
+        href='/'>
+        홈
+      </Item>
+      <Item
+        key='products'
+        href='/products'>
+        제품
+      </Item>
+      <Item key='shoes'>운동화</Item>
+    </Breadcrumbs>
+  )
+}`
+      },
+      notes: [
+        'React Spectrum Breadcrumbs는 마지막 Item을 자동으로 현재 페이지(aria-current="page")로 처리합니다.',
+        'key prop은 각 항목의 고유 식별자로 사용됩니다.',
+        '폴딩(multiline) 동작이 자동으로 지원됩니다.'
+      ]
     }
   }
 }

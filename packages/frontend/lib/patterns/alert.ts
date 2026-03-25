@@ -79,36 +79,49 @@ export const alertPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `function AlertDemo() {
-const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState([])
 
-const addAlert = (message, type = 'info') => {
-  const id = Date.now();
-  setAlerts(prev => [...prev, { id, message, type }]);
-  setTimeout(() => removeAlert(id), 5000);
-};
+  const addAlert = (message, type = 'info') => {
+    const id = Date.now()
+    setAlerts((prev) => [...prev, { id, message, type }])
+    setTimeout(() => removeAlert(id), 5000)
+  }
 
-const removeAlert = (id) => setAlerts(prev => prev.filter(a => a.id !== id));
+  const removeAlert = (id) => setAlerts((prev) => prev.filter((a) => a.id !== id))
 
-return (
-  <div>
-    <button onClick={() => addAlert('저장되었습니다.', 'success')}>저장</button>
+  return (
+    <div>
+      <button onClick={() => addAlert('저장되었습니다.', 'success')}>저장</button>
 
-    {/* 스크린리더 라이브 영역 (시각적으로 숨김) */}
-    <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-      {alerts.map(a => a.message).join('. ')}
+      {/* 스크린리더 라이브 영역 (시각적으로 숨김) */}
+      <div
+        role='status'
+        aria-live='polite'
+        aria-atomic='true'
+        className='sr-only'>
+        {alerts.map((a) => a.message).join('. ')}
+      </div>
+
+      {/* 시각적 토스트 */}
+      <div
+        className='toast-container'
+        aria-label='알림'>
+        {alerts.map((alert) => (
+          <div
+            key={alert.id}
+            role='alert'
+            className={\`toast toast-\${alert.type}\`}>
+            <span>{alert.message}</span>
+            <button
+              onClick={() => removeAlert(alert.id)}
+              aria-label='알림 닫기'>
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
-
-    {/* 시각적 토스트 */}
-    <div className="toast-container" aria-label="알림">
-      {alerts.map(alert => (
-        <div key={alert.id} role="alert" className={\`toast toast-\${alert.type}\`}>
-          <span>{alert.message}</span>
-          <button onClick={() => removeAlert(alert.id)} aria-label="알림 닫기">×</button>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  )
 }`
     }
   },
@@ -255,40 +268,6 @@ const openNotification = () => {
         'Alert 컴포넌트의 showIcon prop은 severity 유형을 아이콘으로 자동 표시합니다.',
         'notification API는 duration을 0으로 설정하면 수동으로 닫기 전까지 유지됩니다.',
         'closable prop 사용 시 닫기 버튼이 자동으로 추가됩니다.'
-      ]
-    },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'alert-shadcn-1',
-          title: 'role="alert" 명시적 추가',
-          description: 'shadcn Alert는 role="alert"를 자동으로 추가하지 않습니다. 동적으로 표시되는 알림에는 role="alert"를 명시하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Alert',
-        code: `import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle } from 'lucide-react'
-<Alert
-  variant='destructive'
-  role='alert'>
-  <AlertCircle
-    className='h-4 w-4'
-    aria-hidden
-  />
-  <AlertTitle>오류 발생</AlertTitle>
-  <AlertDescription>서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.</AlertDescription>
-</Alert>`
-      },
-      notes: [
-        "shadcn Alert는 정적 알림 배너로 동적 알림에는 role='alert'를 추가하세요.",
-        'variant prop으로 default, destructive 스타일을 선택하세요.',
-        '아이콘은 aria-hidden 처리하세요.'
       ]
     },
     chakra: {
