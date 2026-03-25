@@ -73,28 +73,28 @@ const PRINCIPLES = [
 
 export default function WcagPage() {
   return (
-    <div className='max-w-4xl mx-auto px-8 py-10'>
+    <div className='max-w-4xl mx-auto px-6 sm:px-10 py-10 sm:py-14'>
       <div className='mb-8'>
-        <h1 className='text-2xl font-bold text-slate-900 mb-2'>WCAG 2.1 레퍼런스</h1>
-        <p className='text-slate-500 text-sm leading-relaxed'>
+        <h1 className='text-2xl font-bold text-navy mb-2'>WCAG 2.1 레퍼런스</h1>
+        <p className='text-mist-600 text-sm leading-relaxed'>
           Web Content Accessibility Guidelines — 웹 접근성 국제 표준. A → AA → AAA 순으로 요구 수준이 높아진다.
         </p>
       </div>
 
       {/* 4 Principles */}
       <section className='mb-10'>
-        <h2 className='text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3'>4대 원칙 (POUR)</h2>
+        <h2 className='text-sm font-semibold text-mist-600 uppercase tracking-wider mb-3'>4대 원칙 (POUR)</h2>
         <div className='grid grid-cols-2 gap-3'>
           {PRINCIPLES.map((p) => (
             <div
               key={p.id}
-              className='bg-white border border-slate-200 rounded-xl p-4'>
+              className='bg-white border border-mist-200 rounded-xl p-4'>
               <div className='flex items-center gap-2 mb-1'>
-                <span className='text-xs font-mono text-slate-400'>{p.id}</span>
-                <span className='font-semibold text-slate-800 text-sm'>{p.name}</span>
-                <span className='text-slate-400 text-sm'>· {p.ko}</span>
+                <span className='text-xs font-mono text-mist-400'>{p.id}</span>
+                <span className='font-semibold text-navy text-sm'>{p.name}</span>
+                <span className='text-mist-400 text-sm'>· {p.ko}</span>
               </div>
-              <p className='text-xs text-slate-500 leading-relaxed'>{p.desc}</p>
+              <p className='text-xs text-mist-600 leading-relaxed'>{p.desc}</p>
             </div>
           ))}
         </div>
@@ -102,7 +102,7 @@ export default function WcagPage() {
 
       {/* Levels */}
       <section className='space-y-6'>
-        <h2 className='text-sm font-semibold text-slate-600 uppercase tracking-wider'>적합성 수준</h2>
+        <h2 className='text-sm font-semibold text-mist-600 uppercase tracking-wider'>적합성 수준</h2>
         {LEVELS.map(({ level, label, color, bg, border, badge, icon: Icon, description, principles }) => (
           <div
             key={level}
@@ -116,26 +116,26 @@ export default function WcagPage() {
                 <div className='flex items-center gap-2 mb-1'>
                   <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badge}`}>{label}</span>
                 </div>
-                <p className='text-sm text-slate-600 leading-relaxed'>{description}</p>
+                <p className='text-sm text-mist-700 leading-relaxed'>{description}</p>
               </div>
             </div>
-            <div className='bg-white/70 border-t border-slate-200/60'>
+            <div className='bg-white/70 border-t border-mist-200/60'>
               <table className='w-full text-sm'>
                 <thead>
-                  <tr className='border-b border-slate-200/60'>
-                    <th className='text-left px-5 py-2.5 text-xs font-semibold text-slate-500 w-24'>기준 번호</th>
-                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-slate-500 w-36'>제목</th>
-                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-slate-500'>요구사항</th>
+                  <tr className='border-b border-mist-200/60'>
+                    <th className='text-left px-5 py-2.5 text-xs font-semibold text-mist-500 w-24'>기준 번호</th>
+                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-mist-500 w-36'>제목</th>
+                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-mist-500'>요구사항</th>
                   </tr>
                 </thead>
                 <tbody>
                   {principles.map((item, i) => (
                     <tr
                       key={item.id}
-                      className={i < principles.length - 1 ? 'border-b border-slate-100' : ''}>
-                      <td className='px-5 py-2.5 font-mono text-xs text-slate-400'>{item.id}</td>
-                      <td className='px-4 py-2.5 text-xs font-medium text-slate-700'>{item.title}</td>
-                      <td className='px-4 py-2.5 text-xs text-slate-500 leading-relaxed'>{item.desc}</td>
+                      className={i < principles.length - 1 ? 'border-b border-mist-100' : ''}>
+                      <td className='px-5 py-2.5 font-mono text-xs text-mist-400'>{item.id}</td>
+                      <td className='px-4 py-2.5 text-xs font-medium text-navy-700'>{item.title}</td>
+                      <td className='px-4 py-2.5 text-xs text-mist-600 leading-relaxed'>{item.desc}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -145,13 +145,13 @@ export default function WcagPage() {
         ))}
       </section>
 
-      <p className='mt-8 text-xs text-slate-400'>
+      <p className='mt-8 text-xs text-mist-400'>
         전체 기준:{' '}
         <a
           href='https://www.w3.org/TR/WCAG21/'
           target='_blank'
           rel='noreferrer'
-          className='underline hover:text-slate-600'>
+          className='underline hover:text-mist-700'>
           W3C WCAG 2.1
         </a>
       </p>

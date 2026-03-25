@@ -14,7 +14,7 @@ export default function Home() {
   const dsCount = DS_ORDER.filter((id) => patterns.some((p) => p.designSystems[id] != null)).length
 
   return (
-    <div className='max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-12'>
+    <div className='max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-14'>
       <div className='mb-8 sm:mb-10'>
         <h1 className='text-2xl sm:text-3xl font-bold text-navy mb-3'>Accessibility Pattern Hub</h1>
         <p className='text-mist-700 text-sm leading-relaxed'>

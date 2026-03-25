@@ -1,90 +1,101 @@
 'use client'
 
-import { MousePointer2, ShieldCheck, Sparkles } from 'lucide-react'
+import { MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import { ICON_MAP } from '../lib/pattern-icons'
 import { patterns } from '../lib/patterns'
 
 export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
   const pathname = usePathname()
+  const [collapsed, setCollapsed] = useState(false)
+
+  useEffect(() => {
+    const stored = localStorage.getItem('sidebar-collapsed')
+    if (stored !== null) setCollapsed(stored === 'true')
+  }, [])
+
+  const toggle = () => {
+    setCollapsed((prev) => {
+      localStorage.setItem('sidebar-collapsed', String(!prev))
+      return !prev
+    })
+  }
+
+  const SectionLabel = ({ children }: { children: string }) =>
+    collapsed ? (
+      <div className='mx-3 my-2 border-t border-mist-200' />
+    ) : (
+      <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-mist-400'>
+        {children}
+      </p>
+    )
+
+  const navItem = (href: string, icon: React.ReactNode, label: string) => {
+    const isActive = pathname === href
+    return (
+      <Link
+        href={href}
+        title={collapsed ? label : undefined}
+        className={`
+          flex items-center py-1.5 rounded-md text-sm transition-colors
+          ${collapsed ? 'justify-center px-0' : 'gap-2.5 px-2'}
+          ${isActive ? 'bg-violet-50 text-violet-700' : 'text-mist-700 hover:bg-mist-100 hover:text-navy'}
+        `}>
+        <span className={`shrink-0 ${isActive ? 'text-violet-600' : 'text-mist-500'}`}>{icon}</span>
+        <span
+          className={`whitespace-nowrap overflow-hidden transition-opacity duration-150 ${collapsed ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}>
+          {label}
+        </span>
+      </Link>
+    )
+  }
 
   return (
-    <aside className='hidden lg:flex w-[240px] shrink-0 bg-navy-900 text-mist-300 flex-col h-full overflow-y-auto scrollbar-thin'>
-      {/* Logo */}
-      <div className='px-5 py-5 border-b border-navy-800'>
-        <Link
-          href='/'
-          className='flex items-center gap-2.5 group'>
-          <div className='w-7 h-7 rounded-md bg-violet-600 flex items-center justify-center text-white font-bold text-sm'>A</div>
-          <span className='font-semibold text-white text-sm tracking-tight'>A11y Patterns</span>
-        </Link>
+    <aside
+      style={{ width: collapsed ? 52 : 240 }}
+      className='hidden lg:flex flex-col h-full bg-white shrink-0 overflow-y-auto overflow-x-hidden scrollbar-thin transition-[width] duration-200 ease-in-out border-r border-mist-200'>
+      {/* 접기 / 펼치기 버튼 */}
+      <div className={`flex ${collapsed ? 'justify-center' : 'justify-end'} px-2 pt-3 pb-1`}>
+        <button
+          type='button'
+          onClick={toggle}
+          className='p-1.5 rounded-md text-mist-400 hover:text-navy hover:bg-mist-100 transition-colors'
+          aria-label={collapsed ? '사이드바 펼치기' : '사이드바 접기'}>
+          {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
+        </button>
       </div>
 
       {/* Nav */}
-      <nav className='flex-1 px-3 py-4 space-y-6'>
+      <nav className='flex-1 px-2 py-1 space-y-5'>
+        {/* Docs */}
         <div>
-          <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-mist-600'>Docs</p>
+          <SectionLabel>Docs</SectionLabel>
           <ul className='space-y-0.5'>
-            <li>
-              <Link
-                href='/wcag'
-                className={`
-                  flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                  ${pathname === '/wcag' ? 'bg-violet-600 text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
-                `}>
-                <ShieldCheck
-                  size={14}
-                  className={pathname === '/wcag' ? 'text-white' : 'text-mist-600'}
-                />
-                WCAG 레퍼런스
-              </Link>
-            </li>
+            <li>{navItem('/wcag', <ShieldCheck size={14} />, 'WCAG 레퍼런스')}</li>
           </ul>
         </div>
 
+        {/* Patterns */}
         <div>
-          <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-mist-600'>Patterns</p>
+          <SectionLabel>Patterns</SectionLabel>
           <ul className='space-y-0.5'>
-            {patterns.map((pattern) => {
-              const href = `/patterns/${pattern.slug}`
-              const isActive = pathname === href
-              return (
-                <li key={pattern.slug}>
-                  <Link
-                    href={href}
-                    className={`
-                      flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                      ${isActive ? 'bg-violet-600 text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
-                    `}>
-                    <span className={isActive ? 'text-white' : 'text-mist-600'}>{ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />}</span>
-                    {pattern.name}
-                  </Link>
-                </li>
-              )
-            })}
+            {patterns.map((pattern) => (
+              <li key={pattern.slug}>
+                {navItem(`/patterns/${pattern.slug}`, ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />, pattern.name)}
+              </li>
+            ))}
           </ul>
         </div>
 
+        {/* Tools */}
         {aiEnabled && (
           <div>
-            <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-mist-600'>Tools</p>
+            <SectionLabel>Tools</SectionLabel>
             <ul className='space-y-0.5'>
-              <li>
-                <Link
-                  href='/analyze'
-                  className={`
-                    flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                    ${pathname === '/analyze' ? 'bg-violet-600 text-white' : 'text-mist-400 hover:bg-navy-800 hover:text-white'}
-                  `}>
-                  <Sparkles
-                    size={14}
-                    className={pathname === '/analyze' ? 'text-white' : 'text-mist-600'}
-                  />
-                  AI 분석
-                </Link>
-              </li>
+              <li>{navItem('/analyze', <Sparkles size={14} />, 'AI 분석')}</li>
             </ul>
           </div>
         )}
