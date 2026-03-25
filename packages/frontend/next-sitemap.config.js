@@ -26,6 +26,7 @@ const PATTERN_SLUGS = [
   'tooltip'
 ]
 
+const LANGS = ['ko', 'en']
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
 
 const defaultConfig = {
@@ -35,42 +36,28 @@ const defaultConfig = {
   autoLastmod: true,
   changefreq: 'weekly',
   priority: 0.7,
-  // output: 'export',
-  // outDir: 'out',
-  exclude: ['/404'],
+  exclude: ['/404', '/'],
   additionalPaths: async () => {
-    const paths = PATTERN_SLUGS.map((slug) => ({
-      loc: `/patterns/${slug}`,
-      changefreq: 'weekly',
-      priority: 0.8
-    }))
+    const paths = []
+    for (const lang of LANGS) {
+      paths.push({ loc: `/${lang}`, changefreq: 'daily', priority: 1 })
+      paths.push({ loc: `/${lang}/wcag`, changefreq: 'weekly', priority: 0.9 })
+      for (const slug of PATTERN_SLUGS) {
+        paths.push({ loc: `/${lang}/patterns/${slug}`, changefreq: 'weekly', priority: 0.8 })
+      }
+    }
     return paths
   },
-  transform: async (config, path) => {
-    if (path === '/') {
-      return {
-        loc: path,
-        changefreq: 'daily',
-        priority: 1,
-        lastmod: config.autoLastmod ? new Date().toISOString() : undefined
-      }
-    }
-    if (path === '/wcag') {
-      return {
-        loc: path,
-        changefreq: 'weekly',
-        priority: 0.9,
-        lastmod: config.autoLastmod ? new Date().toISOString() : undefined
-      }
-    }
-    return {
-      loc: path,
-      changefreq: config.changefreq,
-      priority: config.priority,
-      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
-      alternateRefs: config.alternateRefs ?? []
-    }
-  },
+  transform: async (config, path) => ({
+    loc: path,
+    changefreq: config.changefreq,
+    priority: config.priority,
+    lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+    alternateRefs: LANGS.map((lang) => ({
+      href: `${siteUrl}/${lang}${path.replace(/^\/(ko|en)/, '')}`,
+      hreflang: lang
+    }))
+  }),
   robotsTxtOptions: {
     policies: [{ userAgent: '*', allow: '/' }]
   }

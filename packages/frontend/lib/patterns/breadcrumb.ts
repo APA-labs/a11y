@@ -63,18 +63,18 @@ export const breadcrumbPattern: Pattern = {
       code: `<nav aria-label='breadcrumb'>
   <ol style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, listStyle: 'none', padding: 0, margin: 0 }}>
     <li>
-      <a href='/'>홈</a>
+      <a href='/'>Home</a>
     </li>
     <li aria-hidden='true'>/</li>
     <li>
-      <a href='/products'>제품</a>
+      <a href='/products'>Products</a>
     </li>
     <li aria-hidden='true'>/</li>
     <li>
-      <a href='/products/shoes'>신발</a>
+      <a href='/products/shoes'>Shoes</a>
     </li>
     <li aria-hidden='true'>/</li>
-    <li aria-current='page'>운동화</li>
+    <li aria-current='page'>Sneakers</li>
   </ol>
 </nav>`
     }
@@ -101,24 +101,24 @@ export const breadcrumbPattern: Pattern = {
     href='/'
     underline='hover'
     color='inherit'>
-    홈
+    Home
   </Link>
   <Link
     href='/products'
     underline='hover'
     color='inherit'>
-    제품
+    Products
   </Link>
   <Link
     href='/products/shoes'
     underline='hover'
     color='inherit'>
-    신발
+    Shoes
   </Link>
   <Typography
     color='text.primary'
     aria-current='page'>
-    운동화
+    Sneakers
   </Typography>
 </Breadcrumbs>`
       },
@@ -146,7 +146,7 @@ export const breadcrumbPattern: Pattern = {
         code: `import { Breadcrumb } from 'antd'
 <Breadcrumb
   aria-label='breadcrumb'
-  items={[{ title: <a href='/'>홈</a> }, { title: <a href='/products'>제품</a> }, { title: <a href='/products/shoes'>신발</a> }, { title: '운동화' }]}
+  items={[{ title: <a href='/'>Home</a> }, { title: <a href='/products'>Products</a> }, { title: <a href='/products/shoes'>Shoes</a> }, { title: 'Sneakers' }]}
   itemRender={(item, params, items) => {
     const isLast = items.indexOf(item) === items.length - 1
     return isLast ? <span aria-current='page'>{item.title}</span> : item.title
@@ -181,15 +181,15 @@ function BreadcrumbDemo() {
     <Breadcrumb.Root separator='/'>
       <Breadcrumb.List>
         <Breadcrumb.Item>
-          <Breadcrumb.Link href='/'>홈</Breadcrumb.Link>
+          <Breadcrumb.Link href='/'>Home</Breadcrumb.Link>
         </Breadcrumb.Item>
         <Breadcrumb.Separator />
         <Breadcrumb.Item>
-          <Breadcrumb.Link href='/products'>제품</Breadcrumb.Link>
+          <Breadcrumb.Link href='/products'>Products</Breadcrumb.Link>
         </Breadcrumb.Item>
         <Breadcrumb.Separator />
         <Breadcrumb.Item>
-          <Breadcrumb.CurrentLink>운동화</Breadcrumb.CurrentLink>
+          <Breadcrumb.CurrentLink>Sneakers</Breadcrumb.CurrentLink>
         </Breadcrumb.Item>
       </Breadcrumb.List>
     </Breadcrumb.Root>
@@ -218,14 +218,14 @@ function BreadcrumbDemo() {
       <Item
         key='home'
         href='/'>
-        홈
+        Home
       </Item>
       <Item
         key='products'
         href='/products'>
-        제품
+        Products
       </Item>
-      <Item key='shoes'>운동화</Item>
+      <Item key='shoes'>Sneakers</Item>
     </Breadcrumbs>
   )
 }`

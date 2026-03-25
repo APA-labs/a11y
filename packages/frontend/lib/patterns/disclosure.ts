@@ -207,9 +207,9 @@ const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
 
 <Disclosure>
   <Heading>
-    <Button slot='trigger' style={triggerStyle}>시스템 요구사항</Button>
+    <Button slot='trigger' style={triggerStyle}>System Requirements</Button>
   </Heading>
-  <DisclosurePanel style={panelStyle}>운영체제: Windows 10 이상, macOS 10.15 이상</DisclosurePanel>
+  <DisclosurePanel style={panelStyle}>OS: Windows 10 or later, macOS 10.15 or later</DisclosurePanel>
 </Disclosure>`
       },
       notes: [

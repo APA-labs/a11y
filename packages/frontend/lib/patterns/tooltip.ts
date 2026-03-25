@@ -116,10 +116,10 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
         code: `import { Tooltip, IconButton } from '@mui/material'
 import { InfoOutlined } from '@mui/icons-material'
 <Tooltip
-  title='추가 정보입니다'
+  title='Additional information'
   enterDelay={300}
   arrow>
-  <IconButton aria-label='정보'>
+  <IconButton aria-label='Info'>
     <InfoOutlined />
   </IconButton>
 </Tooltip>`
@@ -180,9 +180,9 @@ export function RadixTooltip({ label, children }) {
         label: 'Ant Design Tooltip',
         code: `import { Tooltip, Button } from 'antd'
 <Tooltip
-  title='저장합니다'
+  title='Save file'
   mouseEnterDelay={0.3}>
-  <Button>저장</Button>
+  <Button>Save</Button>
 </Tooltip>`
       },
       notes: ['Ant Design Tooltip은 내부적으로 접근성 속성을 처리합니다.', 'color prop 변경 시 텍스트 대비율을 재확인하세요.']
@@ -203,11 +203,11 @@ export function RadixTooltip({ label, children }) {
         language: 'tsx',
         label: 'Chakra UI Tooltip',
         code: `import { Tooltip, Button } from '@chakra-ui/react'
-<Tooltip content='설정 열기'>
+<Tooltip content='Open settings'>
   <Button
     variant='outline'
     size='sm'
-    aria-label='설정'>
+    aria-label='Settings'>
     ⚙️
   </Button>
 </Tooltip>`
@@ -232,8 +232,8 @@ const btnStyle = { padding: '8px 12px', border: '1px solid #d1d5db', borderRadiu
 const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', borderRadius: 4, fontSize: 12 }
 
 <TooltipTrigger delay={500}>
-  <Button aria-label='설정' style={btnStyle}>⚙️</Button>
-  <Tooltip style={tipStyle}>설정 열기</Tooltip>
+  <Button aria-label='Settings' style={btnStyle}>⚙️</Button>
+  <Tooltip style={tipStyle}>Open settings</Tooltip>
 </TooltipTrigger>`
       },
       notes: [

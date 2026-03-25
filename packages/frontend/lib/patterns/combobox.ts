@@ -160,7 +160,7 @@ const OPTIONS = ['Apple', 'Banana', 'Cherry']
 id="fruit-select"
 options={OPTIONS}
 renderInput={(params) => (
-  <TextField {...params} label="과일 선택" />
+  <TextField {...params} label="Select fruit" />
 )}
 />`
       },
@@ -193,11 +193,11 @@ const OPTIONS = [
 
 <AutoComplete
 options={OPTIONS}
-placeholder="과일을 입력하세요"
+placeholder="Type a fruit"
 filterOption={(input, option) =>
   (option?.value ?? '').toLowerCase().includes(input.toLowerCase())
 }
-aria-label="과일 선택"
+aria-label="Select fruit"
 />`
       },
       notes: ['Ant Design AutoComplete는 접근성 속성을 자동으로 처리합니다.', '빈 결과 상태를 사용자에게 알리는 notFoundContent를 설정하세요.']
@@ -226,18 +226,18 @@ export default function App() {
   return (
     <Combobox.Root
       collection={collection}
-      placeholder='프레임워크 선택'>
-      <Combobox.Label>프레임워크</Combobox.Label>
+      placeholder='Select framework'>
+      <Combobox.Label>Framework</Combobox.Label>
       <Combobox.Control>
         <Combobox.Input />
         <Combobox.IndicatorGroup>
-          <Combobox.ClearTrigger aria-label='선택 초기화' />
-          <Combobox.Trigger aria-label='목록 열기' />
+          <Combobox.ClearTrigger aria-label='Clear selection' />
+          <Combobox.Trigger aria-label='Open list' />
         </Combobox.IndicatorGroup>
       </Combobox.Control>
       <Combobox.Positioner>
         <Combobox.Content>
-          <Combobox.Empty>결과 없음</Combobox.Empty>
+          <Combobox.Empty>No results</Combobox.Empty>
           {collection.items.map((item) => (
             <Combobox.Item
               key={item.value}
@@ -276,7 +276,7 @@ const itemStyle = { padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fon
 export default function App() {
   return (
     <ComboBox>
-      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>프레임워크 선택</Label>
+      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Select framework</Label>
       <Group style={fieldStyle}>
         <Input style={{ border: 'none', outline: 'none', fontSize: 14 }} />
         <Button style={btnStyle}>▼</Button>

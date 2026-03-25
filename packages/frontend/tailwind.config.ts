@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -66,7 +67,16 @@ const config: Config = {
           700: '#2C435D',
           800: '#1E2E40',
           900: '#111A24'
-        }
+        },
+        canvas: 'var(--canvas)',
+        surface: 'var(--surface)',
+        float: 'var(--float)',
+        inset: 'var(--inset)',
+        outline: 'var(--outline)',
+        divider: 'var(--divider)',
+        body: 'var(--body)',
+        soft: 'var(--soft)',
+        faint: 'var(--faint)'
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace']

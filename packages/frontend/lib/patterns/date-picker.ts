@@ -87,13 +87,13 @@ const errorId = 'date-error';
 const validateDate = (value) => {
   if (!value) return '';
   const d = new Date(value);
-  if (isNaN(d.getTime())) return '유효하지 않은 날짜입니다.';
+  if (isNaN(d.getTime())) return 'Invalid date.';
   return '';
 };
 
 return (
   <div>
-    <label htmlFor="date-input">날짜</label>
+    <label htmlFor="date-input">Date</label>
     <input
       id="date-input"
       type="date"
@@ -102,7 +102,7 @@ return (
       aria-describedby={\`\${hintId}\${error ? \` \${errorId}\` : ''}\`}
       aria-invalid={!!error}
     />
-    <p id={hintId}>형식: YYYY-MM-DD</p>
+    <p id={hintId}>Format: YYYY-MM-DD</p>
     {error && <p id={errorId} role="alert">{error}</p>}
   </div>
 );
@@ -128,7 +128,7 @@ return (
         code: `import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { ko } from 'date-fns/locale'
+import { enUS } from 'date-fns/locale'
 
 function DatePickerDemo() {
   const [date, setDate] = useState(new Date())
@@ -136,14 +136,14 @@ function DatePickerDemo() {
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      adapterLocale={ko}>
+      adapterLocale={enUS}>
       <DatePicker
-        label='날짜 선택'
+        label='Select date'
         value={date}
         onChange={(newDate) => setDate(newDate)}
         slotProps={{
           textField: {
-            helperText: '형식: YYYY.MM.DD',
+            helperText: 'Format: YYYY.MM.DD',
             inputProps: { 'aria-describedby': 'date-hint' }
           }
         }}
@@ -174,23 +174,23 @@ function DatePickerDemo() {
         language: 'tsx',
         label: 'Ant Design DatePicker',
         code: `import { DatePicker, ConfigProvider } from 'antd'
-import koKR from 'antd/locale/ko_KR'
+import enUS from 'antd/locale/en_US'
 import dayjs from 'dayjs'
-import 'dayjs/locale/ko'
+import 'dayjs/locale/en'
 
-dayjs.locale('ko')
+dayjs.locale('en')
 
 function AntdDatePickerDemo() {
   const [date, setDate] = useState(null)
 
   return (
-    <ConfigProvider locale={koKR}>
+    <ConfigProvider locale={enUS}>
       <DatePicker
         value={date}
         onChange={(value) => setDate(value)}
-        placeholder='날짜 선택'
-        format='YYYY년 MM월 DD일'
-        aria-label='날짜 선택'
+        placeholder='Select date'
+        format='YYYY-MM-DD'
+        aria-label='Select date'
         getPopupContainer={(trigger) => trigger.parentElement}
       />
     </ConfigProvider>
@@ -220,11 +220,11 @@ function AntdDatePickerDemo() {
         label: 'Chakra UI DatePicker',
         code: `import { DatePicker, Portal } from '@chakra-ui/react'
 <DatePicker.Root>
-  <DatePicker.Label>날짜 선택</DatePicker.Label>
+  <DatePicker.Label>Select date</DatePicker.Label>
   <DatePicker.Control>
     <DatePicker.Input />
     <DatePicker.IndicatorGroup>
-      <DatePicker.Trigger aria-label='달력 열기'>
+      <DatePicker.Trigger aria-label='Open calendar'>
         <span aria-hidden>📅</span>
       </DatePicker.Trigger>
     </DatePicker.IndicatorGroup>
@@ -280,20 +280,20 @@ const headerStyle = { display: 'flex', alignItems: 'center', justifyContent: 'sp
 const cellStyle = { textAlign: 'center' as const, padding: 6, borderRadius: 4, cursor: 'pointer' }
 
 <DatePicker>
-  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>날짜 선택</Label>
+  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Select date</Label>
   <Group style={fieldStyle}>
     <DateInput style={{ display: 'flex', gap: 1 }}>
       {(segment) => <DateSegment segment={segment} style={segStyle} />}
     </DateInput>
-    <Button aria-label='달력 열기' style={btnStyle}>📅</Button>
+    <Button aria-label='Open calendar' style={btnStyle}>📅</Button>
   </Group>
   <Popover>
     <Dialog style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none' }}>
       <Calendar>
         <header style={headerStyle}>
-          <Button slot='previous' aria-label='이전 달' style={btnStyle}>‹</Button>
+          <Button slot='previous' aria-label='Previous month' style={btnStyle}>‹</Button>
           <Heading style={{ fontWeight: 600, fontSize: 14 }} />
-          <Button slot='next' aria-label='다음 달' style={btnStyle}>›</Button>
+          <Button slot='next' aria-label='Next month' style={btnStyle}>›</Button>
         </header>
         <CalendarGrid style={{ borderCollapse: 'collapse' }}>
           {(date) => <CalendarCell date={date} style={cellStyle} />}

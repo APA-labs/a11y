@@ -76,21 +76,21 @@ export const navigationMenuPattern: Pattern = {
   const [openMenu, setOpenMenu] = useState(null)
   const currentPath = '/about'
   const items = [
-    { id: 'home', label: '홈', href: '/' },
+    { id: 'home', label: 'Home', href: '/' },
     {
       id: 'about',
-      label: '소개',
+      label: 'About',
       href: '/about',
       children: [
-        { id: 'team', label: '팀', href: '/about/team' },
-        { id: 'history', label: '연혁', href: '/about/history' }
+        { id: 'team', label: 'Team', href: '/about/team' },
+        { id: 'history', label: 'History', href: '/about/history' }
       ]
     },
-    { id: 'contact', label: '문의', href: '/contact' }
+    { id: 'contact', label: 'Contact', href: '/contact' }
   ]
 
   return (
-    <nav aria-label='메인 내비게이션'>
+    <nav aria-label='Main navigation'>
       <ul style={{ listStyle: 'none', display: 'flex', gap: '8px', padding: 0, margin: 0 }}>
         {items.map((item) => (
           <li key={item.id}>
@@ -184,19 +184,19 @@ function NavigationMuiDemo() {
       component='header'>
       <Toolbar
         component='nav'
-        aria-label='메인 내비게이션'>
+        aria-label='Main navigation'>
         <Button
           color='inherit'
           href='/'
           aria-current={currentPath === '/' ? 'page' : undefined}>
-          홈
+          Home
         </Button>
         <Button
           color='inherit'
           aria-haspopup='menu'
           aria-expanded={Boolean(anchorEl)}
           onClick={(e) => setAnchorEl(e.currentTarget)}>
-          제품
+          Products
         </Button>
         <Menu
           anchorEl={anchorEl}
@@ -205,12 +205,12 @@ function NavigationMuiDemo() {
           <MenuItem
             component='a'
             href='/products/all'>
-            전체 제품
+            All Products
           </MenuItem>
           <MenuItem
             component='a'
             href='/products/new'>
-            신규
+            New
           </MenuItem>
         </Menu>
       </Toolbar>
@@ -240,28 +240,28 @@ function NavigationMuiDemo() {
         language: 'tsx',
         label: 'Radix NavigationMenu',
         code: `import * as NavigationMenu from '@radix-ui/react-navigation-menu'
-<NavigationMenu.Root aria-label='메인 내비게이션'>
+<NavigationMenu.Root aria-label='Main navigation'>
   <NavigationMenu.List>
     <NavigationMenu.Item>
       <NavigationMenu.Link
         href='/'
         aria-current='page'>
-        홈
+        Home
       </NavigationMenu.Link>
     </NavigationMenu.Item>
 
     <NavigationMenu.Item>
       <NavigationMenu.Trigger>
-        제품
+        Products
         <span aria-hidden>▾</span>
       </NavigationMenu.Trigger>
       <NavigationMenu.Content>
         <ul>
           <li>
-            <NavigationMenu.Link href='/products/all'>전체 제품</NavigationMenu.Link>
+            <NavigationMenu.Link href='/products/all'>All Products</NavigationMenu.Link>
           </li>
           <li>
-            <NavigationMenu.Link href='/products/new'>신규</NavigationMenu.Link>
+            <NavigationMenu.Link href='/products/new'>New</NavigationMenu.Link>
           </li>
         </ul>
       </NavigationMenu.Content>
@@ -297,19 +297,19 @@ function NavigationMuiDemo() {
 function AntdNavDemo() {
   const currentKey = 'home'
   const items = [
-    { key: 'home', label: <a href='/'>홈</a> },
+    { key: 'home', label: <a href='/'>Home</a> },
     {
       key: 'products',
-      label: '제품',
+      label: 'Products',
       children: [
-        { key: 'all', label: <a href='/products/all'>전체 제품</a> },
-        { key: 'new', label: <a href='/products/new'>신규</a> }
+        { key: 'all', label: <a href='/products/all'>All Products</a> },
+        { key: 'new', label: <a href='/products/new'>New</a> }
       ]
     }
   ]
 
   return (
-    <nav aria-label='메인 내비게이션'>
+    <nav aria-label='Main navigation'>
       <Menu
         mode='horizontal'
         items={items}
@@ -341,15 +341,15 @@ function AntdNavDemo() {
         language: 'tsx',
         label: 'Chakra UI Menu',
         code: `import { Menu, Button } from '@chakra-ui/react'
-<nav aria-label='메인 내비게이션'>
+<nav aria-label='Main navigation'>
   <Menu.Root>
     <Menu.Trigger asChild>
-      <Button variant='ghost'>제품 ▾</Button>
+      <Button variant='ghost'>Products ▾</Button>
     </Menu.Trigger>
     <Menu.Positioner>
       <Menu.Content>
-        <Menu.Item value='web'>웹 제품</Menu.Item>
-        <Menu.Item value='mobile'>모바일 제품</Menu.Item>
+        <Menu.Item value='web'>Web Products</Menu.Item>
+        <Menu.Item value='mobile'>Mobile Products</Menu.Item>
       </Menu.Content>
     </Menu.Positioner>
   </Menu.Root>
@@ -382,13 +382,13 @@ const btnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d
 const menuStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
 const itemStyle = { padding: '8px 14px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
 
-<nav aria-label='메인 내비게이션'>
+<nav aria-label='Main navigation'>
   <MenuTrigger>
-    <Button style={btnStyle}>제품 ▾</Button>
+    <Button style={btnStyle}>Products ▾</Button>
     <Popover style={menuStyle}>
       <Menu onAction={() => {}}>
-        <MenuItem id='web' style={itemStyle}>웹 제품</MenuItem>
-        <MenuItem id='mobile' style={itemStyle}>모바일 제품</MenuItem>
+        <MenuItem id='web' style={itemStyle}>Web Products</MenuItem>
+        <MenuItem id='mobile' style={itemStyle}>Mobile Products</MenuItem>
       </Menu>
     </Popover>
   </MenuTrigger>

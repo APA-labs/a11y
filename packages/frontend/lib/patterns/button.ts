@@ -40,11 +40,11 @@ export const buttonPattern: Pattern = {
       label: 'Baseline (HTML)',
       code: `<button
   type='button'
-  aria-label='파일 저장'
+  aria-label='Save file'
   aria-disabled={isLoading}
   aria-busy={isLoading}
   style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}>
-  {isLoading ? <span aria-hidden>⏳</span> : '저장'}
+  {isLoading ? <span aria-hidden>⏳</span> : 'Save'}
 </button>`
     }
   },
@@ -84,7 +84,7 @@ export const buttonPattern: Pattern = {
     ) : undefined
   }
   sx={{ minWidth: 44, minHeight: 44 }}>
-  {isLoading ? '저장 중...' : '저장'}
+  {isLoading ? 'Saving...' : 'Save'}
 </Button>`
       },
       notes: [
@@ -143,7 +143,7 @@ export default function App() {
       <Button
         isLoading={isLoading}
         onClick={() => setIsLoading(!isLoading)}>
-        {isLoading ? '저장 중...' : '저장'}
+        {isLoading ? 'Saving...' : 'Save'}
       </Button>
     </div>
   )
@@ -180,20 +180,20 @@ export default function App() {
 <Button
   type='primary'
   loading={isLoading}
-  aria-label={isLoading ? '저장 중' : '저장'}
+  aria-label={isLoading ? 'Saving' : 'Save'}
   style={{ minWidth: 44, minHeight: 44 }}
   onClick={() => {}}>
-  저장
+  Save
 </Button>
 
 {
-  /* 삭제 버튼: danger + 명시적 레이블 */
+  /* Delete button: danger + explicit label */
 }
 <Button
   danger
-  aria-label='항목 삭제'
+  aria-label='Delete item'
   onClick={() => {}}>
-  삭제
+  Delete
 </Button>`
       },
       notes: [
@@ -225,9 +225,9 @@ function ButtonDemo() {
     <Button
       colorPalette='blue'
       loading={isLoading}
-      loadingText='저장 중'
+      loadingText='Saving'
       onClick={() => setIsLoading(true)}>
-      저장
+      Save
     </Button>
   )
 }`
@@ -253,7 +253,7 @@ function ButtonDemo() {
     <Button
       variant='cta'
       onPress={() => {}}>
-      저장
+      Save
     </Button>
   )
 }`

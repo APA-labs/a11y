@@ -105,14 +105,14 @@ export const selectPattern: Pattern = {
 
   return (
     <div>
-      <label id='fruit-label'>과일 선택</label>
+      <label id='fruit-label'>Select fruit</label>
       <button
         aria-haspopup='listbox'
         aria-expanded={isOpen}
         aria-labelledby='fruit-label'
         onKeyDown={handleKeyDown}
         onClick={() => setIsOpen(!isOpen)}>
-        {selected ?? '선택하세요'}
+        {selected ?? 'Choose an option'}
       </button>
       {isOpen && (
         <ul
@@ -156,11 +156,11 @@ export const selectPattern: Pattern = {
         label: 'MUI Select',
         code: `import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 <FormControl fullWidth>
-  <InputLabel id='fruit-label'>과일 선택</InputLabel>
+  <InputLabel id='fruit-label'>Select fruit</InputLabel>
   <Select
     labelId='fruit-label'
     value={selected}
-    label='과일 선택'
+    label='Select fruit'
     onChange={(e) => setSelected(e.target.value)}>
     <MenuItem value='apple'>Apple</MenuItem>
     <MenuItem value='banana'>Banana</MenuItem>
@@ -192,10 +192,10 @@ export const selectPattern: Pattern = {
         code: `import * as Select from '@radix-ui/react-select';
 import * as Label from '@radix-ui/react-label';
 
-<Label.Root htmlFor="fruit-trigger">과일 선택</Label.Root>
+<Label.Root htmlFor="fruit-trigger">Select fruit</Label.Root>
 <Select.Root value={selected} onValueChange={setSelected}>
-<Select.Trigger id="fruit-trigger" aria-label="과일 선택">
-  <Select.Value placeholder="선택하세요" />
+<Select.Trigger id="fruit-trigger" aria-label="Select fruit">
+  <Select.Value placeholder="Choose an option" />
   <Select.Icon />
 </Select.Trigger>
 <Select.Portal>
@@ -235,10 +235,10 @@ import * as Label from '@radix-ui/react-label';
         label: 'Ant Design Select',
         code: `import { Select, Form } from 'antd'
 <Form.Item
-  label='과일 선택'
+  label='Select fruit'
   name='fruit'>
   <Select
-    placeholder='선택하세요'
+    placeholder='Choose an option'
     options={[
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
@@ -272,9 +272,9 @@ import * as Label from '@radix-ui/react-label';
 import { Select, useListCollection } from '@chakra-ui/react'
 
 const countries = [
-  { label: '대한민국', value: 'kr' },
-  { label: '미국', value: 'us' },
-  { label: '일본', value: 'jp' }
+  { label: 'South Korea', value: 'kr' },
+  { label: 'United States', value: 'us' },
+  { label: 'Japan', value: 'jp' }
 ]
 
 export default function App() {
@@ -285,10 +285,10 @@ export default function App() {
       collection={collection}
       value={[value]}
       onValueChange={(e) => setValue(e.value[0])}>
-      <Select.Label>국가</Select.Label>
+      <Select.Label>Country</Select.Label>
       <Select.Control>
         <Select.Trigger>
-          <Select.ValueText placeholder='국가를 선택하세요' />
+          <Select.ValueText placeholder='Select a country' />
         </Select.Trigger>
       </Select.Control>
       <Select.Positioner>
@@ -333,16 +333,16 @@ function SpectrumSelectDemo() {
 
   return (
     <Select selectedKey={value} onSelectionChange={setValue}>
-      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>국가</Label>
+      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Country</Label>
       <Button style={triggerStyle}>
-        <SelectValue>{value || '국가를 선택하세요'}</SelectValue>
+        <SelectValue>{value || 'Select a country'}</SelectValue>
         <span aria-hidden>▼</span>
       </Button>
       <Popover style={popoverStyle}>
         <ListBox>
-          <ListBoxItem id='kr' style={itemStyle}>대한민국</ListBoxItem>
-          <ListBoxItem id='us' style={itemStyle}>미국</ListBoxItem>
-          <ListBoxItem id='jp' style={itemStyle}>일본</ListBoxItem>
+          <ListBoxItem id='kr' style={itemStyle}>South Korea</ListBoxItem>
+          <ListBoxItem id='us' style={itemStyle}>United States</ListBoxItem>
+          <ListBoxItem id='jp' style={itemStyle}>Japan</ListBoxItem>
         </ListBox>
       </Popover>
     </Select>
