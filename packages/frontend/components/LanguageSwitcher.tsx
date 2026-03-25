@@ -1,10 +1,16 @@
 'use client'
 
+import { Languages } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 
 import { SUPPORTED_LANGS } from '../lib/i18n'
 
 import type { Lang } from '../lib/i18n'
+
+const LANG_LABELS: Record<Lang, string> = {
+  ko: '한국어',
+  en: 'English'
+}
 
 export default function LanguageSwitcher({ currentLang }: { currentLang: Lang }) {
   const pathname = usePathname()
@@ -17,22 +23,25 @@ export default function LanguageSwitcher({ currentLang }: { currentLang: Lang })
   }
 
   return (
-    <div
-      className='flex items-center gap-0.5 rounded-md border border-mist-200 p-0.5'
-      role='group'
-      aria-label='Language'>
-      {SUPPORTED_LANGS.map((lang) => (
-        <button
-          key={lang}
-          type='button'
-          onClick={() => switchTo(lang)}
-          aria-current={currentLang === lang ? 'true' : undefined}
-          className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
-            currentLang === lang ? 'bg-navy text-white' : 'text-mist-600 hover:text-navy'
-          }`}>
-          {lang.toUpperCase()}
-        </button>
-      ))}
+    <div className='relative flex items-center'>
+      <Languages
+        size={14}
+        className='absolute left-2 text-mist-500 pointer-events-none'
+      />
+      <select
+        value={currentLang}
+        onChange={(e) => switchTo(e.target.value as Lang)}
+        aria-label='Language'
+        className='appearance-none pl-7 pr-6 py-1 text-xs font-medium text-navy bg-transparent border border-mist-200 rounded-md cursor-pointer hover:border-mist-400 focus:outline-none focus:border-violet-400 transition-colors'>
+        {SUPPORTED_LANGS.map((lang) => (
+          <option
+            key={lang}
+            value={lang}>
+            {LANG_LABELS[lang]}
+          </option>
+        ))}
+      </select>
+      <span className='absolute right-2 text-mist-400 pointer-events-none text-[10px]'>▾</span>
     </div>
   )
 }
