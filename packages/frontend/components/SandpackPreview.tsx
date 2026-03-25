@@ -4,6 +4,7 @@ import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider }
 import { Component, type ReactNode } from 'react'
 
 import { buildAppCode } from '../lib/build-preview-code'
+import { SHADCN_FILES } from '../lib/sandpack-shadcn'
 
 class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
   state = { error: false }
@@ -123,19 +124,24 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
     )
   }
 
-  if (code.includes('@/components/ui')) {
-    return (
-      <div
-        className='rounded-b-xl bg-slate-900 flex flex-col items-center justify-center gap-2'
-        style={{ height: 280 }}>
-        <p className='text-sm text-slate-400'>shadcn/ui 컴포넌트는 인라인 미리보기를 지원하지 않습니다.</p>
-        <p className='text-xs text-slate-500'>로컬 프로젝트에 설치 후 확인하세요.</p>
-      </div>
-    )
-  }
-
   const appCode = buildAppCode(code)
   const extraDeps = detectDeps(code)
+
+  const hasShadcn = code.includes('@/components/ui')
+  const appCodeFinal = hasShadcn
+    ? appCode.replace(/from '@\/components\/ui\//g, "from './components/ui/").replace(/from '@\/lib\//g, "from './lib/")
+    : appCode
+
+  const sandpackFiles: Record<string, string> = { '/App.tsx': appCodeFinal }
+  if (hasShadcn) {
+    Object.assign(sandpackFiles, SHADCN_FILES)
+    Object.assign(extraDeps, {
+      'class-variance-authority': '0.7.0',
+      clsx: '2.1.0',
+      'tailwind-merge': '2.2.1',
+      '@radix-ui/react-slot': '1.0.2'
+    })
+  }
 
   const indexHtml = `<!DOCTYPE html>
 <html lang="ko">
@@ -153,7 +159,7 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
     <SandpackErrorBoundary>
       <SandpackProvider
         template='react-ts'
-        files={{ '/App.tsx': appCode, '/index.html': indexHtml }}
+        files={{ ...sandpackFiles, '/index.html': indexHtml }}
         theme='dark'
         customSetup={{ dependencies: extraDeps }}
         options={{ recompileMode: 'delayed', recompileDelay: 600 }}>
