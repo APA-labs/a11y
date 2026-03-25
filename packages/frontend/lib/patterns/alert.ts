@@ -91,9 +91,9 @@ export const alertPattern: Pattern = {
 
   return (
     <div>
-      <button onClick={() => addAlert('저장되었습니다.', 'success')}>저장</button>
+      <button onClick={() => addAlert('Saved successfully.', 'success')}>Save</button>
 
-      {/* 스크린리더 라이브 영역 (시각적으로 숨김) */}
+      {/* Screen reader live region (visually hidden) */}
       <div
         role='status'
         aria-live='polite'
@@ -102,10 +102,10 @@ export const alertPattern: Pattern = {
         {alerts.map((a) => a.message).join('. ')}
       </div>
 
-      {/* 시각적 토스트 */}
+      {/* Visual toast */}
       <div
         style={{ position: 'fixed', top: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8 }}
-        aria-label='알림'>
+        aria-label='Notifications'>
         {alerts.map((alert) => (
           <div
             key={alert.id}
@@ -114,7 +114,7 @@ export const alertPattern: Pattern = {
             <span>{alert.message}</span>
             <button
               onClick={() => removeAlert(alert.id)}
-              aria-label='알림 닫기'>
+              aria-label='Dismiss notification'>
               ×
             </button>
           </div>
@@ -157,7 +157,7 @@ export const alertPattern: Pattern = {
     onClose={() => setIsOpen(false)}
     severity='success'
     variant='filled'>
-    파일이 저장되었습니다.
+    File saved successfully.
   </Alert>
 </Snackbar>`
       },
@@ -195,20 +195,20 @@ function ToastDemo() {
 
   return (
     <Toast.Provider swipeDirection='right'>
-      <button onClick={() => setOpen(true)}>저장</button>
+      <button onClick={() => setOpen(true)}>Save</button>
 
       <Toast.Root
         open={open}
         onOpenChange={setOpen}
         type='foreground'
         duration={5000}>
-        <Toast.Title>저장 완료</Toast.Title>
-        <Toast.Description>파일이 저장되었습니다.</Toast.Description>
-        <Toast.Close aria-label='닫기'>×</Toast.Close>
+        <Toast.Title>Saved</Toast.Title>
+        <Toast.Description>File saved successfully.</Toast.Description>
+        <Toast.Close aria-label='Close'>×</Toast.Close>
       </Toast.Root>
 
       <Toast.Viewport
-        label='알림 목록. F8을 눌러 이동하세요.'
+        label='Notifications. Press F8 to navigate.'
         style={{ position: 'fixed', bottom: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 50, maxWidth: 360 }}
       />
     </Toast.Provider>
@@ -242,8 +242,8 @@ function ToastDemo() {
 function AntdAlertDemo() {
   const openNotification = () => {
     notification.success({
-      message: '저장 완료',
-      description: '파일이 저장되었습니다.',
+      message: 'Saved',
+      description: 'File saved successfully.',
       duration: 5
     })
   }
@@ -251,14 +251,14 @@ function AntdAlertDemo() {
   return (
     <Space direction='vertical' style={{ width: '100%' }}>
       <Alert
-        message='저장 완료'
-        description='파일이 성공적으로 저장되었습니다.'
+        message='Saved'
+        description='File saved successfully.'
         type='success'
         showIcon
         closable
         onClose={() => {}}
       />
-      <Button onClick={openNotification}>토스트 알림 열기</Button>
+      <Button onClick={openNotification}>Show Toast</Button>
     </Space>
   )
 }`
@@ -290,8 +290,8 @@ function AntdAlertDemo() {
   role='alert'>
   <Alert.Indicator aria-hidden />
   <Alert.Content>
-    <Alert.Title>오류 발생</Alert.Title>
-    <Alert.Description>서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.</Alert.Description>
+    <Alert.Title>Error</Alert.Title>
+    <Alert.Description>Unable to connect to the server. Please try again later.</Alert.Description>
   </Alert.Content>
 </Alert.Root>`
       },

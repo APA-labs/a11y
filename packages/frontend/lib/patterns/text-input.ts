@@ -59,7 +59,7 @@ export const textInputPattern: Pattern = {
       label: 'Baseline (HTML)',
       code: `<div>
   <label htmlFor='email'>
-    이메일 <span aria-hidden>*</span>
+    Email <span aria-hidden>*</span>
   </label>
   <input
     id='email'
@@ -74,10 +74,10 @@ export const textInputPattern: Pattern = {
     <p
       id='email-error'
       role='alert'>
-      올바른 이메일 형식을 입력해주세요.
+      Please enter a valid email address.
     </p>
   )}
-  <p id='email-hint'>예: user@example.com</p>
+  <p id='email-hint'>e.g., user@example.com</p>
 </div>`
     }
   },
@@ -106,11 +106,11 @@ export const textInputPattern: Pattern = {
         code: `import { TextField } from '@mui/material'
 <TextField
   id='email'
-  label='이메일'
+  label='Email'
   type='email'
   required
   error={hasError}
-  helperText={hasError ? '올바른 이메일 형식을 입력해주세요.' : '예: user@example.com'}
+  helperText={hasError ? 'Please enter a valid email address.' : 'e.g. user@example.com'}
   inputProps={{
     'aria-required': true,
     autoComplete: 'email'
@@ -149,7 +149,7 @@ export const textInputPattern: Pattern = {
 <Form.Root>
   <Form.Field name='email'>
     <Form.Label>
-      이메일 <span aria-hidden>*</span>
+      Email <span aria-hidden>*</span>
     </Form.Label>
     <Form.Control asChild>
       <input
@@ -159,8 +159,8 @@ export const textInputPattern: Pattern = {
         style={{ padding: '6px 8px', border: '1px solid #d1d5db', borderRadius: 4 }}
       />
     </Form.Control>
-    <Form.Message match='valueMissing'>이메일을 입력해주세요.</Form.Message>
-    <Form.Message match='typeMismatch'>올바른 이메일 형식을 입력해주세요.</Form.Message>
+    <Form.Message match='valueMissing'>Please enter your email.</Form.Message>
+    <Form.Message match='typeMismatch'>Please enter a valid email address.</Form.Message>
   </Form.Field>
 </Form.Root>`
       },
@@ -194,11 +194,11 @@ export const textInputPattern: Pattern = {
         code: `import { Form, Input } from 'antd'
 <Form.Item
   name='email'
-  label='이메일'
+  label='Email'
   required
   rules={[
-    { required: true, message: '이메일을 입력해주세요.' },
-    { type: 'email', message: '올바른 이메일 형식을 입력해주세요.' }
+    { required: true, message: 'Please enter your email.' },
+    { type: 'email', message: 'Please enter a valid email address.' }
   ]}>
   <Input
     type='email'
@@ -233,15 +233,15 @@ export const textInputPattern: Pattern = {
   required
   invalid={hasError}>
   <Field.Label>
-    이메일 <Field.RequiredIndicator />
+    Email <Field.RequiredIndicator />
   </Field.Label>
   <Input
     type='email'
     autoComplete='email'
     placeholder='user@example.com'
   />
-  {hasError && <Field.ErrorText>올바른 이메일 형식을 입력해주세요.</Field.ErrorText>}
-  <Field.HelperText>예: user@example.com</Field.HelperText>
+  {hasError && <Field.ErrorText>Please enter a valid email address.</Field.ErrorText>}
+  <Field.HelperText>e.g. user@example.com</Field.HelperText>
 </Field.Root>`
       },
       notes: [
@@ -270,9 +270,9 @@ export const textInputPattern: Pattern = {
 const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 10px', fontSize: 14, outline: 'none' }
 
 <TextField isRequired>
-  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>이메일</Label>
+  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Email</Label>
   <Input type='email' autoComplete='email' style={inputStyle} />
-  <Text slot='description' style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>예: user@example.com</Text>
+  <Text slot='description' style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>e.g. user@example.com</Text>
   <FieldError style={{ fontSize: 12, color: '#dc2626', marginTop: 4 }} />
 </TextField>`
       },

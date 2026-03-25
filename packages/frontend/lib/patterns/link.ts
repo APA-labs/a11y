@@ -74,7 +74,7 @@ export const linkPattern: Pattern = {
       target='_blank'
       rel='noreferrer noopener'>
       {children}
-      <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
+      <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
     </a>
   )
 }`
@@ -100,18 +100,18 @@ export const linkPattern: Pattern = {
 <Link
   href='/about'
   underline='always'>
-  회사 소개
+  About Us
 </Link>
 
 {
-  /* 외부 링크 */
+  /* External link */
 }
 <Link
   href='https://example.com'
   target='_blank'
   rel='noreferrer'>
-  외부 사이트
-  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
+  External site
+  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
 </Link>`
       },
       notes: ['MUI Link는 component prop으로 Next.js Link 등 라우터와 통합할 수 있습니다.', 'color prop 변경 시 대비율을 확인하세요.']
@@ -135,12 +135,12 @@ export const linkPattern: Pattern = {
 
 const { Link } = Typography
 
-<Link href="/about">회사 소개</Link>
+<Link href="/about">About Us</Link>
 
-{/* 외부 링크 */}
+{/* External link */}
 <Link href="https://example.com" target="_blank">
-외부 사이트
-<span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
+External site
+<span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
 </Link>`
       },
       notes: [
@@ -169,16 +169,16 @@ const { Link } = Typography
 function LinkDemo() {
   return (
     <p>
-      자세한 내용은{' '}
+      For more details, see the{' '}
       <Link
         href='https://example.com'
         colorPalette='teal'
         target='_blank'
         rel='noopener noreferrer'>
-        공식 문서
-        <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (새 탭에서 열림)</span>
+        official docs
+        <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
       </Link>
-      를 참고하세요.
+      .
     </p>
   )
 }`
@@ -202,7 +202,7 @@ function LinkDemo() {
 function LinkDemo() {
   return (
     <p>
-      자세한 내용은 <Link href='#'>공식 문서</Link>를 참고하세요.
+      For more details, see the <Link href='#'>official docs</Link>.
     </p>
   )
 }`

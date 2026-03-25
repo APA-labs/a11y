@@ -66,9 +66,9 @@ export const modalDialogPattern: Pattern = {
 
   useEffect(() => {
     if (!isOpen) return
-    // 포커스 이동
+    // Move focus
     document.getElementById('modal-close')?.focus()
-    // 배경 inert
+    // Set background to inert
     document.getElementById('root').inert = true
     return () => {
       document.getElementById('root').inert = false
@@ -88,7 +88,7 @@ export const modalDialogPattern: Pattern = {
       <button
         id='modal-close'
         onClick={onClose}>
-        닫기
+        Close
       </button>
     </div>
   )
@@ -123,19 +123,19 @@ export const modalDialogPattern: Pattern = {
   onClose={() => setIsOpen(false)}
   aria-labelledby='dialog-title'
   aria-describedby='dialog-description'
-  // keepMounted 사용 주의!
+  // Warning about keepMounted!
 >
-  <DialogTitle id='dialog-title'>파일 삭제</DialogTitle>
+  <DialogTitle id='dialog-title'>Delete File</DialogTitle>
   <DialogContent>
-    <p id='dialog-description'>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+    <p id='dialog-description'>Are you sure you want to delete this file? This action cannot be undone.</p>
   </DialogContent>
   <DialogActions>
-    <Button onClick={() => setIsOpen(false)}>취소</Button>
+    <Button onClick={() => setIsOpen(false)}>Cancel</Button>
     <Button
       onClick={() => {}}
       color='error'
       autoFocus>
-      삭제
+      Delete
     </Button>
   </DialogActions>
 </Dialog>`
@@ -173,19 +173,19 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
   open={isOpen}
   onOpenChange={setIsOpen}>
   <Dialog.Trigger asChild>
-    <button>파일 삭제</button>
+    <button>Delete file</button>
   </Dialog.Trigger>
   <Dialog.Portal>
     <Dialog.Overlay style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} />
     <Dialog.Content
       style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', backgroundColor: 'white', padding: 24, borderRadius: 8, minWidth: 320 }}
       onInteractOutside={(e) => e.preventDefault()}>
-      <Dialog.Title>파일 삭제</Dialog.Title>
-      <Dialog.Description>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</Dialog.Description>
+      <Dialog.Title>Delete File</Dialog.Title>
+      <Dialog.Description>Are you sure you want to delete this file? This action cannot be undone.</Dialog.Description>
       <Dialog.Close asChild>
-        <button>취소</button>
+        <button>Cancel</button>
       </Dialog.Close>
-      <button onClick={() => {}}>삭제</button>
+      <button onClick={() => {}}>Delete</button>
     </Dialog.Content>
   </Dialog.Portal>
 </Dialog.Root>`
@@ -221,23 +221,23 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 <Modal
   open={isOpen}
   onCancel={() => setIsOpen(false)}
-  title='파일 삭제'
+  title='Delete File'
   destroyOnClose
   footer={[
     <Button
       key='cancel'
       onClick={() => setIsOpen(false)}>
-      취소
+      Cancel
     </Button>,
     <Button
       key='delete'
       type='primary'
       danger
       onClick={() => {}}>
-      삭제
+      Delete
     </Button>
   ]}>
-  <p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+  <p>Are you sure you want to delete this file? This action cannot be undone.</p>
 </Modal>`
       },
       notes: [
@@ -264,30 +264,30 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
         code: `import { Button, Dialog } from '@chakra-ui/react'
 <Dialog.Root>
   <Dialog.Trigger asChild>
-    <Button variant='outline'>파일 삭제</Button>
+    <Button variant='outline'>Delete file</Button>
   </Dialog.Trigger>
   <Dialog.Backdrop />
   <Dialog.Positioner>
     <Dialog.Content>
       <Dialog.Header>
-        <Dialog.Title>파일 삭제</Dialog.Title>
+        <Dialog.Title>Delete File</Dialog.Title>
         <Dialog.CloseTrigger asChild>
           <Button
             variant='ghost'
             size='sm'
-            aria-label='닫기'>
+            aria-label='Close'>
             ✕
           </Button>
         </Dialog.CloseTrigger>
       </Dialog.Header>
       <Dialog.Body>
-        <Dialog.Description>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</Dialog.Description>
+        <Dialog.Description>Are you sure you want to delete this file? This action cannot be undone.</Dialog.Description>
       </Dialog.Body>
       <Dialog.Footer>
         <Dialog.ActionTrigger asChild>
-          <Button variant='outline'>취소</Button>
+          <Button variant='outline'>Cancel</Button>
         </Dialog.ActionTrigger>
-        <Button colorPalette='red'>삭제</Button>
+        <Button colorPalette='red'>Delete</Button>
       </Dialog.Footer>
     </Dialog.Content>
   </Dialog.Positioner>
@@ -322,16 +322,16 @@ const dialogStyle = { background: '#fff', borderRadius: 12, padding: 24, maxWidt
 const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 13 }
 
 <DialogTrigger>
-  <Button style={openBtnStyle}>파일 삭제</Button>
+  <Button style={openBtnStyle}>Delete file</Button>
   <Modal isDismissable style={overlayStyle}>
     <Dialog style={dialogStyle}>
       {({ close }) => (
         <>
-          <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 16 }}>파일 삭제</Heading>
-          <p style={{ margin: '0 0 16px', fontSize: 14, color: '#4b5563' }}>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+          <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 16 }}>Delete File</Heading>
+          <p style={{ margin: '0 0 16px', fontSize: 14, color: '#4b5563' }}>Are you sure you want to delete this file? This action cannot be undone.</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-            <Button onPress={close} style={btnStyle}>취소</Button>
-            <Button onPress={close} style={{ ...btnStyle, background: '#dc2626', color: '#fff', border: 'none' }}>삭제</Button>
+            <Button onPress={close} style={btnStyle}>Cancel</Button>
+            <Button onPress={close} style={{ ...btnStyle, background: '#dc2626', color: '#fff', border: 'none' }}>Delete</Button>
           </div>
         </>
       )}
