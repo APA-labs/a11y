@@ -71,7 +71,16 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@chakra-ui/react': '3.2.3'
   },
   '@adobe/react-spectrum': {
-    '@adobe/react-spectrum': '3.33.1'
+    '@adobe/react-spectrum': '3.33.1',
+    'react-aria-components': '1.3.3',
+    '@react-aria/utils': '3.24.1',
+    '@react-stately/data': '3.11.5'
+  },
+  'react-aria-components': {
+    'react-aria-components': '1.3.3',
+    '@adobe/react-spectrum': '3.33.1',
+    '@react-aria/utils': '3.24.1',
+    '@react-stately/data': '3.11.5'
   },
   'react-hook-form': {
     'react-hook-form': '7.51.0',
