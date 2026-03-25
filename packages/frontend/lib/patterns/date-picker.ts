@@ -79,7 +79,7 @@ export const datePickerPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (HTML5 date input)',
       code: `function DatePickerDemo() {
-const [date, setDate] = useState('');
+const [date, setDate] = useState(new Date());
 const [error, setError] = useState('');
 const hintId = 'date-format-hint';
 const errorId = 'date-error';
@@ -129,21 +129,28 @@ return (
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { ko } from 'date-fns/locale'
-<LocalizationProvider
-  dateAdapter={AdapterDateFns}
-  adapterLocale={ko}>
-  <DatePicker
-    label='날짜 선택'
-    value={date}
-    onChange={(newDate) => setDate(newDate)}
-    slotProps={{
-      textField: {
-        helperText: '형식: YYYY.MM.DD',
-        inputProps: { 'aria-describedby': 'date-hint' }
-      }
-    }}
-  />
-</LocalizationProvider>`
+
+function DatePickerDemo() {
+  const [date, setDate] = useState(new Date())
+
+  return (
+    <LocalizationProvider
+      dateAdapter={AdapterDateFns}
+      adapterLocale={ko}>
+      <DatePicker
+        label='날짜 선택'
+        value={date}
+        onChange={(newDate) => setDate(newDate)}
+        slotProps={{
+          textField: {
+            helperText: '형식: YYYY.MM.DD',
+            inputProps: { 'aria-describedby': 'date-hint' }
+          }
+        }}
+      />
+    </LocalizationProvider>
+  )
+}`
       },
       notes: [
         'LocalizationProvider의 adapterLocale을 ko로 설정하면 캘린더 UI가 한국어로 표시됩니다.',
@@ -166,37 +173,25 @@ import { ko } from 'date-fns/locale'
       ],
       codeSample: {
         language: 'tsx',
-        label: 'shadcn Calendar + Popover',
-        code: `{
-  /* shadcn/ui Calendar + Radix Popover 조합 */
-}
-import * as Popover from '@radix-ui/react-popover'
-
-function DatePickerWithCalendar() {
-  const [date, setDate] = useState(null)
-  const [open, setOpen] = useState(false)
-
+        label: 'HTML5 date input (권장)',
+        code: `export function DatePicker() {
+  const [value, setValue] = useState('')
   return (
-    <Popover.Root
-      open={open}
-      onOpenChange={setOpen}>
-      <Popover.Trigger asChild>
-        <button
-          aria-expanded={open}
-          aria-haspopup='dialog'>
-          {date ? date.toLocaleDateString('ko-KR') : '날짜 선택'}
-        </button>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          role='dialog'
-          aria-label='날짜 선택 캘린더'>
-          {/* react-day-picker 또는 custom calendar 컴포넌트 */}
-          <p>캘린더 구현 위치</p>
-          <Popover.Close>닫기</Popover.Close>
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <label
+        htmlFor='date-input'
+        style={{ fontSize: '14px', fontWeight: 500 }}>
+        날짜 선택
+      </label>
+      <input
+        id='date-input'
+        type='date'
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        style={{ padding: '6px 10px', border: '1px solid #ccc', borderRadius: '6px', fontSize: '14px' }}
+      />
+      {value && <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>선택: {new Date(value).toLocaleDateString('ko-KR')}</p>}
+    </div>
   )
 }`
       },

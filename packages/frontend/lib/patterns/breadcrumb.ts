@@ -128,49 +128,6 @@ export const breadcrumbPattern: Pattern = {
         '마지막 항목은 Typography로 처리해 링크가 아닌 텍스트로 표현하세요.'
       ]
     },
-    radix: {
-      id: 'radix',
-      name: 'Radix UI',
-      color: '#6e56cf',
-      additionalChecks: [
-        {
-          id: 'breadcrumb-radix-1',
-          title: '직접 구현 필요',
-          description: 'Radix UI에는 전용 Breadcrumb 컴포넌트가 없습니다. <nav>, <ol>, aria-current를 직접 구현하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'Radix (직접 구현)',
-        code: `{
-  /* Radix UI에 전용 컴포넌트 없음 — 시맨틱 HTML로 직접 구현 */
-}
-<nav aria-label='breadcrumb'>
-  <ol className='flex items-center gap-1 text-sm'>
-    {items.map((item, i) => (
-      <li
-        key={item.href}
-        className='flex items-center gap-1'>
-        {i < items.length - 1 ? (
-          <>
-            <a href={item.href}>{item.label}</a>
-            <span aria-hidden='true'>/</span>
-          </>
-        ) : (
-          <span aria-current='page'>{item.label}</span>
-        )}
-      </li>
-    ))}
-  </ol>
-</nav>`
-      },
-      notes: [
-        'Radix UI는 전용 Breadcrumb 컴포넌트를 제공하지 않습니다.',
-        'shadcn/ui의 Breadcrumb 컴포넌트는 Radix 기반으로 접근성이 잘 구현되어 있습니다.',
-        '구분자에 항상 aria-hidden을 추가하세요.'
-      ]
-    },
     antd: {
       id: 'antd',
       name: 'Ant Design',

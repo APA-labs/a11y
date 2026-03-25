@@ -67,46 +67,45 @@ export const paginationPattern: Pattern = {
       language: 'tsx',
       label: 'Baseline (React)',
       code: `function Pagination({ currentPage, totalPages, onPageChange }) {
-return (
-  <nav aria-label="페이지 탐색">
-    <ul className="flex gap-1">
-      <li>
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          aria-label="이전 페이지"
-          aria-disabled={currentPage === 1}
-          disabled={currentPage === 1}
-        >
-          &laquo;
-        </button>
-      </li>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-        <li key={page}>
+  return (
+    <nav aria-label='페이지 탐색'>
+      <ul className='flex gap-1'>
+        <li>
           <button
-            onClick={() => onPageChange(page)}
-            aria-label={\`\${page}페이지로 이동\`}
-            aria-current={page === currentPage ? 'page' : undefined}
-          >
-            {page}
+            onClick={() => onPageChange(currentPage - 1)}
+            aria-label='이전 페이지'
+            aria-disabled={currentPage === 1}
+            disabled={currentPage === 1}>
+            &laquo;
           </button>
         </li>
-      ))}
-      <li>
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          aria-label="다음 페이지"
-          aria-disabled={currentPage === totalPages}
-          disabled={currentPage === totalPages}
-        >
-          &raquo;
-        </button>
-      </li>
-    </ul>
-    <div role="status" className="sr-only">
-      {totalPages}페이지 중 {currentPage}페이지
-    </div>
-  </nav>
-);
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <li key={page}>
+            <button
+              onClick={() => onPageChange(page)}
+              aria-label={\`\${page}페이지로 이동\`}
+              aria-current={page === currentPage ? 'page' : undefined}>
+              {page}
+            </button>
+          </li>
+        ))}
+        <li>
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            aria-label='다음 페이지'
+            aria-disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages}>
+            &raquo;
+          </button>
+        </li>
+      </ul>
+      <div
+        role='status'
+        className='sr-only'>
+        {totalPages}페이지 중 {currentPage}페이지
+      </div>
+    </nav>
+  )
 }`
     }
   },
@@ -126,84 +125,26 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Pagination',
-        code: `import { Pagination } from '@mui/material';
+        code: `import { Pagination } from '@mui/material'
 
 <Pagination
-count={10}
-page={currentPage}
-onChange={(_, page) => setCurrentPage(page)}
-getItemAriaLabel={(type, page, selected) => {
-  if (type === 'page') return \`\${page}페이지로 이동\${selected ? ' (현재 페이지)' : ''}\`;
-  if (type === 'first') return '첫 페이지로 이동';
-  if (type === 'last') return '마지막 페이지로 이동';
-  if (type === 'next') return '다음 페이지';
-  if (type === 'previous') return '이전 페이지';
-  return '';
-}}
+  count={10}
+  page={currentPage}
+  onChange={(_, page) => setCurrentPage(page)}
+  getItemAriaLabel={(type, page, selected) => {
+    if (type === 'page') return \`\${page}페이지로 이동\${selected ? ' (현재 페이지)' : ''}\`
+    if (type === 'first') return '첫 페이지로 이동'
+    if (type === 'last') return '마지막 페이지로 이동'
+    if (type === 'next') return '다음 페이지'
+    if (type === 'previous') return '이전 페이지'
+    return ''
+  }}
 />`
       },
       notes: [
         'MUI Pagination은 자동으로 <nav role="navigation"> 랜드마크를 사용합니다.',
         '현재 페이지에 aria-current가 자동으로 적용됩니다.',
         'getItemAriaLabel로 모든 버튼의 aria-label을 한 번에 커스텀할 수 있습니다.'
-      ]
-    },
-    radix: {
-      id: 'radix',
-      name: 'Radix UI',
-      color: '#6e56cf',
-      additionalChecks: [
-        {
-          id: 'pagination-radix-1',
-          title: '직접 구현 필요',
-          description: 'Radix UI에는 Pagination 컴포넌트가 없습니다. 시맨틱 HTML과 ARIA를 직접 구현하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'Radix (직접 구현)',
-        code: `{/* Radix UI에 전용 컴포넌트 없음 — 시맨틱 HTML로 직접 구현 */}
-<nav aria-label="페이지 탐색">
-<ul className="flex items-center gap-1">
-  <li>
-    <button
-      onClick={() => onPageChange(page - 1)}
-      aria-label="이전 페이지"
-      disabled={page === 1}
-      aria-disabled={page === 1}
-    >
-      ←
-    </button>
-  </li>
-  {pages.map(p => (
-    <li key={p}>
-      <button
-        onClick={() => onPageChange(p)}
-        aria-label={\`\${p}페이지로 이동\`}
-        aria-current={p === page ? 'page' : undefined}
-      >
-        {p}
-      </button>
-    </li>
-  ))}
-  <li>
-    <button
-      onClick={() => onPageChange(page + 1)}
-      aria-label="다음 페이지"
-      disabled={page === total}
-      aria-disabled={page === total}
-    >
-      →
-    </button>
-  </li>
-</ul>
-</nav>`
-      },
-      notes: [
-        'Radix UI는 Pagination 컴포넌트를 제공하지 않습니다.',
-        'shadcn/ui의 Pagination 컴포넌트는 접근성이 잘 구현된 좋은 참고 예시입니다.',
-        '각 버튼에 aria-label을 반드시 추가하세요.'
       ]
     },
     antd: {
