@@ -4,10 +4,12 @@ const fs = require('fs')
 
 const PATTERN_FILE_RE = /packages\/frontend\/lib\/patterns(\/[^/]+)?\.ts$/
 
+const REPO_ROOT = path.join(__dirname, '..', '..')
+
 async function formatCodeSamplesInFile(filePath) {
   let prettier
   try {
-    prettier = require('/Users/ijihyeong/a11y/node_modules/prettier')
+    prettier = require(require.resolve('prettier', { paths: [REPO_ROOT] }))
   } catch {
     return
   }
