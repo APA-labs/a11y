@@ -1,5 +1,6 @@
 import { AlertCircle, CheckCircle2, MinusCircle } from 'lucide-react'
 
+import type { Lang } from '../lib/i18n'
 import type { ChecklistItem } from '../lib/types'
 
 const CONFIG = {
@@ -42,7 +43,7 @@ function ChecklistGroup({ items, level }: { items: ChecklistItem[]; level: 'must
           className={cfg.iconClass}
         />
         <span className={`text-xs font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${cfg.labelClass}`}>{cfg.label}</span>
-        <span className='text-xs text-mist-500'>{items.length}개</span>
+        <span className='text-xs text-mist-500'>{items.length}</span>
       </div>
       <ul className='space-y-2'>
         {items.map((item) => (
@@ -62,6 +63,7 @@ interface Props {
   must: ChecklistItem[]
   should: ChecklistItem[]
   avoid: ChecklistItem[]
+  lang?: Lang
 }
 
 export default function ChecklistSection({ must, should, avoid }: Props) {

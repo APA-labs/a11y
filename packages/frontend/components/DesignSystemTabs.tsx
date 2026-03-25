@@ -4,15 +4,19 @@ import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
+import { getTranslations } from '../lib/i18n'
 import { DS_ORDER } from '../lib/types'
 
+import type { Lang } from '../lib/i18n'
 import type { DesignSystemId, DesignSystemVariant, Pattern } from '../lib/types'
 
 interface Props {
   designSystems: Pattern['designSystems']
+  lang?: Lang
 }
 
-export default function DesignSystemTabs({ designSystems }: Props) {
+export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) {
+  const t = getTranslations(lang)
   const availableIds = DS_ORDER.filter((id) => designSystems[id] != null)
   const [active, setActive] = useState<DesignSystemId>(availableIds[0] ?? 'material')
 
@@ -53,7 +57,7 @@ export default function DesignSystemTabs({ designSystems }: Props) {
                 className='w-2 h-2 rounded-full'
                 style={{ backgroundColor: current.color }}
               />
-              추가 체크포인트
+              {t.pattern.additionalChecks}
             </h4>
             <ul className='space-y-2'>
               {current.additionalChecks.map((item) => {
@@ -90,14 +94,14 @@ export default function DesignSystemTabs({ designSystems }: Props) {
               className='w-2 h-2 rounded-full'
               style={{ backgroundColor: current.color }}
             />
-            코드 샘플
+            {t.pattern.codeSample}
           </h4>
           <CodeBlock sample={current.codeSample} />
         </div>
 
         {current.notes.length > 0 && (
           <div>
-            <h4 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>구현 노트</h4>
+            <h4 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>{t.pattern.implNotes}</h4>
             <ul className='space-y-1.5'>
               {current.notes.map((note, i) => (
                 <li

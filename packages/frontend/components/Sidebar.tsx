@@ -6,12 +6,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { getTranslations } from '../lib/i18n'
 import { ICON_MAP } from '../lib/pattern-icons'
-import { patterns } from '../lib/patterns'
+import { getPatterns } from '../lib/patterns'
 
-export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
+import type { Lang } from '../lib/i18n'
+
+export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+  const t = getTranslations(lang)
+  const patterns = getPatterns(lang)
 
   useEffect(() => {
     const stored = localStorage.getItem('sidebar-collapsed')
@@ -83,7 +88,6 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
       <aside
         style={{ width: collapsed ? 52 : 240 }}
         className='hidden lg:flex flex-col h-full bg-white shrink-0 overflow-y-auto overflow-x-hidden scrollbar-thin transition-[width] duration-200 ease-in-out border-r border-mist-200'>
-        {/* 접기 / 펼치기 버튼 */}
         <div className={`flex ${collapsed ? 'justify-center' : 'justify-end'} px-2 pt-3 pb-1`}>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
@@ -91,7 +95,7 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
                 type='button'
                 onClick={toggle}
                 className='p-1.5 rounded-md text-mist-400 hover:text-navy hover:bg-mist-100 transition-colors'
-                aria-label={collapsed ? '사이드바 펼치기' : '사이드바 접기'}>
+                aria-label={collapsed ? t.nav.sidebarExpand : t.nav.sidebarCollapse}>
                 {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
               </button>
             </Tooltip.Trigger>
@@ -100,7 +104,7 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
                 side='right'
                 sideOffset={8}
                 className='z-[100] max-w-[min(240px,calc(100vw-4rem))] rounded-md border border-mist-200 bg-white px-2.5 py-1.5 text-xs font-medium leading-snug text-navy shadow-md select-none'>
-                {collapsed ? '사이드바 펼치기' : '사이드바 접기'}
+                {collapsed ? t.nav.sidebarExpand : t.nav.sidebarCollapse}
                 <Tooltip.Arrow
                   className='fill-white'
                   width={10}
@@ -111,34 +115,30 @@ export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
           </Tooltip.Root>
         </div>
 
-        {/* Nav */}
         <nav className='flex-1 px-2 py-1 space-y-5'>
-          {/* Docs */}
           <div>
-            <SectionLabel>Docs</SectionLabel>
+            <SectionLabel>{t.nav.docs}</SectionLabel>
             <ul className='space-y-0.5'>
-              <li>{navItem('/wcag', <ShieldCheck size={14} />, 'WCAG 레퍼런스')}</li>
+              <li>{navItem(`/${lang}/wcag`, <ShieldCheck size={14} />, t.nav.wcag)}</li>
             </ul>
           </div>
 
-          {/* Patterns */}
           <div>
-            <SectionLabel>Patterns</SectionLabel>
+            <SectionLabel>{t.nav.patterns}</SectionLabel>
             <ul className='space-y-0.5'>
               {patterns.map((pattern) => (
                 <li key={pattern.slug}>
-                  {navItem(`/patterns/${pattern.slug}`, ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />, pattern.name)}
+                  {navItem(`/${lang}/patterns/${pattern.slug}`, ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />, pattern.name)}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Tools */}
           {aiEnabled && (
             <div>
-              <SectionLabel>Tools</SectionLabel>
+              <SectionLabel>{t.nav.tools}</SectionLabel>
               <ul className='space-y-0.5'>
-                <li>{navItem('/analyze', <Sparkles size={14} />, 'AI 분석')}</li>
+                <li>{navItem(`/${lang}/analyze`, <Sparkles size={14} />, t.nav.aiAnalyze)}</li>
               </ul>
             </div>
           )}
