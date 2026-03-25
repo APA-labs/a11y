@@ -1,0 +1,30 @@
+{
+  "name": "@a11y/spec-transformer",
+  "version": "0.0.1",
+  "description": "Transform W3C spec HTML (from spec-harvester) into backend rule JSON files",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "spec-transform": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src",
+    "transform": "tsx src/index.ts",
+    "transform:patterns": "tsx src/patterns-cli.ts",
+    "verify:rules": "tsx src/verify.ts --rules ../../packages/backend/src/rules",
+    "verify:all": "tsx src/verify.ts --rules ../../packages/backend/src/rules --patterns ../../packages/frontend/lib/patterns.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0"
+  },
+  "devDependencies": {
+    "@a11y/eslint-config": "workspace:*",
+    "@a11y/typescript-config": "workspace:*",
+    "@types/node": "^20.10.6",
+    "eslint": "^9.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

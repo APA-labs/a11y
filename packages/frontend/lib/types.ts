@@ -11,8 +11,20 @@ export interface CodeSample {
   code: string
 }
 
+export type DesignSystemId = 'material' | 'radix' | 'antd' | 'chakra' | 'spectrum'
+
+export const DS_META: Record<DesignSystemId, { name: string; color: string }> = {
+  material: { name: 'Material (MUI)', color: '#1976d2' },
+  radix: { name: 'Radix UI', color: '#6e56cf' },
+  antd: { name: 'Ant Design', color: '#1677ff' },
+  chakra: { name: 'Chakra UI', color: '#319795' },
+  spectrum: { name: 'React Spectrum', color: '#e03' }
+}
+
+export const DS_ORDER: DesignSystemId[] = ['material', 'radix', 'antd', 'chakra', 'spectrum']
+
 export interface DesignSystemVariant {
-  id: 'material' | 'radix' | 'antd'
+  id: DesignSystemId
   name: string
   color: string
   additionalChecks: ChecklistItem[]
@@ -34,9 +46,5 @@ export interface Pattern {
     }
     codeSample: CodeSample
   }
-  designSystems: {
-    material: DesignSystemVariant
-    radix: DesignSystemVariant
-    antd: DesignSystemVariant
-  }
+  designSystems: Partial<Record<DesignSystemId, DesignSystemVariant>>
 }

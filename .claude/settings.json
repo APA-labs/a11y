@@ -8,6 +8,11 @@
             "type": "command",
             "command": "node .claude/hooks/format-on-save.js",
             "statusMessage": "Formatting..."
+          },
+          {
+            "type": "command",
+            "command": "node .claude/hooks/validate-code-samples.js",
+            "statusMessage": "Validating code samples..."
           }
         ]
       }

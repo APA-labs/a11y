@@ -1,0 +1,85 @@
+{
+  "pattern": "Date Picker",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "datepicker-m1",
+        "title": "입력 필드에 날짜 형식 안내 연결",
+        "description": "날짜 입력 필드에 aria-describedby로 날짜 형식(예: YYYY-MM-DD)을 연결해야 합니다. 스크린리더 사용자가 형식을 알아야 직접 입력할 수 있습니다."
+      },
+      {
+        "id": "datepicker-m2",
+        "title": "캘린더 다이얼로그에 role=\"dialog\"",
+        "description": "캘린더 팝업은 role=\"dialog\"와 aria-modal=\"true\", aria-label 또는 aria-labelledby를 설정해야 합니다."
+      },
+      {
+        "id": "datepicker-m3",
+        "title": "캘린더 그리드에 적절한 ARIA",
+        "description": "캘린더는 role=\"grid\"를 사용하고 각 날짜 셀에 aria-label로 전체 날짜를 제공해야 합니다. 약어(Su, Mo)를 사용할 때 abbr 속성으로 전체 이름을 제공하세요."
+      },
+      {
+        "id": "datepicker-m4",
+        "title": "키보드로 날짜 탐색",
+        "description": "Arrow 키로 날짜 이동, Enter/Space로 선택, Page Up/Down으로 월 이동, Escape로 닫기를 지원해야 합니다."
+      },
+      {
+        "id": "datepicker-m5",
+        "title": "현재 월/연도를 라이브 영역으로",
+        "description": "월/연도 네비게이션 버튼으로 달력을 이동할 때 현재 표시 월/연도가 aria-live로 스크린리더에 안내되어야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "datepicker-s1",
+        "title": "직접 텍스트 입력도 허용",
+        "description": "캘린더 UI 없이 날짜를 직접 텍스트로 입력할 수 있는 옵션을 제공하세요. 스크린리더 사용자에게 더 빠른 방법입니다."
+      },
+      {
+        "id": "datepicker-s2",
+        "title": "선택 후 트리거에 선택 날짜 반영",
+        "description": "날짜 선택 후 다이얼로그가 닫히면 트리거 버튼의 accessible name에 선택된 날짜를 포함하세요. (예: '날짜 변경, 2024년 3월 15일')"
+      },
+      {
+        "id": "datepicker-s3",
+        "title": "비활성 날짜 aria-disabled",
+        "description": "선택 불가능한 날짜(과거 날짜, 예약 불가 등)에 aria-disabled=\"true\"와 시각적 표시를 함께 제공하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "datepicker-a1",
+        "title": "캘린더 UI만 제공",
+        "description": "캘린더 팝업으로만 날짜를 선택할 수 있다면 스크린리더 사용자가 복잡한 그리드 탐색을 강요받습니다. 텍스트 입력도 항상 제공하세요."
+      },
+      {
+        "id": "datepicker-a2",
+        "title": "날짜 셀에 숫자만 제공",
+        "description": "'15'만 있는 날짜 셀은 맥락 없이 읽힙니다. aria-label=\"2024년 3월 15일\"처럼 전체 날짜를 제공하세요."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제 (기본 텍스트 입력)",
+      "code": "function DatePickerDemo() {\n  const [date, setDate] = useState('');\n  const [error, setError] = useState('');\n  const hintId = 'date-format-hint';\n  const errorId = 'date-error';\n\n  const validateDate = (value) => {\n    if (!value) return '';\n    const regex = /^\\d{4}-\\d{2}-\\d{2}$/;\n    if (!regex.test(value)) return '날짜 형식이 올바르지 않습니다. (예: 2024-03-15)';\n    const d = new Date(value);\n    if (isNaN(d.getTime())) return '유효하지 않은 날짜입니다.';\n    return '';\n  };\n\n  return (\n    <div>\n      <label htmlFor=\"date-input\">날짜</label>\n      <input\n        id=\"date-input\"\n        type=\"date\"\n        value={date}\n        onChange={(e) => { setDate(e.target.value); setError(validateDate(e.target.value)); }}\n        aria-describedby={`${hintId}${error ? ` ${errorId}` : ''}`}\n        aria-invalid={!!error}\n      />\n      <p id={hintId}>형식: YYYY-MM-DD (예: 2024-03-15)</p>\n      {error && <p id={errorId} role=\"alert\">{error}</p>}\n    </div>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "스크린리더 캘린더 탐색",
+      "steps": [
+        "날짜 입력 필드에 포커스 - 형식 안내가 읽히는지 확인",
+        "캘린더 버튼으로 팝업 열기",
+        "Arrow 키로 날짜 이동 시 날짜가 읽히는지 확인",
+        "월 이동 버튼 클릭 시 현재 월이 자동으로 읽히는지 확인",
+        "날짜 선택 후 포커스 복귀 확인"
+      ],
+      "tools": ["VoiceOver", "NVDA", "Keyboard only"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/",
+    "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-datepicker/"
+  ]
+}

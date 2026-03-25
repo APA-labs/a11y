@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
  * token-guard.js
- * Stop 훅: 토큰 사용량이 85% 이상이면 Claude에게 작업 중단 + 요약 작성 지시
+ * Stop 훅: 컨텍스트 윈도우(200K) 사용량이 85% 이상이면 Claude에게 작업 중단 + 요약 작성 지시
  *
  * 토큰 추정 방식:
- *   1. input.usage 데이터가 있으면 직접 사용 (향후 Claude Code가 지원 시)
- *   2. 없으면 transcript 파일 크기로 추정 (4자 ≈ 1 토큰)
+ *   JSONL의 마지막 assistant 메시지 usage 필드에서 실제 토큰 수 추출
+ *   input_tokens + cache_read_input_tokens + cache_creation_input_tokens
  */
 
 const fs = require('fs')
@@ -16,7 +16,6 @@ try {
   const raw = fs.readFileSync('/dev/stdin', 'utf8')
   input = JSON.parse(raw)
 
-  // 디버그 로그 (처음 한 번만 확인용, 이후 삭제 가능)
   const logPath = path.join(process.env.HOME || '', '.claude', 'hooks-logs', 'token-guard-debug.json')
   try {
     fs.writeFileSync(logPath, raw, 'utf8')
@@ -25,60 +24,85 @@ try {
   process.exit(0)
 }
 
-// 무한루프 방지
-if (input.stop_hook_active) {
-  process.exit(0)
-}
+if (input.stop_hook_active) process.exit(0)
 
 const CONTEXT_WINDOW = 200_000
-let inputTokens = 0
-let estimatedMode = false
+const CONTEXT_THRESHOLD = 0.85
 
-// ── 방법 1: usage 데이터 직접 사용 ──────────────────────────────────────────
-const usage = input.usage || {}
-inputTokens = (usage.input_tokens || 0) + (usage.cache_read_input_tokens || 0)
+// 플랜 사용량 설정 (5시간 window)
+// 실측값으로 보정: output_tokens 440K = 15% → 한도 ≈ 2,937,000
+// 다른 플랜이라면 아래 값을 조정하세요
+const PLAN_OUTPUT_LIMIT = 2_937_000
+const PLAN_THRESHOLD = 0.8
+const PLAN_WINDOW_HOURS = 5
 
-// ── 방법 2: transcript 파일 크기로 추정 ─────────────────────────────────────
-if (inputTokens === 0) {
-  estimatedMode = true
-
-  // transcript_path 또는 session_id로 트랜스크립트 파일 찾기
-  const transcriptPath = input.transcript_path
-  const sessionId = input.session_id
-
-  let transcriptSize = 0
-
-  if (transcriptPath && fs.existsSync(transcriptPath)) {
-    transcriptSize = fs.statSync(transcriptPath).size
-  } else if (sessionId) {
-    // Claude Code 트랜스크립트 기본 위치 탐색
-    const candidates = [
-      path.join(process.env.HOME || '', '.claude', 'transcripts', `${sessionId}.jsonl`),
-      path.join(process.env.HOME || '', '.claude', 'projects', '-Users-ijihyeong-a11y', `${sessionId}.jsonl`)
-    ]
-    for (const p of candidates) {
-      if (fs.existsSync(p)) {
-        transcriptSize = fs.statSync(p).size
-        break
-      }
+// ── JSONL에서 마지막 assistant 메시지의 실제 context 토큰 추출 ────────────────
+function getContextTokens(transcriptPath) {
+  if (!transcriptPath || !fs.existsSync(transcriptPath)) return 0
+  try {
+    const content = fs.readFileSync(transcriptPath, 'utf-8')
+    const lines = content.trimEnd().split('\n')
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const line = lines[i]
+      if (!line.includes('"assistant"')) continue
+      try {
+        const d = JSON.parse(line)
+        if (d.type !== 'assistant') continue
+        const u = d.message?.usage
+        if (!u) continue
+        return (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0)
+      } catch {}
     }
-  }
-
-  // 파일도 못 찾으면 패스
-  if (transcriptSize === 0) {
-    process.exit(0)
-  }
-
-  // JSONL은 JSON 메타데이터 오버헤드가 크므로 약 20바이트 ≈ 1토큰으로 추정
-  // (3.6MB 파일 → 실측 ~172K 토큰 기준으로 보정된 값)
-  inputTokens = Math.round(transcriptSize / 20)
+  } catch {}
+  return 0
 }
 
-const usagePercent = inputTokens / CONTEXT_WINDOW
+// ── 최근 5시간 output_tokens 합산 (플랜 사용량 추정) ─────────────────────────
+function getPlanOutputTokens() {
+  try {
+    const glob = require('child_process')
+      .execSync(
+        `find "${path.join(process.env.HOME || '', '.claude', 'projects')}" -name "*.jsonl" -newer /tmp/.token-guard-window 2>/dev/null || find "${path.join(process.env.HOME || '', '.claude', 'projects')}" -name "*.jsonl"`,
+        { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
+      )
+      .trim()
+      .split('\n')
+      .filter(Boolean)
 
-if (usagePercent < 0.85) {
-  process.exit(0)
+    const windowStart = Date.now() - PLAN_WINDOW_HOURS * 60 * 60 * 1000
+    let total = 0
+
+    for (const fpath of glob) {
+      try {
+        const content = fs.readFileSync(fpath, 'utf-8')
+        for (const line of content.split('\n')) {
+          if (!line.includes('"assistant"') || !line.includes('"output_tokens"')) continue
+          try {
+            const d = JSON.parse(line)
+            if (d.type !== 'assistant') continue
+            const ts = d.timestamp ? new Date(d.timestamp).getTime() : 0
+            if (ts < windowStart) continue
+            total += d.message?.usage?.output_tokens || 0
+          } catch {}
+        }
+      } catch {}
+    }
+    return total
+  } catch {}
+  return 0
 }
+
+const transcriptPath = input.transcript_path
+const contextTokens = getContextTokens(transcriptPath)
+const planOutputTokens = getPlanOutputTokens()
+
+const contextPercent = contextTokens / CONTEXT_WINDOW
+const planPercent = planOutputTokens / PLAN_OUTPUT_LIMIT
+
+// 둘 다 임계값 미만이면 종료
+if (contextPercent < CONTEXT_THRESHOLD && planPercent < PLAN_THRESHOLD) process.exit(0)
+// transcript 못 찾고 플랜도 낮으면 종료
+if (contextTokens === 0 && planPercent < PLAN_THRESHOLD) process.exit(0)
 
 // ── 85% 초과: CLAUDE.local.md에 구분 헤더 작성 ──────────────────────────────
 const cwd = input.cwd || process.cwd()
@@ -94,21 +118,14 @@ const timestamp = now.toLocaleString('ko-KR', {
   hour12: false
 })
 
-const nextReset = new Date(now)
-nextReset.setHours(nextReset.getHours() + 1, 0, 0, 0)
-const resetTime = nextReset.toLocaleString('ko-KR', {
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: false
-})
-
-const usedPct = Math.round(usagePercent * 100)
-const modeNote = estimatedMode ? ' (추정값)' : ''
+const contextPct = Math.round(contextPercent * 100)
+const planPct = Math.round(planPercent * 100)
 const separator = '\n\n' + '='.repeat(60) + '\n'
 const header = [
   `## 🔄 세션 요약 — ${timestamp}`,
-  `> 토큰 사용량: **${usedPct}%**${modeNote} (${inputTokens.toLocaleString()} / ${CONTEXT_WINDOW.toLocaleString()})`,
-  `> 다음 리셋 예정: **${resetTime}**`,
+  `> 컨텍스트: **${contextPct}%** (${contextTokens.toLocaleString()} / ${CONTEXT_WINDOW.toLocaleString()} tokens)`,
+  `> 플랜 사용량: **${planPct}%** (output ${planOutputTokens.toLocaleString()} / ${PLAN_OUTPUT_LIMIT.toLocaleString()} tokens, 최근 5h)`,
+  `> 새 세션을 시작하면 컨텍스트가 초기화됩니다.`,
   '',
   '<!-- AUTO-GENERATED: Claude가 아래에 세션 요약을 작성합니다 -->',
   ''
@@ -129,10 +146,18 @@ try {
   }
 } catch {}
 
+const warnings = []
+if (contextPercent >= CONTEXT_THRESHOLD)
+  warnings.push(`🧠 컨텍스트 **${contextPct}%** (${contextTokens.toLocaleString()} / ${CONTEXT_WINDOW.toLocaleString()} tokens)`)
+if (planPercent >= PLAN_THRESHOLD)
+  warnings.push(
+    `📊 플랜 사용량 **${planPct}%** (output ${planOutputTokens.toLocaleString()} / ${PLAN_OUTPUT_LIMIT.toLocaleString()} tokens, 최근 5h)`
+  )
+
 const reason = [
-  `⚠️  토큰 사용량이 **${usedPct}%**${modeNote}에 달했습니다.`,
-  `컨텍스트 한계(${CONTEXT_WINDOW.toLocaleString()} 토큰)에 근접하여 이번 세션을 종료해야 합니다.`,
-  `다음 리셋 예정 시각: **${resetTime}** (매 정각)`,
+  `⚠️  한계에 근접했습니다:`,
+  ...warnings.map((w) => `  ${w}`),
+  `새 세션을 시작하면 컨텍스트가 초기화됩니다.`,
   '',
   '📝 종료 전에 `CLAUDE.local.md` 파일의 "AUTO-GENERATED" 주석 아래에 다음 내용을 작성해주세요:',
   '- ✅ 이번 세션에서 완료한 작업',
@@ -140,7 +165,7 @@ const reason = [
   '- ⏭️  다음 세션에서 이어해야 할 것 (구체적으로)',
   '- ⚠️  주의사항 또는 알아야 할 컨텍스트',
   '',
-  `작성이 끝나면 "토큰이 부족하여 작업을 중단합니다. 다음 리셋 시간(${resetTime}) 이후 새 세션에서 이어주세요." 라고 말하고 멈춰주세요.`
+  '작성이 끝나면 "컨텍스트가 가득 찼습니다. 새 세션을 시작해주세요." 라고 말하고 멈춰주세요.'
 ].join('\n')
 
 console.log(JSON.stringify({ decision: 'block', reason }))

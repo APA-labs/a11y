@@ -1,0 +1,66 @@
+{
+  "pattern": "Breadcrumb",
+  "wcagLevel": "A",
+  "checklist": {
+    "must": [
+      {
+        "id": "breadcrumb-m1",
+        "title": "<nav> 랜드마크 사용",
+        "description": "브레드크럼 전체를 <nav> 요소로 감싸고 aria-label=\"breadcrumb\" 또는 aria-labelledby로 레이블을 제공해야 합니다."
+      },
+      {
+        "id": "breadcrumb-m2",
+        "title": "현재 페이지에 aria-current=\"page\"",
+        "description": "현재 페이지를 나타내는 링크 또는 항목에 aria-current=\"page\"를 설정해야 합니다."
+      },
+      {
+        "id": "breadcrumb-m3",
+        "title": "<ol> 또는 <ul> 목록 사용",
+        "description": "브레드크럼 항목은 순서 있는 목록(<ol>)으로 마크업해야 합니다. 스크린리더가 항목 수와 순서를 알 수 있습니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "breadcrumb-s1",
+        "title": "구분자는 CSS 또는 aria-hidden으로 처리",
+        "description": "/ 또는 > 구분자는 시각적 표현용이므로 CSS content로 생성하거나 aria-hidden=\"true\"로 스크린리더에서 숨기세요."
+      },
+      {
+        "id": "breadcrumb-s2",
+        "title": "마지막 항목은 링크 아닌 텍스트",
+        "description": "현재 페이지는 이미 해당 페이지이므로 링크보다 일반 텍스트로 표현하는 것이 더 명확합니다."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "breadcrumb-a1",
+        "title": "div/span 나열로만 구현",
+        "description": "목록 마크업 없이 div/span만 사용하면 스크린리더 사용자가 항목 수와 구조를 파악할 수 없습니다."
+      },
+      {
+        "id": "breadcrumb-a2",
+        "title": "구분자 텍스트를 링크 텍스트에 포함",
+        "description": "\">Home > Products\"처럼 구분자가 링크 텍스트에 포함되면 스크린리더가 구분자까지 읽습니다."
+      }
+    ]
+  },
+  "codeSamples": {
+    "html": {
+      "label": "HTML 예제",
+      "code": "<nav aria-label=\"breadcrumb\">\n  <ol>\n    <li>\n      <a href=\"/\">홈</a>\n    </li>\n    <li>\n      <a href=\"/products\">제품</a>\n    </li>\n    <li>\n      <a href=\"/products/shoes\">신발</a>\n    </li>\n    <li aria-current=\"page\">운동화</li>\n  </ol>\n</nav>"
+    }
+  },
+  "tests": [
+    {
+      "title": "스크린리더 탐색 확인",
+      "steps": [
+        "스크린리더로 페이지 탐색",
+        "브레드크럼이 'breadcrumb 탐색' 또는 설정한 레이블로 안내되는지 확인",
+        "현재 페이지 항목에서 'current page' 또는 '현재 페이지' 안내 확인",
+        "구분자가 읽히지 않는지 확인"
+      ],
+      "tools": ["VoiceOver", "NVDA", "axe DevTools"]
+    }
+  ],
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/", "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/examples/breadcrumb/"]
+}

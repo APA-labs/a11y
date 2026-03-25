@@ -1,0 +1,70 @@
+{
+  "pattern": "Pagination",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "pagination-m1",
+        "title": "<nav> 랜드마크와 aria-label",
+        "description": "페이지네이션을 <nav> 요소로 감싸고 aria-label=\"pagination\" 또는 \"페이지 탐색\"으로 레이블을 제공해야 합니다."
+      },
+      {
+        "id": "pagination-m2",
+        "title": "각 버튼에 aria-label 제공",
+        "description": "\"이전\", \"다음\", \"1페이지로 이동\" 등 버튼의 목적을 설명하는 aria-label을 제공해야 합니다. 숫자만 표시되면 스크린리더가 맥락을 파악하기 어렵습니다."
+      },
+      {
+        "id": "pagination-m3",
+        "title": "현재 페이지에 aria-current=\"page\"",
+        "description": "현재 활성 페이지 버튼에 aria-current=\"page\"를 설정해야 합니다."
+      },
+      {
+        "id": "pagination-m4",
+        "title": "비활성 버튼에 aria-disabled",
+        "description": "첫 페이지에서 이전 버튼, 마지막 페이지에서 다음 버튼은 aria-disabled=\"true\"로 표시하고 포커스는 유지하세요."
+      }
+    ],
+    "should": [
+      {
+        "id": "pagination-s1",
+        "title": "총 페이지 수 안내",
+        "description": "스크린리더 사용자에게 \"12페이지 중 3페이지\"처럼 현재 위치 컨텍스트를 제공하세요."
+      },
+      {
+        "id": "pagination-s2",
+        "title": "페이지 변경 시 알림",
+        "description": "페이지 변경 후 새 콘텐츠가 로드되면 role=\"status\"로 스크린리더에 변경 사항을 알리세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "pagination-a1",
+        "title": "숫자만 있는 버튼",
+        "description": "\"3\" 같은 숫자만 있는 버튼은 스크린리더에서 맥락 없이 읽힙니다. aria-label=\"3페이지로 이동\"을 추가하세요."
+      },
+      {
+        "id": "pagination-a2",
+        "title": "비활성 버튼 포커스 제거",
+        "description": "disabled 버튼에서 포커스를 완전히 제거하면 키보드 사용자가 컴포넌트의 전체 구조를 탐색할 수 없습니다."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function Pagination({ currentPage, totalPages, onPageChange }) {\n  return (\n    <nav aria-label=\"페이지 탐색\">\n      <ul className=\"flex gap-1\">\n        <li>\n          <button\n            onClick={() => onPageChange(currentPage - 1)}\n            aria-label=\"이전 페이지\"\n            aria-disabled={currentPage === 1}\n            disabled={currentPage === 1}\n          >\n            &laquo;\n          </button>\n        </li>\n        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (\n          <li key={page}>\n            <button\n              onClick={() => onPageChange(page)}\n              aria-label={`${page}페이지로 이동`}\n              aria-current={page === currentPage ? 'page' : undefined}\n            >\n              {page}\n            </button>\n          </li>\n        ))}\n        <li>\n          <button\n            onClick={() => onPageChange(currentPage + 1)}\n            aria-label=\"다음 페이지\"\n            aria-disabled={currentPage === totalPages}\n            disabled={currentPage === totalPages}\n          >\n            &raquo;\n          </button>\n        </li>\n      </ul>\n      <div role=\"status\" className=\"sr-only\">\n        {totalPages}페이지 중 {currentPage}페이지\n      </div>\n    </nav>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "스크린리더 탐색 확인",
+      "steps": [
+        "스크린리더로 각 버튼의 aria-label 확인",
+        "현재 페이지 버튼에서 'current page' 안내 확인",
+        "이전/다음 버튼이 비활성 상태일 때 음성 안내 확인"
+      ],
+      "tools": ["VoiceOver", "NVDA"]
+    }
+  ],
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/", "https://mui.com/material-ui/react-pagination/"]
+}

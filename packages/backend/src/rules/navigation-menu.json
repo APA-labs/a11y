@@ -1,0 +1,80 @@
+{
+  "pattern": "Navigation Menu",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "nav-m1",
+        "title": "<nav> 랜드마크와 aria-label",
+        "description": "사이트 내비게이션은 <nav> 요소로 감싸고 aria-label로 레이블을 제공해야 합니다. 페이지에 여러 nav가 있는 경우 각각 구분되는 레이블이 필요합니다."
+      },
+      {
+        "id": "nav-m2",
+        "title": "하위 메뉴 트리거에 aria-expanded",
+        "description": "하위 메뉴를 여는 버튼에 aria-expanded로 열림/닫힘 상태를 표시해야 합니다."
+      },
+      {
+        "id": "nav-m3",
+        "title": "키보드 완전 지원",
+        "description": "Tab으로 항목 이동, Enter/Space로 하위 메뉴 열기, Escape로 닫기, Arrow 키로 하위 항목 탐색을 지원해야 합니다."
+      },
+      {
+        "id": "nav-m4",
+        "title": "현재 페이지 링크에 aria-current=\"page\"",
+        "description": "현재 활성 페이지에 해당하는 링크에 aria-current=\"page\"를 설정해야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "nav-s1",
+        "title": "하위 메뉴에 aria-haspopup 또는 aria-controls",
+        "description": "하위 메뉴가 있는 트리거에 aria-haspopup=\"menu\"를 추가하면 스크린리더가 서브메뉴 존재를 미리 알 수 있습니다."
+      },
+      {
+        "id": "nav-s2",
+        "title": "모바일에서 Escape로 메뉴 닫기",
+        "description": "열린 모바일 메뉴나 드로어를 Escape 키로 닫을 수 있어야 합니다."
+      },
+      {
+        "id": "nav-s3",
+        "title": "포커스 트랩 없이 자연스러운 흐름",
+        "description": "내비게이션 메뉴는 모달과 달리 포커스 트랩이 없어야 합니다. Tab으로 메뉴 밖으로 이동하면 하위 메뉴가 닫혀야 합니다."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "nav-a1",
+        "title": "hover로만 하위 메뉴 열기",
+        "description": "hover 이벤트만으로 하위 메뉴를 열면 키보드 사용자와 터치 사용자가 접근할 수 없습니다. click/focus도 지원해야 합니다."
+      },
+      {
+        "id": "nav-a2",
+        "title": "페이지에 여러 <nav>에 동일한 레이블",
+        "description": "여러 <nav> 요소에 동일한 aria-label을 사용하면 스크린리더 사용자가 구분할 수 없습니다."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function NavigationMenu({ items, currentPath }) {\n  const [openMenu, setOpenMenu] = useState(null);\n\n  return (\n    <nav aria-label=\"메인 내비게이션\">\n      <ul role=\"menubar\">\n        {items.map(item => (\n          <li key={item.id} role=\"none\">\n            {item.children ? (\n              <>\n                <button\n                  role=\"menuitem\"\n                  aria-haspopup=\"menu\"\n                  aria-expanded={openMenu === item.id}\n                  onClick={() => setOpenMenu(openMenu === item.id ? null : item.id)}\n                  onKeyDown={e => e.key === 'Escape' && setOpenMenu(null)}\n                >\n                  {item.label}\n                </button>\n                {openMenu === item.id && (\n                  <ul role=\"menu\">\n                    {item.children.map(child => (\n                      <li key={child.id} role=\"none\">\n                        <a\n                          href={child.href}\n                          role=\"menuitem\"\n                          aria-current={currentPath === child.href ? 'page' : undefined}\n                        >\n                          {child.label}\n                        </a>\n                      </li>\n                    ))}\n                  </ul>\n                )}\n              </>\n            ) : (\n              <a\n                href={item.href}\n                role=\"menuitem\"\n                aria-current={currentPath === item.href ? 'page' : undefined}\n              >\n                {item.label}\n              </a>\n            )}\n          </li>\n        ))}\n      </ul>\n    </nav>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "키보드 탐색 확인",
+      "steps": [
+        "Tab으로 메뉴 항목 이동",
+        "Enter/Space로 하위 메뉴 열기",
+        "Arrow 키로 하위 항목 이동",
+        "Escape로 하위 메뉴 닫고 트리거로 포커스 복귀",
+        "Tab으로 메뉴 밖 이동 시 하위 메뉴 자동 닫힘 확인"
+      ],
+      "tools": ["Keyboard only", "VoiceOver", "NVDA"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/",
+    "https://www.radix-ui.com/primitives/docs/components/navigation-menu"
+  ]
+}
