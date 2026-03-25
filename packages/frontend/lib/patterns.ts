@@ -522,6 +522,118 @@ function ButtonDemo() {
           'validateTrigger로 실시간 검증 시점을 조절할 수 있습니다.',
           'Form.Item의 tooltip prop으로 추가 설명을 제공할 수 있습니다.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'inp-shadcn-1',
+            title: 'Label 컴포넌트 연결',
+            description: 'shadcn Label의 htmlFor와 Input의 id를 반드시 연결하세요. placeholder만으로는 접근성이 부족합니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Input',
+          code: `import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
+<div className="grid gap-1.5">
+  <Label htmlFor="email">이메일</Label>
+  <Input
+    id="email"
+    type="email"
+    required
+    aria-required="true"
+    aria-invalid={hasError}
+    aria-describedby={hasError ? 'email-error' : undefined}
+    autoComplete="email"
+    placeholder="user@example.com"
+  />
+  {hasError && (
+    <p id="email-error" className="text-sm text-destructive" role="alert">
+      올바른 이메일 형식을 입력해주세요.
+    </p>
+  )}
+</div>`
+        },
+        notes: [
+          'shadcn Input은 기본 HTML input 요소로 aria 속성을 직접 추가해야 합니다.',
+          'Label 컴포넌트와 htmlFor/id로 연결하세요.',
+          "오류 메시지는 role='alert'와 aria-describedby로 연결하세요."
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'inp-chakra-1',
+            title: 'Field.Root의 invalid/required 전파',
+            description: 'Field.Root에 invalid, required prop을 전달하면 하위 Input에 aria 속성이 자동 적용됩니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Field',
+          code: `import { Field, Input } from '@chakra-ui/react'
+
+<Field.Root required invalid={hasError}>
+  <Field.Label>
+    이메일 <Field.RequiredIndicator />
+  </Field.Label>
+  <Input
+    type="email"
+    autoComplete="email"
+    placeholder="user@example.com"
+  />
+  {hasError && <Field.ErrorText>올바른 이메일 형식을 입력해주세요.</Field.ErrorText>}
+  <Field.HelperText>예: user@example.com</Field.HelperText>
+</Field.Root>`
+        },
+        notes: [
+          'Chakra Field.Root의 invalid prop이 Input에 aria-invalid를 자동 설정합니다.',
+          'Field.ErrorText는 aria-live로 오류를 스크린리더에 전달합니다.',
+          'required prop은 Field.RequiredIndicator와 aria-required 모두 처리합니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'inp-spectrum-1',
+            title: 'isRequired/isInvalid 사용',
+            description: 'React Aria TextField는 isRequired, isInvalid, errorMessage로 자동으로 aria 속성을 관리합니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria TextField',
+          code: `import { TextField } from 'react-aria-components'
+
+<TextField
+  type="email"
+  label="이메일"
+  isRequired
+  isInvalid={hasError}
+  autoComplete="email"
+  errorMessage="올바른 이메일 형식을 입력해주세요."
+  description="예: user@example.com"
+/>`
+        },
+        notes: [
+          'React Aria TextField는 label, error, description의 aria 연결을 모두 자동 처리합니다.',
+          'isRequired prop이 true면 화면에 표시와 aria-required 모두 적용됩니다.',
+          'errorMessage는 aria-describedby로 자동 연결됩니다.'
+        ]
       }
     }
   },
@@ -765,6 +877,147 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
           'focusTriggerAfterClose prop으로 닫힘 후 포커스 복원 동작을 제어합니다.',
           'Modal.confirm()은 자동으로 접근성 속성을 적용합니다.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'modal-shadcn-1',
+            title: 'DialogDescription 필수 제공',
+            description: 'DialogDescription은 aria-describedby로 자동 연결됩니다. 내용을 생략하면 스크린리더 사용자가 컨텍스트를 잃습니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Dialog',
+          code: `import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">파일 삭제</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>파일 삭제</DialogTitle>
+      <DialogDescription>
+        이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="flex justify-end gap-2">
+      <Button variant="outline">취소</Button>
+      <Button variant="destructive">삭제</Button>
+    </div>
+  </DialogContent>
+</Dialog>`
+        },
+        notes: [
+          'shadcn Dialog는 Radix UI 기반으로 포커스 트랩, ESC 닫기, 포커스 복원을 자동 처리합니다.',
+          'DialogTitle은 aria-labelledby로 자동 연결됩니다.',
+          'showCloseButton={false} 사용 시 대체 닫기 수단을 반드시 제공하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'modal-chakra-1',
+            title: 'Dialog.CloseTrigger aria-label',
+            description: '닫기 버튼에 아이콘만 사용할 경우 aria-label을 명시적으로 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Dialog',
+          code: `import { Button, Dialog } from '@chakra-ui/react'
+
+<Dialog.Root>
+  <Dialog.Trigger asChild>
+    <Button variant="outline">파일 삭제</Button>
+  </Dialog.Trigger>
+  <Dialog.Backdrop />
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.Header>
+        <Dialog.Title>파일 삭제</Dialog.Title>
+        <Dialog.CloseTrigger asChild>
+          <Button variant="ghost" size="sm" aria-label="닫기">✕</Button>
+        </Dialog.CloseTrigger>
+      </Dialog.Header>
+      <Dialog.Body>
+        <Dialog.Description>
+          이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+        </Dialog.Description>
+      </Dialog.Body>
+      <Dialog.Footer>
+        <Dialog.ActionTrigger asChild>
+          <Button variant="outline">취소</Button>
+        </Dialog.ActionTrigger>
+        <Button colorPalette="red">삭제</Button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  </Dialog.Positioner>
+</Dialog.Root>`
+        },
+        notes: [
+          'Chakra Dialog.Root는 포커스 트랩과 aria-modal을 자동으로 처리합니다.',
+          'Dialog.Backdrop 클릭으로 닫기를 비활성화하려면 closeOnInteractOutside={false}를 사용하세요.',
+          'Dialog.CloseTrigger는 자동으로 ESC 키 동작과 연결됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'modal-spectrum-1',
+            title: 'Heading slot="title" 필수',
+            description: 'Dialog의 제목은 반드시 Heading slot="title"을 사용해야 aria-labelledby가 자동 연결됩니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Modal',
+          code: `import { Button, DialogTrigger, Modal, Dialog, Heading } from 'react-aria-components'
+
+<DialogTrigger>
+  <Button>파일 삭제</Button>
+  <Modal isDismissable>
+    <Dialog>
+      {({ close }) => (
+        <>
+          <Heading slot="title">파일 삭제</Heading>
+          <p>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <Button onPress={close}>취소</Button>
+            <Button onPress={close}>삭제</Button>
+          </div>
+        </>
+      )}
+    </Dialog>
+  </Modal>
+</DialogTrigger>`
+        },
+        notes: [
+          'React Aria Modal은 포커스 트랩, aria-modal, ESC 닫기를 자동 처리합니다.',
+          'isDismissable prop으로 배경 클릭 닫기를 제어할 수 있습니다.',
+          "Heading의 slot='title'은 Dialog와 aria-labelledby를 자동 연결합니다."
+        ]
       }
     }
   },
@@ -945,6 +1198,96 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
           'Ant Design Switch는 내부적으로 role="switch"를 사용합니다.',
           'checkedChildren/unCheckedChildren으로 상태를 텍스트로 나타내면 색맹 사용자에게 유용합니다.',
           'loading prop 사용 시 aria-busy를 함께 설정하세요.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'tog-shadcn-1',
+            title: 'Label 연결 필수',
+            description: 'shadcn Switch에 Label을 htmlFor/id로 연결하거나 aria-label을 직접 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Switch',
+          code: `import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+
+<div className="flex items-center gap-2">
+  <Switch
+    id="notifications"
+    checked={isEnabled}
+    onCheckedChange={setIsEnabled}
+  />
+  <Label htmlFor="notifications">알림 설정</Label>
+</div>`
+        },
+        notes: [
+          "shadcn Switch는 Radix UI 기반으로 role='switch'와 aria-checked를 자동 관리합니다.",
+          'onCheckedChange 콜백으로 상태를 제어하세요.',
+          'Label 컴포넌트와 함께 사용하면 클릭 영역이 확장됩니다.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'tog-chakra-1',
+            title: 'Switch.Label 사용',
+            description: 'Switch.Label을 사용하면 label과 input이 자동 연결됩니다. 별도 htmlFor 불필요합니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Switch',
+          code: `import { Switch } from '@chakra-ui/react'
+
+<Switch.Root
+  checked={isEnabled}
+  onCheckedChange={(e) => setIsEnabled(e.checked)}
+>
+  <Switch.HiddenInput />
+  <Switch.Control>
+    <Switch.Thumb />
+  </Switch.Control>
+  <Switch.Label>알림 설정</Switch.Label>
+</Switch.Root>`
+        },
+        notes: [
+          "Chakra Switch.Root는 role='switch'와 aria-checked를 자동 설정합니다.",
+          'Switch.HiddenInput은 폼 제출에 필요한 실제 input 요소입니다.',
+          'onCheckedChange 이벤트의 checked 값으로 상태를 업데이트하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Switch',
+          code: `import { Switch } from 'react-aria-components'
+
+<Switch
+  isSelected={isEnabled}
+  onChange={setIsEnabled}
+>
+  알림 설정
+</Switch>`
+        },
+        notes: [
+          "React Aria Switch는 role='switch', aria-checked, 키보드 지원을 모두 자동 처리합니다.",
+          'children으로 레이블 텍스트를 직접 제공하세요.',
+          'isSelected/onChange로 제어 컴포넌트로 사용 가능합니다.'
         ]
       }
     }
@@ -1141,6 +1484,107 @@ export function AntDisclosure() {
 }`
         },
         notes: ['Ant Design Collapse는 내부적으로 aria-expanded를 관리합니다.', 'destroyInactivePanel prop으로 닫힌 패널 DOM 제거 여부를 제어하세요.']
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'disc-shadcn-1',
+            title: 'CollapsibleTrigger aria 관리',
+            description: 'CollapsibleTrigger는 aria-expanded를 자동 관리합니다. asChild 패턴 사용 시에도 button 요소를 유지하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Collapsible',
+          code: `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import { Button } from '@/components/ui/button'
+
+<Collapsible open={isOpen} onOpenChange={setIsOpen}>
+  <CollapsibleTrigger asChild>
+    <Button variant="ghost">
+      시스템 요구사항 {isOpen ? '▲' : '▼'}
+    </Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <p>운영체제: Windows 10 이상, macOS 10.15 이상</p>
+  </CollapsibleContent>
+</Collapsible>`
+        },
+        notes: [
+          'shadcn Collapsible은 Radix UI 기반으로 aria-expanded를 자동 관리합니다.',
+          'open/onOpenChange로 제어 컴포넌트로 사용 가능합니다.',
+          'CollapsibleTrigger에 asChild를 사용해 시맨틱 button을 유지하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'disc-chakra-1',
+            title: 'collapsible prop 설정',
+            description: 'Accordion.Root에 collapsible prop을 설정하면 단일 아이템도 열고 닫을 수 있습니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Accordion',
+          code: `import { Accordion } from '@chakra-ui/react'
+
+<Accordion.Root collapsible defaultValue={[]}>
+  <Accordion.Item value="system-req">
+    <Accordion.ItemTrigger>
+      시스템 요구사항
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      <Accordion.ItemBody>
+        운영체제: Windows 10 이상, macOS 10.15 이상
+      </Accordion.ItemBody>
+    </Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>`
+        },
+        notes: [
+          'Chakra Accordion은 단일 항목 disclosure에도 사용할 수 있습니다.',
+          'collapsible prop으로 현재 열린 항목도 닫을 수 있습니다.',
+          'ItemIndicator는 시각적 화살표로 aria-hidden 처리됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Disclosure',
+          code: `import { Disclosure, DisclosureHeader, DisclosurePanel, Button } from 'react-aria-components'
+
+<Disclosure>
+  <DisclosureHeader>
+    <Button slot="trigger">시스템 요구사항</Button>
+  </DisclosureHeader>
+  <DisclosurePanel>
+    운영체제: Windows 10 이상, macOS 10.15 이상
+  </DisclosurePanel>
+</Disclosure>`
+        },
+        notes: [
+          'React Aria Disclosure는 WAI-ARIA Disclosure 패턴을 완전히 구현합니다.',
+          "DisclosureHeader의 Button에 slot='trigger'를 반드시 지정하세요.",
+          'defaultExpanded prop으로 초기 열림 상태를 설정할 수 있습니다.'
+        ]
       }
     }
   },
@@ -1386,6 +1830,98 @@ export function AntTabs() {
           'Ant Design Tabs는 기본적으로 접근성 속성을 처리합니다.',
           'tabBarExtraContent 사용 시 해당 콘텐츠도 키보드로 접근 가능한지 확인하세요.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'tabs-shadcn-1',
+            title: 'TabsList aria-label 제공',
+            description: 'TabsList에 aria-label을 추가해 탭 그룹의 목적을 스크린리더에 전달하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Tabs',
+          code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+<Tabs defaultValue="account">
+  <TabsList aria-label="계정 설정">
+    <TabsTrigger value="account">계정</TabsTrigger>
+    <TabsTrigger value="password">비밀번호</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">계정 설정 내용</TabsContent>
+  <TabsContent value="password">비밀번호 변경 내용</TabsContent>
+</Tabs>`
+        },
+        notes: [
+          'shadcn Tabs는 Radix UI 기반으로 WAI-ARIA Tabs 패턴을 자동 구현합니다.',
+          '방향키로 탭 전환, Home/End로 첫/마지막 탭으로 이동이 자동 지원됩니다.',
+          'TabsList에 aria-label을 추가해 탭 그룹의 목적을 명시하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'tabs-chakra-1',
+            title: 'Tabs.List aria-label 제공',
+            description: 'Tabs.List에 aria-label을 추가해 탭 그룹의 목적을 스크린리더에 전달하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Tabs',
+          code: `import { Tabs } from '@chakra-ui/react'
+
+<Tabs.Root defaultValue="account">
+  <Tabs.List aria-label="계정 설정">
+    <Tabs.Trigger value="account">계정</Tabs.Trigger>
+    <Tabs.Trigger value="password">비밀번호</Tabs.Trigger>
+    <Tabs.Indicator />
+  </Tabs.List>
+  <Tabs.Content value="account">계정 설정 내용</Tabs.Content>
+  <Tabs.Content value="password">비밀번호 변경 내용</Tabs.Content>
+</Tabs.Root>`
+        },
+        notes: [
+          'Chakra Tabs.Root는 키보드 네비게이션과 aria 속성을 자동 처리합니다.',
+          'lazyMount prop으로 비활성 탭 콘텐츠를 지연 렌더링할 수 있습니다.',
+          'Tabs.Indicator는 시각적 활성 표시로 aria-hidden 처리됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Tabs',
+          code: `import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'react-aria-components'
+
+<Tabs>
+  <TabList aria-label="계정 설정">
+    <Tab id="account">계정</Tab>
+    <Tab id="password">비밀번호</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel id="account">계정 설정 내용</TabPanel>
+    <TabPanel id="password">비밀번호 변경 내용</TabPanel>
+  </TabPanels>
+</Tabs>`
+        },
+        notes: [
+          'React Aria Tabs는 방향키, Home, End 키보드 네비게이션을 자동 구현합니다.',
+          '각 Tab의 id가 대응하는 TabPanel의 id와 자동으로 연결됩니다.',
+          "keyboardActivation='manual'로 포커스와 활성화를 분리할 수 있습니다."
+        ]
       }
     }
   },
@@ -1579,6 +2115,98 @@ export function RadixTooltip({ label, children }) {
 </Tooltip>`
         },
         notes: ['Ant Design Tooltip은 내부적으로 접근성 속성을 처리합니다.', 'color prop 변경 시 텍스트 대비율을 재확인하세요.']
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'tip-shadcn-1',
+            title: '트리거 요소 aria-label',
+            description: '아이콘 전용 버튼에 tooltip을 연결할 때 트리거 요소에 aria-label을 반드시 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Tooltip',
+          code: `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline" size="icon" aria-label="설정">
+        ⚙️
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>설정 열기</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>`
+        },
+        notes: [
+          'shadcn Tooltip은 Radix UI 기반으로 hover/focus 시 자동 표시됩니다.',
+          'TooltipProvider를 앱 루트에 설치해 일관된 딜레이를 설정하세요.',
+          '아이콘 전용 트리거에는 aria-label을 반드시 추가하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'tip-chakra-1',
+            title: '트리거 요소 aria-label',
+            description: '아이콘 전용 버튼에 tooltip을 사용할 때 트리거에 aria-label을 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Tooltip',
+          code: `import { Tooltip, Button } from '@chakra-ui/react'
+
+<Tooltip content="설정 열기">
+  <Button variant="outline" size="sm" aria-label="설정">
+    ⚙️
+  </Button>
+</Tooltip>`
+        },
+        notes: [
+          'Chakra Tooltip은 hover/focus 이벤트를 자동으로 처리합니다.',
+          'showDelay/closeDelay prop으로 표시 타이밍을 조절하세요.',
+          'content prop에 설명 텍스트를 제공하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Tooltip',
+          code: `import { TooltipTrigger, Tooltip, Button } from 'react-aria-components'
+
+<TooltipTrigger delay={500}>
+  <Button aria-label="설정">⚙️</Button>
+  <Tooltip>설정 열기</Tooltip>
+</TooltipTrigger>`
+        },
+        notes: [
+          'React Aria TooltipTrigger는 hover, focus, keyboard를 모두 처리합니다.',
+          'delay prop으로 표시 딜레이를 설정하세요 (기본 1200ms).',
+          'Tooltip은 자동으로 aria-describedby로 트리거에 연결됩니다.'
+        ]
       }
     }
   },
@@ -1787,6 +2415,138 @@ export function AntAccordion() {
         notes: [
           'Ant Design Collapse는 기본적으로 접근성 속성을 처리합니다.',
           'showArrow={false}로 화살표를 숨기더라도 시각적 상태 변화는 유지하세요.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'acc-shadcn-1',
+            title: 'type="multiple" 시 aria 검증',
+            description: 'type="multiple"로 여러 항목을 동시 열 때 각 AccordionTrigger의 aria-expanded가 올바르게 관리되는지 확인하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Accordion',
+          code: `import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+
+<Accordion type="single" collapsible defaultValue="item-1">
+  <AccordionItem value="item-1">
+    <AccordionTrigger>배송 정보</AccordionTrigger>
+    <AccordionContent>
+      주문 후 2-3 영업일 내 배송됩니다.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>반품 정책</AccordionTrigger>
+    <AccordionContent>
+      수령 후 7일 이내 반품 가능합니다.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>`
+        },
+        notes: [
+          'shadcn Accordion은 Radix UI 기반으로 aria-expanded, aria-controls를 자동 관리합니다.',
+          "type='single'|'multiple'로 단일/다중 열기를 제어하세요.",
+          'AccordionTrigger는 방향키 네비게이션을 자동 지원합니다.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'acc-chakra-1',
+            title: 'multiple 모드 지원',
+            description: 'Accordion.Root에 multiple prop을 추가하면 여러 항목을 동시에 열 수 있습니다. 이때도 aria-expanded가 정확히 관리됩니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Accordion',
+          code: `import { Accordion } from '@chakra-ui/react'
+
+<Accordion.Root collapsible defaultValue={['item-1']}>
+  <Accordion.Item value="item-1">
+    <Accordion.ItemTrigger>
+      배송 정보
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      <Accordion.ItemBody>
+        주문 후 2-3 영업일 내 배송됩니다.
+      </Accordion.ItemBody>
+    </Accordion.ItemContent>
+  </Accordion.Item>
+  <Accordion.Item value="item-2">
+    <Accordion.ItemTrigger>
+      반품 정책
+      <Accordion.ItemIndicator />
+    </Accordion.ItemTrigger>
+    <Accordion.ItemContent>
+      <Accordion.ItemBody>
+        수령 후 7일 이내 반품 가능합니다.
+      </Accordion.ItemBody>
+    </Accordion.ItemContent>
+  </Accordion.Item>
+</Accordion.Root>`
+        },
+        notes: [
+          'Chakra Accordion.Root는 키보드 네비게이션과 aria 속성을 자동 처리합니다.',
+          'ItemIndicator는 시각적 화살표로 aria-hidden 처리됩니다.',
+          'collapsible prop으로 모든 항목을 닫을 수 있는 옵션을 추가하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria DisclosureGroup',
+          code: `import {
+  DisclosureGroup,
+  Disclosure,
+  DisclosureHeader,
+  DisclosurePanel,
+  Button
+} from 'react-aria-components'
+
+<DisclosureGroup defaultExpandedKeys={['delivery']}>
+  <Disclosure id="delivery">
+    <DisclosureHeader>
+      <Button slot="trigger">배송 정보</Button>
+    </DisclosureHeader>
+    <DisclosurePanel>
+      주문 후 2-3 영업일 내 배송됩니다.
+    </DisclosurePanel>
+  </Disclosure>
+  <Disclosure id="returns">
+    <DisclosureHeader>
+      <Button slot="trigger">반품 정책</Button>
+    </DisclosureHeader>
+    <DisclosurePanel>
+      수령 후 7일 이내 반품 가능합니다.
+    </DisclosurePanel>
+  </Disclosure>
+</DisclosureGroup>`
+        },
+        notes: [
+          'React Aria DisclosureGroup은 WAI-ARIA Accordion 패턴을 구현합니다.',
+          'defaultExpandedKeys/expandedKeys로 초기/제어 열기 상태를 설정하세요.',
+          'allowsMultipleExpanded prop으로 여러 항목 동시 열기를 허용하세요.'
         ]
       }
     }
@@ -2041,6 +2801,153 @@ const OPTIONS = [
 />`
         },
         notes: ['Ant Design AutoComplete는 접근성 속성을 자동으로 처리합니다.', '빈 결과 상태를 사용자에게 알리는 notFoundContent를 설정하세요.']
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'cmb-shadcn-1',
+            title: 'role="combobox" 및 aria-expanded 수동 설정',
+            description: 'shadcn combobox는 Command+Popover 조합이므로 트리거에 role="combobox"와 aria-expanded를 직접 설정해야 합니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Command',
+          code: `import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+
+const options = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'angular', label: 'Angular' },
+]
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState('')
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" role="combobox" aria-expanded={open} aria-label="프레임워크 선택">
+          {value ? options.find((o) => o.value === value)?.label : '프레임워크 선택'}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <Command>
+          <CommandInput placeholder="검색..." aria-label="프레임워크 검색" />
+          <CommandList>
+            <CommandEmpty>결과 없음</CommandEmpty>
+            <CommandGroup>
+              {options.map((option) => (
+                <CommandItem key={option.value} value={option.value} onSelect={(v) => { setValue(v); setOpen(false) }}>
+                  {option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}`
+        },
+        notes: [
+          'shadcn combobox는 Command와 Popover를 조합한 패턴입니다.',
+          "트리거 버튼에 role='combobox', aria-expanded를 직접 추가해야 합니다.",
+          'CommandInput의 aria-label을 설정해 검색 필드 목적을 명시하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'cmb-chakra-1',
+            title: 'ClearTrigger와 Trigger에 aria-label 제공',
+            description: '아이콘만 있는 컨트롤 버튼에 aria-label을 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Combobox',
+          code: `import { Combobox, useListCollection } from '@chakra-ui/react'
+
+const frameworks = ['React', 'Vue', 'Angular', 'Svelte'].map(f => ({ label: f, value: f.toLowerCase() }))
+
+export default function App() {
+  const { collection } = useListCollection({ initialItems: frameworks })
+  return (
+    <Combobox.Root collection={collection} placeholder="프레임워크 선택">
+      <Combobox.Label>프레임워크</Combobox.Label>
+      <Combobox.Control>
+        <Combobox.Input />
+        <Combobox.IndicatorGroup>
+          <Combobox.ClearTrigger aria-label="선택 초기화" />
+          <Combobox.Trigger aria-label="목록 열기" />
+        </Combobox.IndicatorGroup>
+      </Combobox.Control>
+      <Combobox.Positioner>
+        <Combobox.Content>
+          <Combobox.Empty>결과 없음</Combobox.Empty>
+          {collection.items.map((item) => (
+            <Combobox.Item key={item.value} item={item}>
+              {item.label}
+              <Combobox.ItemIndicator />
+            </Combobox.Item>
+          ))}
+        </Combobox.Content>
+      </Combobox.Positioner>
+    </Combobox.Root>
+  )
+}`
+        },
+        notes: [
+          'Chakra Combobox.Root는 WAI-ARIA Combobox 패턴을 완전히 구현합니다.',
+          'useListCollection으로 아이템 컬렉션을 관리하세요.',
+          'Combobox.Empty는 검색 결과 없음 상태를 접근성 있게 처리합니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria ComboBox',
+          code: `import { ComboBox, ComboBoxItem } from 'react-aria-components'
+
+export default function App() {
+  return (
+    <ComboBox label="프레임워크 선택">
+      <ComboBoxItem id="react">React</ComboBoxItem>
+      <ComboBoxItem id="vue">Vue</ComboBoxItem>
+      <ComboBoxItem id="angular">Angular</ComboBoxItem>
+      <ComboBoxItem id="svelte">Svelte</ComboBoxItem>
+    </ComboBox>
+  )
+}`
+        },
+        notes: [
+          'React Aria ComboBox는 자동완성, 키보드 네비게이션, aria를 완전히 자동 처리합니다.',
+          'label prop으로 레이블을 설정하면 자동으로 aria-label이 연결됩니다.',
+          'allowsCustomValue prop으로 직접 입력 허용 여부를 제어할 수 있습니다.'
+        ]
       }
     }
   },
@@ -2243,6 +3150,97 @@ const OPTIONS = [
 />`
         },
         notes: ['Ant Design Checkbox는 네이티브 input을 사용해 접근성을 유지합니다.', 'indeterminate prop으로 중간 선택 상태를 표현할 수 있습니다.']
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'chk-shadcn-1',
+            title: 'Label 연결 필수',
+            description: 'shadcn Checkbox에 Label을 htmlFor/id로 연결하세요. visible Label 사용을 권장합니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Checkbox',
+          code: `import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+
+<div className="flex items-center gap-2">
+  <Checkbox
+    id="terms"
+    checked={checked}
+    onCheckedChange={setChecked}
+  />
+  <Label htmlFor="terms">이용약관에 동의합니다</Label>
+</div>`
+        },
+        notes: [
+          "shadcn Checkbox는 Radix UI 기반으로 role='checkbox'와 aria-checked를 자동 관리합니다.",
+          "indeterminate 상태는 checked='indeterminate'로 설정하세요.",
+          'Label과 함께 사용하면 클릭 영역이 확장됩니다.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'chk-chakra-1',
+            title: 'Checkbox.Label 사용',
+            description: 'Checkbox.Label은 input과 자동 연결됩니다. HiddenInput은 폼 제출에 필요합니다.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Checkbox',
+          code: `import { Checkbox } from '@chakra-ui/react'
+
+<Checkbox.Root
+  checked={checked}
+  onCheckedChange={(e) => setChecked(e.checked)}
+>
+  <Checkbox.HiddenInput />
+  <Checkbox.Control>
+    <Checkbox.Indicator />
+  </Checkbox.Control>
+  <Checkbox.Label>이용약관에 동의합니다</Checkbox.Label>
+</Checkbox.Root>`
+        },
+        notes: [
+          'Chakra Checkbox.HiddenInput은 폼 제출을 위한 실제 input 요소입니다.',
+          "onCheckedChange의 checked 값은 true | false | 'indeterminate'입니다.",
+          'Checkbox.Root에 invalid prop을 전달하면 aria-invalid가 자동 설정됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Checkbox',
+          code: `import { Checkbox } from 'react-aria-components'
+
+<Checkbox
+  isSelected={checked}
+  onChange={setChecked}
+  isRequired
+>
+  이용약관에 동의합니다
+</Checkbox>`
+        },
+        notes: [
+          "React Aria Checkbox는 role='checkbox', aria-checked, 키보드 지원을 자동 처리합니다.",
+          'isIndeterminate prop으로 불확정 상태를 설정할 수 있습니다.',
+          'children으로 레이블을 제공하면 자동으로 레이블이 연결됩니다.'
+        ]
       }
     }
   },
@@ -2468,6 +3466,103 @@ const OPTIONS = [
           'Ant Design Radio.Group은 네이티브 input을 사용해 기본 접근성을 유지합니다.',
           'optionType="button"으로 버튼 스타일 라디오를 사용할 때도 레이블을 반드시 제공하세요.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'rg-shadcn-1',
+            title: 'RadioGroup aria-label 제공',
+            description: 'RadioGroup에 aria-label 또는 aria-labelledby를 추가해 그룹 목적을 스크린리더에 전달하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui RadioGroup',
+          code: `import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+
+<RadioGroup value={value} onValueChange={setValue} aria-label="배송 방법">
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="standard" id="standard" />
+    <Label htmlFor="standard">일반 배송 (2-3일)</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="express" id="express" />
+    <Label htmlFor="express">빠른 배송 (1일)</Label>
+  </div>
+</RadioGroup>`
+        },
+        notes: [
+          "shadcn RadioGroup은 Radix UI 기반으로 role='radiogroup'과 방향키 네비게이션을 자동 구현합니다.",
+          '각 RadioGroupItem에 Label을 htmlFor/id로 연결하세요.',
+          'RadioGroup에 aria-label을 추가해 그룹 목적을 명시하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'rg-chakra-1',
+            title: 'RadioGroup.Label 또는 aria-label 사용',
+            description: 'RadioGroup.Label 또는 aria-label로 그룹 레이블을 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI RadioGroup',
+          code: `import { RadioGroup } from '@chakra-ui/react'
+
+<RadioGroup.Root value={value} onValueChange={(e) => setValue(e.value)}>
+  <RadioGroup.Label>배송 방법</RadioGroup.Label>
+  <RadioGroup.Item value="standard">
+    <RadioGroup.ItemHiddenInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemText>일반 배송 (2-3일)</RadioGroup.ItemText>
+  </RadioGroup.Item>
+  <RadioGroup.Item value="express">
+    <RadioGroup.ItemHiddenInput />
+    <RadioGroup.ItemControl />
+    <RadioGroup.ItemText>빠른 배송 (1일)</RadioGroup.ItemText>
+  </RadioGroup.Item>
+</RadioGroup.Root>`
+        },
+        notes: [
+          'Chakra RadioGroup.ItemHiddenInput은 폼 제출을 위한 실제 input 요소입니다.',
+          "RadioGroup.Root는 role='radiogroup'과 방향키 네비게이션을 자동 처리합니다.",
+          'RadioGroup.Label이 있으면 aria-labelledby가 자동 연결됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria RadioGroup',
+          code: `import { RadioGroup, Radio } from 'react-aria-components'
+
+<RadioGroup
+  value={value}
+  onChange={setValue}
+  aria-label="배송 방법"
+>
+  <Radio value="standard">일반 배송 (2-3일)</Radio>
+  <Radio value="express">빠른 배송 (1일)</Radio>
+</RadioGroup>`
+        },
+        notes: [
+          "React Aria RadioGroup은 role='radiogroup', 방향키 네비게이션, aria를 자동 처리합니다.",
+          'label prop 또는 aria-label로 그룹 레이블을 제공하세요.',
+          'isRequired/isDisabled prop이 그룹 내 모든 Radio에 자동 적용됩니다.'
+        ]
       }
     }
   },
@@ -2634,6 +3729,109 @@ const { Link } = Typography
         notes: [
           'Ant Design Typography.Link는 href 없이 onClick만 사용하면 <button>처럼 동작합니다.',
           'disabled prop을 사용할 때 색상 대비를 확인하세요.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'link-shadcn-1',
+            title: 'Button asChild 시 역할 확인',
+            description: 'Button에 asChild와 Link를 조합할 때 최종 렌더링이 <a> 요소인지 확인하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui (Next.js Link)',
+          code: `// shadcn/ui에는 별도의 Link 컴포넌트가 없습니다.
+// Next.js Link 또는 <a>를 직접 사용하세요.
+import Link from 'next/link'
+
+<Link
+  href="/about"
+  className="underline underline-offset-4 hover:text-primary focus-visible:outline focus-visible:outline-2"
+>
+  회사 소개
+</Link>
+
+{/* 외부 링크 */}
+<a
+  href="https://example.com"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  외부 사이트 <span className="sr-only">(새 탭에서 열림)</span>
+</a>`
+        },
+        notes: [
+          'shadcn에 전용 Link 컴포넌트는 없습니다. Next.js Link나 <a>를 직접 사용하세요.',
+          'focus-visible 스타일을 명시적으로 추가하세요.',
+          "외부 링크에는 rel='noopener noreferrer'를 추가하세요."
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'link-chakra-1',
+            title: '외부 링크 표시',
+            description: '외부 링크에 시각적 표시와 스크린리더용 텍스트로 새 탭 열림을 알리세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Link',
+          code: `import { Link } from '@chakra-ui/react'
+
+<Link href="/about">회사 소개</Link>
+
+{/* 외부 링크 */}
+<Link
+  href="https://example.com"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  외부 사이트 <span aria-hidden> ↗</span>
+  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden' }}>(새 탭에서 열림)</span>
+</Link>`
+        },
+        notes: [
+          'Chakra Link는 기본적으로 <a> 요소를 렌더링합니다.',
+          '외부 링크에는 스크린리더용 텍스트로 새 탭 열림을 알리세요.',
+          'isExternal prop으로 외부 링크 속성을 자동 추가할 수 있습니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Link',
+          code: `import { Link } from 'react-aria-components'
+
+<Link href="/about">회사 소개</Link>
+
+{/* 외부 링크 */}
+<Link
+  href="https://example.com"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  외부 사이트 <span aria-hidden> ↗</span>
+</Link>`
+        },
+        notes: [
+          'React Aria Link는 키보드 접근성과 aria를 자동 처리합니다.',
+          "href가 있으면 <a>, 없으면 <span role='link'>으로 렌더링됩니다.",
+          'onPress 이벤트를 사용해 SPA 라우팅과 연동하세요.'
         ]
       }
     }
@@ -2894,6 +4092,103 @@ const openNotification = () => {
           'notification API는 duration을 0으로 설정하면 수동으로 닫기 전까지 유지됩니다.',
           'closable prop 사용 시 닫기 버튼이 자동으로 추가됩니다.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'alert-shadcn-1',
+            title: 'role="alert" 명시적 추가',
+            description: 'shadcn Alert는 role="alert"를 자동으로 추가하지 않습니다. 동적으로 표시되는 알림에는 role="alert"를 명시하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Alert',
+          code: `import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
+
+<Alert variant="destructive" role="alert">
+  <AlertCircle className="h-4 w-4" aria-hidden />
+  <AlertTitle>오류 발생</AlertTitle>
+  <AlertDescription>
+    서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.
+  </AlertDescription>
+</Alert>`
+        },
+        notes: [
+          "shadcn Alert는 정적 알림 배너로 동적 알림에는 role='alert'를 추가하세요.",
+          'variant prop으로 default, destructive 스타일을 선택하세요.',
+          '아이콘은 aria-hidden 처리하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'alert-chakra-1',
+            title: 'status별 role 설정',
+            description: '오류/경고 알림은 role="alert", 일반 정보는 role="status"를 사용하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Alert',
+          code: `import { Alert } from '@chakra-ui/react'
+
+<Alert.Root status="error" role="alert">
+  <Alert.Indicator aria-hidden />
+  <Alert.Content>
+    <Alert.Title>오류 발생</Alert.Title>
+    <Alert.Description>
+      서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.
+    </Alert.Description>
+  </Alert.Content>
+</Alert.Root>`
+        },
+        notes: [
+          'Chakra Alert.Root의 status prop이 시각적 스타일과 aria 속성을 결정합니다.',
+          "동적으로 추가되는 알림에는 role='alert'를 명시하세요.",
+          'Alert.Indicator는 자동으로 aria-hidden 처리됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'alert-spectrum-1',
+            title: 'role과 aria-live 직접 설정',
+            description: 'React Aria에는 전용 Alert가 없으므로 role="alert"와 aria-live="assertive"를 직접 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria (직접 구현)',
+          code: `// React Aria에는 전용 Alert 컴포넌트가 없습니다.
+// role="alert" 또는 role="status"를 직접 사용하세요.
+<div role="alert" aria-live="assertive">
+  <strong>오류 발생</strong>
+  <p>서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.</p>
+</div>`
+        },
+        notes: [
+          'React Aria에는 전용 Alert 컴포넌트가 없으므로 HTML role 속성을 직접 사용하세요.',
+          "오류 알림: role='alert' aria-live='assertive'",
+          "일반 알림: role='status' aria-live='polite'"
+        ]
       }
     }
   },
@@ -3144,6 +4439,131 @@ import * as Label from '@radix-ui/react-label';
           'showSearch prop으로 검색 기능 추가 시 combobox 패턴으로 전환됩니다.',
           'virtual={false}로 가상 스크롤을 비활성화하면 스크린리더 호환성이 향상됩니다.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'sel-shadcn-1',
+            title: 'SelectTrigger에 Label 연결',
+            description: 'SelectTrigger의 id를 Label의 htmlFor와 연결하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Select',
+          code: `import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Label } from '@/components/ui/label'
+
+<div className="grid gap-1.5">
+  <Label htmlFor="country">국가</Label>
+  <Select value={value} onValueChange={setValue}>
+    <SelectTrigger id="country" aria-label="국가 선택">
+      <SelectValue placeholder="국가를 선택하세요" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="kr">대한민국</SelectItem>
+      <SelectItem value="us">미국</SelectItem>
+      <SelectItem value="jp">일본</SelectItem>
+    </SelectContent>
+  </Select>
+</div>`
+        },
+        notes: [
+          'shadcn Select는 Radix UI 기반으로 키보드 네비게이션과 aria를 자동 처리합니다.',
+          'SelectTrigger와 Label을 id/htmlFor로 연결하세요.',
+          'SelectValue의 placeholder는 시각적으로만 표시됩니다.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'sel-chakra-1',
+            title: 'HiddenSelect 폼 접근성',
+            description: 'Select.HiddenSelect는 폼 제출 시 네이티브 select로 동작합니다. name prop을 설정하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Select',
+          code: `import { Select, useListCollection } from '@chakra-ui/react'
+
+const countries = [
+  { label: '대한민국', value: 'kr' },
+  { label: '미국', value: 'us' },
+  { label: '일본', value: 'jp' },
+]
+
+export default function App() {
+  const { collection } = useListCollection({ initialItems: countries })
+  return (
+    <Select.Root collection={collection} value={[value]} onValueChange={(e) => setValue(e.value[0])}>
+      <Select.Label>국가</Select.Label>
+      <Select.Control>
+        <Select.Trigger>
+          <Select.ValueText placeholder="국가를 선택하세요" />
+        </Select.Trigger>
+      </Select.Control>
+      <Select.Positioner>
+        <Select.Content>
+          {collection.items.map((item) => (
+            <Select.Item key={item.value} item={item}>
+              {item.label}
+              <Select.ItemIndicator />
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select.Positioner>
+      <Select.HiddenSelect />
+    </Select.Root>
+  )
+}`
+        },
+        notes: [
+          'Chakra Select.Root는 listbox 패턴으로 WAI-ARIA 요구사항을 충족합니다.',
+          'Select.HiddenSelect는 폼 제출을 위한 네이티브 요소입니다.',
+          'useListCollection으로 아이템 컬렉션을 관리하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Select',
+          code: `import { Select, SelectItem } from 'react-aria-components'
+
+<Select
+  label="국가"
+  placeholder="국가를 선택하세요"
+  selectedKey={value}
+  onSelectionChange={setValue}
+>
+  <SelectItem id="kr">대한민국</SelectItem>
+  <SelectItem id="us">미국</SelectItem>
+  <SelectItem id="jp">일본</SelectItem>
+</Select>`
+        },
+        notes: [
+          'React Aria Select는 listbox 패턴과 모든 키보드 상호작용을 자동 구현합니다.',
+          'label prop으로 레이블을 설정하면 aria-labelledby가 자동 연결됩니다.',
+          'selectedKey/onSelectionChange로 제어 컴포넌트로 사용하세요.'
+        ]
       }
     }
   },
@@ -3341,6 +4761,117 @@ import * as Label from '@radix-ui/react-label';
           'Ant Design Breadcrumb에 aria-label 속성을 직접 추가해야 합니다.',
           'itemRender prop으로 마지막 항목에 aria-current="page"를 추가하세요.',
           'separator prop으로 구분자를 변경할 수 있으며, 기본 구분자는 aria-hidden이 적용됩니다.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'bc-shadcn-1',
+            title: 'BreadcrumbSeparator aria-hidden',
+            description: 'BreadcrumbSeparator는 시각적 구분자로 aria-hidden을 추가하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Breadcrumb',
+          code: `import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">홈</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator aria-hidden />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/products">제품</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator aria-hidden />
+    <BreadcrumbItem>
+      <BreadcrumbPage>노트북</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>`
+        },
+        notes: [
+          'shadcn Breadcrumb는 <nav> 요소를 자동으로 렌더링합니다.',
+          'BreadcrumbSeparator에 aria-hidden을 추가하세요.',
+          "현재 페이지는 BreadcrumbPage를 사용하면 aria-current='page'가 자동 설정됩니다."
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'bc-chakra-1',
+            title: 'Breadcrumb.Root aria-label',
+            description: 'nav 역할을 하는 Breadcrumb.Root에 aria-label을 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Breadcrumb',
+          code: `import { Breadcrumb } from '@chakra-ui/react'
+
+<Breadcrumb.Root aria-label="이동 경로">
+  <Breadcrumb.List>
+    <Breadcrumb.Item>
+      <Breadcrumb.Link href="/">홈</Breadcrumb.Link>
+    </Breadcrumb.Item>
+    <Breadcrumb.Separator aria-hidden />
+    <Breadcrumb.Item>
+      <Breadcrumb.Link href="/products">제품</Breadcrumb.Link>
+    </Breadcrumb.Item>
+    <Breadcrumb.Separator aria-hidden />
+    <Breadcrumb.Item>
+      <Breadcrumb.CurrentLink aria-current="page">노트북</Breadcrumb.CurrentLink>
+    </Breadcrumb.Item>
+  </Breadcrumb.List>
+</Breadcrumb.Root>`
+        },
+        notes: [
+          'Chakra Breadcrumb.Root는 <nav> 요소를 렌더링합니다.',
+          'aria-label을 추가해 내비게이션 랜드마크를 명시하세요.',
+          '구분자는 aria-hidden 처리하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria (직접 구현)',
+          code: `// React Aria에는 전용 Breadcrumb 컴포넌트가 없습니다.
+// WAI-ARIA 패턴에 따라 직접 구현하세요.
+<nav aria-label="이동 경로">
+  <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0 }}>
+    <li><a href="/">홈</a></li>
+    <li aria-hidden>/</li>
+    <li><a href="/products">제품</a></li>
+    <li aria-hidden>/</li>
+    <li><span aria-current="page">노트북</span></li>
+  </ol>
+</nav>`
+        },
+        notes: [
+          'React Aria에는 전용 Breadcrumb 컴포넌트가 없습니다. WAI-ARIA 패턴을 직접 구현하세요.',
+          "<nav aria-label='이동 경로'> 안에 <ol>로 경로를 나열하세요.",
+          "현재 페이지에는 aria-current='page'를 추가하고 구분자는 aria-hidden 처리하세요."
         ]
       }
     }
@@ -3583,6 +5114,128 @@ import koKR from 'antd/locale/ko_KR';
           'ConfigProvider의 locale을 koKR로 설정하면 aria-label이 한국어로 변경됩니다.',
           'Ant Design Pagination은 자동으로 <ul> 목록 구조를 사용합니다.',
           '현재 페이지에 aria-current가 자동으로 적용됩니다.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'pg-shadcn-1',
+            title: 'aria-current="page" 추가',
+            description: '현재 페이지 링크에 aria-current="page"를 추가하세요. isActive prop만으로는 부족합니다.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Pagination',
+          code: `import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination'
+
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="#" aria-label="이전 페이지" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" aria-label="1페이지">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" isActive aria-current="page" aria-label="현재 페이지, 2페이지">2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" aria-label="3페이지">3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="#" aria-label="다음 페이지" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>`
+        },
+        notes: [
+          'shadcn Pagination은 nav 요소로 자동 렌더링됩니다.',
+          "현재 페이지에 aria-current='page'를 명시적으로 추가하세요.",
+          '이전/다음 버튼에 aria-label을 추가하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'pg-chakra-1',
+            title: '페이지 버튼 aria-label',
+            description: '각 페이지 버튼에 aria-label을 추가해 스크린리더가 페이지 번호를 읽을 수 있게 하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Pagination',
+          code: `import { Pagination } from '@chakra-ui/react'
+
+<Pagination.Root count={50} pageSize={10} page={page} onPageChange={(e) => setPage(e.page)}>
+  <Pagination.PrevTrigger aria-label="이전 페이지" />
+  {[1, 2, 3, 4, 5].map((p) => (
+    <Pagination.Item key={p} value={p}>
+      <Pagination.Link aria-label={p + '페이지'} aria-current={p === page ? 'page' : undefined}>
+        {p}
+      </Pagination.Link>
+    </Pagination.Item>
+  ))}
+  <Pagination.NextTrigger aria-label="다음 페이지" />
+</Pagination.Root>`
+        },
+        notes: [
+          'Chakra Pagination.Root는 페이지 상태를 자동 관리합니다.',
+          'count와 pageSize로 총 페이지 수를 계산하세요.',
+          '각 페이지 버튼에 aria-label을 추가해 접근성을 높이세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria (직접 구현)',
+          code: `// React Aria에는 전용 Pagination 컴포넌트가 없습니다.
+<nav aria-label="페이지 내비게이션">
+  <ul style={{ display: 'flex', gap: 4, listStyle: 'none', padding: 0 }}>
+    <li>
+      <button onClick={() => setPage(p => Math.max(1, p - 1))} aria-label="이전 페이지">‹</button>
+    </li>
+    {[1, 2, 3].map(p => (
+      <li key={p}>
+        <button
+          onClick={() => setPage(p)}
+          aria-current={page === p ? 'page' : undefined}
+          aria-label={p + '페이지'}
+        >
+          {p}
+        </button>
+      </li>
+    ))}
+    <li>
+      <button onClick={() => setPage(p => p + 1)} aria-label="다음 페이지">›</button>
+    </li>
+  </ul>
+</nav>`
+        },
+        notes: [
+          'React Aria에는 전용 Pagination 컴포넌트가 없으므로 직접 구현하세요.',
+          "<nav aria-label='페이지 내비게이션'> 안에 페이지 버튼을 배치하세요.",
+          "현재 페이지에 aria-current='page'를 추가하고 각 버튼에 aria-label을 제공하세요."
         ]
       }
     }
@@ -3876,6 +5529,121 @@ const items = [
           'mode="horizontal"은 수평 내비게이션, mode="inline"은 사이드바에 적합합니다.',
           'selectedKeys prop으로 현재 활성 항목을 표시하세요.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'nav-shadcn-1',
+            title: 'NavigationMenu aria-label 제공',
+            description: 'NavigationMenu에 aria-label을 추가해 내비게이션 랜드마크를 명시하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui NavigationMenu',
+          code: `import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu'
+
+<NavigationMenu aria-label="메인 내비게이션">
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>제품</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="/products/web">웹 제품</NavigationMenuLink>
+        <NavigationMenuLink href="/products/mobile">모바일 제품</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/about">회사 소개</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`
+        },
+        notes: [
+          'shadcn NavigationMenu는 Radix UI 기반으로 ARIA 내비게이션 패턴을 자동 구현합니다.',
+          'NavigationMenuTrigger는 aria-expanded와 aria-haspopup을 자동 관리합니다.',
+          'aria-label로 내비게이션 랜드마크를 명시하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'nav-chakra-1',
+            title: 'nav 요소로 감싸기',
+            description: 'Chakra Menu는 nav 역할이 없으므로 <nav aria-label>로 감싸 내비게이션 랜드마크를 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Menu',
+          code: `import { Menu, Button } from '@chakra-ui/react'
+
+<nav aria-label="메인 내비게이션">
+  <Menu.Root>
+    <Menu.Trigger asChild>
+      <Button variant="ghost">제품 ▾</Button>
+    </Menu.Trigger>
+    <Menu.Positioner>
+      <Menu.Content>
+        <Menu.Item value="web">웹 제품</Menu.Item>
+        <Menu.Item value="mobile">모바일 제품</Menu.Item>
+      </Menu.Content>
+    </Menu.Positioner>
+  </Menu.Root>
+</nav>`
+        },
+        notes: [
+          'Chakra Menu는 드롭다운 메뉴 패턴을 구현합니다. 내비게이션으로 사용 시 <nav>로 감싸세요.',
+          "Menu.Trigger는 aria-haspopup='menu'와 aria-expanded를 자동 관리합니다.",
+          'Menu.Item에는 키보드 방향키 네비게이션이 자동 적용됩니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'nav-spectrum-1',
+            title: 'nav 요소로 감싸기',
+            description: 'MenuTrigger/Menu를 <nav aria-label>로 감싸 내비게이션 랜드마크를 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria MenuTrigger',
+          code: `import { MenuTrigger, Menu, MenuItem, Button } from 'react-aria-components'
+
+<nav aria-label="메인 내비게이션">
+  <MenuTrigger>
+    <Button>제품</Button>
+    <Menu onAction={() => {}}>
+      <MenuItem id="web">웹 제품</MenuItem>
+      <MenuItem id="mobile">모바일 제품</MenuItem>
+    </Menu>
+  </MenuTrigger>
+</nav>`
+        },
+        notes: [
+          'React Aria Menu/MenuTrigger는 WAI-ARIA Menu 패턴을 완전히 구현합니다.',
+          '내비게이션으로 사용 시 <nav aria-label>로 감싸세요.',
+          'onAction 콜백으로 메뉴 항목 선택 시 동작을 처리하세요.'
+        ]
       }
     }
   },
@@ -4146,6 +5914,153 @@ function MuiForm() {
           'onFinishFailed 콜백에서 첫 번째 에러 필드로 스크롤/포커스를 이동하세요.',
           'layout="vertical"을 사용하면 레이블이 입력 위에 표시되어 시각적으로 더 명확합니다.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'fv-shadcn-1',
+            title: 'FormMessage의 aria 연결 확인',
+            description: 'shadcn Form의 FormMessage는 aria-describedby로 자동 연결됩니다. react-hook-form과 함께 사용하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Form',
+          code: `import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+
+const schema = z.object({ email: z.string().email('올바른 이메일 형식을 입력해주세요.') })
+
+export default function App() {
+  const form = useForm({ resolver: zodResolver(schema) })
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(() => {})}>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>이메일</FormLabel>
+              <FormControl>
+                <Input type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="mt-4">제출</Button>
+      </form>
+    </Form>
+  )
+}`
+        },
+        notes: [
+          'shadcn Form은 react-hook-form과 통합되어 있습니다.',
+          'FormMessage는 오류 메시지를 자동으로 aria-describedby로 연결합니다.',
+          'FormField는 각 필드의 이름과 상태를 자동으로 관리합니다.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'fv-chakra-1',
+            title: 'Field.ErrorText에 role="alert" 추가',
+            description: '동적으로 나타나는 오류 메시지에 role="alert"를 추가해 스크린리더에 즉시 전달하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Field',
+          code: `import { Field, Input, Button } from '@chakra-ui/react'
+import { useState } from 'react'
+
+export default function App() {
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!email.includes('@')) {
+      setError('올바른 이메일 형식을 입력해주세요.')
+      return
+    }
+    setError('')
+  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <Field.Root required invalid={!!error}>
+        <Field.Label>이메일 <Field.RequiredIndicator /></Field.Label>
+        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        {error && <Field.ErrorText role="alert">{error}</Field.ErrorText>}
+      </Field.Root>
+      <Button type="submit" mt={4}>제출</Button>
+    </form>
+  )
+}`
+        },
+        notes: [
+          'Chakra Field.Root의 invalid prop이 Input에 aria-invalid를 자동 설정합니다.',
+          "Field.ErrorText에 role='alert'를 추가해 스크린리더에 즉시 알림이 전달되게 하세요.",
+          'Field.RequiredIndicator는 시각적 필수 표시와 함께 aria-required를 설정합니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'fv-spectrum-1',
+            title: 'Form의 validationBehavior 설정',
+            description: "validationBehavior='aria'로 설정하면 HTML5 validation 대신 aria를 통해 오류를 전달합니다.",
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Form',
+          code: `import { Form, TextField, Button } from 'react-aria-components'
+
+export default function App() {
+  return (
+    <Form onSubmit={(e) => e.preventDefault()}>
+      <TextField
+        type="email"
+        name="email"
+        label="이메일"
+        isRequired
+        validate={(v) => v.includes('@') ? null : '올바른 이메일 형식을 입력해주세요.'}
+        errorMessage={(e) => e.validationErrors}
+      />
+      <Button type="submit">제출</Button>
+    </Form>
+  )
+}`
+        },
+        notes: [
+          'React Aria Form은 HTML5 validation과 aria를 통합합니다.',
+          'TextField의 validate 함수로 커스텀 검증을 추가하세요.',
+          "validationBehavior='aria'로 스크린리더 오류 공지를 최적화하세요."
+        ]
       }
     }
   },
@@ -4388,6 +6303,115 @@ function AntdPopoverDemo() {
           'trigger="click"으로 설정하면 키보드 Enter/Space로도 열립니다.',
           '트리거 버튼에 aria-expanded와 aria-haspopup을 직접 추가해야 합니다.',
           'Ant Design Popover는 Escape 키로 닫히지 않으므로 닫기 버튼을 content 안에 포함하세요.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'pop-shadcn-1',
+            title: '닫기 수단 제공',
+            description: 'shadcn Popover는 ESC와 외부 클릭으로 닫힙니다. 키보드 사용자를 위해 내부에 닫기 버튼도 추가하세요.',
+            level: 'should'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Popover',
+          code: `import { Button } from '@/components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">설정 열기</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <div>
+      <h4 className="font-semibold mb-1">알림 설정</h4>
+      <p className="text-sm text-muted-foreground">알림 수신 방법을 설정하세요.</p>
+    </div>
+  </PopoverContent>
+</Popover>`
+        },
+        notes: [
+          'shadcn Popover는 Radix UI 기반으로 포커스 관리와 aria 속성을 자동 처리합니다.',
+          'ESC 키와 외부 클릭으로 닫힙니다.',
+          'PopoverTrigger에 asChild를 사용해 시맨틱 트리거 요소를 유지하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'pop-chakra-1',
+            title: 'CloseTrigger aria-label',
+            description: '닫기 버튼에 아이콘만 사용할 경우 aria-label을 명시적으로 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Popover',
+          code: `import { Popover, Button } from '@chakra-ui/react'
+
+<Popover.Root>
+  <Popover.Trigger asChild>
+    <Button variant="outline">설정 열기</Button>
+  </Popover.Trigger>
+  <Popover.Positioner>
+    <Popover.Content>
+      <Popover.Arrow>
+        <Popover.ArrowTip />
+      </Popover.Arrow>
+      <Popover.Body>
+        <Popover.Title>알림 설정</Popover.Title>
+        <p>알림 수신 방법을 설정하세요.</p>
+      </Popover.Body>
+      <Popover.CloseTrigger asChild>
+        <Button variant="ghost" size="sm" aria-label="닫기">✕</Button>
+      </Popover.CloseTrigger>
+    </Popover.Content>
+  </Popover.Positioner>
+</Popover.Root>`
+        },
+        notes: [
+          'Chakra Popover.Root는 포커스 트랩과 aria 속성을 자동 처리합니다.',
+          'Popover.CloseTrigger에 aria-label을 추가하세요.',
+          'closeOnInteractOutside prop으로 외부 클릭 닫기를 제어하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Popover',
+          code: `import { DialogTrigger, Button, Popover, Dialog, Heading } from 'react-aria-components'
+
+<DialogTrigger>
+  <Button>설정 열기</Button>
+  <Popover>
+    <Dialog>
+      <Heading slot="title">알림 설정</Heading>
+      <p>알림 수신 방법을 설정하세요.</p>
+    </Dialog>
+  </Popover>
+</DialogTrigger>`
+        },
+        notes: [
+          'React Aria Popover는 DialogTrigger와 함께 사용합니다.',
+          "Dialog의 Heading에 slot='title'을 설정하면 aria-labelledby가 자동 연결됩니다.",
+          'Popover는 자동으로 포커스 관리와 aria 속성을 처리합니다.'
         ]
       }
     }
@@ -4637,6 +6661,152 @@ function MuiDrawerDemo() {
           'placement prop으로 left/right/top/bottom 위치를 설정합니다.',
           'closeIcon prop으로 닫기 버튼을 커스텀하여 aria-label을 추가하세요.'
         ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'drw-shadcn-1',
+            title: 'DrawerTitle과 DrawerDescription 제공',
+            description: 'DrawerTitle은 aria-labelledby로 자동 연결됩니다. 항상 제목을 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Drawer',
+          code: `import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import { Button } from '@/components/ui/button'
+
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="outline">메뉴 열기</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>내비게이션 메뉴</DrawerTitle>
+      <DrawerDescription>원하는 페이지로 이동하세요.</DrawerDescription>
+    </DrawerHeader>
+    <div className="p-4">
+      <a href="/home" className="block py-2">홈</a>
+      <a href="/about" className="block py-2">소개</a>
+    </div>
+    <DrawerClose asChild>
+      <Button variant="outline">닫기</Button>
+    </DrawerClose>
+  </DrawerContent>
+</Drawer>`
+        },
+        notes: [
+          'shadcn Drawer는 Vaul 기반으로 모바일 친화적인 바텀 시트를 제공합니다.',
+          'DrawerTitle은 aria-labelledby로 자동 연결됩니다.',
+          '포커스 트랩과 ESC 닫기가 자동 처리됩니다.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'drw-chakra-1',
+            title: 'CloseTrigger aria-label',
+            description: '닫기 버튼에 아이콘만 사용할 경우 aria-label을 명시적으로 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI Drawer',
+          code: `import { Drawer, Button } from '@chakra-ui/react'
+
+<Drawer.Root>
+  <Drawer.Trigger asChild>
+    <Button variant="outline">메뉴 열기</Button>
+  </Drawer.Trigger>
+  <Drawer.Backdrop />
+  <Drawer.Positioner>
+    <Drawer.Content>
+      <Drawer.CloseTrigger asChild>
+        <Button variant="ghost" aria-label="닫기" position="absolute" top={2} right={2}>✕</Button>
+      </Drawer.CloseTrigger>
+      <Drawer.Header>
+        <Drawer.Title>내비게이션 메뉴</Drawer.Title>
+      </Drawer.Header>
+      <Drawer.Body>
+        <a href="/home">홈</a>
+        <a href="/about">소개</a>
+      </Drawer.Body>
+      <Drawer.Footer>
+        <Drawer.ActionTrigger asChild>
+          <Button variant="outline">닫기</Button>
+        </Drawer.ActionTrigger>
+      </Drawer.Footer>
+    </Drawer.Content>
+  </Drawer.Positioner>
+</Drawer.Root>`
+        },
+        notes: [
+          'Chakra Drawer.Root는 포커스 트랩과 aria-modal을 자동 처리합니다.',
+          'placement prop으로 bottom, left, right, top 방향을 지정하세요.',
+          '닫기 버튼에 aria-label을 반드시 추가하세요.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'drw-spectrum-1',
+            title: 'Modal + Dialog 조합',
+            description: 'React Aria에는 전용 Drawer가 없으므로 Modal + Dialog 조합을 사용하고 Heading slot="title"을 반드시 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria Modal',
+          code: `// React Aria에는 전용 Drawer 컴포넌트가 없습니다.
+// Modal과 Dialog를 조합해 구현하세요.
+import { DialogTrigger, Modal, Dialog, Heading, Button } from 'react-aria-components'
+
+<DialogTrigger>
+  <Button>메뉴 열기</Button>
+  <Modal
+    isDismissable
+    style={{ position: 'fixed', right: 0, top: 0, height: '100vh', width: 300 }}
+  >
+    <Dialog>
+      {({ close }) => (
+        <>
+          <Heading slot="title">내비게이션 메뉴</Heading>
+          <nav>
+            <a href="/home">홈</a>
+            <a href="/about">소개</a>
+          </nav>
+          <Button onPress={close}>닫기</Button>
+        </>
+      )}
+    </Dialog>
+  </Modal>
+</DialogTrigger>`
+        },
+        notes: [
+          'React Aria에는 전용 Drawer가 없으므로 Modal + Dialog로 구현하세요.',
+          "Heading slot='title'은 Dialog의 aria-labelledby를 자동 설정합니다.",
+          'isDismissable prop으로 배경 클릭 닫기를 허용하세요.'
+        ]
       }
     }
   },
@@ -4874,6 +7044,154 @@ dayjs.locale('ko');
           'ConfigProvider locale={koKR}으로 캘린더 UI를 한국어로 변경하세요.',
           'Ant Design DatePicker는 키보드 내비게이션을 지원하지만 스크린리더 지원이 완전하지 않을 수 있습니다.',
           '중요한 날짜 입력에는 직접 텍스트 입력 옵션도 함께 제공하세요.'
+        ]
+      },
+      shadcn: {
+        id: 'shadcn',
+        name: 'shadcn/ui',
+        color: '#18181b',
+        additionalChecks: [
+          {
+            id: 'dp-shadcn-1',
+            title: '트리거 버튼 aria-label 동적 업데이트',
+            description: '날짜가 선택되면 트리거 버튼의 aria-label을 선택된 날짜로 업데이트하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'shadcn/ui Calendar',
+          code: `import { useState } from 'react'
+import { Calendar } from '@/components/ui/calendar'
+import { Button } from '@/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Label } from '@/components/ui/label'
+
+export default function App() {
+  const [date, setDate] = useState(undefined)
+  return (
+    <div className="grid gap-1.5">
+      <Label htmlFor="date-trigger">날짜 선택</Label>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date-trigger"
+            variant="outline"
+            aria-label={date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}
+          >
+            📅 {date ? date.toLocaleDateString('ko') : '날짜를 선택하세요'}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}`
+        },
+        notes: [
+          'shadcn에 전용 DatePicker가 없으므로 Calendar + Popover를 조합해 구현합니다.',
+          '트리거 버튼에 선택된 날짜를 aria-label로 업데이트하세요.',
+          'Calendar의 initialFocus prop으로 열릴 때 자동 포커스를 설정하세요.'
+        ]
+      },
+      chakra: {
+        id: 'chakra',
+        name: 'Chakra UI',
+        color: '#319795',
+        additionalChecks: [
+          {
+            id: 'dp-chakra-1',
+            title: '이전/다음 달 버튼 aria-label',
+            description: '달력의 이전/다음 달 이동 버튼에 aria-label을 추가하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'Chakra UI DatePicker',
+          code: `import { DatePicker } from '@chakra-ui/react'
+import { LuCalendar } from 'react-icons/lu'
+
+<DatePicker.Root>
+  <DatePicker.Label>날짜 선택</DatePicker.Label>
+  <DatePicker.Control>
+    <DatePicker.Input />
+    <DatePicker.IndicatorGroup>
+      <DatePicker.Trigger aria-label="달력 열기">
+        <LuCalendar aria-hidden />
+      </DatePicker.Trigger>
+    </DatePicker.IndicatorGroup>
+  </DatePicker.Control>
+  <DatePicker.Positioner>
+    <DatePicker.Content>
+      <DatePicker.View view="day">
+        <DatePicker.ViewControl>
+          <DatePicker.PrevTrigger aria-label="이전 달" />
+          <DatePicker.ViewTrigger>
+            <DatePicker.RangeText />
+          </DatePicker.ViewTrigger>
+          <DatePicker.NextTrigger aria-label="다음 달" />
+        </DatePicker.ViewControl>
+      </DatePicker.View>
+    </DatePicker.Content>
+  </DatePicker.Positioner>
+</DatePicker.Root>`
+        },
+        notes: [
+          'Chakra DatePicker는 달력과 텍스트 입력 두 가지 방법으로 날짜를 입력할 수 있습니다.',
+          '달력 버튼과 이전/다음 달 버튼에 aria-label을 추가하세요.',
+          '@internationalized/date 패키지로 날짜 타입을 관리합니다.'
+        ]
+      },
+      spectrum: {
+        id: 'spectrum',
+        name: 'React Spectrum',
+        color: '#e03',
+        additionalChecks: [
+          {
+            id: 'dp-spectrum-1',
+            title: 'aria-label prop 필수',
+            description: 'React Aria DatePicker에 label 또는 aria-label prop을 반드시 제공하세요.',
+            level: 'must'
+          }
+        ],
+        codeSample: {
+          language: 'tsx',
+          label: 'React Aria DatePicker',
+          code: `import { DatePicker, DateInput, DateSegment, Button, Heading } from 'react-aria-components'
+import { Calendar, CalendarGrid, CalendarCell, CalendarGridBody } from 'react-aria-components'
+import { Popover } from 'react-aria-components'
+
+<DatePicker aria-label="날짜 선택">
+  <DateInput>
+    {(segment) => <DateSegment segment={segment} />}
+  </DateInput>
+  <Button aria-label="달력 열기">📅</Button>
+  <Popover>
+    <Calendar>
+      <Heading />
+      <Button slot="previous" aria-label="이전 달">‹</Button>
+      <Button slot="next" aria-label="다음 달">›</Button>
+      <CalendarGrid>
+        <CalendarGridBody>
+          {(date) => <CalendarCell date={date} />}
+        </CalendarGridBody>
+      </CalendarGrid>
+    </Calendar>
+  </Popover>
+</DatePicker>`
+        },
+        notes: [
+          'React Aria DatePicker는 날짜 입력 필드와 달력 버튼을 자동으로 렌더링합니다.',
+          'label prop을 제공하면 모든 하위 요소의 aria 연결이 자동 처리됩니다.',
+          '각 날짜 세그먼트(연/월/일)를 개별적으로 키보드로 편집할 수 있습니다.'
         ]
       }
     }
