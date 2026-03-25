@@ -1,3 +1,4 @@
+import MobileNav from '../components/MobileNav'
 import Sidebar from '../components/Sidebar'
 import './globals.css'
 
@@ -14,8 +15,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='ko'>
       <body className='flex h-screen bg-pearl text-navy overflow-hidden'>
+        {/* 데스크톱 사이드바 (lg+) */}
         <Sidebar aiEnabled={aiEnabled} />
-        <main className='flex-1 overflow-y-auto'>{children}</main>
+
+        {/* 모바일/태블릿 영역 */}
+        <div className='flex flex-col flex-1 min-h-0 overflow-hidden'>
+          <MobileNav aiEnabled={aiEnabled} />
+          <main className='flex-1 overflow-y-auto'>{children}</main>
+        </div>
       </body>
     </html>
   )

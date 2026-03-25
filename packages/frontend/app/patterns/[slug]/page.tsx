@@ -27,7 +27,7 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
   if (!pattern) notFound()
 
   return (
-    <div className='max-w-4xl mx-auto px-8 py-10'>
+    <div className='max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-10'>
       <Link
         href='/'
         className='inline-flex items-center gap-1.5 text-sm text-mist-600 hover:text-navy transition-colors mb-8'>

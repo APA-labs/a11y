@@ -1,71 +1,17 @@
 'use client'
 
-import {
-  Bell,
-  BookOpen,
-  Calendar,
-  ChevronDown,
-  ChevronsUpDown,
-  CircleDot,
-  GalleryHorizontal,
-  Info,
-  LayoutGrid,
-  Link2,
-  ListCollapse,
-  MessageCircle,
-  Minus,
-  MousePointer2,
-  Navigation,
-  PanelRight,
-  PanelTop,
-  Search,
-  ShieldCheck,
-  Slash,
-  Sliders,
-  Sparkles,
-  SquareCheck,
-  Table,
-  ToggleLeft,
-  Type
-} from 'lucide-react'
+import { MousePointer2, ShieldCheck, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { ICON_MAP } from '../lib/pattern-icons'
 import { patterns } from '../lib/patterns'
-
-const ICON_MAP: Record<string, React.ReactNode> = {
-  button: <MousePointer2 size={14} />,
-  'text-input': <Type size={14} />,
-  'modal-dialog': <BookOpen size={14} />,
-  toggle: <ToggleLeft size={14} />,
-  disclosure: <ChevronDown size={14} />,
-  tabs: <PanelTop size={14} />,
-  tooltip: <Info size={14} />,
-  accordion: <ListCollapse size={14} />,
-  combobox: <Search size={14} />,
-  checkbox: <SquareCheck size={14} />,
-  'radio-group': <CircleDot size={14} />,
-  link: <Link2 size={14} />,
-  alert: <Bell size={14} />,
-  select: <ChevronsUpDown size={14} />,
-  breadcrumb: <Slash size={14} />,
-  pagination: <GalleryHorizontal size={14} />,
-  'navigation-menu': <Navigation size={14} />,
-  'form-validation': <ShieldCheck size={14} />,
-  popover: <MessageCircle size={14} />,
-  drawer: <PanelRight size={14} />,
-  'date-picker': <Calendar size={14} />,
-  slider: <Sliders size={14} />,
-  table: <Table size={14} />,
-  'menu-button': <LayoutGrid size={14} />,
-  toolbar: <Minus size={14} />
-}
 
 export default function Sidebar({ aiEnabled = true }: { aiEnabled?: boolean }) {
   const pathname = usePathname()
 
   return (
-    <aside className='w-[240px] shrink-0 bg-navy-900 text-mist-300 flex flex-col h-full overflow-y-auto scrollbar-thin'>
+    <aside className='hidden lg:flex w-[240px] shrink-0 bg-navy-900 text-mist-300 flex-col h-full overflow-y-auto scrollbar-thin'>
       {/* Logo */}
       <div className='px-5 py-5 border-b border-navy-800'>
         <Link
