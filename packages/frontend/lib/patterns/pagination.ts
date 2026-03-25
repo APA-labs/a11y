@@ -180,68 +180,6 @@ import koKR from 'antd/locale/ko_KR'
         '현재 페이지에 aria-current가 자동으로 적용됩니다.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'pg-shadcn-1',
-          title: 'aria-current="page" 추가',
-          description: '현재 페이지 링크에 aria-current="page"를 추가하세요. isActive prop만으로는 부족합니다.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Pagination',
-        code: `import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination'
-<Pagination>
-  <PaginationContent>
-    <PaginationItem>
-      <PaginationPrevious
-        href='#'
-        aria-label='이전 페이지'
-      />
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationLink
-        href='#'
-        aria-label='1페이지'>
-        1
-      </PaginationLink>
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationLink
-        href='#'
-        isActive
-        aria-current='page'
-        aria-label='현재 페이지, 2페이지'>
-        2
-      </PaginationLink>
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationLink
-        href='#'
-        aria-label='3페이지'>
-        3
-      </PaginationLink>
-    </PaginationItem>
-    <PaginationItem>
-      <PaginationNext
-        href='#'
-        aria-label='다음 페이지'
-      />
-    </PaginationItem>
-  </PaginationContent>
-</Pagination>`
-      },
-      notes: [
-        'shadcn Pagination은 nav 요소로 자동 렌더링됩니다.',
-        "현재 페이지에 aria-current='page'를 명시적으로 추가하세요.",
-        '이전/다음 버튼에 aria-label을 추가하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

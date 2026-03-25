@@ -280,67 +280,6 @@ function MuiForm() {
         'layout="vertical"을 사용하면 레이블이 입력 위에 표시되어 시각적으로 더 명확합니다.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'fv-shadcn-1',
-          title: 'FormMessage의 aria 연결 확인',
-          description: 'shadcn Form의 FormMessage는 aria-describedby로 자동 연결됩니다. react-hook-form과 함께 사용하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Form',
-        code: `import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-
-const schema = z.object({ email: z.string().email('올바른 이메일 형식을 입력해주세요.') })
-
-export default function App() {
-  const form = useForm({ resolver: zodResolver(schema) })
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(() => {})}>
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>이메일</FormLabel>
-              <FormControl>
-                <Input
-                  type='email'
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type='submit'
-          className='mt-4'>
-          제출
-        </Button>
-      </form>
-    </Form>
-  )
-}`
-      },
-      notes: [
-        'shadcn Form은 react-hook-form과 통합되어 있습니다.',
-        'FormMessage는 오류 메시지를 자동으로 aria-describedby로 연결합니다.',
-        'FormField는 각 필드의 이름과 상태를 자동으로 관리합니다.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

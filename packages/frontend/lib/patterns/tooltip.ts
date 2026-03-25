@@ -187,45 +187,6 @@ export function RadixTooltip({ label, children }) {
       },
       notes: ['Ant Design Tooltip은 내부적으로 접근성 속성을 처리합니다.', 'color prop 변경 시 텍스트 대비율을 재확인하세요.']
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'tip-shadcn-1',
-          title: '트리거 요소 aria-label',
-          description: '아이콘 전용 버튼에 tooltip을 연결할 때 트리거 요소에 aria-label을 반드시 제공하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Tooltip',
-        code: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Button } from '@/components/ui/button'
-<TooltipProvider>
-  <Tooltip>
-    <TooltipTrigger asChild>
-      <Button
-        variant='outline'
-        size='icon'
-        aria-label='설정'>
-        ⚙️
-      </Button>
-    </TooltipTrigger>
-    <TooltipContent>
-      <p>설정 열기</p>
-    </TooltipContent>
-  </Tooltip>
-</TooltipProvider>`
-      },
-      notes: [
-        'shadcn Tooltip은 Radix UI 기반으로 hover/focus 시 자동 표시됩니다.',
-        'TooltipProvider를 앱 루트에 설치해 일관된 딜레이를 설정하세요.',
-        '아이콘 전용 트리거에는 aria-label을 반드시 추가하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

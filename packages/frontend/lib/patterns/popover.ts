@@ -240,41 +240,6 @@ function AntdPopoverDemo() {
         'Ant Design Popover는 Escape 키로 닫히지 않으므로 닫기 버튼을 content 안에 포함하세요.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'pop-shadcn-1',
-          title: '닫기 수단 제공',
-          description: 'shadcn Popover는 ESC와 외부 클릭으로 닫힙니다. 키보드 사용자를 위해 내부에 닫기 버튼도 추가하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Popover',
-        code: `import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-<Popover>
-  <PopoverTrigger asChild>
-    <Button variant='outline'>설정 열기</Button>
-  </PopoverTrigger>
-  <PopoverContent>
-    <div>
-      <h4 className='font-semibold mb-1'>알림 설정</h4>
-      <p className='text-sm text-muted-foreground'>알림 수신 방법을 설정하세요.</p>
-    </div>
-  </PopoverContent>
-</Popover>`
-      },
-      notes: [
-        'shadcn Popover는 Radix UI 기반으로 포커스 관리와 aria 속성을 자동 처리합니다.',
-        'ESC 키와 외부 클릭으로 닫힙니다.',
-        'PopoverTrigger에 asChild를 사용해 시맨틱 트리거 요소를 유지하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

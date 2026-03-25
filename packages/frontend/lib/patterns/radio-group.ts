@@ -232,62 +232,6 @@ const OPTIONS = [
         'optionType="button"으로 버튼 스타일 라디오를 사용할 때도 레이블을 반드시 제공하세요.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'radio-shadcn-1',
-          title: 'RadioGroup value 제어',
-          description: 'RadioGroup의 value와 onValueChange로 선택값을 제어하세요. value가 없으면 비제어 컴포넌트로 동작합니다.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui RadioGroup',
-        code: `import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-
-function RadioDemo() {
-  const [value, setValue] = useState('option-1')
-  return (
-    <RadioGroup
-      value={value}
-      onValueChange={setValue}
-      aria-label='옵션 선택'>
-      <div className='flex items-center gap-2'>
-        <RadioGroupItem
-          value='option-1'
-          id='r1'
-        />
-        <Label htmlFor='r1'>옵션 1</Label>
-      </div>
-      <div className='flex items-center gap-2'>
-        <RadioGroupItem
-          value='option-2'
-          id='r2'
-        />
-        <Label htmlFor='r2'>옵션 2</Label>
-      </div>
-      <div className='flex items-center gap-2'>
-        <RadioGroupItem
-          value='option-3'
-          id='r3'
-        />
-        <Label htmlFor='r3'>옵션 3</Label>
-      </div>
-    </RadioGroup>
-  )
-}`
-      },
-      notes: [
-        'shadcn RadioGroup은 Radix UI RadioGroup을 기반으로 합니다.',
-        '화살표 키로 옵션 간 이동이 자동으로 지원됩니다.',
-        'RadioGroup에 aria-label 또는 aria-labelledby를 반드시 추가하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

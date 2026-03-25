@@ -75,38 +75,36 @@ export const accordionPattern: Pattern = {
       code: `import { useState } from 'react'
 
 const ITEMS = [
-{ id: 'item-1', heading: 'Section 1', content: 'Content for section 1' },
-{ id: 'item-2', heading: 'Section 2', content: 'Content for section 2' },
+  { id: 'item-1', heading: 'Section 1', content: 'Content for section 1' },
+  { id: 'item-2', heading: 'Section 2', content: 'Content for section 2' }
 ]
 
 export function Accordion() {
-const [open, setOpen] = useState<string | null>(null)
-return (
-  <div>
-    {ITEMS.map((item) => (
-      <div key={item.id}>
-        <h3>
-          <button
-            type="button"
-            aria-expanded={open === item.id}
-            aria-controls={\`panel-\${item.id}\`}
-            onClick={() => setOpen(open === item.id ? null : item.id)}
-          >
-            {item.heading}
-          </button>
-        </h3>
-        <div
-          id={\`panel-\${item.id}\`}
-          role="region"
-          aria-labelledby={item.id}
-          hidden={open !== item.id}
-        >
-          <p>{item.content}</p>
+  const [open, setOpen] = useState<string | null>(null)
+  return (
+    <div>
+      {ITEMS.map((item) => (
+        <div key={item.id}>
+          <h3>
+            <button
+              type='button'
+              aria-expanded={open === item.id}
+              aria-controls={\`panel-\${item.id}\`}
+              onClick={() => setOpen(open === item.id ? null : item.id)}>
+              {item.heading}
+            </button>
+          </h3>
+          <div
+            id={\`panel-\${item.id}\`}
+            role='region'
+            aria-labelledby={item.id}
+            hidden={open !== item.id}>
+            <p>{item.content}</p>
+          </div>
         </div>
-      </div>
-    ))}
-  </div>
-)
+      ))}
+    </div>
+  )
 }`
     }
   },
@@ -210,42 +208,6 @@ export function AntAccordion() {
 }`
       },
       notes: ['Ant Design Collapse는 기본적으로 접근성 속성을 처리합니다.', 'showArrow={false}로 화살표를 숨기더라도 시각적 상태 변화는 유지하세요.']
-    },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'acc-shadcn-1',
-          title: 'type="multiple" 시 aria 검증',
-          description: 'type="multiple"로 여러 항목을 동시 열 때 각 AccordionTrigger의 aria-expanded가 올바르게 관리되는지 확인하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Accordion',
-        code: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-<Accordion
-  type='single'
-  collapsible
-  defaultValue='item-1'>
-  <AccordionItem value='item-1'>
-    <AccordionTrigger>배송 정보</AccordionTrigger>
-    <AccordionContent>주문 후 2-3 영업일 내 배송됩니다.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value='item-2'>
-    <AccordionTrigger>반품 정책</AccordionTrigger>
-    <AccordionContent>수령 후 7일 이내 반품 가능합니다.</AccordionContent>
-  </AccordionItem>
-</Accordion>`
-      },
-      notes: [
-        'shadcn Accordion은 Radix UI 기반으로 aria-expanded, aria-controls를 자동 관리합니다.',
-        "type='single'|'multiple'로 단일/다중 열기를 제어하세요.",
-        'AccordionTrigger는 방향키 네비게이션을 자동 지원합니다.'
-      ]
     },
     chakra: {
       id: 'chakra',

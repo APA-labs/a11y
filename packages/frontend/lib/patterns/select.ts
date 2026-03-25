@@ -253,47 +253,6 @@ import * as Label from '@radix-ui/react-label';
         'virtual={false}로 가상 스크롤을 비활성화하면 스크린리더 호환성이 향상됩니다.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'sel-shadcn-1',
-          title: 'SelectTrigger에 Label 연결',
-          description: 'SelectTrigger의 id를 Label의 htmlFor와 연결하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Select',
-        code: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Label } from '@/components/ui/label'
-<div className='grid gap-1.5'>
-  <Label htmlFor='country'>국가</Label>
-  <Select
-    value={value}
-    onValueChange={setValue}>
-    <SelectTrigger
-      id='country'
-      aria-label='국가 선택'>
-      <SelectValue placeholder='국가를 선택하세요' />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value='kr'>대한민국</SelectItem>
-      <SelectItem value='us'>미국</SelectItem>
-      <SelectItem value='jp'>일본</SelectItem>
-    </SelectContent>
-  </Select>
-</div>`
-      },
-      notes: [
-        'shadcn Select는 Radix UI 기반으로 키보드 네비게이션과 aria를 자동 처리합니다.',
-        'SelectTrigger와 Label을 id/htmlFor로 연결하세요.',
-        'SelectValue의 placeholder는 시각적으로만 표시됩니다.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

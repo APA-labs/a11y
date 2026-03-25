@@ -203,46 +203,6 @@ aria-label="알림 수신 방법"
       },
       notes: ['Ant Design Checkbox는 네이티브 input을 사용해 접근성을 유지합니다.', 'indeterminate prop으로 중간 선택 상태를 표현할 수 있습니다.']
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'checkbox-shadcn-1',
-          title: 'indeterminate 상태 처리',
-          description:
-            'shadcn Checkbox는 checked prop에 "indeterminate" 문자열을 받지 않습니다. useRef로 HTMLButtonElement를 직접 제어하거나 별도 로직으로 구현하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Checkbox',
-        code: `import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
-
-function CheckboxDemo() {
-  const [checked, setChecked] = useState(false)
-  return (
-    <div className='flex items-center gap-2'>
-      <Checkbox
-        id='terms'
-        checked={checked}
-        onCheckedChange={(val) => setChecked(val === true)}
-        aria-describedby='terms-desc'
-      />
-      <Label htmlFor='terms'>이용약관에 동의합니다</Label>
-    </div>
-  )
-}`
-      },
-      notes: [
-        'shadcn Checkbox는 Radix UI Checkbox를 기반으로 합니다.',
-        'onCheckedChange 콜백은 boolean | "indeterminate"를 반환합니다.',
-        'Label의 htmlFor와 Checkbox의 id를 반드시 연결하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

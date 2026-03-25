@@ -320,50 +320,6 @@ const items = [
         'selectedKeys prop으로 현재 활성 항목을 표시하세요.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'nav-shadcn-1',
-          title: 'NavigationMenu aria-label 제공',
-          description: 'NavigationMenu에 aria-label을 추가해 내비게이션 랜드마크를 명시하세요.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui NavigationMenu',
-        code: `import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger
-} from '@/components/ui/navigation-menu'
-<NavigationMenu aria-label='메인 내비게이션'>
-  <NavigationMenuList>
-    <NavigationMenuItem>
-      <NavigationMenuTrigger>제품</NavigationMenuTrigger>
-      <NavigationMenuContent>
-        <NavigationMenuLink href='/products/web'>웹 제품</NavigationMenuLink>
-        <NavigationMenuLink href='/products/mobile'>모바일 제품</NavigationMenuLink>
-      </NavigationMenuContent>
-    </NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuLink href='/about'>회사 소개</NavigationMenuLink>
-    </NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>`
-      },
-      notes: [
-        'shadcn NavigationMenu는 Radix UI 기반으로 ARIA 내비게이션 패턴을 자동 구현합니다.',
-        'NavigationMenuTrigger는 aria-expanded와 aria-haspopup을 자동 관리합니다.',
-        'aria-label로 내비게이션 랜드마크를 명시하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

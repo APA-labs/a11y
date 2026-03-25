@@ -204,43 +204,6 @@ export default function App() {
         'Block prop으로 full-width 버튼 구현 시 레이아웃 맥락을 고려하세요.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'btn-shadcn-1',
-          title: 'asChild로 시맨틱 유지',
-          description:
-            'shadcn Button에 asChild prop을 사용하면 Link 컴포넌트와 조합할 수 있습니다. 이때 button이 아닌 a 요소로 렌더링되므로 역할이 올바른지 확인하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Button',
-        code: `import { Button } from '@/components/ui/button'
-
-// 기본 버튼
-<Button onClick={() => {}}>저장</Button>
-
-// 로딩 상태
-<Button disabled={isLoading} aria-busy={isLoading}>
-{isLoading ? '저장 중...' : '저장'}
-</Button>
-
-// 아이콘 전용 버튼
-<Button size="icon" aria-label="설정">
-<Settings className="h-4 w-4" aria-hidden />
-</Button>`
-      },
-      notes: [
-        'shadcn/ui Button은 Radix UI Slot을 기반으로 하며 내부적으로 <button>을 렌더링합니다.',
-        'variant와 size prop으로 시각적 스타일을 지정하세요.',
-        '아이콘 전용 버튼에는 반드시 aria-label을 추가하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

@@ -246,45 +246,6 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
         'Modal.confirm()은 자동으로 접근성 속성을 적용합니다.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'modal-shadcn-1',
-          title: 'DialogDescription 필수 제공',
-          description: 'DialogDescription은 aria-describedby로 자동 연결됩니다. 내용을 생략하면 스크린리더 사용자가 컨텍스트를 잃습니다.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Dialog',
-        code: `import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-<Dialog>
-  <DialogTrigger asChild>
-    <Button variant='outline'>파일 삭제</Button>
-  </DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>파일 삭제</DialogTitle>
-      <DialogDescription>이 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</DialogDescription>
-    </DialogHeader>
-    <div className='flex justify-end gap-2'>
-      <Button variant='outline'>취소</Button>
-      <Button variant='destructive'>삭제</Button>
-    </div>
-  </DialogContent>
-</Dialog>`
-      },
-      notes: [
-        'shadcn Dialog는 Radix UI 기반으로 포커스 트랩, ESC 닫기, 포커스 복원을 자동 처리합니다.',
-        'DialogTitle은 aria-labelledby로 자동 연결됩니다.',
-        'showCloseButton={false} 사용 시 대체 닫기 수단을 반드시 제공하세요.'
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',

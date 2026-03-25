@@ -213,51 +213,6 @@ export const textInputPattern: Pattern = {
         'Form.Item의 tooltip prop으로 추가 설명을 제공할 수 있습니다.'
       ]
     },
-    shadcn: {
-      id: 'shadcn',
-      name: 'shadcn/ui',
-      color: '#18181b',
-      additionalChecks: [
-        {
-          id: 'inp-shadcn-1',
-          title: 'Label 컴포넌트 연결',
-          description: 'shadcn Label의 htmlFor와 Input의 id를 반드시 연결하세요. placeholder만으로는 접근성이 부족합니다.',
-          level: 'must'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'shadcn/ui Input',
-        code: `import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-<div className='grid gap-1.5'>
-  <Label htmlFor='email'>이메일</Label>
-  <Input
-    id='email'
-    type='email'
-    required
-    aria-required='true'
-    aria-invalid={hasError}
-    aria-describedby={hasError ? 'email-error' : undefined}
-    autoComplete='email'
-    placeholder='user@example.com'
-  />
-  {hasError && (
-    <p
-      id='email-error'
-      className='text-sm text-destructive'
-      role='alert'>
-      올바른 이메일 형식을 입력해주세요.
-    </p>
-  )}
-</div>`
-      },
-      notes: [
-        'shadcn Input은 기본 HTML input 요소로 aria 속성을 직접 추가해야 합니다.',
-        'Label 컴포넌트와 htmlFor/id로 연결하세요.',
-        "오류 메시지는 role='alert'와 aria-describedby로 연결하세요."
-      ]
-    },
     chakra: {
       id: 'chakra',
       name: 'Chakra UI',
