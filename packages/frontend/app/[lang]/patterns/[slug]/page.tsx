@@ -74,7 +74,6 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
             must={pattern.baseline.checklist.must}
             should={pattern.baseline.checklist.should}
             avoid={pattern.baseline.checklist.avoid}
-            lang={lang}
           />
         </section>
 

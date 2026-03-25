@@ -1,6 +1,5 @@
 import { AlertCircle, CheckCircle2, MinusCircle } from 'lucide-react'
 
-import type { Lang } from '../lib/i18n'
 import type { ChecklistItem } from '../lib/types'
 
 const CONFIG = {
@@ -63,7 +62,6 @@ interface Props {
   must: ChecklistItem[]
   should: ChecklistItem[]
   avoid: ChecklistItem[]
-  lang?: Lang
 }
 
 export default function ChecklistSection({ must, should, avoid }: Props) {

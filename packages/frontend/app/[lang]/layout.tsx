@@ -9,7 +9,6 @@ export default async function LangLayout({ children, params }: { children: React
 
   return (
     <div className='flex flex-col h-screen bg-pearl text-navy overflow-hidden'>
-      { }
       <script dangerouslySetInnerHTML={{ __html: `document.documentElement.lang='${lang}'` }} />
       <Header
         lang={lang}
