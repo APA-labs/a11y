@@ -158,49 +158,6 @@ function DatePickerDemo() {
         'slotProps.textField로 입력 필드의 접근성 속성을 커스텀할 수 있습니다.'
       ]
     },
-    radix: {
-      id: 'radix',
-      name: 'Radix UI',
-      color: '#6e56cf',
-      additionalChecks: [
-        {
-          id: 'datepicker-radix-1',
-          title: 'shadcn/ui Calendar 컴포넌트 사용',
-          description:
-            'Radix UI에는 전용 Date Picker가 없습니다. shadcn/ui의 Calendar(react-day-picker 기반)를 Popover와 조합하거나 HTML5 date input을 사용하세요.',
-          level: 'should'
-        }
-      ],
-      codeSample: {
-        language: 'tsx',
-        label: 'HTML5 date input (권장)',
-        code: `export function DatePicker() {
-  const [value, setValue] = useState('')
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <label
-        htmlFor='date-input'
-        style={{ fontSize: '14px', fontWeight: 500 }}>
-        날짜 선택
-      </label>
-      <input
-        id='date-input'
-        type='date'
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        style={{ padding: '6px 10px', border: '1px solid #ccc', borderRadius: '6px', fontSize: '14px' }}
-      />
-      {value && <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>선택: {new Date(value).toLocaleDateString('ko-KR')}</p>}
-    </div>
-  )
-}`
-      },
-      notes: [
-        'Radix UI는 전용 Date Picker를 제공하지 않습니다.',
-        'react-day-picker 라이브러리는 WCAG를 준수하는 접근성 있는 캘린더를 제공합니다.',
-        '복잡한 날짜 선택이 필요 없다면 HTML5 type="date" 입력을 사용하는 것이 가장 접근성이 높습니다.'
-      ]
-    },
     antd: {
       id: 'antd',
       name: 'Ant Design',
