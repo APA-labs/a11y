@@ -48,40 +48,33 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
   return (
     <>
       <header className='flex items-center h-14 px-4 md:px-6 border-b border-outline bg-surface shrink-0 z-40 relative'>
+        {/* 좌측: 로고 */}
         <Link
           href={`/${lang}`}
           className='flex items-center gap-2 sm:gap-2.5 min-w-0 shrink-0'>
           <span className='font-semibold text-body text-sm tracking-tight whitespace-nowrap'>A11y Patterns</span>
         </Link>
 
-        <div className='flex-1' />
+        {/* 중앙: 검색바 */}
+        <div className='flex-1 flex justify-center px-4'>
+          <button
+            type='button'
+            onClick={() => setCmdOpen(true)}
+            aria-label={t.cmd.searchLabel}
+            className='hidden sm:flex items-center gap-2 w-full max-w-xs pl-3 pr-2 py-1.5 rounded-lg border border-outline bg-inset hover:border-violet-400 transition-colors text-faint hover:text-soft'>
+            <Search
+              size={13}
+              className='shrink-0'
+            />
+            <span className='flex-1 text-xs text-left'>{t.cmd.placeholder}</span>
+            <kbd className='shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono bg-surface border border-outline'>⌘K</kbd>
+          </button>
+        </div>
 
+        {/* 우측: 아이콘 */}
         <nav
-          className='flex items-center gap-1'
+          className='flex items-center gap-1 shrink-0'
           aria-label={t.nav.globalNav}>
-          <Link
-            href={`/${lang}`}
-            className='hidden sm:flex px-3 py-1.5 text-sm text-soft hover:text-navy hover:bg-mist-100 dark:hover:bg-[#1E2E40] dark:hover:text-white rounded-md transition-colors'>
-            {t.nav.home}
-          </Link>
-
-          <button
-            type='button'
-            onClick={() => setCmdOpen(true)}
-            aria-label={t.cmd.searchLabel}
-            className='hidden sm:flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-lg border border-outline bg-inset hover:border-violet-400 transition-colors text-faint hover:text-soft'>
-            <Search size={13} />
-            <span className='text-xs w-24 text-left'>{t.cmd.placeholder}</span>
-            <kbd className='inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono bg-surface border border-outline'>⌘K</kbd>
-          </button>
-          <button
-            type='button'
-            onClick={() => setCmdOpen(true)}
-            aria-label={t.cmd.searchLabel}
-            className='sm:hidden p-2 text-soft hover:text-body hover:bg-mist-100 dark:hover:bg-[#1E2E40] rounded-md transition-colors'>
-            <Search size={16} />
-          </button>
-
           <ThemeToggle />
           <LanguageSwitcher currentLang={lang} />
 
@@ -93,6 +86,14 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
             aria-label={t.nav.githubLabel}>
             <Github size={16} />
           </a>
+
+          <button
+            type='button'
+            onClick={() => setCmdOpen(true)}
+            aria-label={t.cmd.searchLabel}
+            className='sm:hidden p-2 text-soft hover:text-body hover:bg-mist-100 dark:hover:bg-[#1E2E40] rounded-md transition-colors'>
+            <Search size={16} />
+          </button>
 
           <button
             type='button'
