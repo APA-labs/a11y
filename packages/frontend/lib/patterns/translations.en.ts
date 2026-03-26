@@ -92,6 +92,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Set initial/controlled state with defaultExpandedKeys/expandedKeys.',
           'Use allowsMultipleExpanded to permit multiple items to be open.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Accordion.Header is required',
+            description: 'Accordion.Header renders as <h3> by default, preserving page document structure for screen readers. Do not omit it.'
+          },
+          {
+            title: 'Control multi-expand with the multiple prop',
+            description: 'Add the multiple prop to Accordion.Root to allow several panels to be open at the same time. The default is single-expand.'
+          }
+        ],
+        notes: [
+          'Accordion.Header renders as <h3> by default. Use the render prop to change the heading level.',
+          'Accordion.Trigger manages aria-expanded automatically.',
+          'Add the multiple prop to allow multiple panels to be open simultaneously. Default is false (single-expand).'
+        ]
       }
     }
   },
@@ -367,6 +384,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Use variant to specify cta, primary, secondary, or negative.',
           'Keyboard, mouse, and touch interactions are all handled automatically.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Focus styles must be added manually',
+            description: 'Base UI is headless, so focus-visible styles must be applied via CSS directly.'
+          },
+          {
+            title: 'Use focusableWhenDisabled to retain focus',
+            description: 'When transitioning to a disabled state during loading, use the focusableWhenDisabled prop to keep focus on the button.'
+          }
+        ],
+        notes: [
+          'Base UI Button renders a native <button> element by default.',
+          'Use focusableWhenDisabled to keep the button in the tab sequence even when disabled.',
+          'Use the render prop to change the rendered element (e.g., render={<a />}); set nativeButton={false} when doing so.'
+        ]
       }
     }
   },
@@ -449,6 +483,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Spectrum Checkbox automatically handles keyboard, mouse, and touch accessibility.',
           'The isIndeterminate prop supports partial selection state.',
           'Use validationState="invalid" to represent an error state.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Checkbox.Indicator must have a visual checkmark',
+            description: 'Base UI Checkbox is unstyled; always add a check icon inside Checkbox.Indicator.'
+          },
+          {
+            title: 'Provide an accessible name via a label element',
+            description: 'Wrap Checkbox.Root in a <label> or connect it via htmlFor/id to provide an accessible name.'
+          }
+        ],
+        notes: [
+          'Checkbox.Root renders a <button role="checkbox"> by default, with aria-checked managed automatically.',
+          'Checkbox.Indicator only renders when the checkbox is checked.',
+          'Use CheckboxGroup to manage multiple checkboxes as a group.'
         ]
       }
     }
@@ -666,6 +717,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Aria Disclosure fully implements the WAI-ARIA Disclosure pattern.',
           'You must set slot="trigger" on the Button inside DisclosureHeader.',
           'Set the initial open state with the defaultExpanded prop.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Collapsible.Trigger manages aria-expanded automatically',
+            description: 'Base UI Collapsible.Trigger automatically sets aria-expanded based on the open/closed state.'
+          }
+        ],
+        notes: [
+          'Collapsible.Trigger automatically manages aria-expanded and aria-controls.',
+          'Use defaultOpen or open/onOpenChange for uncontrolled/controlled mode.',
+          'Use hiddenUntilFound on Collapsible.Panel to make hidden content findable via browser search (Ctrl+F).'
         ]
       }
     }
@@ -1015,6 +1079,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Aria Modal automatically handles focus trapping, aria-modal, and Escape to close.',
           'Control background click to close behavior with the isDismissable prop.',
           'Heading with slot="title" is automatically connected to the Dialog via aria-labelledby.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Portal + Backdrop structure is required',
+            description: 'Always use Dialog.Portal and Dialog.Backdrop to block outside clicks and ensure focus trapping.'
+          },
+          {
+            title: 'Provide Dialog.Title and Dialog.Description',
+            description: 'Dialog.Title is auto-connected via aria-labelledby; Dialog.Description via aria-describedby. Do not omit either.'
+          }
+        ],
+        notes: [
+          'Dialog.Popup automatically handles focus trapping, Escape key dismissal, and aria-modal="true".',
+          'Dialog.Title is auto-connected via aria-labelledby; Dialog.Description via aria-describedby.',
+          'Dialog.Portal renders into the document body to prevent z-index conflicts.'
         ]
       }
     }
@@ -1535,6 +1616,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Each Tab id is automatically linked to the corresponding TabPanel id.',
           "Use keyboardActivation='manual' to separate focus and activation."
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'aria-label on Tabs.List is required',
+            description: 'Add an aria-label to Tabs.List to communicate the purpose of the tab group to screen readers.'
+          },
+          {
+            title: 'Place Tabs.Indicator inside Tabs.List',
+            description: 'Base UI Tabs.Indicator must be placed inside Tabs.List so it can track position via CSS variables.'
+          }
+        ],
+        notes: [
+          'Tabs.Root automatically handles arrow key, Home, and End navigation and manages aria-selected.',
+          'Tabs.Indicator uses --active-tab-left and --active-tab-width CSS variables to track the active tab position.',
+          'Add the activateOnFocus prop to immediately activate a tab when it receives focus via arrow keys.'
+        ]
       }
     }
   },
@@ -1637,6 +1735,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'isRequired="true" automatically applies aria-required.',
           'FieldError is automatically connected via aria-describedby when validation fails.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Use the Field component for best accessibility',
+            description: 'Wrapping with Field.Root from @base-ui/react/field provides automatic label-input association and error message wiring.'
+          }
+        ],
+        notes: [
+          'Base UI Input renders a native <input> element.',
+          'Combining Field.Root + Field.Label + Field.Control strengthens form accessibility.',
+          'Field.Error automatically links validation messages to the input.'
+        ]
       }
     }
   },
@@ -1724,6 +1835,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Provide the label text directly as children.',
           'Use isSelected/onChange for controlled component mode.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Switch.Root requires render={<button />}',
+            description: 'Switch.Root renders as a <span> by default. Pass render={<button />} to use a semantic button element.'
+          },
+          {
+            title: 'Thumb position must be implemented with CSS',
+            description: 'Base UI Switch is unstyled; implement the Thumb translateX for checked/unchecked states via CSS.'
+          }
+        ],
+        notes: [
+          'Switch.Root renders as <span> by default. Use render={<button />} to ensure semantic button markup.',
+          'role="switch" and aria-checked are managed automatically.',
+          'Use the Toggle component (@base-ui/react/toggle) for aria-pressed toggle buttons instead.'
+        ]
       }
     }
   },
@@ -1802,6 +1930,23 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Aria TooltipTrigger handles hover, focus, and keyboard interactions.',
           'Set display delay with the delay prop (default 1200ms).',
           'Tooltip is automatically connected to the trigger via aria-describedby.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Place Tooltip.Provider at the root',
+            description: 'Placing Tooltip.Provider at the app root centralizes delay management across all tooltips.'
+          },
+          {
+            title: 'aria-label on Trigger is required',
+            description: 'Base UI Tooltip does not auto-connect aria-describedby. Provide an accessible name directly via aria-label on the trigger.'
+          }
+        ],
+        notes: [
+          'Tooltips appear on focus/hover automatically and dismiss on Escape.',
+          'Base UI Tooltip does not automatically set aria-describedby on the trigger — provide aria-label directly on the trigger.',
+          'Use Tooltip.Portal to render into the body and avoid overflow:hidden clipping issues.'
         ]
       }
     }

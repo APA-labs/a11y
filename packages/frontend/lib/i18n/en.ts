@@ -20,7 +20,13 @@ export const en: Translations = {
     subtitle: 'Compare WCAG 2.1 AA common baselines and design system implementations at a glance.',
     supportedDS: 'Supported design systems',
     allPatterns: 'All patterns',
-    aiAnalyze: 'AI Analysis'
+    aiAnalyze: 'AI Analysis',
+    searchPlaceholder: 'Search patterns...',
+    searchClear: 'Clear search',
+    filterByDS: 'Filter by design system',
+    allDS: 'All',
+    noResults: 'No patterns found.',
+    filteredCount: (n: number) => `${n} patterns`
   },
   pattern: {
     backToAll: 'All patterns',
@@ -49,5 +55,15 @@ export const en: Translations = {
   analyze: {
     title: 'AI Accessibility Analysis',
     subtitle: 'Describe a component and Claude will generate a checklist, code samples, and test procedures based on WCAG 2.1 AA.'
+  },
+  cmd: {
+    title: 'Search patterns',
+    placeholder: 'Search patterns...',
+    noResults: 'No patterns found.',
+    hintNavigate: 'navigate',
+    hintOpen: 'open',
+    hintClose: 'close',
+    totalPatterns: 'patterns',
+    searchLabel: 'Search patterns (⌘K)'
   }
 }

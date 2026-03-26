@@ -136,16 +136,27 @@ export const togglePattern: Pattern = {
     checked={isEnabled}
     onCheckedChange={setIsEnabled}
     style={{
-      width: 44, height: 24, borderRadius: 9999, border: 'none', padding: 2,
+      width: 44,
+      height: 24,
+      borderRadius: 9999,
+      border: 'none',
+      padding: 2,
       backgroundColor: isEnabled ? '#2563eb' : '#e5e7eb',
-      transition: 'background-color 0.2s', cursor: 'pointer'
+      transition: 'background-color 0.2s',
+      cursor: 'pointer'
     }}>
-    <Switch.Thumb style={{
-      display: 'block', width: 20, height: 20, borderRadius: 9999,
-      backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-      transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
-      transition: 'transform 0.2s'
-    }} />
+    <Switch.Thumb
+      style={{
+        display: 'block',
+        width: 20,
+        height: 20,
+        borderRadius: 9999,
+        backgroundColor: 'white',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+        transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
+        transition: 'transform 0.2s'
+      }}
+    />
   </Switch.Root>
 </div>`
       },
@@ -252,6 +263,78 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
         "React Aria Switch는 role='switch', aria-checked, 키보드 지원을 모두 자동 처리합니다.",
         'children으로 레이블 텍스트를 직접 제공하세요.',
         'isSelected/onChange로 제어 컴포넌트로 사용 가능합니다.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'toggle-baseui-1',
+          title: 'Switch.Root에 render={<button />} 필수',
+          description: 'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 시맨틱 버튼 요소를 사용해야 합니다.',
+          level: 'must'
+        },
+        {
+          id: 'toggle-baseui-2',
+          title: 'Thumb 위치 CSS 직접 구현',
+          description: 'Base UI Switch는 스타일이 없으므로 checked 상태에 따른 Thumb translateX를 CSS로 직접 구현해야 합니다.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Switch',
+        preview: false,
+        code: `// NOTE: Sandpack preview is not supported for this sample. (Code only)
+import { useState } from 'react'
+import { Switch } from '@base-ui/react/switch'
+
+export default function App() {
+  const [checked, setChecked] = useState(false)
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
+        <Switch.Root
+          checked={checked}
+          onCheckedChange={setChecked}
+          render={<button />}
+          style={{
+            width: 44,
+            height: 24,
+            borderRadius: 12,
+            background: checked ? '#18181b' : '#d1d5db',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 2,
+            display: 'inline-flex',
+            alignItems: 'center',
+            transition: 'background 0.2s'
+          }}>
+          <Switch.Thumb
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              background: '#fff',
+              display: 'block',
+              transform: checked ? 'translateX(20px)' : 'translateX(0)',
+              transition: 'transform 0.2s',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+            }}
+          />
+        </Switch.Root>
+        Enable notifications
+      </label>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 반드시 버튼 요소를 사용하세요.',
+        'role="switch"와 aria-checked는 자동으로 관리됩니다.',
+        'Toggle 컴포넌트(@base-ui/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
       ]
     }
   }

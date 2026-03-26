@@ -4,7 +4,6 @@ import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider }
 import { Component, useEffect, useState, type ReactNode } from 'react'
 
 import { buildAppCode } from '../lib/build-preview-code'
-import { SHADCN_FILES } from '../lib/sandpack-shadcn'
 
 class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
   state = { error: false }
@@ -98,6 +97,10 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     'class-variance-authority': '0.7.0',
     clsx: '2.1.0',
     'tailwind-merge': '2.2.1'
+  },
+  '@base-ui/react': {
+    // NOTES: base-ui에서 code-sandbox를 지원하지 않아 유지되지 않는 못불러오는 경우가 존재합니다.
+    '@base-ui/react': '1.3.0'
   }
 }
 
@@ -196,63 +199,46 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
     )
   }
 
-  const appCode = buildAppCode(code)
+  let appCode = buildAppCode(code)
   const extraDeps = detectDeps(code)
 
-  const hasShadcn = code.includes('@/components/ui')
   const hasChakra = code.includes('@chakra-ui')
   const hasSpectrum = code.includes('react-aria-components') || code.includes('@adobe/react-spectrum')
 
-  let appCodeFinal = hasShadcn
-    ? appCode.replace(/from '@\/components\/ui\//g, "from './components/ui/").replace(/from '@\/lib\//g, "from './lib/")
-    : appCode
-
-  if (hasChakra && !appCodeFinal.includes('ChakraProvider')) {
+  if (hasChakra && !appCode.includes('ChakraProvider')) {
     const WRAPPER_DIV = `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
 
-    if (appCodeFinal.includes(WRAPPER_DIV)) {
-      appCodeFinal =
+    if (appCode.includes(WRAPPER_DIV)) {
+      appCode =
         `import { ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'\n` +
-        appCodeFinal.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </ChakraProvider>\n  )\n}`)
+        appCode.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </ChakraProvider>\n  )\n}`)
     } else {
-      appCodeFinal = appCodeFinal.replace(
+      appCode = appCode.replace(
         /import\s*\{([^}]+)\}\s*from\s*['"]@chakra-ui\/react['"]/,
         (_, named: string) => `import { ${named.trim()}, ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'`
       )
-      appCodeFinal = appCodeFinal.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<ChakraProvider value={__ds}>\n$3$4')
-      appCodeFinal = appCodeFinal.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </ChakraProvider>\n$2')
+      appCode = appCode.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<ChakraProvider value={__ds}>\n$3$4')
+      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </ChakraProvider>\n$2')
     }
   }
 
-  if (hasSpectrum && !appCodeFinal.includes('Provider')) {
+  if (hasSpectrum && !appCode.includes('Provider')) {
     const WRAPPER_DIV = `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
 
-    if (appCodeFinal.includes(WRAPPER_DIV)) {
-      appCodeFinal =
+    if (appCode.includes(WRAPPER_DIV)) {
+      appCode =
         `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` +
-        appCodeFinal
+        appCode
           .replace(WRAPPER_DIV, `<__RAProvider theme={__RATheme} locale="ko-KR">`)
           .replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </__RAProvider>\n  )\n}`)
     } else {
-      appCodeFinal = `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` + appCodeFinal
-      appCodeFinal = appCodeFinal.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<__RAProvider theme={__RATheme} locale="ko-KR">\n$3$4')
-      appCodeFinal = appCodeFinal.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </__RAProvider>\n$2')
+      appCode = `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` + appCode
+      appCode = appCode.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<__RAProvider theme={__RATheme} locale="ko-KR">\n$3$4')
+      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </__RAProvider>\n$2')
     }
   }
 
-  const sandpackFiles: Record<string, string> = { '/App.tsx': appCodeFinal }
-  if (hasShadcn) {
-    Object.assign(sandpackFiles, SHADCN_FILES)
-    // Include all Radix packages needed by shadcn stubs
-    Object.assign(extraDeps, DS_DEPS['@radix-ui'], {
-      'class-variance-authority': '0.7.0',
-      clsx: '2.1.0',
-      'tailwind-merge': '2.2.1',
-      'react-hook-form': '7.51.0',
-      '@hookform/resolvers': '3.3.4',
-      zod: '3.22.4'
-    })
-  }
+  const sandpackFiles: Record<string, string> = { '/App.tsx': appCode }
 
   const indexHtml = `<!DOCTYPE html>
 <html lang="ko">

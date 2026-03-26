@@ -281,6 +281,59 @@ const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db
         'isRequired prop이 true면 aria-required가 자동 적용됩니다.',
         'FieldError는 validation 실패 시 자동으로 aria-describedby로 연결됩니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'input-baseui-1',
+          title: 'Field 컴포넌트로 label-input 자동 연결',
+          description: 'Field.Root로 감싸면 Field.Label과 Field.Control이 자동으로 연결되고 Field.Error가 aria-describedby로 연결됩니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Field + Input',
+        code: `import { Field } from '@base-ui/react/field'
+
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', maxWidth: 320 }}>
+      <Field.Root style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <Field.Label style={{ fontSize: 14, fontWeight: 500 }}>
+          Name <span aria-hidden>*</span>
+        </Field.Label>
+        <Field.Control
+          required
+          placeholder='Enter your name'
+          style={{
+            padding: '8px 12px',
+            borderRadius: 6,
+            border: '1px solid #d1d5db',
+            fontSize: 14,
+            width: '100%',
+            boxSizing: 'border-box' as const
+          }}
+        />
+        <Field.Error
+          match='valueMissing'
+          style={{ fontSize: 12, color: '#dc2626' }}>
+          Please enter your name.
+        </Field.Error>
+        <Field.Description style={{ fontSize: 12, color: '#6b7280' }}>Visible on your profile</Field.Description>
+      </Field.Root>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Field.Root는 하위 컨트롤에 id와 aria-labelledby를 자동으로 연결합니다.',
+        'Field.Error의 match prop은 HTML5 constraint validation API의 유효성 키를 사용합니다.',
+        'Field.Control은 Input과 동일하게 동작하며 Field 컨텍스트를 자동으로 받습니다.'
+      ]
     }
   }
 }

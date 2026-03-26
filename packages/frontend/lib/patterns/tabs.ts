@@ -322,6 +322,89 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
         '각 Tab의 id가 대응하는 TabPanel의 id와 자동으로 연결됩니다.',
         "keyboardActivation='manual'로 포커스와 활성화를 분리할 수 있습니다."
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'tabs-baseui-1',
+          title: 'Tabs.List에 aria-label 필수',
+          description: 'Tabs.List에 aria-label을 추가하여 탭 그룹의 목적을 스크린리더에 전달하세요.',
+          level: 'must'
+        },
+        {
+          id: 'tabs-baseui-2',
+          title: 'Tabs.Indicator는 Tabs.List 안에 배치',
+          description: 'Base UI의 Tabs.Indicator는 Tabs.List 내부에 위치해야 CSS 변수로 위치를 추적할 수 있습니다.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Tabs',
+        code: `import { Tabs } from '@base-ui/react/tabs'
+
+export default function App() {
+  return (
+    <Tabs.Root
+      defaultValue='overview'
+      style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem' }}>
+      <Tabs.List
+        aria-label='Content sections'
+        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16, position: 'relative' }}>
+        <Tabs.Tab
+          value='overview'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
+          Overview
+        </Tabs.Tab>
+        <Tabs.Tab
+          value='projects'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
+          Projects
+        </Tabs.Tab>
+        <Tabs.Tab
+          value='account'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
+          Account
+        </Tabs.Tab>
+        <Tabs.Indicator
+          style={{
+            position: 'absolute',
+            bottom: -2,
+            height: 2,
+            background: '#18181b',
+            left: 'var(--active-tab-left)',
+            width: 'var(--active-tab-width)',
+            transition: 'left 0.2s, width 0.2s'
+          }}
+        />
+      </Tabs.List>
+      <Tabs.Panel
+        value='overview'
+        style={{ fontSize: 14, color: '#374151' }}>
+        Overview content here.
+      </Tabs.Panel>
+      <Tabs.Panel
+        value='projects'
+        style={{ fontSize: 14, color: '#374151' }}>
+        Projects content here.
+      </Tabs.Panel>
+      <Tabs.Panel
+        value='account'
+        style={{ fontSize: 14, color: '#374151' }}>
+        Account settings here.
+      </Tabs.Panel>
+    </Tabs.Root>
+  )
+}`
+      },
+      notes: [
+        'Tabs.Root는 화살표 키, Home, End 키보드 탐색과 aria-selected를 자동으로 처리합니다.',
+        'Tabs.Indicator는 --active-tab-left, --active-tab-width CSS 변수로 위치를 추적합니다.',
+        'activateOnFocus prop을 추가하면 화살표 키 이동 시 즉시 탭이 활성화됩니다.'
+      ]
     }
   }
 }

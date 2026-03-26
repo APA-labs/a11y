@@ -178,7 +178,16 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
   <Dialog.Portal>
     <Dialog.Overlay style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} />
     <Dialog.Content
-      style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', backgroundColor: 'white', padding: 24, borderRadius: 8, minWidth: 320 }}
+      style={{
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        backgroundColor: 'white',
+        padding: 24,
+        borderRadius: 8,
+        minWidth: 320
+      }}
       onInteractOutside={(e) => e.preventDefault()}>
       <Dialog.Title>Delete File</Dialog.Title>
       <Dialog.Description>Are you sure you want to delete this file? This action cannot be undone.</Dialog.Description>
@@ -343,6 +352,85 @@ const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d
         'React Aria Modal은 포커스 트랩, aria-modal, ESC 닫기를 자동 처리합니다.',
         'isDismissable prop으로 배경 클릭 닫기를 제어할 수 있습니다.',
         "Heading의 slot='title'은 Dialog와 aria-labelledby를 자동 연결합니다."
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'dialog-baseui-1',
+          title: 'Portal + Backdrop 구조 필수',
+          description: 'Dialog.Portal과 Dialog.Backdrop을 반드시 사용하여 모달 외부 클릭 차단 및 포커스 트랩을 보장하세요.',
+          level: 'must'
+        },
+        {
+          id: 'dialog-baseui-2',
+          title: 'Dialog.Title과 Dialog.Description 제공',
+          description: 'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 자동 연결됩니다. 생략하지 마세요.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Dialog',
+        code: `import { Dialog } from '@base-ui/react/dialog'
+
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
+      <Dialog.Root>
+        <Dialog.Trigger
+          style={{
+            padding: '8px 16px',
+            borderRadius: 6,
+            border: '1px solid #d1d5db',
+            cursor: 'pointer',
+            fontSize: 14,
+            background: '#fff'
+          }}>
+          View notifications
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Backdrop style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
+          <Dialog.Popup
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%,-50%)',
+              background: '#fff',
+              borderRadius: 8,
+              padding: '1.5rem',
+              width: 320,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+              fontFamily: 'system-ui, sans-serif'
+            }}>
+            <Dialog.Title style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>Notifications</Dialog.Title>
+            <Dialog.Description style={{ margin: '0 0 16px', color: '#6b7280', fontSize: 14 }}>You are all caught up. Good job!</Dialog.Description>
+            <Dialog.Close
+              style={{
+                padding: '6px 12px',
+                borderRadius: 6,
+                border: '1px solid #d1d5db',
+                cursor: 'pointer',
+                fontSize: 14,
+                background: '#fff'
+              }}>
+              Close
+            </Dialog.Close>
+          </Dialog.Popup>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Dialog.Popup은 자동으로 포커스 트랩, Escape 키 닫기, aria-modal="true"를 처리합니다.',
+        'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 자동 연결됩니다.',
+        'Dialog.Portal은 body에 렌더링하여 z-index 충돌을 방지합니다.'
       ]
     }
   }

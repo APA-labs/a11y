@@ -263,6 +263,62 @@ function ButtonDemo() {
         'variant로 cta, primary, secondary, negative를 지정할 수 있습니다.',
         '키보드, 마우스, 터치 모두 자동으로 처리됩니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'btn-baseui-1',
+          title: '포커스 스타일 직접 지정 필요',
+          description: 'Base UI는 headless라 focus-visible 스타일을 CSS로 직접 추가해야 합니다.',
+          level: 'must'
+        },
+        {
+          id: 'btn-baseui-2',
+          title: 'focusableWhenDisabled로 포커스 유지',
+          description: '로딩 상태로 disabled 전환 시 focusableWhenDisabled prop으로 포커스를 유지하세요.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Button',
+        code: `import { useState } from 'react'
+import { Button } from '@base-ui/react/button'
+
+export default function App() {
+  const [isLoading, setIsLoading] = useState(false)
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
+      <Button
+        disabled={isLoading}
+        focusableWhenDisabled
+        aria-busy={isLoading}
+        onClick={() => setIsLoading(!isLoading)}
+        style={{
+          padding: '8px 16px',
+          borderRadius: 6,
+          border: 'none',
+          background: isLoading ? '#6b7280' : '#18181b',
+          color: '#fff',
+          cursor: isLoading ? 'not-allowed' : 'pointer',
+          minHeight: 44,
+          minWidth: 44,
+          fontSize: 14
+        }}>
+        {isLoading ? 'Saving...' : 'Save'}
+      </Button>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Base UI Button은 기본적으로 <button> 요소를 렌더링합니다.',
+        'focusableWhenDisabled prop으로 disabled 상태에서도 포커스가 유지되어 로딩 상태 UX가 개선됩니다.',
+        'render prop으로 <a> 등 다른 태그로 렌더링 시 nativeButton={false}를 명시하세요.'
+      ]
     }
   }
 }
