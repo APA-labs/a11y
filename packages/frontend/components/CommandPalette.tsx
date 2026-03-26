@@ -73,7 +73,7 @@ export default function CommandPalette({ patterns, lang, open, onClose }: Props)
 
   return (
     <div
-      className='fixed inset-0 z-50 flex items-start justify-center pt-[15vh] px-4'
+      className='fixed inset-0 z-[60] flex items-start justify-center pt-[15vh] px-4'
       onClick={onClose}
       aria-modal='true'
       role='dialog'

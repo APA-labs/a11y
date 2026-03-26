@@ -69,12 +69,17 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
             type='button'
             onClick={() => setCmdOpen(true)}
             aria-label={t.cmd.searchLabel}
-            className='flex items-center gap-2 px-3 py-1.5 text-sm text-soft hover:text-body hover:bg-mist-100 dark:hover:bg-[#1E2E40] rounded-md transition-colors border border-transparent hover:border-outline'>
-            <Search size={14} />
-            <span className='hidden sm:inline text-xs'>{t.nav.home === 'Home' ? 'Search' : '검색'}</span>
-            <kbd className='hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono bg-inset border border-outline text-faint'>
-              <span>⌘</span>K
-            </kbd>
+            className='hidden sm:flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-lg border border-outline bg-inset hover:border-violet-400 transition-colors text-faint hover:text-soft'>
+            <Search size={13} />
+            <span className='text-xs w-24 text-left'>{t.cmd.placeholder}</span>
+            <kbd className='inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono bg-surface border border-outline'>⌘K</kbd>
+          </button>
+          <button
+            type='button'
+            onClick={() => setCmdOpen(true)}
+            aria-label={t.cmd.searchLabel}
+            className='sm:hidden p-2 text-soft hover:text-body hover:bg-mist-100 dark:hover:bg-[#1E2E40] rounded-md transition-colors'>
+            <Search size={16} />
           </button>
 
           <ThemeToggle />
