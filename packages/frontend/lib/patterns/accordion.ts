@@ -275,7 +275,7 @@ export function AntAccordion() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Accordion',
-        code: `import { Accordion } from '@base-ui/react'
+        code: `import { Accordion } from '@base-ui/react/accordion'
 
 export default function App() {
   return (

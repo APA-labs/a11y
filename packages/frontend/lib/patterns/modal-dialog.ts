@@ -375,7 +375,7 @@ const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d
       codeSample: {
         language: 'tsx',
         label: 'Base UI Dialog',
-        code: `import { Dialog } from '@base-ui/react'
+        code: `import { Dialog } from '@base-ui/react/dialog'
 
 export default function App() {
   return (

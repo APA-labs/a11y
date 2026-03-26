@@ -287,7 +287,7 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
         language: 'tsx',
         label: 'Base UI Switch',
         code: `import { useState } from 'react'
-import { Switch } from '@base-ui/react'
+import { Switch } from '@base-ui/react/switch'
 
 export default function App() {
   const [checked, setChecked] = useState(false)
@@ -332,7 +332,7 @@ export default function App() {
       notes: [
         'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 반드시 버튼 요소를 사용하세요.',
         'role="switch"와 aria-checked는 자동으로 관리됩니다.',
-        'Toggle 컴포넌트(@base-ui/react)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
+        'Toggle 컴포넌트(@base-ui/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
       ]
     }
   }

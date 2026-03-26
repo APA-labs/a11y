@@ -233,7 +233,7 @@ const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
       codeSample: {
         language: 'tsx',
         label: 'Base UI Collapsible',
-        code: `import { Collapsible } from '@base-ui/react'
+        code: `import { Collapsible } from '@base-ui/react/collapsible'
 
 export default function App() {
   return (

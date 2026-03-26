@@ -286,7 +286,7 @@ function ButtonDemo() {
         language: 'tsx',
         label: 'Base UI Button',
         code: `import { useState } from 'react'
-import { Button } from '@base-ui/react'
+import { Button } from '@base-ui/react/button'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)

@@ -297,7 +297,7 @@ const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db
       codeSample: {
         language: 'tsx',
         label: 'Base UI Field + Input',
-        code: `import { Field } from '@base-ui/react'
+        code: `import { Field } from '@base-ui/react/field'
 
 export default function App() {
   return (
