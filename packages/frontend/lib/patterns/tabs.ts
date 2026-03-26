@@ -344,7 +344,7 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
       codeSample: {
         language: 'tsx',
         label: 'Base UI Tabs',
-        code: `import { Tabs } from '@base-ui/react/tabs'
+        code: `import { Tabs } from '@base-ui/react'
 
 export default function App() {
   return (

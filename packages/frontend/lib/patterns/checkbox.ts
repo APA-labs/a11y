@@ -300,7 +300,7 @@ function CheckboxDemo() {
         language: 'tsx',
         label: 'Base UI Checkbox',
         code: `import { useState } from 'react'
-import { Checkbox } from '@base-ui/react/checkbox'
+import { Checkbox } from '@base-ui/react'
 
 export default function App() {
   const [emailChecked, setEmailChecked] = useState(true)
