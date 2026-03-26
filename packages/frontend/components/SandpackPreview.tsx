@@ -199,51 +199,46 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
     )
   }
 
-  const appCode = buildAppCode(code)
+  let appCode = buildAppCode(code)
   const extraDeps = detectDeps(code)
 
-  const hasShadcn = code.includes('@/components/ui')
   const hasChakra = code.includes('@chakra-ui')
   const hasSpectrum = code.includes('react-aria-components') || code.includes('@adobe/react-spectrum')
 
-  let appCodeFinal = hasShadcn
-    ? appCode.replace(/from '@\/components\/ui\//g, "from './components/ui/").replace(/from '@\/lib\//g, "from './lib/")
-    : appCode
-
-  if (hasChakra && !appCodeFinal.includes('ChakraProvider')) {
+  if (hasChakra && !appCode.includes('ChakraProvider')) {
     const WRAPPER_DIV = `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
 
-    if (appCodeFinal.includes(WRAPPER_DIV)) {
-      appCodeFinal =
+    if (appCode.includes(WRAPPER_DIV)) {
+      appCode =
         `import { ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'\n` +
-        appCodeFinal.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </ChakraProvider>\n  )\n}`)
+        appCode.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </ChakraProvider>\n  )\n}`)
     } else {
-      appCodeFinal = appCodeFinal.replace(
+      appCode = appCode.replace(
         /import\s*\{([^}]+)\}\s*from\s*['"]@chakra-ui\/react['"]/,
         (_, named: string) => `import { ${named.trim()}, ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'`
       )
-      appCodeFinal = appCodeFinal.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<ChakraProvider value={__ds}>\n$3$4')
-      appCodeFinal = appCodeFinal.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </ChakraProvider>\n$2')
+      appCode = appCode.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<ChakraProvider value={__ds}>\n$3$4')
+      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </ChakraProvider>\n$2')
     }
   }
 
-  if (hasSpectrum && !appCodeFinal.includes('Provider')) {
+  if (hasSpectrum && !appCode.includes('Provider')) {
     const WRAPPER_DIV = `<div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>`
 
-    if (appCodeFinal.includes(WRAPPER_DIV)) {
-      appCodeFinal =
+    if (appCode.includes(WRAPPER_DIV)) {
+      appCode =
         `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` +
-        appCodeFinal
+        appCode
           .replace(WRAPPER_DIV, `<__RAProvider theme={__RATheme} locale="ko-KR">`)
           .replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </__RAProvider>\n  )\n}`)
     } else {
-      appCodeFinal = `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` + appCodeFinal
-      appCodeFinal = appCodeFinal.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<__RAProvider theme={__RATheme} locale="ko-KR">\n$3$4')
-      appCodeFinal = appCodeFinal.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </__RAProvider>\n$2')
+      appCode = `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` + appCode
+      appCode = appCode.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<__RAProvider theme={__RATheme} locale="ko-KR">\n$3$4')
+      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </__RAProvider>\n$2')
     }
   }
 
-  const sandpackFiles: Record<string, string> = { '/App.tsx': appCodeFinal }
+  const sandpackFiles: Record<string, string> = { '/App.tsx': appCode }
 
   const indexHtml = `<!DOCTYPE html>
 <html lang="ko">
