@@ -4,7 +4,6 @@ import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider }
 import { Component, useEffect, useState, type ReactNode } from 'react'
 
 import { buildAppCode } from '../lib/build-preview-code'
-import { SHADCN_FILES } from '../lib/sandpack-shadcn'
 
 class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
   state = { error: false }
@@ -100,7 +99,8 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     'tailwind-merge': '2.2.1'
   },
   '@base-ui/react': {
-    '@base-ui/react': '1.0.0'
+    // NOTES: base-ui에서 code-sandbox를 지원하지 않아 유지되지 않는 못불러오는 경우가 존재합니다.
+    '@base-ui/react': '1.3.0'
   }
 }
 
@@ -244,18 +244,6 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
   }
 
   const sandpackFiles: Record<string, string> = { '/App.tsx': appCodeFinal }
-  if (hasShadcn) {
-    Object.assign(sandpackFiles, SHADCN_FILES)
-    // Include all Radix packages needed by shadcn stubs
-    Object.assign(extraDeps, DS_DEPS['@radix-ui'], {
-      'class-variance-authority': '0.7.0',
-      clsx: '2.1.0',
-      'tailwind-merge': '2.2.1',
-      'react-hook-form': '7.51.0',
-      '@hookform/resolvers': '3.3.4',
-      zod: '3.22.4'
-    })
-  }
 
   const indexHtml = `<!DOCTYPE html>
 <html lang="ko">
