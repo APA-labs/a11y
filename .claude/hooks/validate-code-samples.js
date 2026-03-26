@@ -52,6 +52,8 @@ const KNOWN_DEPS = new Set([
   'class-variance-authority',
   'clsx',
   'tailwind-merge',
+  // Base UI
+  '@base-ui/react',
   // React built-ins (always available in sandpack react-ts template)
   'react',
   'react-dom'
