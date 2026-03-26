@@ -333,6 +333,12 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
           title: 'Tabs.List에 aria-label 필수',
           description: 'Tabs.List에 aria-label을 추가하여 탭 그룹의 목적을 스크린리더에 전달하세요.',
           level: 'must'
+        },
+        {
+          id: 'tabs-baseui-2',
+          title: 'Tabs.Indicator는 Tabs.List 안에 배치',
+          description: 'Base UI의 Tabs.Indicator는 Tabs.List 내부에 위치해야 CSS 변수로 위치를 추적할 수 있습니다.',
+          level: 'must'
         }
       ],
       codeSample: {
@@ -340,30 +346,40 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
         label: 'Base UI Tabs',
         code: `import { Tabs } from '@base-ui/react/tabs'
 
-function TabsDemo() {
+export default function App() {
   return (
     <Tabs.Root
       defaultValue='overview'
       style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem' }}>
       <Tabs.List
-        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16, position: 'relative' }}
-        aria-label='Content sections'>
+        aria-label='Content sections'
+        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16, position: 'relative' }}>
         <Tabs.Tab
           value='overview'
-          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
           Overview
         </Tabs.Tab>
         <Tabs.Tab
           value='projects'
-          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
           Projects
         </Tabs.Tab>
         <Tabs.Tab
-          value='settings'
-          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
-          Settings
+          value='account'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
+          Account
         </Tabs.Tab>
-        <Tabs.Indicator style={{ position: 'absolute', bottom: -2, height: 2, background: '#18181b', transition: 'left 0.2s, width 0.2s' }} />
+        <Tabs.Indicator
+          style={{
+            position: 'absolute',
+            bottom: -2,
+            height: 2,
+            background: '#18181b',
+            left: 'var(--active-tab-left)',
+            width: 'var(--active-tab-width)',
+            transition: 'left 0.2s, width 0.2s'
+          }}
+        />
       </Tabs.List>
       <Tabs.Panel
         value='overview'
@@ -376,18 +392,18 @@ function TabsDemo() {
         Projects content here.
       </Tabs.Panel>
       <Tabs.Panel
-        value='settings'
+        value='account'
         style={{ fontSize: 14, color: '#374151' }}>
-        Settings content here.
+        Account settings here.
       </Tabs.Panel>
     </Tabs.Root>
   )
 }`
       },
       notes: [
-        'Tabs.Root의 defaultValue로 초기 선택 탭을 지정하세요.',
-        'Tabs.Tab의 value가 Tabs.Panel의 value와 일치해야 합니다.',
-        '키보드 탐색(화살표 키)이 자동으로 지원됩니다.'
+        'Tabs.Root는 화살표 키, Home, End 키보드 탐색과 aria-selected를 자동으로 처리합니다.',
+        'Tabs.Indicator는 --active-tab-left, --active-tab-width CSS 변수로 위치를 추적합니다.',
+        'activateOnFocus prop을 추가하면 화살표 키 이동 시 즉시 탭이 활성화됩니다.'
       ]
     }
   }

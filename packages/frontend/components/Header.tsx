@@ -1,10 +1,11 @@
 'use client'
 
-import { Github, Menu, MousePointer2, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { Github, Menu, MousePointer2, Search, ShieldCheck, Sparkles, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import CommandPalette from './CommandPalette'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 import { getTranslations } from '../lib/i18n'
@@ -15,9 +16,21 @@ import type { Lang } from '../lib/i18n'
 
 export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [cmdOpen, setCmdOpen] = useState(false)
   const pathname = usePathname()
   const t = getTranslations(lang)
   const patterns = getPatterns(lang)
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setCmdOpen((v) => !v)
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
 
   useEffect(() => {
     setDrawerOpen(false)
@@ -51,6 +64,18 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
             className='hidden sm:flex px-3 py-1.5 text-sm text-soft hover:text-navy hover:bg-mist-100 dark:hover:bg-[#1E2E40] dark:hover:text-white rounded-md transition-colors'>
             {t.nav.home}
           </Link>
+
+          <button
+            type='button'
+            onClick={() => setCmdOpen(true)}
+            aria-label={t.cmd.searchLabel}
+            className='flex items-center gap-2 px-3 py-1.5 text-sm text-soft hover:text-body hover:bg-mist-100 dark:hover:bg-[#1E2E40] rounded-md transition-colors border border-transparent hover:border-outline'>
+            <Search size={14} />
+            <span className='hidden sm:inline text-xs'>{t.nav.home === 'Home' ? 'Search' : '검색'}</span>
+            <kbd className='hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono bg-inset border border-outline text-faint'>
+              <span>⌘</span>K
+            </kbd>
+          </button>
 
           <ThemeToggle />
           <LanguageSwitcher currentLang={lang} />
@@ -162,6 +187,13 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
           )}
         </div>
       </nav>
+
+      <CommandPalette
+        patterns={patterns}
+        lang={lang}
+        open={cmdOpen}
+        onClose={() => setCmdOpen(false)}
+      />
     </>
   )
 }

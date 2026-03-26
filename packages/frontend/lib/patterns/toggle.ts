@@ -272,35 +272,56 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
       additionalChecks: [
         {
           id: 'toggle-baseui-1',
-          title: 'Switch.Thumb 시각적 위치 CSS 필수',
-          description: 'Base UI Switch는 스타일이 없으므로 checked 상태에 따른 Thumb 위치를 CSS로 직접 구현해야 합니다.',
+          title: 'Switch.Root에 render={<button />} 필수',
+          description: 'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 시맨틱 버튼 요소를 사용해야 합니다.',
+          level: 'must'
+        },
+        {
+          id: 'toggle-baseui-2',
+          title: 'Thumb 위치 CSS 직접 구현',
+          description: 'Base UI Switch는 스타일이 없으므로 checked 상태에 따른 Thumb translateX를 CSS로 직접 구현해야 합니다.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Base UI Switch',
-        code: `import { Switch } from '@base-ui/react/switch'
+        code: `import { useState } from 'react'
+import { Switch } from '@base-ui/react/switch'
 
-function ToggleDemo() {
+export default function App() {
+  const [checked, setChecked] = useState(false)
   return (
     <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
       <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
         <Switch.Root
-          defaultChecked
-          nativeButton
+          checked={checked}
+          onCheckedChange={setChecked}
           render={<button />}
           style={{
-            width: 40,
-            height: 22,
-            borderRadius: 11,
-            background: '#18181b',
+            width: 44,
+            height: 24,
+            borderRadius: 12,
+            background: checked ? '#18181b' : '#d1d5db',
             border: 'none',
             cursor: 'pointer',
             padding: 2,
-            display: 'inline-flex'
+            display: 'inline-flex',
+            alignItems: 'center',
+            transition: 'background 0.2s'
           }}>
-          <Switch.Thumb style={{ width: 18, height: 18, borderRadius: 9, background: '#fff', display: 'block', transition: 'transform 0.2s' }} />
+          <Switch.Thumb
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              background: '#fff',
+              display: 'block',
+              transform: checked ? 'translateX(20px)' : 'translateX(0)',
+              transition: 'transform 0.2s',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+            }}
+          />
         </Switch.Root>
         Enable notifications
       </label>
@@ -309,8 +330,8 @@ function ToggleDemo() {
 }`
       },
       notes: [
-        'Switch.Root는 기본적으로 <span>을 렌더링합니다. nativeButton + render={<button />}으로 시맨틱 버튼을 사용하세요.',
-        'checked/defaultChecked prop으로 제어/비제어 모드를 선택할 수 있습니다.',
+        'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 반드시 버튼 요소를 사용하세요.',
+        'role="switch"와 aria-checked는 자동으로 관리됩니다.',
         'Toggle 컴포넌트(@base-ui/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
       ]
     }

@@ -53,6 +53,16 @@ export const ko = {
   analyze: {
     title: 'AI 접근성 분석',
     subtitle: '컴포넌트를 설명하면 Claude가 WCAG 2.1 AA 기준에 따라 체크리스트, 코드 샘플, 테스트 절차를 생성합니다.'
+  },
+  cmd: {
+    title: '패턴 검색',
+    placeholder: '패턴 검색...',
+    noResults: '검색 결과가 없습니다.',
+    hintNavigate: '이동',
+    hintOpen: '열기',
+    hintClose: '닫기',
+    totalPatterns: '개 패턴',
+    searchLabel: '패턴 검색 (⌘K)'
   }
 }
 

@@ -252,6 +252,12 @@ const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', bo
           title: 'Tooltip.Provider 루트에 배치',
           description: 'Tooltip.Provider를 앱 루트에 배치하면 여러 툴팁의 딜레이를 일관되게 관리할 수 있습니다.',
           level: 'should'
+        },
+        {
+          id: 'tooltip-baseui-2',
+          title: 'Trigger에 aria-label 필수',
+          description: '툴팁은 시각적 보조일 뿐 접근 가능한 이름을 대체하지 않습니다. 트리거에 반드시 aria-label을 제공하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
@@ -259,18 +265,35 @@ const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', bo
         label: 'Base UI Tooltip',
         code: `import { Tooltip } from '@base-ui/react/tooltip'
 
-function TooltipDemo() {
+export default function App() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
-      <Tooltip.Provider>
+      <Tooltip.Provider delay={300}>
         <Tooltip.Root>
-          <Tooltip.Trigger style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer', fontSize: 14 }}>
-            Hover me
+          <Tooltip.Trigger
+            aria-label='Bold'
+            style={{
+              padding: '6px 10px',
+              borderRadius: 6,
+              border: '1px solid #d1d5db',
+              cursor: 'pointer',
+              fontSize: 14,
+              background: '#fff',
+              fontWeight: 700
+            }}>
+            B
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Positioner sideOffset={8}>
-              <Tooltip.Popup style={{ background: '#18181b', color: '#fff', padding: '4px 8px', borderRadius: 4, fontSize: 12 }}>
-                This is a tooltip
+              <Tooltip.Popup
+                style={{
+                  background: '#18181b',
+                  color: '#fff',
+                  padding: '4px 8px',
+                  borderRadius: 4,
+                  fontSize: 12
+                }}>
+                Bold
               </Tooltip.Popup>
             </Tooltip.Positioner>
           </Tooltip.Portal>
@@ -281,9 +304,9 @@ function TooltipDemo() {
 }`
       },
       notes: [
-        'Tooltip.Portal로 body에 렌더링하여 overflow: hidden 문제를 방지하세요.',
-        'Tooltip.Positioner의 sideOffset으로 트리거와의 간격을 조정합니다.',
-        'Tooltip은 포커스/호버 시 자동으로 표시되며 Escape 키로 닫힙니다.'
+        'Tooltip은 포커스/호버 시 자동으로 표시되며 Escape 키로 닫힙니다.',
+        'Base UI Tooltip은 시각적 보조 요소로 aria-describedby를 자동 연결하지 않습니다. 트리거에 aria-label을 직접 제공하세요.',
+        'Tooltip.Portal로 body에 렌더링하여 overflow: hidden 문제를 방지하세요.'
       ]
     }
   }

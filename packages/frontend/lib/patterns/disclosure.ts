@@ -217,6 +217,70 @@ const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
         "DisclosureHeader의 Button에 slot='trigger'를 반드시 지정하세요.",
         'defaultExpanded prop으로 초기 열림 상태를 설정할 수 있습니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'disclosure-baseui-1',
+          title: 'Collapsible.Trigger는 aria-expanded 자동 관리',
+          description: 'Base UI Collapsible.Trigger는 열림/닫힘 상태에 따라 aria-expanded를 자동으로 설정합니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Collapsible',
+        code: `import { Collapsible } from '@base-ui/react/collapsible'
+
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', maxWidth: 360 }}>
+      <Collapsible.Root>
+        <Collapsible.Trigger
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            width: '100%',
+            padding: '10px 14px',
+            background: 'none',
+            border: '1px solid #e5e7eb',
+            borderRadius: 6,
+            cursor: 'pointer',
+            fontSize: 14,
+            fontWeight: 600,
+            textAlign: 'left'
+          }}>
+          <span aria-hidden>▶</span>
+          Recovery keys
+        </Collapsible.Trigger>
+        <Collapsible.Panel
+          style={{
+            padding: '10px 14px',
+            fontSize: 14,
+            color: '#374151',
+            background: '#f9fafb',
+            borderRadius: '0 0 6px 6px',
+            border: '1px solid #e5e7eb',
+            borderTop: 'none'
+          }}>
+          <div>alien-bean-pasta</div>
+          <div>wild-irish-burrito</div>
+          <div>horse-battery-staple</div>
+        </Collapsible.Panel>
+      </Collapsible.Root>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Collapsible.Trigger는 aria-expanded와 aria-controls를 자동으로 관리합니다.',
+        'defaultOpen prop으로 초기 열림 상태를 지정하거나 open/onOpenChange로 제어 모드로 사용하세요.',
+        'hiddenUntilFound prop을 사용하면 브라우저 내 검색(Ctrl+F)에서 숨겨진 패널 내용도 찾을 수 있습니다.'
+      ]
     }
   }
 }

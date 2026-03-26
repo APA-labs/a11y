@@ -364,6 +364,12 @@ const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d
           title: 'Portal + Backdrop 구조 필수',
           description: 'Dialog.Portal과 Dialog.Backdrop을 반드시 사용하여 모달 외부 클릭 차단 및 포커스 트랩을 보장하세요.',
           level: 'must'
+        },
+        {
+          id: 'dialog-baseui-2',
+          title: 'Dialog.Title과 Dialog.Description 제공',
+          description: 'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 자동 연결됩니다. 생략하지 마세요.',
+          level: 'must'
         }
       ],
       codeSample: {
@@ -371,13 +377,23 @@ const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d
         label: 'Base UI Dialog',
         code: `import { Dialog } from '@base-ui/react/dialog'
 
-function DialogDemo() {
+export default function App() {
   return (
     <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
       <Dialog.Root>
-        <Dialog.Trigger style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}>Open Dialog</Dialog.Trigger>
+        <Dialog.Trigger
+          style={{
+            padding: '8px 16px',
+            borderRadius: 6,
+            border: '1px solid #d1d5db',
+            cursor: 'pointer',
+            fontSize: 14,
+            background: '#fff'
+          }}>
+          View notifications
+        </Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Backdrop style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
+          <Dialog.Backdrop style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
           <Dialog.Popup
             style={{
               position: 'fixed',
@@ -388,11 +404,22 @@ function DialogDemo() {
               borderRadius: 8,
               padding: '1.5rem',
               width: 320,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+              fontFamily: 'system-ui, sans-serif'
             }}>
             <Dialog.Title style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>Notifications</Dialog.Title>
             <Dialog.Description style={{ margin: '0 0 16px', color: '#6b7280', fontSize: 14 }}>You are all caught up. Good job!</Dialog.Description>
-            <Dialog.Close style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}>Close</Dialog.Close>
+            <Dialog.Close
+              style={{
+                padding: '6px 12px',
+                borderRadius: 6,
+                border: '1px solid #d1d5db',
+                cursor: 'pointer',
+                fontSize: 14,
+                background: '#fff'
+              }}>
+              Close
+            </Dialog.Close>
           </Dialog.Popup>
         </Dialog.Portal>
       </Dialog.Root>
@@ -401,9 +428,9 @@ function DialogDemo() {
 }`
       },
       notes: [
-        'Dialog.Root가 열림 상태를 자동 관리합니다.',
-        'Dialog.Portal은 body에 렌더링하여 z-index 충돌을 방지합니다.',
-        'Dialog.Popup은 자동으로 포커스 트랩과 Escape 키 닫기를 처리합니다.'
+        'Dialog.Popup은 자동으로 포커스 트랩, Escape 키 닫기, aria-modal="true"를 처리합니다.',
+        'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 자동 연결됩니다.',
+        'Dialog.Portal은 body에 렌더링하여 z-index 충돌을 방지합니다.'
       ]
     }
   }

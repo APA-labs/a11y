@@ -262,8 +262,14 @@ export function AntAccordion() {
         {
           id: 'accordion-baseui-1',
           title: 'Accordion.Header 사용 필수',
-          description: 'Accordion.Header는 heading 요소로 렌더링되어 페이지 구조를 스크린리더에 전달합니다. 생략하지 마세요.',
+          description: 'Accordion.Header는 기본적으로 <h3>를 렌더링하여 페이지 문서 구조를 스크린리더에 전달합니다. 생략하지 마세요.',
           level: 'must'
+        },
+        {
+          id: 'accordion-baseui-2',
+          title: 'multiple prop으로 다중 열기 제어',
+          description: 'Accordion.Root에 multiple prop을 추가하면 여러 패널을 동시에 열 수 있습니다. 기본은 단일 열기입니다.',
+          level: 'should'
         }
       ],
       codeSample: {
@@ -271,11 +277,11 @@ export function AntAccordion() {
         label: 'Base UI Accordion',
         code: `import { Accordion } from '@base-ui/react/accordion'
 
-function AccordionDemo() {
+export default function App() {
   return (
     <Accordion.Root style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem', maxWidth: 400 }}>
       <Accordion.Item style={{ borderBottom: '1px solid #e5e7eb' }}>
-        <Accordion.Header>
+        <Accordion.Header style={{ margin: 0 }}>
           <Accordion.Trigger
             style={{
               width: '100%',
@@ -285,17 +291,21 @@ function AccordionDemo() {
               cursor: 'pointer',
               textAlign: 'left',
               fontSize: 14,
-              fontWeight: 500
+              fontWeight: 500,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}>
             What is Base UI?
+            <span aria-hidden>+</span>
           </Accordion.Trigger>
         </Accordion.Header>
-        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280' }}>
-          Base UI is a library of high-quality unstyled React components.
+        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>
+          Base UI is a library of high-quality unstyled React components for design systems and web apps.
         </Accordion.Panel>
       </Accordion.Item>
       <Accordion.Item style={{ borderBottom: '1px solid #e5e7eb' }}>
-        <Accordion.Header>
+        <Accordion.Header style={{ margin: 0 }}>
           <Accordion.Trigger
             style={{
               width: '100%',
@@ -305,12 +315,16 @@ function AccordionDemo() {
               cursor: 'pointer',
               textAlign: 'left',
               fontSize: 14,
-              fontWeight: 500
+              fontWeight: 500,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}>
             Is it accessible?
+            <span aria-hidden>+</span>
           </Accordion.Trigger>
         </Accordion.Header>
-        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280' }}>
+        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>
           Yes, all components follow WAI-ARIA patterns out of the box.
         </Accordion.Panel>
       </Accordion.Item>
@@ -319,9 +333,9 @@ function AccordionDemo() {
 }`
       },
       notes: [
-        'Accordion.Root에 multiple prop이 없으면 기본적으로 여러 항목을 동시에 열 수 있습니다.',
-        'Accordion.Trigger는 자동으로 aria-expanded를 관리합니다.',
-        'hiddenUntilFound prop을 사용하면 브라우저 내 검색(Ctrl+F)에서 숨겨진 패널 내용도 찾을 수 있습니다.'
+        'Accordion.Header는 기본적으로 <h3>를 렌더링합니다. render prop으로 레벨을 변경할 수 있습니다.',
+        'Accordion.Trigger는 aria-expanded를 자동으로 관리합니다.',
+        'multiple prop을 추가하면 여러 패널을 동시에 열 수 있습니다. 기본값은 false(단일 열기)입니다.'
       ]
     }
   }

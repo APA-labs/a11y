@@ -55,5 +55,15 @@ export const en: Translations = {
   analyze: {
     title: 'AI Accessibility Analysis',
     subtitle: 'Describe a component and Claude will generate a checklist, code samples, and test procedures based on WCAG 2.1 AA.'
+  },
+  cmd: {
+    title: 'Search patterns',
+    placeholder: 'Search patterns...',
+    noResults: 'No patterns found.',
+    hintNavigate: 'navigate',
+    hintOpen: 'open',
+    hintClose: 'close',
+    totalPatterns: 'patterns',
+    searchLabel: 'Search patterns (⌘K)'
   }
 }
