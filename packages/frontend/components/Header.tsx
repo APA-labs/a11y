@@ -61,7 +61,7 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
             type='button'
             onClick={() => setCmdOpen(true)}
             aria-label={t.cmd.searchLabel}
-            className='hidden sm:flex items-center gap-2 w-full max-w-xs pl-3 pr-2 py-1.5 rounded-lg border border-outline bg-inset hover:border-violet-400 transition-colors text-faint hover:text-soft'>
+            className='hidden sm:flex items-center gap-2 w-full max-w-xs pl-3 pr-2 py-1.5 rounded-lg border border-outline bg-surface hover:border-violet-400 transition-colors text-soft hover:text-body cursor-pointer'>
             <Search
               size={13}
               className='shrink-0'
