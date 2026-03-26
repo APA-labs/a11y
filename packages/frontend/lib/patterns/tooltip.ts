@@ -263,7 +263,9 @@ const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', bo
       codeSample: {
         language: 'tsx',
         label: 'Base UI Tooltip',
-        code: `import { Tooltip } from '@base-ui/react/tooltip'
+        preview: false,
+        code: `// NOTE: Sandpack preview is not supported for this sample. (Code only)
+import { Tooltip } from '@base-ui/react/tooltip'
 
 export default function App() {
   return (

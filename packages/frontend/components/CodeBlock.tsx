@@ -26,7 +26,7 @@ const T = {
 export default function CodeBlock({ sample, lang = 'ko' }: { sample: CodeSample; lang?: Lang }) {
   const t = T[lang]
   const [copied, setCopied] = useState(false)
-  const canPreview = ['tsx', 'jsx', 'ts', 'js', 'html'].includes(sample.language)
+  const canPreview = sample.preview ?? ['tsx', 'jsx', 'ts', 'js', 'html'].includes(sample.language)
   const [tab, setTab] = useState<'code' | 'preview'>(canPreview ? 'preview' : 'code')
 
   const handleCopy = async () => {
@@ -97,7 +97,7 @@ export default function CodeBlock({ sample, lang = 'ko' }: { sample: CodeSample;
       </div>
 
       {/* Content */}
-      {tab === 'code' ? (
+      {tab === 'code' || !canPreview ? (
         <pre className='overflow-x-auto p-4 text-sm leading-relaxed scrollbar-thin bg-[#f8f9fc] dark:bg-navy-900 rounded-b-xl'>
           <code className='text-slate-700 dark:text-slate-200 font-mono whitespace-pre'>{sample.code}</code>
         </pre>

@@ -286,7 +286,9 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
       codeSample: {
         language: 'tsx',
         label: 'Base UI Switch',
-        code: `import { useState } from 'react'
+        preview: false,
+        code: `// NOTE: Sandpack preview is not supported for this sample. (Code only)
+import { useState } from 'react'
 import { Switch } from '@base-ui/react/switch'
 
 export default function App() {

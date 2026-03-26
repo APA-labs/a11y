@@ -9,6 +9,7 @@ export interface CodeSample {
   language: string
   label: string
   code: string
+  preview?: boolean
 }
 
 export type DesignSystemId = 'material' | 'radix' | 'antd' | 'chakra' | 'spectrum' | 'baseui'
