@@ -92,6 +92,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Set initial/controlled state with defaultExpandedKeys/expandedKeys.',
           'Use allowsMultipleExpanded to permit multiple items to be open.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Accordion.Header is required',
+            description: 'Accordion.Header renders as a heading element, preserving document structure for screen readers. Do not omit it.'
+          }
+        ],
+        notes: [
+          'Set openMultiple={false} on Accordion.Root to allow only one item open at a time.',
+          'Accordion.Trigger manages aria-expanded automatically.',
+          'Accordion.Panel handles its hidden state via aria-hidden.'
+        ]
       }
     }
   },
@@ -367,6 +380,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Use variant to specify cta, primary, secondary, or negative.',
           'Keyboard, mouse, and touch interactions are all handled automatically.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Focus styles must be added manually',
+            description: 'Base UI is headless, so focus-visible styles must be applied via CSS directly.'
+          }
+        ],
+        notes: [
+          'Base UI Button renders a native <button> element by default.',
+          'Styles must be applied via className or the style prop.',
+          'The render prop enables full rendering control.'
+        ]
       }
     }
   },
@@ -449,6 +475,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Spectrum Checkbox automatically handles keyboard, mouse, and touch accessibility.',
           'The isIndeterminate prop supports partial selection state.',
           'Use validationState="invalid" to represent an error state.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Checkbox.Indicator must have a visual checkmark',
+            description: 'Base UI Checkbox is unstyled; always add a check icon inside Checkbox.Indicator.'
+          }
+        ],
+        notes: [
+          'Checkbox.Root renders a <button role="checkbox"> by default.',
+          'Checkbox.Indicator only renders when the checkbox is checked.',
+          'Use CheckboxGroup to manage multiple checkboxes as a group.'
         ]
       }
     }
@@ -1016,6 +1055,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Control background click to close behavior with the isDismissable prop.',
           'Heading with slot="title" is automatically connected to the Dialog via aria-labelledby.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Portal + Backdrop structure is required',
+            description: 'Always use Dialog.Portal and Dialog.Backdrop to block outside clicks and ensure focus trapping.'
+          }
+        ],
+        notes: [
+          'Dialog.Root manages open/close state automatically.',
+          'Dialog.Portal renders into the document body to prevent z-index conflicts.',
+          'Dialog.Popup handles focus trapping and Escape key dismissal automatically.'
+        ]
       }
     }
   },
@@ -1535,6 +1587,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Each Tab id is automatically linked to the corresponding TabPanel id.',
           "Use keyboardActivation='manual' to separate focus and activation."
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'aria-label on Tabs.List is required',
+            description: 'Add an aria-label to Tabs.List to communicate the purpose of the tab group to screen readers.'
+          }
+        ],
+        notes: [
+          'Use defaultValue on Tabs.Root to set the initially selected tab.',
+          'The value on Tabs.Tab must match the value on the corresponding Tabs.Panel.',
+          'Keyboard navigation (arrow keys) is supported automatically.'
+        ]
       }
     }
   },
@@ -1637,6 +1702,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'isRequired="true" automatically applies aria-required.',
           'FieldError is automatically connected via aria-describedby when validation fails.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Use the Field component for best accessibility',
+            description: 'Wrapping with Field.Root from @base-ui/react/field provides automatic label-input association and error message wiring.'
+          }
+        ],
+        notes: [
+          'Base UI Input renders a native <input> element.',
+          'Combining Field.Root + Field.Label + Field.Control strengthens form accessibility.',
+          'Field.Error automatically links validation messages to the input.'
+        ]
       }
     }
   },
@@ -1724,6 +1802,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Provide the label text directly as children.',
           'Use isSelected/onChange for controlled component mode.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Switch.Thumb position must be styled with CSS',
+            description: 'Base UI Switch is unstyled; implement the Thumb position for checked/unchecked states via CSS.'
+          }
+        ],
+        notes: [
+          'Switch.Root manages role="switch" and aria-checked automatically.',
+          'Use checked/defaultChecked props for controlled/uncontrolled mode.',
+          'Use the Toggle component (@base-ui/react/toggle) for aria-pressed toggle buttons instead.'
+        ]
       }
     }
   },
@@ -1802,6 +1893,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Aria TooltipTrigger handles hover, focus, and keyboard interactions.',
           'Set display delay with the delay prop (default 1200ms).',
           'Tooltip is automatically connected to the trigger via aria-describedby.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Place Tooltip.Provider at the root',
+            description: 'Placing Tooltip.Provider at the app root centralizes delay management across all tooltips.'
+          }
+        ],
+        notes: [
+          'Use Tooltip.Portal to render into the body and avoid overflow:hidden clipping issues.',
+          'Adjust the gap between tooltip and trigger with Tooltip.Positioner sideOffset.',
+          'Tooltips appear on focus/hover automatically and close on Escape.'
         ]
       }
     }
