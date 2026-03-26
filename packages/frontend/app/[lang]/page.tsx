@@ -3,7 +3,6 @@ export const dynamic = 'force-static'
 import { Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
-import DSLegendFloat from '../../components/DSLegendFloat'
 import PatternGrid from '../../components/PatternGrid'
 import { getTranslations, SUPPORTED_LANGS } from '../../lib/i18n'
 import { getPatterns } from '../../lib/patterns'
@@ -64,7 +63,6 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
         patterns={patterns}
         lang={lang}
       />
-      <DSLegendFloat />
     </div>
   )
 }

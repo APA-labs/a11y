@@ -98,9 +98,6 @@ export default function CommandPalette({ patterns, lang, open, onClose }: Props)
             className='flex-1 bg-transparent text-sm text-body placeholder:text-faint outline-none'
             autoComplete='off'
           />
-          <kbd className='hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono text-faint bg-inset border border-outline'>
-            esc
-          </kbd>
         </div>
 
         <ul
