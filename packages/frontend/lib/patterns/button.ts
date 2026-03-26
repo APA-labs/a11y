@@ -305,7 +305,7 @@ function ButtonDemo() {
       notes: [
         'Base UI Button은 기본적으로 <button> 요소를 렌더링합니다.',
         '스타일은 className 또는 style prop으로 직접 지정해야 합니다.',
-        'render prop으로 완전한 렌더링 제어가 가능합니다.'
+        'focusableWhenDisabled prop으로 disabled 시에도 포커스가 가능하게 할 수 있습니다.'
       ]
     }
   }

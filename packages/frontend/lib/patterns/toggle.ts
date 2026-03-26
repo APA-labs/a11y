@@ -288,7 +288,18 @@ function ToggleDemo() {
       <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
         <Switch.Root
           defaultChecked
-          style={{ width: 40, height: 22, borderRadius: 11, background: '#18181b', border: 'none', cursor: 'pointer', padding: 2 }}>
+          nativeButton
+          render={<button />}
+          style={{
+            width: 40,
+            height: 22,
+            borderRadius: 11,
+            background: '#18181b',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 2,
+            display: 'inline-flex'
+          }}>
           <Switch.Thumb style={{ width: 18, height: 18, borderRadius: 9, background: '#fff', display: 'block', transition: 'transform 0.2s' }} />
         </Switch.Root>
         Enable notifications
@@ -298,7 +309,7 @@ function ToggleDemo() {
 }`
       },
       notes: [
-        'Switch.Root는 role="switch"와 aria-checked를 자동으로 관리합니다.',
+        'Switch.Root는 기본적으로 <span>을 렌더링합니다. nativeButton + render={<button />}으로 시맨틱 버튼을 사용하세요.',
         'checked/defaultChecked prop으로 제어/비제어 모드를 선택할 수 있습니다.',
         'Toggle 컴포넌트(@base-ui/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
       ]

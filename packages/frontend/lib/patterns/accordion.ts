@@ -319,9 +319,9 @@ function AccordionDemo() {
 }`
       },
       notes: [
-        'Accordion.Root에 openMultiple={false}를 설정하면 하나만 열리는 아코디언이 됩니다.',
+        'Accordion.Root에 multiple prop이 없으면 기본적으로 여러 항목을 동시에 열 수 있습니다.',
         'Accordion.Trigger는 자동으로 aria-expanded를 관리합니다.',
-        'Accordion.Panel은 aria-hidden으로 숨겨진 상태를 처리합니다.'
+        'hiddenUntilFound prop을 사용하면 브라우저 내 검색(Ctrl+F)에서 숨겨진 패널 내용도 찾을 수 있습니다.'
       ]
     }
   }

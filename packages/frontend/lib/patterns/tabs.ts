@@ -346,7 +346,7 @@ function TabsDemo() {
       defaultValue='overview'
       style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem' }}>
       <Tabs.List
-        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16 }}
+        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16, position: 'relative' }}
         aria-label='Content sections'>
         <Tabs.Tab
           value='overview'
@@ -363,6 +363,7 @@ function TabsDemo() {
           style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
           Settings
         </Tabs.Tab>
+        <Tabs.Indicator style={{ position: 'absolute', bottom: -2, height: 2, background: '#18181b', transition: 'left 0.2s, width 0.2s' }} />
       </Tabs.List>
       <Tabs.Panel
         value='overview'

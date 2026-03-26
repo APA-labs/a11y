@@ -101,9 +101,9 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'Set openMultiple={false} on Accordion.Root to allow only one item open at a time.',
+          'Without the multiple prop, Accordion.Root allows multiple items to be open simultaneously by default.',
           'Accordion.Trigger manages aria-expanded automatically.',
-          'Accordion.Panel handles its hidden state via aria-hidden.'
+          'Use the hiddenUntilFound prop to make hidden panel content findable via browser search (Ctrl+F).'
         ]
       }
     }
@@ -391,7 +391,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         notes: [
           'Base UI Button renders a native <button> element by default.',
           'Styles must be applied via className or the style prop.',
-          'The render prop enables full rendering control.'
+          'The focusableWhenDisabled prop keeps the button focusable even when disabled.'
         ]
       }
     }
@@ -1811,7 +1811,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'Switch.Root manages role="switch" and aria-checked automatically.',
+          'Switch.Root renders a <span> by default. Use nativeButton + render={<button />} for semantic button markup.',
           'Use checked/defaultChecked props for controlled/uncontrolled mode.',
           'Use the Toggle component (@base-ui/react/toggle) for aria-pressed toggle buttons instead.'
         ]
