@@ -281,6 +281,46 @@ const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db
         'isRequired prop이 true면 aria-required가 자동 적용됩니다.',
         'FieldError는 validation 실패 시 자동으로 aria-describedby로 연결됩니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'input-baseui-1',
+          title: 'Field 컴포넌트 활용 권장',
+          description: '@base-ui/react/field의 Field.Root로 감싸면 label-input 연결, 에러 메시지 자동화가 제공됩니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Input',
+        code: `import { Input } from '@base-ui/react/input'
+
+function TextInputDemo() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', maxWidth: 320 }}>
+      <label
+        htmlFor='name-input'
+        style={{ display: 'block', marginBottom: 4, fontSize: 14, fontWeight: 500 }}>
+        Name
+      </label>
+      <Input
+        id='name-input'
+        placeholder='Enter your name'
+        style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid #d1d5db', fontSize: 14, width: '100%', boxSizing: 'border-box' }}
+      />
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Base UI Input은 <input> 요소를 렌더링합니다.',
+        'Field.Root + Field.Label + Field.Control 조합으로 폼 접근성을 강화할 수 있습니다.',
+        'Field.Error 컴포넌트로 유효성 검사 메시지를 자동 연결할 수 있습니다.'
+      ]
     }
   }
 }

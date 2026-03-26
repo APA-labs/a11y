@@ -263,6 +263,50 @@ function ButtonDemo() {
         'variant로 cta, primary, secondary, negative를 지정할 수 있습니다.',
         '키보드, 마우스, 터치 모두 자동으로 처리됩니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'btn-baseui-1',
+          title: '포커스 스타일 직접 지정 필요',
+          description: 'Base UI는 headless라 focus-visible 스타일을 CSS로 직접 추가해야 합니다.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Button',
+        code: `import { Button } from '@base-ui/react/button'
+
+function ButtonDemo() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
+      <Button
+        style={{
+          padding: '8px 16px',
+          borderRadius: 6,
+          border: 'none',
+          background: '#18181b',
+          color: '#fff',
+          cursor: 'pointer',
+          minHeight: 44,
+          minWidth: 44,
+          fontSize: 14
+        }}>
+        Save
+      </Button>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Base UI Button은 기본적으로 <button> 요소를 렌더링합니다.',
+        '스타일은 className 또는 style prop으로 직접 지정해야 합니다.',
+        'render prop으로 완전한 렌더링 제어가 가능합니다.'
+      ]
     }
   }
 }

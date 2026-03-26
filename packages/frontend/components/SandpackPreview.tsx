@@ -98,6 +98,9 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     'class-variance-authority': '0.7.0',
     clsx: '2.1.0',
     'tailwind-merge': '2.2.1'
+  },
+  '@base-ui/react': {
+    '@base-ui/react': '1.0.0'
   }
 }
 

@@ -241,6 +241,50 @@ const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', bo
         'delay prop으로 표시 딜레이를 설정하세요 (기본 1200ms).',
         'Tooltip은 자동으로 aria-describedby로 트리거에 연결됩니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'tooltip-baseui-1',
+          title: 'Tooltip.Provider 루트에 배치',
+          description: 'Tooltip.Provider를 앱 루트에 배치하면 여러 툴팁의 딜레이를 일관되게 관리할 수 있습니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Tooltip',
+        code: `import { Tooltip } from '@base-ui/react/tooltip'
+
+function TooltipDemo() {
+  return (
+    <div style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer', fontSize: 14 }}>
+            Hover me
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Positioner sideOffset={8}>
+              <Tooltip.Popup style={{ background: '#18181b', color: '#fff', padding: '4px 8px', borderRadius: 4, fontSize: 12 }}>
+                This is a tooltip
+              </Tooltip.Popup>
+            </Tooltip.Positioner>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Tooltip.Portal로 body에 렌더링하여 overflow: hidden 문제를 방지하세요.',
+        'Tooltip.Positioner의 sideOffset으로 트리거와의 간격을 조정합니다.',
+        'Tooltip은 포커스/호버 시 자동으로 표시되며 Escape 키로 닫힙니다.'
+      ]
     }
   }
 }

@@ -136,16 +136,27 @@ export const togglePattern: Pattern = {
     checked={isEnabled}
     onCheckedChange={setIsEnabled}
     style={{
-      width: 44, height: 24, borderRadius: 9999, border: 'none', padding: 2,
+      width: 44,
+      height: 24,
+      borderRadius: 9999,
+      border: 'none',
+      padding: 2,
       backgroundColor: isEnabled ? '#2563eb' : '#e5e7eb',
-      transition: 'background-color 0.2s', cursor: 'pointer'
+      transition: 'background-color 0.2s',
+      cursor: 'pointer'
     }}>
-    <Switch.Thumb style={{
-      display: 'block', width: 20, height: 20, borderRadius: 9999,
-      backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-      transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
-      transition: 'transform 0.2s'
-    }} />
+    <Switch.Thumb
+      style={{
+        display: 'block',
+        width: 20,
+        height: 20,
+        borderRadius: 9999,
+        backgroundColor: 'white',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+        transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
+        transition: 'transform 0.2s'
+      }}
+    />
   </Switch.Root>
 </div>`
       },
@@ -252,6 +263,44 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
         "React Aria Switch는 role='switch', aria-checked, 키보드 지원을 모두 자동 처리합니다.",
         'children으로 레이블 텍스트를 직접 제공하세요.',
         'isSelected/onChange로 제어 컴포넌트로 사용 가능합니다.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'toggle-baseui-1',
+          title: 'Switch.Thumb 시각적 위치 CSS 필수',
+          description: 'Base UI Switch는 스타일이 없으므로 checked 상태에 따른 Thumb 위치를 CSS로 직접 구현해야 합니다.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Switch',
+        code: `import { Switch } from '@base-ui/react/switch'
+
+function ToggleDemo() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
+        <Switch.Root
+          defaultChecked
+          style={{ width: 40, height: 22, borderRadius: 11, background: '#18181b', border: 'none', cursor: 'pointer', padding: 2 }}>
+          <Switch.Thumb style={{ width: 18, height: 18, borderRadius: 9, background: '#fff', display: 'block', transition: 'transform 0.2s' }} />
+        </Switch.Root>
+        Enable notifications
+      </label>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Switch.Root는 role="switch"와 aria-checked를 자동으로 관리합니다.',
+        'checked/defaultChecked prop으로 제어/비제어 모드를 선택할 수 있습니다.',
+        'Toggle 컴포넌트(@base-ui/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
       ]
     }
   }

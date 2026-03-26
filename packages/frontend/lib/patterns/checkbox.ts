@@ -158,7 +158,17 @@ export function RadixCheckbox({ id, label }) {
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
       <Checkbox.Root
         id={id}
-        style={{ width: 20, height: 20, borderRadius: 4, border: '2px solid #6e56cf', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backgroundColor: 'white' }}>
+        style={{
+          width: 20,
+          height: 20,
+          borderRadius: 4,
+          border: '2px solid #6e56cf',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          backgroundColor: 'white'
+        }}>
         <Checkbox.Indicator>
           <CheckIcon />
         </Checkbox.Indicator>
@@ -266,6 +276,54 @@ function CheckboxDemo() {
         'React Spectrum Checkbox는 키보드, 마우스, 터치 접근성을 자동으로 처리합니다.',
         'isIndeterminate prop으로 부분 선택 상태를 지원합니다.',
         'validationState="invalid"로 에러 상태를 표현하세요.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'checkbox-baseui-1',
+          title: 'Checkbox.Indicator 시각적 표시 필수',
+          description: 'Base UI Checkbox는 스타일이 없으므로 Checkbox.Indicator 안에 체크 아이콘을 반드시 추가하세요.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Checkbox',
+        code: `import { Checkbox } from '@base-ui/react/checkbox'
+
+function CheckboxDemo() {
+  return (
+    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
+        <Checkbox.Root
+          defaultChecked
+          style={{
+            width: 18,
+            height: 18,
+            border: '2px solid #18181b',
+            borderRadius: 4,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'none',
+            cursor: 'pointer'
+          }}>
+          <Checkbox.Indicator style={{ fontSize: 12, fontWeight: 700, color: '#18181b' }}>✓</Checkbox.Indicator>
+        </Checkbox.Root>
+        Enable notifications
+      </label>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Checkbox.Root는 기본적으로 <button role="checkbox">를 렌더링합니다.',
+        'Checkbox.Indicator는 checked 상태일 때만 렌더링됩니다.',
+        'CheckboxGroup을 사용하면 여러 체크박스를 그룹으로 관리할 수 있습니다.'
       ]
     }
   }

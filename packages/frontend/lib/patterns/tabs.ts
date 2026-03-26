@@ -322,6 +322,72 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
         '각 Tab의 id가 대응하는 TabPanel의 id와 자동으로 연결됩니다.',
         "keyboardActivation='manual'로 포커스와 활성화를 분리할 수 있습니다."
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'tabs-baseui-1',
+          title: 'Tabs.List에 aria-label 필수',
+          description: 'Tabs.List에 aria-label을 추가하여 탭 그룹의 목적을 스크린리더에 전달하세요.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Tabs',
+        code: `import { Tabs } from '@base-ui/react/tabs'
+
+function TabsDemo() {
+  return (
+    <Tabs.Root
+      defaultValue='overview'
+      style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem' }}>
+      <Tabs.List
+        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16 }}
+        aria-label='Content sections'>
+        <Tabs.Tab
+          value='overview'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
+          Overview
+        </Tabs.Tab>
+        <Tabs.Tab
+          value='projects'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
+          Projects
+        </Tabs.Tab>
+        <Tabs.Tab
+          value='settings'
+          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14 }}>
+          Settings
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel
+        value='overview'
+        style={{ fontSize: 14, color: '#374151' }}>
+        Overview content here.
+      </Tabs.Panel>
+      <Tabs.Panel
+        value='projects'
+        style={{ fontSize: 14, color: '#374151' }}>
+        Projects content here.
+      </Tabs.Panel>
+      <Tabs.Panel
+        value='settings'
+        style={{ fontSize: 14, color: '#374151' }}>
+        Settings content here.
+      </Tabs.Panel>
+    </Tabs.Root>
+  )
+}`
+      },
+      notes: [
+        'Tabs.Root의 defaultValue로 초기 선택 탭을 지정하세요.',
+        'Tabs.Tab의 value가 Tabs.Panel의 value와 일치해야 합니다.',
+        '키보드 탐색(화살표 키)이 자동으로 지원됩니다.'
+      ]
     }
   }
 }

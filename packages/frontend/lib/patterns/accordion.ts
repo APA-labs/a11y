@@ -253,6 +253,76 @@ export function AntAccordion() {
         'ItemIndicator는 시각적 화살표로 aria-hidden 처리됩니다.',
         'collapsible prop으로 모든 항목을 닫을 수 있는 옵션을 추가하세요.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'accordion-baseui-1',
+          title: 'Accordion.Header 사용 필수',
+          description: 'Accordion.Header는 heading 요소로 렌더링되어 페이지 구조를 스크린리더에 전달합니다. 생략하지 마세요.',
+          level: 'must'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Accordion',
+        code: `import { Accordion } from '@base-ui/react/accordion'
+
+function AccordionDemo() {
+  return (
+    <Accordion.Root style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem', maxWidth: 400 }}>
+      <Accordion.Item style={{ borderBottom: '1px solid #e5e7eb' }}>
+        <Accordion.Header>
+          <Accordion.Trigger
+            style={{
+              width: '100%',
+              padding: '12px 0',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              textAlign: 'left',
+              fontSize: 14,
+              fontWeight: 500
+            }}>
+            What is Base UI?
+          </Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280' }}>
+          Base UI is a library of high-quality unstyled React components.
+        </Accordion.Panel>
+      </Accordion.Item>
+      <Accordion.Item style={{ borderBottom: '1px solid #e5e7eb' }}>
+        <Accordion.Header>
+          <Accordion.Trigger
+            style={{
+              width: '100%',
+              padding: '12px 0',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              textAlign: 'left',
+              fontSize: 14,
+              fontWeight: 500
+            }}>
+            Is it accessible?
+          </Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280' }}>
+          Yes, all components follow WAI-ARIA patterns out of the box.
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion.Root>
+  )
+}`
+      },
+      notes: [
+        'Accordion.Root에 openMultiple={false}를 설정하면 하나만 열리는 아코디언이 됩니다.',
+        'Accordion.Trigger는 자동으로 aria-expanded를 관리합니다.',
+        'Accordion.Panel은 aria-hidden으로 숨겨진 상태를 처리합니다.'
+      ]
     }
   }
 }
