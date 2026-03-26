@@ -18,7 +18,13 @@ export const ko = {
     subtitle: 'WCAG 2.1 AA 기준의 공통 베이스라인과 다양한 디자인 시스템들의 구현 방식을 한눈에 비교하세요.',
     supportedDS: '지원하는 디자인시스템',
     allPatterns: '모든 패턴',
-    aiAnalyze: 'AI 분석'
+    aiAnalyze: 'AI 분석',
+    searchPlaceholder: '패턴 검색...',
+    searchClear: '검색어 지우기',
+    filterByDS: '디자인 시스템으로 필터',
+    allDS: '전체',
+    noResults: '검색 결과가 없습니다.',
+    filteredCount: (n: number) => `${n}개 패턴`
   },
   pattern: {
     backToAll: '모든 패턴',

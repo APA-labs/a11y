@@ -4,10 +4,10 @@ import { Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
 import DSLegendFloat from '../../components/DSLegendFloat'
-import PatternCard from '../../components/PatternCard'
+import PatternGrid from '../../components/PatternGrid'
 import { getTranslations, SUPPORTED_LANGS } from '../../lib/i18n'
 import { getPatterns } from '../../lib/patterns'
-import { DS_META, DS_ORDER } from '../../lib/types'
+import { DS_ORDER } from '../../lib/types'
 
 import type { Lang } from '../../lib/i18n'
 
@@ -60,35 +60,10 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
         )}
       </div>
 
-      <div>
-        <div className='lg:hidden mb-5 p-3 bg-surface border border-outline rounded-xl'>
-          <p className='text-[10px] font-semibold uppercase tracking-wider text-faint mb-2'>{t.home.supportedDS}</p>
-          <div className='flex flex-wrap gap-x-4 gap-y-1.5'>
-            {DS_ORDER.map((id) => (
-              <div
-                key={id}
-                className='flex items-center gap-1.5'>
-                <span
-                  className='w-2 h-2 rounded-full shrink-0'
-                  style={{ backgroundColor: DS_META[id].color }}
-                />
-                <span className='text-xs text-body'>{DS_META[id].name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <h2 className='text-xs font-semibold text-soft uppercase tracking-wider mb-5'>{t.home.allPatterns}</h2>
-        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3'>
-          {patterns.map((pattern) => (
-            <PatternCard
-              key={pattern.slug}
-              pattern={pattern}
-              lang={lang}
-            />
-          ))}
-        </div>
-      </div>
+      <PatternGrid
+        patterns={patterns}
+        lang={lang}
+      />
       <DSLegendFloat />
     </div>
   )
