@@ -379,51 +379,17 @@ const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
-      <Dialog.Root>
-        <Dialog.Trigger
-          style={{
-            padding: '8px 16px',
-            borderRadius: 6,
-            border: '1px solid #d1d5db',
-            cursor: 'pointer',
-            fontSize: 14,
-            background: '#fff'
-          }}>
-          View notifications
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <Dialog.Backdrop style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
-          <Dialog.Popup
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%,-50%)',
-              background: '#fff',
-              borderRadius: 8,
-              padding: '1.5rem',
-              width: 320,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-              fontFamily: 'system-ui, sans-serif'
-            }}>
-            <Dialog.Title style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>Notifications</Dialog.Title>
-            <Dialog.Description style={{ margin: '0 0 16px', color: '#6b7280', fontSize: 14 }}>You are all caught up. Good job!</Dialog.Description>
-            <Dialog.Close
-              style={{
-                padding: '6px 12px',
-                borderRadius: 6,
-                border: '1px solid #d1d5db',
-                cursor: 'pointer',
-                fontSize: 14,
-                background: '#fff'
-              }}>
-              Close
-            </Dialog.Close>
-          </Dialog.Popup>
-        </Dialog.Portal>
-      </Dialog.Root>
-    </div>
+    <Dialog.Root>
+      <Dialog.Trigger>View notifications</Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Backdrop />
+        <Dialog.Popup>
+          <Dialog.Title>Notifications</Dialog.Title>
+          <Dialog.Description>You are all caught up. Good job!</Dialog.Description>
+          <Dialog.Close>Close</Dialog.Close>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }`
       },

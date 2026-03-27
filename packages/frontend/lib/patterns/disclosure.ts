@@ -237,42 +237,17 @@ const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', maxWidth: 360 }}>
-      <Collapsible.Root>
-        <Collapsible.Trigger
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            width: '100%',
-            padding: '10px 14px',
-            background: 'none',
-            border: '1px solid #e5e7eb',
-            borderRadius: 6,
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 600,
-            textAlign: 'left'
-          }}>
-          <span aria-hidden>▶</span>
-          Recovery keys
-        </Collapsible.Trigger>
-        <Collapsible.Panel
-          style={{
-            padding: '10px 14px',
-            fontSize: 14,
-            color: '#374151',
-            background: '#f9fafb',
-            borderRadius: '0 0 6px 6px',
-            border: '1px solid #e5e7eb',
-            borderTop: 'none'
-          }}>
-          <div>alien-bean-pasta</div>
-          <div>wild-irish-burrito</div>
-          <div>horse-battery-staple</div>
-        </Collapsible.Panel>
-      </Collapsible.Root>
-    </div>
+    <Collapsible.Root>
+      <Collapsible.Trigger>
+        <span aria-hidden>▶</span>
+        Recovery keys
+      </Collapsible.Trigger>
+      <Collapsible.Panel>
+        <div>alien-bean-pasta</div>
+        <div>wild-irish-burrito</div>
+        <div>horse-battery-staple</div>
+      </Collapsible.Panel>
+    </Collapsible.Root>
   )
 }`
       },

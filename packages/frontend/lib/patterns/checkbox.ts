@@ -306,48 +306,20 @@ export default function App() {
   const [emailChecked, setEmailChecked] = useState(true)
   const [smsChecked, setSmsChecked] = useState(false)
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
-        <Checkbox.Root
-          checked={emailChecked}
-          onCheckedChange={setEmailChecked}
-          style={{
-            width: 18,
-            height: 18,
-            border: '2px solid #18181b',
-            borderRadius: 4,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: emailChecked ? '#18181b' : '#fff',
-            cursor: 'pointer',
-            flexShrink: 0
-          }}>
-          <Checkbox.Indicator style={{ color: '#fff', fontSize: 12, fontWeight: 700, lineHeight: 1 }}>✓</Checkbox.Indicator>
+    <>
+      <label>
+        <Checkbox.Root checked={emailChecked} onCheckedChange={setEmailChecked}>
+          <Checkbox.Indicator>✓</Checkbox.Indicator>
         </Checkbox.Root>
         Email notifications
       </label>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
-        <Checkbox.Root
-          checked={smsChecked}
-          onCheckedChange={setSmsChecked}
-          style={{
-            width: 18,
-            height: 18,
-            border: '2px solid #18181b',
-            borderRadius: 4,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: smsChecked ? '#18181b' : '#fff',
-            cursor: 'pointer',
-            flexShrink: 0
-          }}>
-          <Checkbox.Indicator style={{ color: '#fff', fontSize: 12, fontWeight: 700, lineHeight: 1 }}>✓</Checkbox.Indicator>
+      <label>
+        <Checkbox.Root checked={smsChecked} onCheckedChange={setSmsChecked}>
+          <Checkbox.Indicator>✓</Checkbox.Indicator>
         </Checkbox.Root>
         SMS notifications
       </label>
-    </div>
+    </>
   )
 }`
       },

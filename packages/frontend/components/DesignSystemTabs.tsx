@@ -10,6 +10,9 @@ import { DS_ORDER } from '../lib/types'
 import type { Lang } from '../lib/i18n'
 import type { DesignSystemId, DesignSystemVariant, Pattern } from '../lib/types'
 
+/** Design system tabs that show code only (no Sandpack preview). */
+const DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW: readonly DesignSystemId[] = ['baseui']
+
 interface Props {
   designSystems: Pattern['designSystems']
   lang?: Lang
@@ -103,6 +106,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
           <CodeBlock
             sample={current.codeSample}
             lang={lang}
+            disablePreview={DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW.includes(active)}
           />
         </div>
 

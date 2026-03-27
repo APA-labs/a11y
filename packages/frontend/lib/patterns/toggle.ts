@@ -286,48 +286,21 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
       codeSample: {
         language: 'tsx',
         label: 'Base UI Switch',
-        preview: false,
-        code: `// NOTE: Sandpack preview is not supported for this sample. (Code only)
-import { useState } from 'react'
+        code: `import { useState } from 'react'
 import { Switch } from '@base-ui/react/switch'
 
 export default function App() {
   const [checked, setChecked] = useState(false)
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
-        <Switch.Root
-          checked={checked}
-          onCheckedChange={setChecked}
-          render={<button />}
-          style={{
-            width: 44,
-            height: 24,
-            borderRadius: 12,
-            background: checked ? '#18181b' : '#d1d5db',
-            border: 'none',
-            cursor: 'pointer',
-            padding: 2,
-            display: 'inline-flex',
-            alignItems: 'center',
-            transition: 'background 0.2s'
-          }}>
-          <Switch.Thumb
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: '50%',
-              background: '#fff',
-              display: 'block',
-              transform: checked ? 'translateX(20px)' : 'translateX(0)',
-              transition: 'transform 0.2s',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-            }}
-          />
-        </Switch.Root>
-        Enable notifications
-      </label>
-    </div>
+    <label>
+      <Switch.Root
+        checked={checked}
+        onCheckedChange={setChecked}
+        render={<button />}>
+        <Switch.Thumb />
+      </Switch.Root>
+      Enable notifications
+    </label>
   )
 }`
       },
