@@ -348,54 +348,16 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
 
 export default function App() {
   return (
-    <Tabs.Root
-      defaultValue='overview'
-      style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem' }}>
-      <Tabs.List
-        aria-label='Content sections'
-        style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', marginBottom: 16, position: 'relative' }}>
-        <Tabs.Tab
-          value='overview'
-          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
-          Overview
-        </Tabs.Tab>
-        <Tabs.Tab
-          value='projects'
-          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
-          Projects
-        </Tabs.Tab>
-        <Tabs.Tab
-          value='account'
-          style={{ padding: '8px 16px', border: 'none', background: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500 }}>
-          Account
-        </Tabs.Tab>
-        <Tabs.Indicator
-          style={{
-            position: 'absolute',
-            bottom: -2,
-            height: 2,
-            background: '#18181b',
-            left: 'var(--active-tab-left)',
-            width: 'var(--active-tab-width)',
-            transition: 'left 0.2s, width 0.2s'
-          }}
-        />
+    <Tabs.Root defaultValue='overview'>
+      <Tabs.List aria-label='Content sections'>
+        <Tabs.Tab value='overview'>Overview</Tabs.Tab>
+        <Tabs.Tab value='projects'>Projects</Tabs.Tab>
+        <Tabs.Tab value='account'>Account</Tabs.Tab>
+        <Tabs.Indicator />
       </Tabs.List>
-      <Tabs.Panel
-        value='overview'
-        style={{ fontSize: 14, color: '#374151' }}>
-        Overview content here.
-      </Tabs.Panel>
-      <Tabs.Panel
-        value='projects'
-        style={{ fontSize: 14, color: '#374151' }}>
-        Projects content here.
-      </Tabs.Panel>
-      <Tabs.Panel
-        value='account'
-        style={{ fontSize: 14, color: '#374151' }}>
-        Account settings here.
-      </Tabs.Panel>
+      <Tabs.Panel value='overview'>Overview content here.</Tabs.Panel>
+      <Tabs.Panel value='projects'>Projects content here.</Tabs.Panel>
+      <Tabs.Panel value='account'>Account settings here.</Tabs.Panel>
     </Tabs.Root>
   )
 }`

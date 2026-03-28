@@ -301,31 +301,14 @@ const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', maxWidth: 320 }}>
-      <Field.Root style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <Field.Label style={{ fontSize: 14, fontWeight: 500 }}>
-          Name <span aria-hidden>*</span>
-        </Field.Label>
-        <Field.Control
-          required
-          placeholder='Enter your name'
-          style={{
-            padding: '8px 12px',
-            borderRadius: 6,
-            border: '1px solid #d1d5db',
-            fontSize: 14,
-            width: '100%',
-            boxSizing: 'border-box' as const
-          }}
-        />
-        <Field.Error
-          match='valueMissing'
-          style={{ fontSize: 12, color: '#dc2626' }}>
-          Please enter your name.
-        </Field.Error>
-        <Field.Description style={{ fontSize: 12, color: '#6b7280' }}>Visible on your profile</Field.Description>
-      </Field.Root>
-    </div>
+    <Field.Root>
+      <Field.Label>
+        Name <span aria-hidden>*</span>
+      </Field.Label>
+      <Field.Control required placeholder='Enter your name' />
+      <Field.Error match='valueMissing'>Please enter your name.</Field.Error>
+      <Field.Description>Visible on your profile</Field.Description>
+    </Field.Root>
   )
 }`
       },

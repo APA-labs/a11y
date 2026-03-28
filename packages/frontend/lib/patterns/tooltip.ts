@@ -263,45 +263,20 @@ const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', bo
       codeSample: {
         language: 'tsx',
         label: 'Base UI Tooltip',
-        preview: false,
-        code: `// NOTE: Sandpack preview is not supported for this sample. (Code only)
-import { Tooltip } from '@base-ui/react/tooltip'
+        code: `import { Tooltip } from '@base-ui/react/tooltip'
 
 export default function App() {
   return (
-    <div style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
-      <Tooltip.Provider delay={300}>
-        <Tooltip.Root>
-          <Tooltip.Trigger
-            aria-label='Bold'
-            style={{
-              padding: '6px 10px',
-              borderRadius: 6,
-              border: '1px solid #d1d5db',
-              cursor: 'pointer',
-              fontSize: 14,
-              background: '#fff',
-              fontWeight: 700
-            }}>
-            B
-          </Tooltip.Trigger>
-          <Tooltip.Portal>
-            <Tooltip.Positioner sideOffset={8}>
-              <Tooltip.Popup
-                style={{
-                  background: '#18181b',
-                  color: '#fff',
-                  padding: '4px 8px',
-                  borderRadius: 4,
-                  fontSize: 12
-                }}>
-                Bold
-              </Tooltip.Popup>
-            </Tooltip.Positioner>
-          </Tooltip.Portal>
-        </Tooltip.Root>
-      </Tooltip.Provider>
-    </div>
+    <Tooltip.Provider delay={300}>
+      <Tooltip.Root>
+        <Tooltip.Trigger aria-label='Bold'>B</Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Positioner sideOffset={8}>
+            <Tooltip.Popup>Bold</Tooltip.Popup>
+          </Tooltip.Positioner>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
   )
 }`
       },

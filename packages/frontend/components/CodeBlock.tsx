@@ -2,7 +2,7 @@
 
 import { Check, Code, Copy, Eye } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { Lang } from '../lib/i18n'
 import type { CodeSample } from '../lib/types'
@@ -23,11 +23,18 @@ const T = {
   en: { code: 'Code', preview: 'Preview', copy: 'Copy', copied: 'Copied' }
 }
 
-export default function CodeBlock({ sample, lang = 'ko' }: { sample: CodeSample; lang?: Lang }) {
+const PREVIEWABLE_LANGUAGES = new Set(['tsx', 'jsx', 'ts', 'js', 'html'])
+
+export default function CodeBlock({ sample, lang = 'ko', disablePreview = false }: { sample: CodeSample; lang?: Lang; disablePreview?: boolean }) {
   const t = T[lang]
   const [copied, setCopied] = useState(false)
-  const canPreview = sample.preview ?? ['tsx', 'jsx', 'ts', 'js', 'html'].includes(sample.language)
+  const languageAllowsPreview = PREVIEWABLE_LANGUAGES.has(sample.language)
+  const canPreview = !disablePreview && (sample.preview ?? languageAllowsPreview)
   const [tab, setTab] = useState<'code' | 'preview'>(canPreview ? 'preview' : 'code')
+
+  useEffect(() => {
+    if (!canPreview) setTab('code')
+  }, [canPreview])
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(sample.code)

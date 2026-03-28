@@ -279,54 +279,26 @@ export function AntAccordion() {
 
 export default function App() {
   return (
-    <Accordion.Root style={{ fontFamily: 'system-ui, sans-serif', padding: '1.5rem', maxWidth: 400 }}>
-      <Accordion.Item style={{ borderBottom: '1px solid #e5e7eb' }}>
-        <Accordion.Header style={{ margin: 0 }}>
-          <Accordion.Trigger
-            style={{
-              width: '100%',
-              padding: '12px 0',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              textAlign: 'left',
-              fontSize: 14,
-              fontWeight: 500,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
+    <Accordion.Root>
+      <Accordion.Item>
+        <Accordion.Header>
+          <Accordion.Trigger>
             What is Base UI?
             <span aria-hidden>+</span>
           </Accordion.Trigger>
         </Accordion.Header>
-        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>
+        <Accordion.Panel>
           Base UI is a library of high-quality unstyled React components for design systems and web apps.
         </Accordion.Panel>
       </Accordion.Item>
-      <Accordion.Item style={{ borderBottom: '1px solid #e5e7eb' }}>
-        <Accordion.Header style={{ margin: 0 }}>
-          <Accordion.Trigger
-            style={{
-              width: '100%',
-              padding: '12px 0',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              textAlign: 'left',
-              fontSize: 14,
-              fontWeight: 500,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
+      <Accordion.Item>
+        <Accordion.Header>
+          <Accordion.Trigger>
             Is it accessible?
             <span aria-hidden>+</span>
           </Accordion.Trigger>
         </Accordion.Header>
-        <Accordion.Panel style={{ paddingBottom: 12, fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>
-          Yes, all components follow WAI-ARIA patterns out of the box.
-        </Accordion.Panel>
+        <Accordion.Panel>Yes, all components follow WAI-ARIA patterns out of the box.</Accordion.Panel>
       </Accordion.Item>
     </Accordion.Root>
   )

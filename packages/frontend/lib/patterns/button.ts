@@ -291,26 +291,13 @@ import { Button } from '@base-ui/react/button'
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
-      <Button
-        disabled={isLoading}
-        focusableWhenDisabled
-        aria-busy={isLoading}
-        onClick={() => setIsLoading(!isLoading)}
-        style={{
-          padding: '8px 16px',
-          borderRadius: 6,
-          border: 'none',
-          background: isLoading ? '#6b7280' : '#18181b',
-          color: '#fff',
-          cursor: isLoading ? 'not-allowed' : 'pointer',
-          minHeight: 44,
-          minWidth: 44,
-          fontSize: 14
-        }}>
-        {isLoading ? 'Saving...' : 'Save'}
-      </Button>
-    </div>
+    <Button
+      disabled={isLoading}
+      focusableWhenDisabled
+      aria-busy={isLoading}
+      onClick={() => setIsLoading(!isLoading)}>
+      {isLoading ? 'Saving...' : 'Save'}
+    </Button>
   )
 }`
       },
