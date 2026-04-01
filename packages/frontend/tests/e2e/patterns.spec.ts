@@ -1,29 +1,20 @@
 import { expect, test } from '@playwright/test'
 
 import { patterns } from '../../lib/patterns/index'
+import { DS_META, DS_ORDER } from '../../lib/types'
 
 const LANG = 'ko'
 
 const ALL_PATTERN_SLUGS = patterns.map((p) => p.slug)
 
-const DEFAULT_PATTERNS = ['button', 'modal-dialog', 'tabs', 'tooltip', 'accordion']
-
 const TEST_PATTERNS: readonly string[] = process.env.TEST_PATTERNS
   ? process.env.TEST_PATTERNS.split(',')
       .map((s) => s.trim())
       .filter((s) => ALL_PATTERN_SLUGS.includes(s))
-  : DEFAULT_PATTERNS
+  : ALL_PATTERN_SLUGS
 
-const DS_IDS = ['material', 'radix', 'antd', 'chakra', 'spectrum', 'baseui'] as const
-
-const DS_NAMES: Record<(typeof DS_IDS)[number], string> = {
-  material: 'Material (MUI)',
-  radix: 'Radix UI',
-  antd: 'Ant Design',
-  chakra: 'Chakra UI',
-  spectrum: 'React Spectrum',
-  baseui: 'Base UI'
-}
+const DS_IDS = DS_ORDER
+const DS_NAMES = Object.fromEntries(DS_ORDER.map((id) => [id, DS_META[id].name])) as Record<(typeof DS_ORDER)[number], string>
 
 test.describe('패턴 목록 페이지', () => {
   test('패턴 카드가 렌더링된다', async ({ page }) => {
