@@ -103,47 +103,73 @@ export const modalDialogPattern: Pattern = {
       additionalChecks: [
         {
           id: 'modal-mui-1',
-          title: 'MUI Dialog keepMounted 주의',
-          description: 'keepMounted prop 사용 시 숨겨진 Dialog가 DOM에 남아 스크린리더에 노출될 수 있습니다.',
+          title: 'aria-labelledby와 aria-describedby 명시',
+          description:
+            'Dialog에 aria-labelledby로 DialogTitle의 id를, aria-describedby로 DialogContent의 id를 연결하세요. 자동 처리되지 않으므로 직접 설정해야 합니다.',
           level: 'must'
         },
         {
           id: 'modal-mui-2',
-          title: 'disablePortal 사용 금지',
-          description: 'disablePortal은 포커스 트랩과 inert 처리를 방해합니다.',
+          title: 'keepMounted 사용 금지',
+          description: 'keepMounted={true}는 닫힌 Dialog를 DOM에 유지합니다. 스크린리더가 숨겨진 콘텐츠를 읽을 수 있으므로 사용하지 마세요.',
           level: 'avoid'
+        },
+        {
+          id: 'modal-mui-3',
+          title: 'autoFocus로 초기 포커스 제어',
+          description: '모달 열릴 때 포커스를 특정 요소로 이동하려면 해당 요소에 autoFocus prop을 추가하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Dialog',
-        code: `import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
-<Dialog
-  open={isOpen}
-  onClose={() => setIsOpen(false)}
-  aria-labelledby='dialog-title'
-  aria-describedby='dialog-description'
-  // Warning about keepMounted!
->
-  <DialogTitle id='dialog-title'>Delete File</DialogTitle>
-  <DialogContent>
-    <p id='dialog-description'>Are you sure you want to delete this file? This action cannot be undone.</p>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-    <Button
-      onClick={() => {}}
-      color='error'
-      autoFocus>
-      Delete
-    </Button>
-  </DialogActions>
-</Dialog>`
+        code: `import { useState } from 'react'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography } from '@mui/material'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div style={{ padding: 24 }}>
+      <Button
+        variant='outlined'
+        color='error'
+        onClick={() => setOpen(true)}>
+        Delete file
+      </Button>
+
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby='delete-dialog-title'
+        aria-describedby='delete-dialog-description'>
+        <DialogTitle id='delete-dialog-title'>Delete File</DialogTitle>
+        <DialogContent>
+          <DialogContentText id='delete-dialog-description'>
+            Are you sure you want to permanently delete this file? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button
+            onClick={() => setOpen(false)}
+            color='error'
+            variant='contained'
+            autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
+}`
       },
       notes: [
-        'MUI Dialog는 포커스 트랩을 자동으로 처리합니다.',
-        'autoFocus prop으로 열림 시 포커스 위치를 제어하세요.',
-        'TransitionProps.onExited로 닫힘 후 포커스 복원을 처리할 수 있습니다.'
+        'MUI Dialog는 포커스 트랩, Escape 닫기, 배경 클릭 닫기, 포커스 복원을 자동으로 처리합니다.',
+        'aria-labelledby와 aria-describedby는 MUI가 자동 처리하지 않으므로 직접 설정해야 합니다.',
+        'autoFocus prop으로 모달 열릴 때 첫 포커스 위치를 지정하세요. 일반적으로 기본 확인 버튼에 설정합니다.',
+        'DialogContentText는 자동으로 올바른 색상 대비와 타이포그래피를 적용합니다.'
       ]
     },
     radix: {

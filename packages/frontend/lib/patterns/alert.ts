@@ -110,7 +110,16 @@ export const alertPattern: Pattern = {
           <div
             key={alert.id}
             role='alert'
-            style={{ padding: '12px 16px', borderRadius: 8, backgroundColor: alert.type === 'success' ? '#dcfce7' : '#fee2e2', border: '1px solid', borderColor: alert.type === 'success' ? '#86efac' : '#fca5a5', display: 'flex', alignItems: 'center', gap: 8 }}>
+            style={{
+              padding: '12px 16px',
+              borderRadius: 8,
+              backgroundColor: alert.type === 'success' ? '#dcfce7' : '#fee2e2',
+              border: '1px solid',
+              borderColor: alert.type === 'success' ? '#86efac' : '#fca5a5',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8
+            }}>
             <span>{alert.message}</span>
             <button
               onClick={() => removeAlert(alert.id)}
@@ -133,38 +142,98 @@ export const alertPattern: Pattern = {
       additionalChecks: [
         {
           id: 'alert-mui-1',
-          title: 'Snackbar + Alert 조합',
-          description: 'MUI에서 토스트 알림은 Snackbar 안에 Alert를 넣어 사용합니다. Snackbar가 위치를, Alert가 의미론적 role을 담당합니다.',
+          title: 'Snackbar + Alert 조합으로 토스트 구현',
+          description:
+            'MUI에서 토스트 알림은 Snackbar 안에 Alert를 넣어 사용합니다. Snackbar가 위치와 타이밍을, Alert가 role="alert"와 severity를 담당합니다.',
           level: 'must'
         },
         {
           id: 'alert-mui-2',
           title: 'autoHideDuration 최소 5000ms',
-          description: 'autoHideDuration을 5000 미만으로 설정하면 WCAG 2.2.3에 위배됩니다.',
+          description: 'autoHideDuration을 5000 미만으로 설정하면 WCAG 2.2.3(No Timing)에 위배됩니다. null로 설정하면 수동 닫기만 허용합니다.',
           level: 'must'
+        },
+        {
+          id: 'alert-mui-3',
+          title: '인라인 Alert와 토스트 Alert 구분',
+          description: '페이지에 고정된 상태 메시지는 Alert 단독 사용, 일시적인 토스트는 Snackbar + Alert 조합을 사용하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Snackbar + Alert',
-        code: `import { Snackbar, Alert } from '@mui/material'
-<Snackbar
-  open={isOpen}
-  autoHideDuration={5000}
-  onClose={() => setIsOpen(false)}
-  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-  <Alert
-    onClose={() => setIsOpen(false)}
-    severity='success'
-    variant='filled'>
-    File saved successfully.
-  </Alert>
-</Snackbar>`
+        code: `import { useState } from 'react'
+import { Button, Snackbar, Alert, AlertTitle, Stack } from '@mui/material'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+  const [severity, setSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('success')
+
+  const showAlert = (type: typeof severity) => {
+    setSeverity(type)
+    setOpen(true)
+  }
+
+  return (
+    <Stack
+      spacing={2}
+      style={{ padding: 24 }}>
+      <Stack
+        direction='row'
+        spacing={1}>
+        <Button
+          variant='outlined'
+          color='success'
+          onClick={() => showAlert('success')}>
+          Success
+        </Button>
+        <Button
+          variant='outlined'
+          color='error'
+          onClick={() => showAlert('error')}>
+          Error
+        </Button>
+        <Button
+          variant='outlined'
+          color='warning'
+          onClick={() => showAlert('warning')}>
+          Warning
+        </Button>
+        <Button
+          variant='outlined'
+          color='info'
+          onClick={() => showAlert('info')}>
+          Info
+        </Button>
+      </Stack>
+
+      <Alert severity='info'>
+        <AlertTitle>Inline Alert</AlertTitle>
+        This alert is always visible on the page.
+      </Alert>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={(_, reason) => reason !== 'clickaway' && setOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert
+          onClose={() => setOpen(false)}
+          severity={severity}
+          variant='filled'>
+          {severity === 'success' ? 'Changes saved successfully.' : \`\${severity} notification triggered.\`}
+        </Alert>
+      </Snackbar>
+    </Stack>
+  )
+}`
       },
       notes: [
-        'MUI Alert 단독 사용 시 role="alert"가 자동 적용됩니다.',
-        'Snackbar의 onClose는 Escape 키 및 외부 클릭에 반응합니다.',
-        'severity prop (success/info/warning/error)이 아이콘과 색상을 자동 적용합니다.'
+        'Alert 단독 사용 시 role="alert"가 자동 적용되어 스크린리더에 즉시 읽힙니다.',
+        'Snackbar의 onClose reason이 "clickaway"일 때 닫지 않으면 의도치 않은 닫힘을 방지할 수 있습니다.',
+        'severity prop (success/info/warning/error)이 아이콘, 색상, 접근 가능한 의미를 자동 적용합니다.',
+        'autoHideDuration={null}로 설정하면 사용자가 명시적으로 닫기 전까지 유지됩니다.'
       ]
     },
     radix: {
@@ -249,7 +318,9 @@ function AntdAlertDemo() {
   }
 
   return (
-    <Space direction='vertical' style={{ width: '100%' }}>
+    <Space
+      direction='vertical'
+      style={{ width: '100%' }}>
       <Alert
         message='Saved'
         description='File saved successfully.'

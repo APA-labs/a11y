@@ -124,56 +124,89 @@ export const drawerPattern: Pattern = {
       additionalChecks: [
         {
           id: 'drawer-mui-1',
-          title: 'variant="temporary"로 모달 동작',
-          description: 'MUI Drawer의 variant="temporary"는 포커스 트랩과 배경 오버레이를 자동으로 처리합니다.',
+          title: 'Drawer에 aria-labelledby 연결',
+          description: 'Drawer에 aria-labelledby prop으로 드로어 제목 요소의 id를 연결해야 스크린리더가 드로어를 올바르게 식별합니다.',
+          level: 'must'
+        },
+        {
+          id: 'drawer-mui-2',
+          title: 'variant="temporary"는 Modal 기반',
+          description: 'variant="temporary"(기본값)는 Modal 위에 렌더링되어 포커스 트랩, Escape 닫기, 배경 오버레이를 자동으로 처리합니다.',
           level: 'should'
+        },
+        {
+          id: 'drawer-mui-3',
+          title: '닫기 버튼에 aria-label 필수',
+          description: '아이콘만 있는 닫기 버튼에는 반드시 aria-label="Close navigation"처럼 목적을 설명하는 레이블을 제공하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Drawer',
-        code: `import { Drawer, Box, Button, Typography, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+        code: `import { useState } from 'react'
+import { Drawer, Box, Button, Typography, List, ListItem, ListItemButton, ListItemText, Divider, IconButton } from '@mui/material'
 
-function MuiDrawerDemo() {
-  const [open, setIsOpen] = useState(false)
+const NAV_ITEMS = ['Home', 'About', 'Services', 'Contact']
+
+export default function App() {
+  const [open, setOpen] = useState(false)
 
   return (
-    <>
-      <Button onClick={() => setIsOpen(true)}>Open menu</Button>
+    <div style={{ padding: 24 }}>
+      <Button
+        variant='outlined'
+        onClick={() => setOpen(true)}
+        aria-haspopup='dialog'>
+        Open navigation
+      </Button>
+
       <Drawer
         open={open}
-        onClose={() => setIsOpen(false)}
-        aria-labelledby='drawer-title'>
+        onClose={() => setOpen(false)}
+        aria-labelledby='drawer-heading'>
         <Box
-          sx={{ width: 280, p: 2 }}
+          sx={{ width: 280 }}
           role='presentation'>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
             <Typography
-              id='drawer-title'
-              variant='h6'>
-              Menu
+              id='drawer-heading'
+              variant='h6'
+              component='h2'>
+              Navigation
             </Typography>
             <IconButton
-              onClick={() => setIsOpen(false)}
-              aria-label='Close drawer'>
-              <CloseIcon />
+              onClick={() => setOpen(false)}
+              aria-label='Close navigation drawer'
+              size='small'>
+              ✕
             </IconButton>
           </Box>
-          <nav>
-            <a href='/'>Home</a>
-            <a href='/about'>About</a>
+          <Divider />
+          <nav aria-label='Main navigation'>
+            <List>
+              {NAV_ITEMS.map((item) => (
+                <ListItem
+                  key={item}
+                  disablePadding>
+                  <ListItemButton onClick={() => setOpen(false)}>
+                    <ListItemText primary={item} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
           </nav>
         </Box>
       </Drawer>
-    </>
+    </div>
   )
 }`
       },
       notes: [
-        'MUI Drawer variant="temporary"는 Modal 기반으로 포커스 트랩과 Escape 닫기를 자동 처리합니다.',
-        'aria-labelledby를 드로어 제목 ID와 연결하세요.',
-        'keepMounted={false}로 설정하면 닫혔을 때 DOM에서 제거됩니다.'
+        'MUI Drawer variant="temporary"는 Modal 기반으로 포커스 트랩, Escape 닫기, 포커스 복원을 자동 처리합니다.',
+        'aria-labelledby를 드로어 제목 id와 연결하면 스크린리더가 "다이얼로그, Navigation"으로 읽습니다.',
+        '내비게이션 목적의 드로어 내부에는 <nav aria-label>로 시맨틱 랜드마크를 제공하세요.',
+        'keepMounted={false}(기본값)는 닫혔을 때 DOM에서 제거하여 스크린리더 혼란을 방지합니다.'
       ]
     },
     antd: {

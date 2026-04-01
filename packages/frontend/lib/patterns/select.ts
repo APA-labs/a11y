@@ -146,32 +146,80 @@ export const selectPattern: Pattern = {
       additionalChecks: [
         {
           id: 'select-mui-1',
-          title: 'FormControl + InputLabel 조합 필수',
-          description: 'MUI Select는 FormControl과 InputLabel을 함께 사용해야 올바른 레이블이 연결됩니다.',
+          title: 'FormControl + InputLabel + labelId 연결 필수',
+          description:
+            'MUI Select는 FormControl, InputLabel(id), Select(labelId)를 일치시켜야 스크린리더가 레이블을 올바르게 읽습니다. outlined variant에서는 Select의 label prop도 동일하게 설정하세요.',
           level: 'must'
+        },
+        {
+          id: 'select-mui-2',
+          title: 'error + helperText로 오류 안내',
+          description: 'FormControl의 error prop과 FormHelperText를 함께 사용하면 오류 상태와 메시지가 aria-describedby로 자동 연결됩니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Select',
-        code: `import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
-<FormControl fullWidth>
-  <InputLabel id='fruit-label'>Select fruit</InputLabel>
-  <Select
-    labelId='fruit-label'
-    value={selected}
-    label='Select fruit'
-    onChange={(e) => setSelected(e.target.value)}>
-    <MenuItem value='apple'>Apple</MenuItem>
-    <MenuItem value='banana'>Banana</MenuItem>
-    <MenuItem value='cherry'>Cherry</MenuItem>
-  </Select>
-</FormControl>`
+        code: `import { useState } from 'react'
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText, Box, Typography } from '@mui/material'
+
+export default function App() {
+  const [country, setCountry] = useState('')
+  const [role, setRole] = useState('')
+  const hasError = !role
+
+  return (
+    <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
+      <Typography variant='h6'>User Preferences</Typography>
+
+      <FormControl fullWidth>
+        <InputLabel id='country-label'>Country</InputLabel>
+        <Select
+          labelId='country-label'
+          id='country-select'
+          value={country}
+          label='Country'
+          onChange={(e) => setCountry(e.target.value)}>
+          <MenuItem value='us'>United States</MenuItem>
+          <MenuItem value='kr'>South Korea</MenuItem>
+          <MenuItem value='jp'>Japan</MenuItem>
+          <MenuItem value='de'>Germany</MenuItem>
+        </Select>
+        <FormHelperText>Select your country of residence</FormHelperText>
+      </FormControl>
+
+      <FormControl
+        fullWidth
+        error={hasError}
+        required>
+        <InputLabel id='role-label'>Role</InputLabel>
+        <Select
+          labelId='role-label'
+          id='role-select'
+          value={role}
+          label='Role'
+          onChange={(e) => setRole(e.target.value)}>
+          <MenuItem value='developer'>Developer</MenuItem>
+          <MenuItem value='designer'>Designer</MenuItem>
+          <MenuItem value='manager'>Product Manager</MenuItem>
+          <MenuItem
+            value='qa'
+            disabled>
+            QA Engineer (unavailable)
+          </MenuItem>
+        </Select>
+        {hasError && <FormHelperText>Please select your role</FormHelperText>}
+      </FormControl>
+    </Box>
+  )
+}`
       },
       notes: [
-        'labelId와 InputLabel의 id가 일치해야 스크린리더가 레이블을 읽습니다.',
-        'native prop을 사용하면 브라우저 기본 <select>로 렌더링됩니다.',
-        'disabled 옵션에는 aria-disabled가 자동으로 적용됩니다.'
+        'InputLabel의 id와 Select의 labelId를 반드시 동일하게 설정하세요. 미설정 시 스크린리더가 레이블을 읽지 못합니다.',
+        'outlined variant에서는 Select의 label prop도 InputLabel 텍스트와 동일하게 설정해야 floating label 애니메이션이 올바르게 동작합니다.',
+        'disabled MenuItem은 aria-disabled가 자동 적용됩니다.',
+        'native={true} prop으로 브라우저 기본 <select> 렌더링으로 전환할 수 있어 모바일 접근성이 향상됩니다.'
       ]
     },
     radix: {
@@ -324,15 +372,36 @@ export default function App() {
         label: 'React Aria Select',
         code: `import { Select, Label, Button, SelectValue, Popover, ListBox, ListBoxItem } from 'react-aria-components'
 
-const triggerStyle = { display: 'inline-flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 12px', background: '#fff', cursor: 'pointer', fontSize: 14, minWidth: 180 }
-const popoverStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
+const triggerStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 8,
+  border: '1px solid #d1d5db',
+  borderRadius: 6,
+  padding: '6px 12px',
+  background: '#fff',
+  cursor: 'pointer',
+  fontSize: 14,
+  minWidth: 180
+}
+const popoverStyle = {
+  background: '#fff',
+  border: '1px solid #e5e7eb',
+  borderRadius: 8,
+  boxShadow: '0 4px 16px rgba(0,0,0,.1)',
+  padding: 4,
+  outline: 'none'
+}
 const itemStyle = { padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
 
 function SpectrumSelectDemo() {
   const [value, setValue] = useState('')
 
   return (
-    <Select selectedKey={value} onSelectionChange={setValue}>
+    <Select
+      selectedKey={value}
+      onSelectionChange={setValue}>
       <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Country</Label>
       <Button style={triggerStyle}>
         <SelectValue>{value || 'Select a country'}</SelectValue>
@@ -340,9 +409,21 @@ function SpectrumSelectDemo() {
       </Button>
       <Popover style={popoverStyle}>
         <ListBox>
-          <ListBoxItem id='kr' style={itemStyle}>South Korea</ListBoxItem>
-          <ListBoxItem id='us' style={itemStyle}>United States</ListBoxItem>
-          <ListBoxItem id='jp' style={itemStyle}>Japan</ListBoxItem>
+          <ListBoxItem
+            id='kr'
+            style={itemStyle}>
+            South Korea
+          </ListBoxItem>
+          <ListBoxItem
+            id='us'
+            style={itemStyle}>
+            United States
+          </ListBoxItem>
+          <ListBoxItem
+            id='jp'
+            style={itemStyle}>
+            Japan
+          </ListBoxItem>
         </ListBox>
       </Popover>
     </Select>

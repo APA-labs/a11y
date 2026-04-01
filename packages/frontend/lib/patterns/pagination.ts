@@ -134,39 +134,64 @@ export const paginationPattern: Pattern = {
         {
           id: 'pagination-mui-1',
           title: 'getItemAriaLabel로 aria-label 커스텀',
-          description: 'MUI Pagination의 기본 aria-label은 영어입니다. getItemAriaLabel prop으로 한국어 레이블을 제공하세요.',
+          description:
+            'MUI Pagination의 기본 aria-label은 영어입니다. getItemAriaLabel prop으로 다국어 레이블을 제공하고 현재 페이지 상태를 포함하세요.',
           level: 'should'
+        },
+        {
+          id: 'pagination-mui-2',
+          title: 'Pagination 컨테이너에 aria-label 제공',
+          description:
+            'MUI Pagination은 <nav>로 렌더링되지만 aria-label이 없어 스크린리더가 다른 nav와 구분하기 어렵습니다. 감싸는 nav에 aria-label을 추가하거나 componentsProps를 활용하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Pagination',
-        code: `import { Pagination } from '@mui/material'
+        code: `import { useState } from 'react'
+import { Pagination, Typography, Box } from '@mui/material'
 
-function MuiPaginationDemo() {
-  const [currentPage, setCurrentPage] = useState(1)
+export default function App() {
+  const [page, setPage] = useState(1)
+  const totalPages = 10
 
   return (
-    <Pagination
-      count={10}
-      page={currentPage}
-      onChange={(_, page) => setCurrentPage(page)}
-      getItemAriaLabel={(type, page, selected) => {
-        if (type === 'page') return \`Go to page \${page}\${selected ? ' (current page)' : ''}\`
-        if (type === 'first') return 'Go to first page'
-        if (type === 'last') return 'Go to last page'
-        if (type === 'next') return 'Next page'
-        if (type === 'previous') return 'Previous page'
-        return ''
-      }}
-    />
+    <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
+      <Typography
+        variant='body2'
+        color='text.secondary'
+        aria-live='polite'
+        aria-atomic='true'>
+        Page {page} of {totalPages}
+      </Typography>
+
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={(_, newPage) => setPage(newPage)}
+        color='primary'
+        showFirstButton
+        showLastButton
+        getItemAriaLabel={(type, pageNum, selected) => {
+          if (type === 'page') return \`Go to page \${pageNum}\${selected ? ', current page' : ''}\`
+          if (type === 'first') return 'Go to first page'
+          if (type === 'last') return 'Go to last page'
+          if (type === 'next') return 'Go to next page'
+          if (type === 'previous') return 'Go to previous page'
+          return ''
+        }}
+        slotProps={{ root: { 'aria-label': 'Pagination navigation' } as React.AriaAttributes }}
+      />
+    </Box>
   )
 }`
       },
       notes: [
-        'MUI Pagination은 자동으로 <nav role="navigation"> 랜드마크를 사용합니다.',
-        '현재 페이지에 aria-current가 자동으로 적용됩니다.',
-        'getItemAriaLabel로 모든 버튼의 aria-label을 한 번에 커스텀할 수 있습니다.'
+        'MUI Pagination은 자동으로 <nav> 랜드마크를 사용하며 현재 페이지에 aria-current="true"를 적용합니다.',
+        'getItemAriaLabel(type, page, selected) 콜백으로 모든 버튼의 aria-label을 한 번에 커스텀하세요.',
+        'showFirstButton, showLastButton prop으로 첫/마지막 페이지 이동 버튼을 추가하세요.',
+        'aria-live 영역으로 현재 페이지 변경을 스크린리더에 알리면 접근성이 향상됩니다.'
       ]
     },
     antd: {

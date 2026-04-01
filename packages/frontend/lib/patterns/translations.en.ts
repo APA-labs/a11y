@@ -47,11 +47,22 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Connect AccordionSummary to a heading',
-            description: 'Wrap AccordionSummary in an h3 or similar heading to preserve document structure.'
+            title: 'Set id and aria-controls on AccordionSummary',
+            description:
+              'Per WAI-ARIA guidelines, set id on AccordionSummary and aria-controls pointing to the panel id. MUI derives aria-labelledby automatically from these.'
+          },
+          {
+            title: 'Adjust heading level with slotProps.heading',
+            description:
+              'MUI Accordion defaults to h3. Change the heading level using slotProps={{ heading: { component: "h2" } }} to match your page hierarchy.'
           }
         ],
-        notes: ['MUI Accordion automatically handles aria-expanded.', 'Use disableGutters and square props to adjust styling.']
+        notes: [
+          'aria-expanded is managed automatically based on the expanded prop state.',
+          'Set id and aria-controls on AccordionSummary; MUI derives aria-labelledby for the panel automatically.',
+          'Use slotProps={{ heading: { component: "h3" } }} to adjust heading level to match page structure.',
+          'Use slotProps={{ transition: { unmountOnExit: true } }} to remove inactive panels from the DOM for better performance.'
+        ]
       },
       radix: {
         additionalChecks: [
@@ -154,18 +165,24 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Snackbar + Alert combination',
-            description: 'When using Snackbar, set autoHideDuration to at least 5000ms to give users enough time to read the message.'
+            title: 'Use Snackbar + Alert for toast notifications',
+            description:
+              'Combine Snackbar for positioning and timing with Alert for role="alert" and severity. Set autoHideDuration to at least 5000ms.'
           },
           {
-            title: 'Set minimum autoHideDuration',
-            description: 'Ensure autoHideDuration is at least 5000ms so users have sufficient time to read the alert.'
+            title: 'Set minimum autoHideDuration of 5000ms',
+            description: 'Values below 5000ms may violate WCAG 2.2.3 (No Timing). Set to null to require manual dismissal.'
+          },
+          {
+            title: 'Distinguish inline alerts from toast alerts',
+            description: 'Use standalone Alert for persistent status messages on the page, and Snackbar + Alert for transient toast notifications.'
           }
         ],
         notes: [
-          'MUI Alert used standalone automatically receives role="alert".',
-          'Snackbar onClose responds to Escape key and outside clicks.',
-          'The severity prop (success/info/warning/error) automatically applies icons and colors.'
+          'MUI Alert used standalone automatically receives role="alert" and announces to screen readers.',
+          'Snackbar onClose with reason check (reason !== "clickaway") prevents unintentional dismissal.',
+          'The severity prop (success/info/warning/error) automatically applies matching icons, colors, and accessible meaning.',
+          'Set autoHideDuration={null} to require explicit user action to dismiss.'
         ]
       },
       radix: {
@@ -319,18 +336,26 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Ripple effect accessibility',
-            description: 'The ripple effect is purely visual and does not affect accessibility. Use disableRipple to remove it if needed.'
+            title: 'Handle aria-busy for loading state',
+            description:
+              'Add aria-busy="true" to a loading button and apply aria-hidden to the CircularProgress so screen readers do not announce the spinner.'
           },
           {
-            title: 'Verify contrast per variant',
-            description: 'Check that each variant (contained, outlined, text) meets the 4.5:1 contrast ratio requirement.'
+            title: 'Verify contrast for outlined variant',
+            description:
+              'The border color of the outlined variant must meet a minimum 3:1 contrast ratio against the background. Verify this in the default theme.'
+          },
+          {
+            title: 'Check role when using component="a"',
+            description:
+              'Using the component prop to render an <a> makes it a link, not a button. Keep component="button" for actions; use <a> only for navigation.'
           }
         ],
         notes: [
-          'MUI Button renders a <button> element by default.',
-          'When changing to <a> via the component prop, explicitly manage href and role.',
-          'The disableRipple prop can be used without affecting accessibility.'
+          'MUI Button renders a <button type="button"> element by default.',
+          'The disabled prop removes focus from the tab order. Use aria-disabled only if you need to keep focus on the element.',
+          'Avoid component="a" for non-navigation actions — it changes the semantic meaning from button to link.',
+          'Use sx={{ minHeight: 44 }} to meet the WCAG 2.5.5 touch target size requirement.'
         ]
       },
       radix: {
@@ -608,14 +633,25 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Use @mui/x-date-pickers',
-            description: 'Use @mui/x-date-pickers instead of a custom date input for built-in accessibility support.'
+            title: 'Use the @mui/x-date-pickers package',
+            description:
+              'MUI DatePicker lives in the separate @mui/x-date-pickers package. LocalizationProvider and a date adapter (e.g., AdapterDateFns) are required.'
+          },
+          {
+            title: 'Pass accessibility props via slotProps.textField',
+            description:
+              'Use slotProps.textField to pass helperText, required, and error props to the underlying TextField for proper screen reader connections.'
+          },
+          {
+            title: 'Provide format hint via helperText',
+            description:
+              'Set slotProps.textField.helperText to show the expected date format so users can predict what to enter. It is auto-connected via aria-describedby.'
           }
         ],
         notes: [
-          'Setting adapterLocale on LocalizationProvider displays the calendar UI in the correct locale.',
-          '@mui/x-date-pickers automatically handles ARIA for keyboard navigation and screen readers.',
-          'Customize input field accessibility attributes via slotProps.textField.'
+          '@mui/x-date-pickers splits the date input into segments (month/day/year) and automatically handles keyboard navigation and screen reader ARIA.',
+          'Place LocalizationProvider once at the app root rather than wrapping each individual DatePicker.',
+          'Use disablePast, disableFuture, minDate, or maxDate to limit the selectable range — aria-disabled is applied to excluded dates automatically.'
         ]
       },
       antd: {
@@ -766,14 +802,24 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Use variant="temporary" for modal behavior',
-            description: 'Use variant="temporary" so the Drawer behaves as a modal with focus trapping and backdrop.'
+            title: 'Connect aria-labelledby to drawer title',
+            description:
+              'Pass the drawer heading element id to aria-labelledby on the Drawer component so screen readers correctly identify the dialog.'
+          },
+          {
+            title: 'variant="temporary" is Modal-based',
+            description:
+              'variant="temporary" (the default) renders on top of a Modal and automatically provides focus trapping, Escape to close, and the backdrop overlay.'
+          },
+          {
+            title: 'aria-label required on icon-only close button',
+            description: 'Icon-only close buttons must have an aria-label (e.g., "Close navigation drawer") describing their purpose.'
           }
         ],
         notes: [
-          'MUI Drawer variant="temporary" is Modal-based and automatically handles focus trapping and Escape to close.',
-          'Connect aria-labelledby to the drawer title ID.',
-          'Set keepMounted={false} to remove the drawer from the DOM when closed.'
+          'MUI Drawer variant="temporary" automatically handles focus trapping, Escape key, and backdrop click to close.',
+          'Place a <nav aria-label="Main navigation"> inside the Drawer to provide a navigation landmark.',
+          'Set aria-haspopup="dialog" on the trigger button so screen readers know it opens a dialog.'
         ]
       },
       antd: {
@@ -1016,15 +1062,24 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Caution with keepMounted',
-            description: 'When keepMounted is used, the hidden Dialog remains in the DOM and may be exposed to screen readers.'
+            title: 'Set aria-labelledby and aria-describedby explicitly',
+            description:
+              'Connect aria-labelledby to the DialogTitle id and aria-describedby to the DialogContent id on the Dialog component. MUI does not wire these automatically.'
           },
-          { title: 'Do not use disablePortal', description: 'disablePortal interferes with the focus trap and inert handling.' }
+          {
+            title: 'Do not use keepMounted',
+            description: 'keepMounted={true} keeps a closed Dialog in the DOM. Screen readers may read hidden content, so avoid this prop.'
+          },
+          {
+            title: 'Use autoFocus for initial focus control',
+            description:
+              'Add the autoFocus prop to the element that should receive focus when the modal opens — typically the primary confirm button.'
+          }
         ],
         notes: [
-          'MUI Dialog handles focus trapping automatically.',
-          'Use the autoFocus prop to control initial focus position.',
-          'Use TransitionProps.onExited to restore focus after the dialog closes.'
+          'aria-labelledby and aria-describedby are not set automatically by MUI and must be added explicitly to the Dialog.',
+          'Add autoFocus to set the initial focus target when the modal opens. The default confirm button is recommended.',
+          'DialogContentText automatically applies correct color contrast and typography styling.'
         ]
       },
       radix: {
@@ -1135,14 +1190,25 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'AppBar + Drawer combination',
-            description: 'For mobile navigation, combine AppBar with a Drawer and ensure focus management between the two.'
+            title: 'Set component="nav" and aria-label on Toolbar',
+            description:
+              'Use Toolbar component="nav" with aria-label="Main navigation". This renders as <nav aria-label> and enables screen reader landmark navigation.'
+          },
+          {
+            title: 'Add aria-haspopup and aria-expanded to submenu triggers',
+            description:
+              'Set aria-haspopup="menu" and aria-expanded on dropdown trigger buttons so screen readers can identify submenus and their open state.'
+          },
+          {
+            title: 'Add aria-current="page" to the active link',
+            description: 'MUI does not set aria-current automatically. Add aria-current="page" directly to the link matching the current route.'
           }
         ],
         notes: [
-          'Use component="header" on AppBar for semantic markup.',
-          'MUI Menu automatically handles focus management and keyboard navigation.',
-          'You must manually add aria-current to the current page link.'
+          'Use Toolbar component="nav" to provide the <nav> landmark; add aria-label to distinguish it from other nav elements.',
+          'MUI Menu automatically handles arrow key navigation, Escape to close, and focus restoration.',
+          'Add aria-current="page" to the active link manually — MUI does not handle this automatically.',
+          'Use MenuListProps={{ "aria-label": "..." }} to add an accessible label to the menu list.'
         ]
       },
       radix: {
@@ -1228,13 +1294,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         additionalChecks: [
           {
             title: 'Customize aria-label with getItemAriaLabel',
-            description: 'Use getItemAriaLabel to provide descriptive labels for all pagination buttons (e.g., "Go to page 3").'
+            description:
+              'Use getItemAriaLabel to provide descriptive labels for all pagination buttons. Include the selected state in page labels (e.g., "Go to page 3, current page").'
+          },
+          {
+            title: 'Add aria-label to the Pagination nav container',
+            description:
+              'MUI Pagination renders a <nav> without an aria-label. Pass an aria-label via slotProps.root so screen readers can distinguish it from other nav landmarks.'
           }
         ],
         notes: [
-          'MUI Pagination automatically uses a <nav role="navigation"> landmark.',
-          'aria-current is automatically applied to the current page.',
-          'Use getItemAriaLabel to customize all button aria-labels at once.'
+          'MUI Pagination renders a <nav> landmark automatically, but you must add aria-label via slotProps.root.',
+          'aria-current="page" is automatically applied to the active page button.',
+          'Use showFirstButton and showLastButton to add first/last page navigation for large page counts.'
         ]
       },
       antd: {
@@ -1303,14 +1375,20 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Connect trigger with Popover anchorEl',
-            description: 'Use anchorEl to associate the popover with its trigger element for proper ARIA relationships.'
+            title: 'Connect trigger and popover with aria-describedby',
+            description:
+              'Set aria-describedby={popoverId} on the trigger button (only when open) and match it to the Popover id. This lets screen readers understand the association.'
+          },
+          {
+            title: 'Focus management must be implemented manually',
+            description:
+              'Unlike Modal, MUI Popover does not provide a focus trap. If the popover contains interactive content, move focus into the popover on open and implement focus management yourself.'
           }
         ],
         notes: [
-          'MUI Popover automatically closes on Escape key and outside clicks.',
-          'Connect the trigger and popover via aria-describedby.',
-          'Focus management inside the popover must be implemented manually.'
+          'MUI Popover automatically closes on Escape key and outside click, and restores focus to the trigger.',
+          'Set aria-describedby on the trigger conditionally (open ? id : undefined) to avoid stale references when closed.',
+          'Add role="dialog" and aria-label to the inner container for popovers containing interactive content.'
         ]
       },
       radix: {
@@ -1479,14 +1557,20 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'FormControl + InputLabel combination is required',
-            description: "Always wrap MUI Select in FormControl with InputLabel. The labelId must match the Select's labelId prop."
+            title: 'FormControl + InputLabel + labelId wiring is required',
+            description:
+              'MUI Select requires FormControl, an InputLabel with a matching id, and the Select labelId prop set to the same value. For the outlined variant, also pass the label prop to Select.'
+          },
+          {
+            title: 'Use error + FormHelperText for error guidance',
+            description:
+              'Set the error prop on FormControl and provide the error message via FormHelperText. It is automatically connected to the Select via aria-describedby.'
           }
         ],
         notes: [
-          'The labelId on Select and the id on InputLabel must match for screen readers to read the label.',
-          "Using the native prop renders the browser's default <select>.",
-          'Disabled options automatically receive aria-disabled.'
+          'The labelId on Select and the id on InputLabel must be identical for screen readers to announce the label.',
+          'For the outlined variant, pass the label prop to Select as well — this is required to render the label cutout in the border.',
+          'Disabled MenuItem options automatically receive aria-disabled.'
         ]
       },
       radix: {
@@ -1563,12 +1647,24 @@ export const patternTranslationsEn: Record<string, PatternT> = {
     designSystems: {
       material: {
         additionalChecks: [
-          { title: 'Connect TabPanel and Tabs by value', description: 'Match the value of MUI Tabs and each TabPanel to control the active panel.' },
-          { title: 'Add aria-label or aria-labelledby', description: 'Add aria-label or aria-labelledby to the MUI Tabs component.' }
+          {
+            title: 'Connect Tab id and tabpanel aria-labelledby',
+            description:
+              'Explicitly set id="tab-{n}" on each Tab and aria-labelledby="tab-{n}" on each tabpanel. Use the official a11yProps helper for convenience.'
+          },
+          {
+            title: 'Provide aria-label on Tabs',
+            description: 'Add aria-label to the Tabs component to describe the purpose of the tab group so screen readers can identify it.'
+          },
+          {
+            title: 'Use disabled prop on inactive Tabs',
+            description: 'The disabled prop automatically applies aria-disabled and removes the tab from the focus order.'
+          }
         ],
         notes: [
-          'MUI Tabs automatically handles arrow key navigation and roving tabindex.',
-          'If TabScrollButton is visible, guide screen reader users on the scroll direction.'
+          'MUI Tabs automatically manages arrow key navigation and roving tabindex.',
+          'Use the a11yProps helper to consistently generate id and aria-controls pairs for Tab and TabPanel.',
+          'Wrap the tabpanel body with a hidden attribute rather than conditional rendering so the panel stays in the DOM.'
         ]
       },
       radix: {
@@ -1671,18 +1767,24 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'TextField helperText and aria connection',
-            description: "MUI TextField's helperText is automatically connected via aria-describedby. Do not set FormHelperText id manually."
+            title: 'helperText is auto-connected via aria-describedby',
+            description:
+              'MUI TextField renders helperText as FormHelperText and connects it via aria-describedby automatically. Do not set a manual id on FormHelperText.'
           },
           {
-            title: 'Verify InputLabel shrink behavior',
-            description: 'Confirm that the label is still accessible to screen readers when a floating label shrinks.'
+            title: 'Use slotProps.htmlInput for native input attributes',
+            description:
+              'Pass autoComplete, aria-required, and other HTML input attributes via slotProps.htmlInput. The inputProps prop is deprecated in MUI v7.'
+          },
+          {
+            title: 'Use error + helperText to communicate errors',
+            description: 'When the error prop is true, helperText color changes to the error color. Provide the error message in helperText.'
           }
         ],
         notes: [
-          'MUI TextField automatically handles aria connections between label, input, and helperText.',
-          'When the error prop is true, helperText automatically receives role="alert".',
-          'Verify the border color contrast for variant="outlined" (minimum 3:1).'
+          'MUI TextField automatically wires aria connections between InputLabel, input, and helperText.',
+          'When error={true}, the helperText text color changes to indicate an error state.',
+          'Verify that the outlined variant border color meets the minimum 3:1 contrast ratio against the background.'
         ]
       },
       radix: {
@@ -1778,16 +1880,25 @@ export const patternTranslationsEn: Record<string, PatternT> = {
     designSystems: {
       material: {
         additionalChecks: [
-          { title: 'Use FormControlLabel to connect a label', description: 'Pair MUI Switch with FormControlLabel to associate it with a label.' },
           {
-            title: 'Add aria-label via inputProps when used standalone',
-            description: 'When used without FormControlLabel, add an aria-label via inputProps.'
+            title: 'Use FormControlLabel to connect a label',
+            description:
+              'Pair MUI Switch with FormControlLabel and use its label prop to associate the label. When used standalone, add aria-label via slotProps.input.'
+          },
+          {
+            title: 'ToggleButtonGroup requires aria-label',
+            description: 'Add aria-label to ToggleButtonGroup to describe the group purpose, and add aria-label to each ToggleButton.'
+          },
+          {
+            title: 'role="switch" is not applied automatically',
+            description:
+              'MUI Switch renders an <input type="checkbox"> internally. role="switch" is not applied automatically — add it via slotProps.input if semantic switch behavior is needed.'
           }
         ],
         notes: [
-          'MUI Switch uses an <input type="checkbox"> internally.',
-          'role="switch" is not applied automatically — add it via inputProps.',
-          'Re-verify contrast ratios when changing the color prop.'
+          'MUI Switch renders an <input type="checkbox"> internally.',
+          'FormControlLabel automatically connects the label to the input via aria association.',
+          'For ToggleButtonGroup with exclusive={true}, aria-pressed is managed automatically per button.'
         ]
       },
       radix: {
@@ -1895,9 +2006,27 @@ export const patternTranslationsEn: Record<string, PatternT> = {
     designSystems: {
       material: {
         additionalChecks: [
-          { title: 'Set enterDelay', description: 'Set enterDelay to at least 300ms so the tooltip does not appear on accidental hover.' }
+          {
+            title: 'Set enterDelay to 300ms or more',
+            description: 'Set enterDelay to at least 300ms to prevent accidental tooltip display. The default value of 100ms may be too short.'
+          },
+          {
+            title: 'aria-label required on icon-only button triggers',
+            description:
+              'The Tooltip title supplements the visible description but does not replace an accessible name. Always provide aria-label on icon-only buttons.'
+          },
+          {
+            title: 'Implement forwardRef for custom children',
+            description:
+              'Tooltip injects DOM event listeners into its children. Custom components used as children must implement React.forwardRef to pass the ref correctly.'
+          }
         ],
-        notes: ['MUI Tooltip automatically handles role="tooltip" and aria-describedby.', 'When using custom children, implement forwardRef.']
+        notes: [
+          'MUI Tooltip automatically sets role="tooltip" and aria-describedby.',
+          'enterDelay (default 100ms) controls show delay; leaveDelay (default 0ms) controls hide delay.',
+          'To show a tooltip on a disabled button, wrap the button in a <span> — disabled buttons do not receive pointer events.',
+          'Custom children components must implement React.forwardRef for event listeners to attach correctly.'
+        ]
       },
       radix: {
         additionalChecks: [

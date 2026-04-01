@@ -89,39 +89,87 @@ export const textInputPattern: Pattern = {
       additionalChecks: [
         {
           id: 'inp-mui-1',
-          title: 'TextField helperText와 aria 연결',
-          description: 'MUI TextField의 helperText는 자동으로 aria-describedby로 연결됩니다. FormHelperText id를 수동 설정하지 마세요.',
+          title: 'helperText가 aria-describedby로 자동 연결',
+          description:
+            'MUI TextField의 helperText는 FormHelperText로 렌더링되며 aria-describedby로 input에 자동 연결됩니다. 수동으로 id를 설정하면 충돌이 발생할 수 있습니다.',
           level: 'should'
         },
         {
           id: 'inp-mui-2',
-          title: 'InputLabel shrink 동작 확인',
-          description: 'floating label이 축소될 때 스크린리더에 레이블이 유지되는지 확인하세요.',
+          title: 'slotProps.htmlInput으로 native input 속성 전달',
+          description:
+            'autoComplete, aria-required 등 HTML input 속성은 slotProps.htmlInput을 통해 네이티브 input 요소에 전달하세요. inputProps는 v7에서 deprecated입니다.',
+          level: 'must'
+        },
+        {
+          id: 'inp-mui-3',
+          title: 'error + helperText로 오류 상태 안내',
+          description: 'error prop이 true일 때 helperText의 색상이 오류 색으로 변경됩니다. 오류 메시지를 helperText에 제공하세요.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI TextField',
-        code: `import { TextField } from '@mui/material'
-<TextField
-  id='email'
-  label='Email'
-  type='email'
-  required
-  error={hasError}
-  helperText={hasError ? 'Please enter a valid email address.' : 'e.g. user@example.com'}
-  inputProps={{
-    'aria-required': true,
-    autoComplete: 'email'
-  }}
-  fullWidth
-/>`
+        code: `import { useState } from 'react'
+import { TextField, Button, Box, Typography } from '@mui/material'
+
+export default function App() {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  const emailError = submitted && !email.includes('@')
+  const nameError = submitted && name.trim() === ''
+
+  return (
+    <Box
+      component='form'
+      noValidate
+      style={{ padding: 24, maxWidth: 400, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Typography variant='h6'>Create Account</Typography>
+
+      <TextField
+        id='full-name'
+        label='Full Name'
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+        error={nameError}
+        helperText={nameError ? 'Full name is required.' : 'As it appears on your ID'}
+        slotProps={{ htmlInput: { autoComplete: 'name', 'aria-required': 'true' } }}
+        fullWidth
+      />
+
+      <TextField
+        id='email-address'
+        label='Email Address'
+        type='email'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        error={emailError}
+        helperText={emailError ? 'Please enter a valid email address.' : 'e.g. user@example.com'}
+        slotProps={{ htmlInput: { autoComplete: 'email', 'aria-required': 'true' } }}
+        fullWidth
+      />
+
+      <Button
+        type='submit'
+        variant='contained'
+        onClick={() => setSubmitted(true)}
+        sx={{ alignSelf: 'flex-start', minHeight: 44 }}>
+        Create Account
+      </Button>
+    </Box>
+  )
+}`
       },
       notes: [
-        'MUI TextField는 label, input, helperText의 aria 연결을 자동 처리합니다.',
-        'error prop이 true면 helperText에 role="alert"가 자동 추가됩니다.',
-        'variant="outlined"의 border 색상은 대비 3:1을 확인하세요.'
+        'MUI TextField는 label, input, helperText의 aria 연결(for/id, aria-describedby)을 자동으로 처리합니다.',
+        'slotProps.htmlInput으로 네이티브 input 속성을 전달하세요 (v7+). inputProps는 deprecated입니다.',
+        'error prop이 true일 때 helperText 색상이 오류 색으로 변경되며 aria-invalid가 자동 적용됩니다.',
+        'required prop은 label에 asterisk를 표시하고 슬롯에 aria-required를 전달합니다.'
       ]
     },
     radix: {
@@ -305,7 +353,10 @@ export default function App() {
       <Field.Label>
         Name <span aria-hidden>*</span>
       </Field.Label>
-      <Field.Control required placeholder='Enter your name' />
+      <Field.Control
+        required
+        placeholder='Enter your name'
+      />
       <Field.Error match='valueMissing'>Please enter your name.</Field.Error>
       <Field.Description>Visible on your profile</Field.Description>
     </Field.Root>

@@ -117,45 +117,76 @@ return (
       additionalChecks: [
         {
           id: 'datepicker-mui-1',
-          title: '@mui/x-date-pickers 사용 권장',
-          description: 'MUI Date Picker는 @mui/x-date-pickers 패키지에 있습니다. 기본 TextField보다 접근성이 잘 구현되어 있습니다.',
+          title: '@mui/x-date-pickers 패키지 사용',
+          description: 'MUI Date Picker는 @mui/x-date-pickers 패키지에 포함됩니다. LocalizationProvider와 date-fns 어댑터가 반드시 필요합니다.',
+          level: 'must'
+        },
+        {
+          id: 'datepicker-mui-2',
+          title: 'slotProps.textField로 접근성 속성 전달',
+          description: 'slotProps.textField를 통해 TextField의 helperText, required, error 등 접근성 관련 prop을 전달하세요.',
+          level: 'should'
+        },
+        {
+          id: 'datepicker-mui-3',
+          title: '날짜 형식 안내 helperText 제공',
+          description: '사용자가 날짜 형식을 예측할 수 있도록 slotProps.textField.helperText로 형식 안내를 제공하세요.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Date Picker',
-        code: `import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+        code: `import { useState } from 'react'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { enUS } from 'date-fns/locale'
+import { Box, Typography } from '@mui/material'
 
-function DatePickerDemo() {
-  const [date, setDate] = useState(new Date())
+export default function App() {
+  const [birthDate, setBirthDate] = useState<Date | null>(null)
+  const [appointmentDate, setAppointmentDate] = useState<Date | null>(null)
 
   return (
-    <LocalizationProvider
-      dateAdapter={AdapterDateFns}
-      adapterLocale={enUS}>
-      <DatePicker
-        label='Select date'
-        value={date}
-        onChange={(newDate) => setDate(newDate)}
-        slotProps={{
-          textField: {
-            helperText: 'Format: YYYY.MM.DD',
-            inputProps: { 'aria-describedby': 'date-hint' }
-          }
-        }}
-      />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 360 }}>
+        <Typography variant='h6'>Schedule</Typography>
+
+        <DatePicker
+          label='Date of birth'
+          value={birthDate}
+          onChange={(newDate) => setBirthDate(newDate)}
+          slotProps={{
+            textField: {
+              required: true,
+              helperText: 'Format: MM/DD/YYYY',
+              fullWidth: true
+            }
+          }}
+        />
+
+        <DatePicker
+          label='Appointment date'
+          value={appointmentDate}
+          onChange={(newDate) => setAppointmentDate(newDate)}
+          disablePast
+          slotProps={{
+            textField: {
+              helperText: 'Select a future date',
+              fullWidth: true
+            }
+          }}
+        />
+      </Box>
     </LocalizationProvider>
   )
 }`
       },
       notes: [
-        'LocalizationProvider의 adapterLocale을 ko로 설정하면 캘린더 UI가 한국어로 표시됩니다.',
-        '@mui/x-date-pickers는 키보드 내비게이션과 스크린리더를 위한 ARIA를 자동으로 처리합니다.',
-        'slotProps.textField로 입력 필드의 접근성 속성을 커스텀할 수 있습니다.'
+        '@mui/x-date-pickers는 날짜 입력 필드를 세그먼트(month/day/year)로 분리하여 키보드 내비게이션과 스크린리더 ARIA를 자동으로 처리합니다.',
+        'LocalizationProvider는 앱 루트에 한 번만 배치하세요.',
+        'disablePast, disableFuture, minDate, maxDate prop으로 선택 가능 범위를 제한하면 비활성 날짜에 aria-disabled가 자동 적용됩니다.',
+        'slotProps.textField.helperText로 날짜 형식 안내를 제공하세요. aria-describedby로 자동 연결됩니다.'
       ]
     },
     antd: {

@@ -56,41 +56,84 @@ export const buttonPattern: Pattern = {
       additionalChecks: [
         {
           id: 'btn-mui-1',
-          title: 'Ripple 효과 접근성',
-          description: 'MUI의 TouchRipple은 시각적 피드백만 제공하므로 추가적인 aria 피드백이 필요합니다.',
+          title: 'loading 상태 aria-busy 처리',
+          description:
+            '로딩 중인 버튼에 aria-busy="true"를 추가하고 CircularProgress에 aria-hidden을 적용해 스크린리더에 스피너가 노출되지 않도록 하세요.',
           level: 'should'
         },
         {
           id: 'btn-mui-2',
-          title: 'variant별 대비 검증',
-          description: 'outlined variant는 border 색상까지 대비 3:1을 충족해야 합니다.',
+          title: 'outlined variant 대비 검증',
+          description: 'outlined variant의 border 색상은 배경과 최소 3:1 대비를 충족해야 합니다. 기본 테마에서 확인이 필요합니다.',
+          level: 'must'
+        },
+        {
+          id: 'btn-mui-3',
+          title: 'component="a"로 변경 시 role 확인',
+          description: 'component prop으로 <a>를 사용하면 버튼이 아닌 링크가 됩니다. 탐색 목적이 아닌 액션에는 <button>을 유지하세요.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Button',
-        code: `import { Button, CircularProgress } from '@mui/material'
-<Button
-  variant='contained'
-  disabled={isLoading}
-  aria-busy={isLoading}
-  startIcon={
-    isLoading ? (
-      <CircularProgress
-        size={16}
-        aria-hidden
-      />
-    ) : undefined
+        code: `import { useState } from 'react'
+import { Button, CircularProgress, Stack } from '@mui/material'
+
+export default function App() {
+  const [loading, setLoading] = useState(false)
+
+  const handleSave = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 2000)
   }
-  sx={{ minWidth: 44, minHeight: 44 }}>
-  {isLoading ? 'Saving...' : 'Save'}
-</Button>`
+
+  return (
+    <Stack
+      spacing={2}
+      direction='row'
+      style={{ padding: 24 }}>
+      <Button
+        variant='contained'
+        onClick={handleSave}
+        disabled={loading}
+        aria-busy={loading}
+        startIcon={
+          loading ? (
+            <CircularProgress
+              size={16}
+              aria-hidden='true'
+            />
+          ) : undefined
+        }
+        sx={{ minHeight: 44 }}>
+        {loading ? 'Saving...' : 'Save'}
+      </Button>
+
+      <Button
+        variant='outlined'
+        disabled
+        aria-disabled='true'
+        sx={{ minHeight: 44 }}>
+        Disabled
+      </Button>
+
+      <Button
+        variant='contained'
+        color='error'
+        aria-label='Delete selected item'
+        sx={{ minHeight: 44 }}>
+        Delete
+      </Button>
+    </Stack>
+  )
+}`
       },
       notes: [
-        'MUI Button은 기본적으로 <button> 요소를 렌더링합니다.',
-        'component prop으로 <a>로 변경 시 href와 role을 명시적으로 관리하세요.',
-        'disableRipple prop은 접근성에 영향 없이 사용 가능합니다.'
+        'MUI Button은 기본적으로 <button type="button">을 렌더링합니다.',
+        'disabled prop은 aria-disabled와 포커스 제거를 동시에 처리합니다. 포커스 유지가 필요한 경우 aria-disabled만 사용하세요.',
+        'component prop으로 <a>로 변경 시 버튼 의미가 사라지므로 탐색 목적에만 사용하세요.',
+        'sx={{ minHeight: 44 }}로 WCAG 2.5.5 터치 타겟 크기를 확보하세요.'
       ]
     },
     radix: {

@@ -112,45 +112,98 @@ export const popoverPattern: Pattern = {
       additionalChecks: [
         {
           id: 'popover-mui-1',
-          title: 'Popover anchorEl로 트리거 연결',
-          description: 'MUI Popover는 anchorEl에 트리거 요소를 전달하면 위치가 자동 계산됩니다. aria-controls로도 연결하세요.',
-          level: 'should'
+          title: 'aria-describedby로 트리거와 팝오버 연결',
+          description:
+            '팝오버가 열릴 때 트리거 버튼에 aria-describedby={id}를 설정하고 Popover에 동일한 id를 부여해 스크린리더가 연결 관계를 파악하도록 하세요.',
+          level: 'must'
+        },
+        {
+          id: 'popover-mui-2',
+          title: '팝오버 내 포커스 관리는 직접 구현',
+          description:
+            'MUI Popover는 Modal과 달리 포커스 트랩을 제공하지 않습니다. 대화형 콘텐츠가 있다면 열릴 때 포커스를 팝오버 내부로 이동하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Popover',
-        code: `import { Button, Popover, Typography } from '@mui/material'
+        code: `import { useState, useRef } from 'react'
+import { Button, Popover, Typography, Box, Switch, FormControlLabel } from '@mui/material'
 
-function MuiPopoverDemo() {
-  const [anchorEl, setAnchorEl] = useState(null)
+export default function App() {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const [notifications, setNotifications] = useState(true)
+  const [emails, setEmails] = useState(false)
   const open = Boolean(anchorEl)
-  const id = open ? 'popover' : undefined
+  const popoverId = open ? 'settings-popover' : undefined
 
   return (
-    <>
+    <Box style={{ padding: 24 }}>
       <Button
-        aria-describedby={id}
+        variant='outlined'
+        aria-describedby={popoverId}
         aria-expanded={open}
+        aria-haspopup='dialog'
         onClick={(e) => setAnchorEl(e.currentTarget)}>
-        Open settings
+        Notification settings
       </Button>
+
       <Popover
-        id={id}
+        id={popoverId}
         open={open}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-        <Typography sx={{ p: 2 }}>Settings content</Typography>
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        <Box
+          role='dialog'
+          aria-label='Notification settings'
+          sx={{ p: 2, minWidth: 240 }}>
+          <Typography
+            variant='subtitle1'
+            component='h2'
+            gutterBottom>
+            Notification Settings
+          </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={notifications}
+                onChange={(e) => setNotifications(e.target.checked)}
+                inputProps={{ 'aria-label': 'Push notifications' }}
+              />
+            }
+            label='Push notifications'
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={emails}
+                onChange={(e) => setEmails(e.target.checked)}
+                inputProps={{ 'aria-label': 'Email notifications' }}
+              />
+            }
+            label='Email notifications'
+          />
+          <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              size='small'
+              onClick={() => setAnchorEl(null)}>
+              Close
+            </Button>
+          </Box>
+        </Box>
       </Popover>
-    </>
+    </Box>
   )
 }`
       },
       notes: [
-        'MUI Popover는 Escape 키와 배경 클릭으로 자동으로 닫힙니다.',
-        'aria-describedby로 트리거와 팝오버를 연결하세요.',
-        '팝오버 내 포커스 관리는 직접 구현해야 합니다.'
+        'MUI Popover는 Escape 키와 배경 클릭으로 자동으로 닫히며 트리거로 포커스가 복원됩니다.',
+        'aria-describedby는 팝오버가 열릴 때만 설정(open ? id : undefined)하여 닫혔을 때 불필요한 참조를 방지하세요.',
+        '대화형 콘텐츠를 포함한 팝오버는 role="dialog"와 aria-label을 Popover 내부 컨테이너에 추가하세요.',
+        'MUI Popover는 포커스 트랩을 제공하지 않으므로 필요한 경우 직접 구현하거나 Dialog 컴포넌트를 사용하세요.'
       ]
     },
     radix: {

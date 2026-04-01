@@ -71,36 +71,112 @@ export const togglePattern: Pattern = {
       additionalChecks: [
         {
           id: 'tog-mui-1',
-          title: 'FormControlLabel 연결',
-          description: 'MUI Switch는 FormControlLabel과 함께 사용해 레이블을 연결하세요.',
+          title: 'FormControlLabel로 레이블 연결',
+          description:
+            'MUI Switch는 FormControlLabel과 함께 사용해 label prop으로 레이블을 연결하세요. 단독 사용 시 slotProps.input에 aria-label을 추가해야 합니다.',
           level: 'must'
         },
         {
           id: 'tog-mui-2',
-          title: 'inputProps aria-label 추가',
-          description: 'FormControlLabel 없이 단독 사용 시 inputProps에 aria-label을 추가하세요.',
+          title: 'ToggleButtonGroup은 aria-label 필수',
+          description:
+            'ToggleButton 그룹(aria-pressed 기반)은 ToggleButtonGroup에 aria-label로 그룹 목적을 명시하고 각 ToggleButton에 aria-label을 추가하세요.',
           level: 'must'
+        },
+        {
+          id: 'tog-mui-3',
+          title: 'Switch의 role="switch" 자동 적용 확인',
+          description:
+            'MUI Switch는 내부 input에 role="switch"를 자동으로 적용하지 않습니다. 의미론적 스위치가 필요하다면 slotProps.input에 role="switch"를 추가하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
-        label: 'MUI Switch',
-        code: `import { Switch, FormControlLabel } from '@mui/material'
-<FormControlLabel
-  control={
-    <Switch
-      checked={isEnabled}
-      onChange={(e) => setIsEnabled(e.target.checked)}
-      inputProps={{ 'aria-label': 'Notification settings' }}
-    />
-  }
-  label='Notification settings'
-/>`
+        label: 'MUI Switch & ToggleButtonGroup',
+        code: `import { useState } from 'react'
+import { Switch, FormControlLabel, FormGroup, ToggleButton, ToggleButtonGroup, Typography, Box, Divider } from '@mui/material'
+
+export default function App() {
+  const [notifications, setNotifications] = useState(true)
+  const [marketing, setMarketing] = useState(false)
+  const [alignment, setAlignment] = useState('left')
+
+  return (
+    <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <Box>
+        <Typography
+          variant='subtitle1'
+          component='h2'
+          gutterBottom>
+          Notification Preferences
+        </Typography>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={notifications}
+                onChange={(e) => setNotifications(e.target.checked)}
+                slotProps={{
+                  input: { role: 'switch', 'aria-checked': notifications } as React.AriaAttributes & React.HTMLAttributes<HTMLInputElement>
+                }}
+              />
+            }
+            label='Push notifications'
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={marketing}
+                onChange={(e) => setMarketing(e.target.checked)}
+                slotProps={{ input: { role: 'switch', 'aria-checked': marketing } as React.AriaAttributes & React.HTMLAttributes<HTMLInputElement> }}
+              />
+            }
+            label='Marketing emails'
+          />
+        </FormGroup>
+      </Box>
+
+      <Divider />
+
+      <Box>
+        <Typography
+          variant='subtitle1'
+          component='h2'
+          gutterBottom>
+          Text Alignment
+        </Typography>
+        <ToggleButtonGroup
+          value={alignment}
+          exclusive
+          onChange={(_, val) => val && setAlignment(val)}
+          aria-label='Text alignment'>
+          <ToggleButton
+            value='left'
+            aria-label='Left align'>
+            L
+          </ToggleButton>
+          <ToggleButton
+            value='center'
+            aria-label='Center align'>
+            C
+          </ToggleButton>
+          <ToggleButton
+            value='right'
+            aria-label='Right align'>
+            R
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+    </Box>
+  )
+}`
       },
       notes: [
-        'MUI Switch는 내부적으로 <input type="checkbox">를 사용합니다.',
-        'role="switch"는 자동으로 적용되지 않으므로 inputProps로 추가하세요.',
-        'color prop 변경 시 대비율을 재검증하세요.'
+        'MUI Switch는 내부적으로 <input type="checkbox">를 렌더링합니다. role="switch"는 자동 적용되지 않아 필요 시 slotProps.input으로 추가해야 합니다.',
+        'FormControlLabel의 label prop이 input의 aria-label로 자동 연결됩니다.',
+        'ToggleButtonGroup에 exclusive prop을 설정하면 한 번에 하나만 선택됩니다. 이때 aria-pressed가 자동 관리됩니다.',
+        'color prop 변경 시 배경색 대비율(최소 3:1)을 재검증하세요.'
       ]
     },
     radix: {

@@ -164,64 +164,108 @@ export const navigationMenuPattern: Pattern = {
       additionalChecks: [
         {
           id: 'nav-mui-1',
-          title: 'AppBar + Drawer 조합',
-          description: 'MUI에서 내비게이션은 보통 AppBar + Drawer 조합으로 구현합니다. Drawer에 aria-label을 제공하세요.',
-          level: 'should'
+          title: 'Toolbar에 component="nav"와 aria-label 설정',
+          description:
+            'AppBar의 Toolbar를 component="nav"로 사용하고 aria-label="Main navigation"을 제공하세요. 이렇게 하면 <nav aria-label>로 렌더링되어 스크린리더 랜드마크 탐색이 가능합니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-mui-2',
+          title: 'Menu 트리거에 aria-haspopup과 aria-expanded',
+          description:
+            '하위 메뉴 트리거 버튼에 aria-haspopup="menu"와 aria-expanded를 설정해야 스크린리더가 서브메뉴의 존재와 상태를 파악할 수 있습니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-mui-3',
+          title: '현재 페이지 링크에 aria-current="page"',
+          description: 'MUI는 aria-current를 자동으로 설정하지 않습니다. 현재 경로에 해당하는 링크에 직접 aria-current="page"를 추가하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI AppBar Navigation',
-        code: `import { AppBar, Toolbar, Button, Menu, MenuItem } from '@mui/material'
+        code: `import { useState } from 'react'
+import { AppBar, Toolbar, Button, Menu, MenuItem, Box, Typography } from '@mui/material'
 
-function NavigationMuiDemo() {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const currentPath = '/'
+const currentPath = '/'
+
+export default function App() {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const menuOpen = Boolean(anchorEl)
+  const menuId = menuOpen ? 'products-menu' : undefined
 
   return (
-    <AppBar
-      position='static'
-      component='header'>
-      <Toolbar
-        component='nav'
-        aria-label='Main navigation'>
-        <Button
-          color='inherit'
-          href='/'
-          aria-current={currentPath === '/' ? 'page' : undefined}>
-          Home
-        </Button>
-        <Button
-          color='inherit'
-          aria-haspopup='menu'
-          aria-expanded={Boolean(anchorEl)}
-          onClick={(e) => setAnchorEl(e.currentTarget)}>
-          Products
-        </Button>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={() => setAnchorEl(null)}>
-          <MenuItem
+    <Box>
+      <AppBar
+        position='static'
+        component='header'>
+        <Toolbar
+          component='nav'
+          aria-label='Main navigation'
+          sx={{ gap: 1 }}>
+          <Typography
+            variant='h6'
+            sx={{ flexGrow: 0, mr: 2 }}>
+            My App
+          </Typography>
+
+          <Button
+            color='inherit'
+            href='/'
             component='a'
-            href='/products/all'>
-            All Products
-          </MenuItem>
-          <MenuItem
+            aria-current={currentPath === '/' ? 'page' : undefined}>
+            Home
+          </Button>
+
+          <Button
+            color='inherit'
+            href='/about'
             component='a'
-            href='/products/new'>
-            New
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+            aria-current={currentPath === '/about' ? 'page' : undefined}>
+            About
+          </Button>
+
+          <Button
+            color='inherit'
+            aria-haspopup='menu'
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+            onClick={(e) => setAnchorEl(e.currentTarget)}>
+            Products ▾
+          </Button>
+
+          <Menu
+            id={menuId}
+            anchorEl={anchorEl}
+            open={menuOpen}
+            onClose={() => setAnchorEl(null)}
+            MenuListProps={{ 'aria-label': 'Products submenu' }}>
+            <MenuItem
+              component='a'
+              href='/products/all'
+              onClick={() => setAnchorEl(null)}>
+              All Products
+            </MenuItem>
+            <MenuItem
+              component='a'
+              href='/products/new'
+              onClick={() => setAnchorEl(null)}>
+              New Arrivals
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+      </AppBar>
+    </Box>
   )
 }`
       },
       notes: [
-        'AppBar의 component="header"로 의미론적 마크업을 사용하세요.',
-        'MUI Menu는 자동으로 포커스 관리와 키보드 내비게이션을 처리합니다.',
-        '현재 페이지 링크에 aria-current를 직접 추가해야 합니다.'
+        'Toolbar component="nav"로 <nav> 시맨틱을 부여하고 aria-label로 목적을 명시하세요.',
+        'MUI Menu는 방향키 탐색, Escape 닫기, 포커스 복원을 자동으로 처리합니다.',
+        '현재 페이지 링크에 aria-current="page"를 직접 추가해야 합니다. MUI는 자동 처리하지 않습니다.',
+        'MenuListProps={{ "aria-label": "..." }}로 메뉴 목록에 레이블을 추가할 수 있습니다.'
       ]
     },
     radix: {

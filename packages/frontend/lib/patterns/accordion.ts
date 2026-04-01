@@ -116,31 +116,66 @@ export function Accordion() {
       additionalChecks: [
         {
           id: 'accordion-mui-1',
-          title: 'AccordionSummary 헤딩 연결',
-          description: 'AccordionSummary를 h3 등 heading으로 감싸서 문서 구조를 유지하세요.',
+          title: 'AccordionSummary에 id와 aria-controls 명시',
+          description:
+            'WAI-ARIA 가이드라인에 따라 AccordionSummary에 id를, aria-controls에 패널 id를 지정해야 합니다. MUI는 이를 기반으로 aria-labelledby를 자동 파생합니다.',
+          level: 'must'
+        },
+        {
+          id: 'accordion-mui-2',
+          title: 'slotProps.heading으로 헤딩 레벨 조정',
+          description: 'Accordion은 기본적으로 h3를 사용합니다. 페이지 헤딩 계층에 맞게 slotProps={{ heading: { component: "h2" } }}로 변경하세요.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Accordion',
-        code: `import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
-import { ExpandMore } from '@mui/icons-material'
-<Accordion>
-  <h3 style={{ margin: 0 }}>
-    <AccordionSummary
-      expandIcon={<ExpandMore />}
-      aria-controls='panel-content'
-      id='panel-header'>
-      Section 1
-    </AccordionSummary>
-  </h3>
-  <AccordionDetails id='panel-content'>
-    <Typography>Content here.</Typography>
-  </AccordionDetails>
-</Accordion>`
+        code: `import { useState } from 'react'
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
+
+const ITEMS = [
+  { id: 'panel1', heading: 'What is Material UI?', content: "Material UI is a React component library implementing Google's Material Design." },
+  { id: 'panel2', heading: 'Is it accessible?', content: 'Yes. MUI Accordion follows the WAI-ARIA Accordion pattern with full keyboard support.' },
+  { id: 'panel3', heading: 'Can I customize it?', content: 'Yes. Use the sx prop, theme overrides, or slotProps for deep customization.' }
+]
+
+export default function App() {
+  const [expanded, setExpanded] = useState<string | false>(false)
+
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
+  return (
+    <div style={{ maxWidth: 600, margin: '24px auto', padding: '0 16px' }}>
+      {ITEMS.map((item) => (
+        <Accordion
+          key={item.id}
+          expanded={expanded === item.id}
+          onChange={handleChange(item.id)}
+          slotProps={{ heading: { component: 'h3' } }}>
+          <AccordionSummary
+            expandIcon={<span aria-hidden>▼</span>}
+            aria-controls={\`\${item.id}-content\`}
+            id={\`\${item.id}-header\`}>
+            {item.heading}
+          </AccordionSummary>
+          <AccordionDetails id={\`\${item.id}-content\`}>
+            <Typography>{item.content}</Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </div>
+  )
+}`
       },
-      notes: ['MUI Accordion은 aria-expanded를 자동으로 처리합니다.', 'disableGutters와 square prop으로 스타일을 조정할 수 있습니다.']
+      notes: [
+        'AccordionSummary의 id와 aria-controls를 설정하면 MUI가 패널에 aria-labelledby를 자동으로 파생합니다.',
+        'aria-expanded는 expanded prop 상태에 따라 자동으로 관리됩니다.',
+        'slotProps={{ heading: { component: "h3" } }}로 헤딩 레벨을 페이지 구조에 맞게 조정하세요.',
+        'slotProps={{ transition: { unmountOnExit: true } }}로 비활성 패널을 DOM에서 제거해 성능을 개선할 수 있습니다.'
+      ]
     },
     radix: {
       id: 'radix',
@@ -287,9 +322,7 @@ export default function App() {
             <span aria-hidden>+</span>
           </Accordion.Trigger>
         </Accordion.Header>
-        <Accordion.Panel>
-          Base UI is a library of high-quality unstyled React components for design systems and web apps.
-        </Accordion.Panel>
+        <Accordion.Panel>Base UI is a library of high-quality unstyled React components for design systems and web apps.</Accordion.Panel>
       </Accordion.Item>
       <Accordion.Item>
         <Accordion.Header>

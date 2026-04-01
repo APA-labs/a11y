@@ -136,63 +136,104 @@ export function Tabs() {
       additionalChecks: [
         {
           id: 'tabs-mui-1',
-          title: 'TabPanel과 Tabs 연결',
-          description: 'MUI Tabs의 value와 TabPanel의 value를 일치시켜 활성 패널을 제어하세요.',
+          title: 'Tab의 id와 tabpanel의 aria-labelledby 연결',
+          description:
+            'Tab에 id="tab-{n}", tabpanel에 aria-labelledby="tab-{n}"을 명시적으로 설정하세요. MUI 공식 a11yProps 헬퍼를 활용하면 편리합니다.',
           level: 'must'
         },
         {
           id: 'tabs-mui-2',
-          title: 'aria-label 또는 aria-labelledby',
-          description: 'MUI Tabs 컴포넌트에 aria-label 또는 aria-labelledby를 추가하세요.',
+          title: 'Tabs에 aria-label 제공',
+          description: 'Tabs 컴포넌트에 aria-label로 탭 그룹의 목적을 설명해야 스크린리더가 탭목록의 맥락을 파악할 수 있습니다.',
           level: 'must'
+        },
+        {
+          id: 'tabs-mui-3',
+          title: '비활성 Tab에 disabled prop',
+          description: 'disabled prop을 사용하면 aria-disabled가 자동 적용되며 탭이 포커스 순서에서 제외됩니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Tabs',
         code: `import { useState } from 'react'
-import { Tabs, Tab, Box } from '@mui/material'
+import { Tabs, Tab, Box, Typography } from '@mui/material'
 
-export function MuiTabs() {
-  const [value, setValue] = useState(0)
+function a11yProps(index: number) {
+  return {
+    id: \`tab-\${index}\`,
+    'aria-controls': \`tabpanel-\${index}\`
+  }
+}
+
+interface TabPanelProps {
+  children: React.ReactNode
+  value: number
+  index: number
+}
+
+function TabPanel({ children, value, index }: TabPanelProps) {
   return (
-    <Box>
-      <Tabs
+    <div
+      role='tabpanel'
+      id={\`tabpanel-\${index}\`}
+      aria-labelledby={\`tab-\${index}\`}
+      hidden={value !== index}
+      style={{ padding: '16px 0' }}>
+      {value === index && <Typography>{children}</Typography>}
+    </div>
+  )
+}
+
+export default function App() {
+  const [value, setValue] = useState(0)
+
+  return (
+    <Box style={{ width: '100%', padding: 24 }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs
+          value={value}
+          onChange={(_, newValue) => setValue(newValue)}
+          aria-label='Account settings tabs'>
+          <Tab
+            label='Profile'
+            {...a11yProps(0)}
+          />
+          <Tab
+            label='Security'
+            {...a11yProps(1)}
+          />
+          <Tab
+            label='Notifications'
+            {...a11yProps(2)}
+          />
+        </Tabs>
+      </Box>
+      <TabPanel
         value={value}
-        onChange={(_, v) => setValue(v)}
-        aria-label='content tabs'>
-        <Tab
-          label='Tab 1'
-          id='tab-0'
-          aria-controls='panel-0'
-        />
-        <Tab
-          label='Tab 2'
-          id='tab-1'
-          aria-controls='panel-1'
-        />
-      </Tabs>
-      <div
-        role='tabpanel'
-        id='panel-0'
-        aria-labelledby='tab-0'
-        hidden={value !== 0}>
-        Panel 1
-      </div>
-      <div
-        role='tabpanel'
-        id='panel-1'
-        aria-labelledby='tab-1'
-        hidden={value !== 1}>
-        Panel 2
-      </div>
+        index={0}>
+        Manage your profile information, avatar, and display name.
+      </TabPanel>
+      <TabPanel
+        value={value}
+        index={1}>
+        Update your password and configure two-factor authentication.
+      </TabPanel>
+      <TabPanel
+        value={value}
+        index={2}>
+        Choose which notifications you receive via email or push.
+      </TabPanel>
     </Box>
   )
 }`
       },
       notes: [
-        'MUI Tabs는 화살표 키 탐색과 roving tabindex를 자동으로 처리합니다.',
-        'TabScrollButton이 표시될 경우 스크린리더 사용자에게 스크롤 방향을 안내하세요.'
+        'MUI Tabs는 화살표 키 탐색, roving tabindex, aria-selected를 자동으로 처리합니다.',
+        'a11yProps 헬퍼로 Tab의 id와 aria-controls를 일관되게 설정하세요.',
+        'tabpanel에 aria-labelledby를 설정해 탭과 패널을 의미론적으로 연결하세요.',
+        'scrollButtons prop 사용 시 ScrollButton에 aria-label이 자동 적용됩니다.'
       ]
     },
     radix: {

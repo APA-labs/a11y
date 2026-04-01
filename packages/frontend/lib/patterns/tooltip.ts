@@ -105,26 +105,84 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
       additionalChecks: [
         {
           id: 'tooltip-mui-1',
-          title: 'enterDelay 설정',
-          description: 'enterDelay prop으로 300ms 이상의 지연을 추가해 우발적 표시를 방지하세요.',
+          title: 'enterDelay 300ms 이상 설정',
+          description: 'enterDelay prop으로 300ms 이상의 지연을 추가해 우발적 표시를 방지하세요. 기본값은 100ms로 너무 짧을 수 있습니다.',
           level: 'should'
+        },
+        {
+          id: 'tooltip-mui-2',
+          title: '아이콘 버튼 트리거에 aria-label 필수',
+          description:
+            'Tooltip의 title은 시각적 설명을 보조하지만 접근 가능한 이름을 대체하지 않습니다. 아이콘만 있는 버튼에는 반드시 aria-label을 제공하세요.',
+          level: 'must'
+        },
+        {
+          id: 'tooltip-mui-3',
+          title: '커스텀 children에 forwardRef 구현',
+          description:
+            'Tooltip은 children에 DOM 이벤트 리스너를 주입합니다. 커스텀 컴포넌트를 children으로 사용할 경우 React.forwardRef로 ref를 전달해야 합니다.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Tooltip',
-        code: `import { Tooltip, IconButton } from '@mui/material'
-import { InfoOutlined } from '@mui/icons-material'
-<Tooltip
-  title='Additional information'
-  enterDelay={300}
-  arrow>
-  <IconButton aria-label='Info'>
-    <InfoOutlined />
-  </IconButton>
-</Tooltip>`
+        code: `import { Tooltip, Button, Stack, Typography } from '@mui/material'
+
+export default function App() {
+  return (
+    <Stack
+      spacing={3}
+      style={{ padding: 32, alignItems: 'flex-start' }}>
+      <Typography variant='h6'>Tooltip examples</Typography>
+
+      <Tooltip
+        title='Save your current changes to the server'
+        enterDelay={300}
+        arrow>
+        <Button
+          variant='contained'
+          aria-label='Save file'>
+          Save
+        </Button>
+      </Tooltip>
+
+      <Tooltip
+        title='This action cannot be undone'
+        enterDelay={300}
+        placement='right'
+        arrow>
+        <Button
+          variant='outlined'
+          color='error'
+          aria-label='Delete selected item'>
+          Delete
+        </Button>
+      </Tooltip>
+
+      <Tooltip
+        title='Keyboard shortcut: Ctrl+Z'
+        enterDelay={300}
+        arrow>
+        <span>
+          <Button
+            disabled
+            aria-label='Undo last action'>
+            Undo
+          </Button>
+        </span>
+      </Tooltip>
+    </Stack>
+  )
+}`
       },
-      notes: ['MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.', '커스텀 children을 사용할 경우 forwardRef를 구현해야 합니다.']
+      notes: [
+        'MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 설정합니다.',
+        'enterDelay: 툴팁 표시 지연(ms), 기본값 100 — 300 이상 권장.',
+        'leaveDelay: 툴팁 숨김 지연(ms), 기본값 0.',
+        'disabled 버튼에 툴팁을 표시하려면 <span>으로 감싸야 합니다. disabled 버튼은 포인터 이벤트를 수신하지 않습니다.',
+        '커스텀 children 컴포넌트는 React.forwardRef를 구현해야 이벤트 리스너가 올바르게 연결됩니다.'
+      ]
     },
     radix: {
       id: 'radix',
