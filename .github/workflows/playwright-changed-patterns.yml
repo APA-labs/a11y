@@ -1,0 +1,94 @@
+name: Playwright E2E (changed patterns)
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/frontend/lib/patterns/**'
+      - 'packages/backend/src/rules/**'
+
+jobs:
+  detect-patterns:
+    runs-on: ubuntu-latest
+    outputs:
+      patterns: ${{ steps.detect.outputs.patterns }}
+      has_patterns: ${{ steps.detect.outputs.has_patterns }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed pattern slugs
+        id: detect
+        run: |
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "Changed files:"
+          echo "$CHANGED"
+
+          SLUGS=""
+          while IFS= read -r file; do
+            # Frontend pattern files: lib/patterns/<slug>.ts (exclude index, translations)
+            if [[ $file =~ packages/frontend/lib/patterns/([^/]+)\.ts$ ]]; then
+              slug="${BASH_REMATCH[1]}"
+              if [[ $slug != "index" && $slug != translations* ]]; then
+                SLUGS="${SLUGS}${slug},"
+              fi
+            # Backend rule files: src/rules/<slug>.json (exclude patterns.json)
+            elif [[ $file =~ packages/backend/src/rules/([^/]+)\.json$ ]]; then
+              slug="${BASH_REMATCH[1]}"
+              if [[ $slug != "patterns" ]]; then
+                SLUGS="${SLUGS}${slug},"
+              fi
+            fi
+          done <<< "$CHANGED"
+
+          # Deduplicate and strip trailing comma
+          PATTERNS=$(echo "$SLUGS" | tr ',' '\n' | sort -u | grep -v '^$' | tr '\n' ',' | sed 's/,$//')
+
+          echo "Detected patterns: $PATTERNS"
+          echo "patterns=$PATTERNS" >> $GITHUB_OUTPUT
+          echo "has_patterns=$([[ -n $PATTERNS ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+
+  playwright:
+    needs: detect-patterns
+    if: needs.detect-patterns.outputs.has_patterns == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: corepack enable
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - run: corepack prepare pnpm@9.15.9 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared package
+        run: pnpm --filter @a11y/shared build
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @a11y/frontend exec playwright install chromium --with-deps
+
+      - name: Run Playwright tests for changed patterns
+        env:
+          TEST_PATTERNS: ${{ needs.detect-patterns.outputs.patterns }}
+        run: pnpm --filter @a11y/frontend exec playwright test
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: packages/frontend/playwright-report/
+          retention-days: 7
