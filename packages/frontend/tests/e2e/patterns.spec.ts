@@ -1,37 +1,17 @@
 import { expect, test } from '@playwright/test'
 
+import { patterns } from '../../lib/patterns/index'
+
 const LANG = 'ko'
 
-const ALL_PATTERNS = [
-  'accordion',
-  'alert',
-  'breadcrumb',
-  'button',
-  'checkbox',
-  'combobox',
-  'date-picker',
-  'disclosure',
-  'drawer',
-  'form-validation',
-  'link',
-  'modal-dialog',
-  'navigation-menu',
-  'pagination',
-  'popover',
-  'radio-group',
-  'select',
-  'tabs',
-  'text-input',
-  'toggle',
-  'tooltip'
-] as const
+const ALL_PATTERN_SLUGS = patterns.map((p) => p.slug)
 
 const DEFAULT_PATTERNS = ['button', 'modal-dialog', 'tabs', 'tooltip', 'accordion']
 
 const TEST_PATTERNS: readonly string[] = process.env.TEST_PATTERNS
   ? process.env.TEST_PATTERNS.split(',')
       .map((s) => s.trim())
-      .filter((s) => (ALL_PATTERNS as readonly string[]).includes(s))
+      .filter((s) => ALL_PATTERN_SLUGS.includes(s))
   : DEFAULT_PATTERNS
 
 const DS_IDS = ['material', 'radix', 'antd', 'chakra', 'spectrum', 'baseui'] as const
