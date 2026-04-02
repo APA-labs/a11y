@@ -217,90 +217,66 @@ function MuiForm() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Form',
-        code: `import * as Form from '@radix-ui/react-form'
-
-const inputStyle = {
-  display: 'block',
-  width: '100%',
-  border: '1px solid #d1d5db',
-  borderRadius: 6,
-  padding: '8px 12px',
-  fontSize: 14,
-  boxSizing: 'border-box' as const
-}
-const errorStyle = { display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }
-const labelStyle = { display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 4 }
+        code: `import './index.css'
+import * as Form from '@radix-ui/react-form'
 
 export default function App() {
   return (
     <Form.Root
-      style={{ maxWidth: 400, margin: '24px auto', padding: '0 16px' }}
+      className='app max-w-400'
       onSubmit={(e) => {
         e.preventDefault()
       }}>
       <Form.Field
         name='username'
-        style={{ marginBottom: 16 }}>
-        <Form.Label style={labelStyle}>Username</Form.Label>
+        className='field mb-16'>
+        <Form.Label className='label'>Username</Form.Label>
         <Form.Control asChild>
           <input
             type='text'
             required
             minLength={3}
-            style={inputStyle}
+            className='input'
             placeholder='Enter username'
           />
         </Form.Control>
         <Form.Message
           match='valueMissing'
-          style={errorStyle}>
+          className='error'>
           Please enter a username.
         </Form.Message>
         <Form.Message
           match='tooShort'
-          style={errorStyle}>
+          className='error'>
           Username must be at least 3 characters.
         </Form.Message>
       </Form.Field>
 
       <Form.Field
         name='email'
-        style={{ marginBottom: 16 }}>
-        <Form.Label style={labelStyle}>Email</Form.Label>
+        className='field mb-16'>
+        <Form.Label className='label'>Email</Form.Label>
         <Form.Control asChild>
           <input
             type='email'
             required
-            style={inputStyle}
+            className='input'
             placeholder='you@example.com'
           />
         </Form.Control>
         <Form.Message
           match='valueMissing'
-          style={errorStyle}>
+          className='error'>
           Please enter your email.
         </Form.Message>
         <Form.Message
           match='typeMismatch'
-          style={errorStyle}>
+          className='error'>
           Please enter a valid email address.
         </Form.Message>
       </Form.Field>
 
-      <Form.Submit
-        style={{
-          padding: '8px 20px',
-          borderRadius: 6,
-          border: 'none',
-          background: '#6e56cf',
-          color: 'white',
-          fontSize: 14,
-          fontWeight: 500,
-          cursor: 'pointer',
-          width: '100%'
-        }}>
-        Create account
-      </Form.Submit>
+      <Form.Submit className='btn btn-radix w-full'>Create account</Form.Submit>
     </Form.Root>
   )
 }`
@@ -342,7 +318,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Form',
-        code: `import { Form, Input, Button, Space } from 'antd'
+        code: `import './index.css'
+import { Form, Input, Button, Space } from 'antd'
 
 export default function App() {
   const [form] = Form.useForm()
@@ -352,7 +329,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: '24px', maxWidth: 480 }}>
+    <div className='p-24 max-w-480'>
       <Form
         form={form}
         layout='vertical'
@@ -440,7 +417,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Field',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Field, Input, Button, Stack } from '@chakra-ui/react'
 
 export default function App() {
@@ -465,7 +443,7 @@ export default function App() {
       noValidate>
       <Stack
         gap={4}
-        style={{ padding: '1.5rem', maxWidth: 400 }}>
+        className='p-24 max-w-400'>
         <Field.Root
           required
           invalid={!!nameError}>
@@ -505,7 +483,7 @@ export default function App() {
         {submitted && (
           <p
             role='status'
-            style={{ color: '#38a169', margin: 0, fontSize: 14 }}>
+            className='text-success mt-0 mb-0 text-sm'>
             Form submitted successfully!
           </p>
         )}
@@ -543,23 +521,13 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Form',
-        code: `import { Form, TextField, Label, Input, FieldError, Button, Text } from 'react-aria-components'
-
-const inputStyle = {
-  display: 'block',
-  width: '100%',
-  boxSizing: 'border-box' as const,
-  border: '1px solid #d1d5db',
-  borderRadius: 6,
-  padding: '6px 10px',
-  fontSize: 14,
-  outline: 'none'
-}
+        code: `import './index.css'
+import { Form, TextField, Label, Input, FieldError, Button, Text } from 'react-aria-components'
 
 export default function App() {
   return (
     <Form
-      style={{ padding: '1.5rem', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}
+      className='app max-w-360 stack'
       onSubmit={(e) => {
         e.preventDefault()
         alert('Submitted!')
@@ -567,40 +535,40 @@ export default function App() {
       <TextField
         name='name'
         isRequired>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Full name</Label>
+        <Label className='label'>Full name</Label>
         <Input
-          style={inputStyle}
+          className='input'
           placeholder='Enter your full name'
         />
-        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+        <FieldError className='error' />
       </TextField>
 
       <TextField
         name='username'
         isRequired
         validate={(v) => (v.length >= 3 ? null : 'Username must be at least 3 characters.')}>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Username</Label>
+        <Label className='label'>Username</Label>
         <Input
-          style={inputStyle}
+          className='input'
           placeholder='Choose a username'
         />
         <Text
           slot='description'
-          style={{ display: 'block', fontSize: 12, color: '#6b7280', marginTop: 4 }}>
+          className='hint'>
           Minimum 3 characters.
         </Text>
-        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+        <FieldError className='error' />
       </TextField>
 
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div className='row'>
         <Button
           type='submit'
-          style={{ flex: 1, padding: '8px 0', borderRadius: 6, border: 'none', background: '#e03', color: '#fff', fontSize: 14, cursor: 'pointer' }}>
+          className='btn btn-accent w-full'>
           Submit
         </Button>
         <Button
           type='reset'
-          style={{ flex: 1, padding: '8px 0', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', fontSize: 14, cursor: 'pointer' }}>
+          className='btn w-full'>
           Reset
         </Button>
       </div>
@@ -638,28 +606,19 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Field Validation',
-        code: `import { Field } from '@base-ui-components/react/field'
-
-const inputStyle = {
-  display: 'block',
-  width: '100%',
-  boxSizing: 'border-box' as const,
-  border: '1px solid #d1d5db',
-  borderRadius: 6,
-  padding: '6px 10px',
-  fontSize: 14
-}
+        code: `import './index.css'
+import { Field } from '@base-ui-components/react/field'
 
 export default function App() {
   return (
     <form
-      style={{ padding: '1.5rem', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}
+      className='app max-w-360 stack'
       onSubmit={(e) => {
         e.preventDefault()
         alert('Submitted!')
       }}>
       <Field.Root name='name'>
-        <Field.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>
+        <Field.Label className='label'>
           Full name <span aria-hidden>*</span>
         </Field.Label>
         <Field.Control
@@ -667,22 +626,22 @@ export default function App() {
           required
           minLength={2}
           placeholder='Enter your full name'
-          style={inputStyle}
+          className='input'
         />
         <Field.Error
           match='valueMissing'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Please enter your full name.
         </Field.Error>
         <Field.Error
           match='tooShort'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Name must be at least 2 characters.
         </Field.Error>
       </Field.Root>
 
       <Field.Root name='email'>
-        <Field.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>
+        <Field.Label className='label'>
           Email <span aria-hidden>*</span>
         </Field.Label>
         <Field.Control
@@ -690,34 +649,24 @@ export default function App() {
           type='email'
           required
           placeholder='you@example.com'
-          style={inputStyle}
+          className='input'
         />
         <Field.Error
           match='valueMissing'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Please enter your email.
         </Field.Error>
         <Field.Error
           match='typeMismatch'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Please enter a valid email address.
         </Field.Error>
-        <Field.Description style={{ display: 'block', fontSize: 12, color: '#6b7280', marginTop: 4 }}>
-          We will never share your email.
-        </Field.Description>
+        <Field.Description className='hint'>We will never share your email.</Field.Description>
       </Field.Root>
 
       <button
         type='submit'
-        style={{
-          padding: '8px 0',
-          borderRadius: 6,
-          border: 'none',
-          background: '#18181b',
-          color: '#fff',
-          fontSize: 14,
-          cursor: 'pointer'
-        }}>
+        className='btn btn-primary w-full'>
         Submit
       </button>
     </form>

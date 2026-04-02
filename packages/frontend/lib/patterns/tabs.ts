@@ -157,7 +157,8 @@ export function Tabs() {
       codeSample: {
         language: 'tsx',
         label: 'MUI Tabs',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Tabs, Tab, Box, Typography } from '@mui/material'
 
 function a11yProps(index: number) {
@@ -180,7 +181,7 @@ function TabPanel({ children, value, index }: TabPanelProps) {
       id={\`tabpanel-\${index}\`}
       aria-labelledby={\`tab-\${index}\`}
       hidden={value !== index}
-      style={{ padding: '16px 0' }}>
+      className='tab-panel'>
       {value === index && <Typography>{children}</Typography>}
     </div>
   )
@@ -190,7 +191,7 @@ export default function App() {
   const [value, setValue] = useState(0)
 
   return (
-    <Box style={{ width: '100%', padding: 24 }}>
+    <Box className='p-24 w-full'>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           value={value}
@@ -258,69 +259,47 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Tabs',
-        code: `import * as Tabs from '@radix-ui/react-tabs'
-
-const tabListStyle = {
-  display: 'flex',
-  borderBottom: '2px solid #e5e7eb',
-  gap: 0
-}
-const triggerStyle = {
-  padding: '10px 20px',
-  background: 'none',
-  border: 'none',
-  borderBottom: '2px solid transparent',
-  marginBottom: -2,
-  cursor: 'pointer',
-  fontSize: 14,
-  fontWeight: 500,
-  color: '#6b7280'
-}
-const contentStyle = {
-  padding: '20px 4px',
-  fontSize: 14,
-  lineHeight: 1.6,
-  color: '#374151'
-}
+        code: `import './index.css'
+import * as Tabs from '@radix-ui/react-tabs'
 
 export default function App() {
   return (
-    <div style={{ maxWidth: 560, margin: '24px auto', padding: '0 16px' }}>
+    <div className='max-w-560 mx-auto p-24'>
       <Tabs.Root
         defaultValue='profile'
         activationMode='manual'>
         <Tabs.List
           aria-label='Account settings'
-          style={tabListStyle}>
+          className='tab-list'>
           <Tabs.Trigger
             value='profile'
-            style={triggerStyle}>
+            className='tab'>
             Profile
           </Tabs.Trigger>
           <Tabs.Trigger
             value='security'
-            style={triggerStyle}>
+            className='tab'>
             Security
           </Tabs.Trigger>
           <Tabs.Trigger
             value='notifications'
-            style={triggerStyle}>
+            className='tab'>
             Notifications
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content
           value='profile'
-          style={contentStyle}>
+          className='tab-content'>
           Manage your profile information, avatar, and display name.
         </Tabs.Content>
         <Tabs.Content
           value='security'
-          style={contentStyle}>
+          className='tab-content'>
           Update your password and configure two-factor authentication.
         </Tabs.Content>
         <Tabs.Content
           value='notifications'
-          style={contentStyle}>
+          className='tab-content'>
           Choose which notifications you receive via email or push.
         </Tabs.Content>
       </Tabs.Root>
@@ -364,7 +343,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Tabs',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Tabs, Typography } from 'antd'
 
 const TAB_ITEMS = [
@@ -372,13 +352,13 @@ const TAB_ITEMS = [
     key: 'profile',
     label: 'Profile',
     children: (
-      <div style={{ padding: '16px 0' }}>
+      <div className='tab-panel'>
         <Typography.Title
           level={5}
-          style={{ marginTop: 0 }}>
+          className='mt-0'>
           Profile Settings
         </Typography.Title>
-        <p style={{ color: '#595959' }}>Manage your profile information, avatar, and display name.</p>
+        <p className='text-muted'>Manage your profile information, avatar, and display name.</p>
       </div>
     )
   },
@@ -386,13 +366,13 @@ const TAB_ITEMS = [
     key: 'security',
     label: 'Security',
     children: (
-      <div style={{ padding: '16px 0' }}>
+      <div className='tab-panel'>
         <Typography.Title
           level={5}
-          style={{ marginTop: 0 }}>
+          className='mt-0'>
           Security Settings
         </Typography.Title>
-        <p style={{ color: '#595959' }}>Update your password and configure two-factor authentication.</p>
+        <p className='text-muted'>Update your password and configure two-factor authentication.</p>
       </div>
     )
   },
@@ -400,13 +380,13 @@ const TAB_ITEMS = [
     key: 'notifications',
     label: 'Notifications',
     children: (
-      <div style={{ padding: '16px 0' }}>
+      <div className='tab-panel'>
         <Typography.Title
           level={5}
-          style={{ marginTop: 0 }}>
+          className='mt-0'>
           Notification Preferences
         </Typography.Title>
-        <p style={{ color: '#595959' }}>Choose which notifications you receive via email or push.</p>
+        <p className='text-muted'>Choose which notifications you receive via email or push.</p>
       </div>
     )
   }
@@ -416,7 +396,7 @@ export default function App() {
   const [activeKey, setActiveKey] = useState('profile')
 
   return (
-    <div style={{ padding: '24px', maxWidth: 560 }}>
+    <div className='p-24 max-w-560'>
       <Tabs
         activeKey={activeKey}
         onChange={setActiveKey}
@@ -448,13 +428,14 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Tabs',
-        code: `import { Tabs } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Tabs } from '@chakra-ui/react'
 
 export default function App() {
   return (
     <Tabs.Root
       defaultValue='profile'
-      style={{ maxWidth: 560, padding: '1.5rem' }}>
+      className='max-w-560 p-24'>
       <Tabs.List aria-label='Account settings'>
         <Tabs.Trigger value='profile'>Profile</Tabs.Trigger>
         <Tabs.Trigger value='security'>Security</Tabs.Trigger>
@@ -463,17 +444,17 @@ export default function App() {
       </Tabs.List>
       <Tabs.Content
         value='profile'
-        style={{ padding: '1rem 0', fontSize: 14 }}>
+        className='tab-content'>
         Manage your profile information, avatar, and display name.
       </Tabs.Content>
       <Tabs.Content
         value='security'
-        style={{ padding: '1rem 0', fontSize: 14 }}>
+        className='tab-content'>
         Update your password and configure two-factor authentication.
       </Tabs.Content>
       <Tabs.Content
         value='notifications'
-        style={{ padding: '1rem 0', fontSize: 14 }}>
+        className='tab-content'>
         Choose which notifications you receive via email or push.
       </Tabs.Content>
     </Tabs.Root>
@@ -502,7 +483,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Tabs',
-        code: `import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components'
+        code: `import './index.css'
+import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components'
 
 const TABS = [
   { id: 'overview', label: 'Overview', content: 'General information about your account.' },
@@ -512,27 +494,16 @@ const TABS = [
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 480 }}>
+    <div className='p-24 max-w-480'>
       <Tabs defaultSelectedKey='overview'>
         <TabList
           aria-label='Account settings'
-          style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', gap: 0 }}>
+          className='tab-list'>
           {TABS.map((tab) => (
             <Tab
               key={tab.id}
               id={tab.id}
-              style={({ isSelected }) => ({
-                padding: '8px 16px',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: 500,
-                border: 'none',
-                background: 'none',
-                borderBottom: isSelected ? '2px solid #e03' : '2px solid transparent',
-                marginBottom: -2,
-                color: isSelected ? '#e03' : '#374151',
-                outline: 'none'
-              })}>
+              className='tab-aria'>
               {tab.label}
             </Tab>
           ))}
@@ -541,7 +512,7 @@ export default function App() {
           <TabPanel
             key={tab.id}
             id={tab.id}
-            style={{ padding: '16px 0', fontSize: 14, color: '#4b5563' }}>
+            className='tab-content'>
             {tab.content}
           </TabPanel>
         ))}
@@ -578,62 +549,40 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Tabs',
-        code: `import { Tabs } from '@base-ui-components/react/tabs'
+        code: `import './index.css'
+import { Tabs } from '@base-ui-components/react/tabs'
 
 export default function App() {
   return (
     <Tabs.Root
       defaultValue='overview'
-      style={{ maxWidth: 480, margin: '24px auto', padding: '0 16px' }}>
+      className='max-w-480 mx-auto p-24'>
       <Tabs.List
         aria-label='Content sections'
-        style={{
-          display: 'flex',
-          gap: 4,
-          borderBottom: '1px solid #e2e8f0',
-          position: 'relative'
-        }}>
+        className='tab-list'>
         {['overview', 'projects', 'account'].map((val) => (
           <Tabs.Tab
             key={val}
             value={val}
-            style={{
-              padding: '10px 16px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: 14,
-              fontWeight: 500,
-              textTransform: 'capitalize'
-            }}>
+            className='tab'>
             {val.charAt(0).toUpperCase() + val.slice(1)}
           </Tabs.Tab>
         ))}
-        <Tabs.Indicator
-          style={{
-            position: 'absolute',
-            bottom: -1,
-            left: 'var(--active-tab-left)',
-            width: 'var(--active-tab-width)',
-            height: 2,
-            background: '#18181b',
-            transition: 'left 0.2s, width 0.2s'
-          }}
-        />
+        <Tabs.Indicator className='tabs-indicator' />
       </Tabs.List>
       <Tabs.Panel
         value='overview'
-        style={{ padding: '16px 0', fontSize: 14 }}>
+        className='tab-content'>
         Overview content here.
       </Tabs.Panel>
       <Tabs.Panel
         value='projects'
-        style={{ padding: '16px 0', fontSize: 14 }}>
+        className='tab-content'>
         Projects content here.
       </Tabs.Panel>
       <Tabs.Panel
         value='account'
-        style={{ padding: '16px 0', fontSize: 14 }}>
+        className='tab-content'>
         Account settings here.
       </Tabs.Panel>
     </Tabs.Root>

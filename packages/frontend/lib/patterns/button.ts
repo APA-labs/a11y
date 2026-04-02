@@ -38,14 +38,29 @@ export const buttonPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `<button
-  type='button'
-  aria-label='Save file'
-  aria-disabled={isLoading}
-  aria-busy={isLoading}
-  style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}>
-  {isLoading ? <span aria-hidden>⏳</span> : 'Save'}
-</button>`
+      code: `import './index.css'
+import { useState } from 'react'
+
+export default function App() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  return (
+    <div className='app'>
+      <button
+        type='button'
+        aria-label='Save file'
+        aria-disabled={isLoading}
+        aria-busy={isLoading}
+        className='btn'
+        onClick={() => {
+          setIsLoading(true)
+          setTimeout(() => setIsLoading(false), 1500)
+        }}>
+        {isLoading ? <span aria-hidden>⏳</span> : 'Save'}
+      </button>
+    </div>
+  )
+}`
     }
   },
   designSystems: {
@@ -249,7 +264,7 @@ export default function App() {
         loading={loading}
         aria-busy={loading}
         aria-label={loading ? 'Saving, please wait' : 'Save'}
-        style={{ minHeight: 44 }}
+        className='max-h-44'
         onClick={handleSave}>
         {loading ? 'Saving...' : 'Save'}
       </Button>
@@ -258,21 +273,21 @@ export default function App() {
         type='default'
         disabled
         aria-disabled='true'
-        style={{ minHeight: 44 }}>
+        className='max-h-44'>
         Disabled
       </Button>
 
       <Button
         danger
         aria-label='Delete selected item'
-        style={{ minHeight: 44 }}>
+        className='max-h-44'>
         Delete
       </Button>
 
       <Button
         variant='outlined'
         color='primary'
-        style={{ minHeight: 44 }}>
+        className='max-h-44'>
         Outlined
       </Button>
     </Space>

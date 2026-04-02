@@ -272,7 +272,7 @@ export default function App() {
           </Space>
         }>
         <div className='stack'>
-          <p style={{ margin: 0 }}>Notification preferences</p>
+          <p className='mt-0 mb-0'>Notification preferences</p>
           <label className='row'>
             <input type='checkbox' /> Email notifications
           </label>

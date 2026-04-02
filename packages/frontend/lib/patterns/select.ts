@@ -161,7 +161,8 @@ export const selectPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Select',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText, Box, Typography } from '@mui/material'
 
 export default function App() {
@@ -170,7 +171,7 @@ export default function App() {
   const hasError = !role
 
   return (
-    <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
+    <Box className='p-24 stack gap-24 max-w-400'>
       <Typography variant='h6'>User Preferences</Typography>
 
       <FormControl fullWidth>
@@ -244,41 +245,9 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Select',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import * as Select from '@radix-ui/react-select'
-
-const triggerStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 8,
-  padding: '8px 12px',
-  borderRadius: 6,
-  border: '1px solid #d1d5db',
-  background: 'white',
-  cursor: 'pointer',
-  fontSize: 14,
-  minWidth: 200
-}
-const contentStyle = {
-  background: 'white',
-  border: '1px solid #e5e7eb',
-  borderRadius: 8,
-  boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-  padding: 4,
-  minWidth: 200,
-  zIndex: 100
-}
-const itemStyle = {
-  padding: '8px 12px',
-  borderRadius: 4,
-  cursor: 'pointer',
-  fontSize: 14,
-  outline: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 8
-}
 
 const COUNTRIES = [
   { value: 'us', label: 'United States' },
@@ -292,10 +261,10 @@ export default function App() {
   const [value, setValue] = useState('')
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className='p-24'>
       <label
         htmlFor='country-trigger'
-        style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 6 }}>
+        className='label'>
         Country
       </label>
       <Select.Root
@@ -303,7 +272,7 @@ export default function App() {
         onValueChange={setValue}>
         <Select.Trigger
           id='country-trigger'
-          style={triggerStyle}
+          className='select-trigger'
           aria-label='Select country'>
           <Select.Value placeholder='Select a country' />
           <Select.Icon aria-hidden>▾</Select.Icon>
@@ -313,13 +282,13 @@ export default function App() {
           <Select.Content
             position='popper'
             sideOffset={4}
-            style={contentStyle}>
+            className='select-popup'>
             <Select.Viewport>
               {COUNTRIES.map((country) => (
                 <Select.Item
                   key={country.value}
                   value={country.value}
-                  style={itemStyle}>
+                  className='select-item'>
                   <Select.ItemIndicator aria-hidden>✓</Select.ItemIndicator>
                   <Select.ItemText>{country.label}</Select.ItemText>
                 </Select.Item>
@@ -328,7 +297,7 @@ export default function App() {
           </Select.Content>
         </Select.Portal>
       </Select.Root>
-      {value && <p style={{ marginTop: 8, fontSize: 13, color: '#6b7280' }}>Selected: {COUNTRIES.find((c) => c.value === value)?.label}</p>}
+      {value && <p className='hint mt-8'>Selected: {COUNTRIES.find((c) => c.value === value)?.label}</p>}
     </div>
   )
 }`
@@ -370,7 +339,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Select',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Form, Select, Button, Typography } from 'antd'
 
 const FRUIT_OPTIONS = [
@@ -392,10 +362,10 @@ export default function App() {
   const [submitted, setSubmitted] = useState<Record<string, string> | null>(null)
 
   return (
-    <div style={{ padding: '24px', maxWidth: 480 }}>
+    <div className='p-24 max-w-480'>
       <Typography.Title
         level={4}
-        style={{ marginBottom: 24 }}>
+        className='mb-24'>
         Preferences
       </Typography.Title>
 
@@ -438,7 +408,7 @@ export default function App() {
       {submitted && (
         <div
           role='status'
-          style={{ marginTop: 16, padding: '12px 16px', background: '#f6ffed', border: '1px solid #b7eb8f', borderRadius: 6 }}>
+          className='status-badge mt-16'>
           Saved: {submitted.fruit}, {submitted.country}
         </div>
       )}
@@ -468,7 +438,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Select',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Select, useListCollection } from '@chakra-ui/react'
 
 const COUNTRIES = [
@@ -483,7 +454,7 @@ export default function App() {
   const { collection } = useListCollection({ initialItems: COUNTRIES })
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 320 }}>
+    <div className='p-24 max-w-320'>
       <Select.Root
         collection={collection}
         value={value}
@@ -538,7 +509,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Select',
-        code: `import { Select, Label, Button, SelectValue, Popover, ListBox, ListBoxItem } from 'react-aria-components'
+        code: `import './index.css'
+import { Select, Label, Button, SelectValue, Popover, ListBox, ListBoxItem } from 'react-aria-components'
 
 const ANIMALS = [
   { id: 'aardvark', name: 'Aardvark' },
@@ -550,50 +522,20 @@ const ANIMALS = [
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='p-24'>
       <Select placeholder='Select an animal'>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Favorite Animal</Label>
-        <Button
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 8,
-            border: '1px solid #d1d5db',
-            borderRadius: 6,
-            padding: '6px 12px',
-            background: '#fff',
-            cursor: 'pointer',
-            fontSize: 14,
-            minWidth: 200
-          }}>
+        <Label className='label'>Favorite Animal</Label>
+        <Button className='select-trigger'>
           <SelectValue />
           <span aria-hidden>▼</span>
         </Button>
-        <Popover
-          style={{
-            background: '#fff',
-            border: '1px solid #e5e7eb',
-            borderRadius: 8,
-            boxShadow: '0 4px 16px rgba(0,0,0,.1)',
-            padding: 4,
-            outline: 'none',
-            minWidth: 200
-          }}>
+        <Popover className='select-popup'>
           <ListBox>
             {ANIMALS.map((animal) => (
               <ListBoxItem
                 key={animal.id}
                 id={animal.id}
-                style={({ isSelected, isFocused }) => ({
-                  padding: '6px 12px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  fontSize: 14,
-                  outline: 'none',
-                  background: isSelected ? '#e03' : isFocused ? '#fef2f2' : 'transparent',
-                  color: isSelected ? '#fff' : '#374151'
-                })}>
+                className='select-item'>
                 {animal.name}
               </ListBoxItem>
             ))}
@@ -633,7 +575,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Select',
-        code: `import { Select } from '@base-ui-components/react/select'
+        code: `import './index.css'
+import { Select } from '@base-ui-components/react/select'
 
 const FRUITS = [
   { label: 'Apple', value: 'apple' },
@@ -644,23 +587,10 @@ const FRUITS = [
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='p-24'>
       <Select.Root>
-        <Select.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Favorite fruit</Select.Label>
-        <Select.Trigger
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 8,
-            border: '1px solid #d1d5db',
-            borderRadius: 6,
-            padding: '6px 12px',
-            background: '#fff',
-            cursor: 'pointer',
-            fontSize: 14,
-            minWidth: 200
-          }}>
+        <Select.Label className='label'>Favorite fruit</Select.Label>
+        <Select.Trigger className='select-trigger'>
           <Select.Value placeholder='Select a fruit' />
           <Select.Icon>
             <span aria-hidden>▼</span>
@@ -668,31 +598,14 @@ export default function App() {
         </Select.Trigger>
         <Select.Portal>
           <Select.Positioner sideOffset={8}>
-            <Select.Popup
-              style={{
-                background: '#fff',
-                border: '1px solid #e5e7eb',
-                borderRadius: 8,
-                boxShadow: '0 4px 16px rgba(0,0,0,.1)',
-                padding: 4,
-                minWidth: 200
-              }}>
+            <Select.Popup className='select-popup'>
               <Select.List>
                 {FRUITS.map(({ label, value }) => (
                   <Select.Item
                     key={value}
                     value={value}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      padding: '6px 12px',
-                      borderRadius: 4,
-                      cursor: 'pointer',
-                      fontSize: 14,
-                      listStyle: 'none'
-                    }}>
-                    <Select.ItemIndicator style={{ width: 16 }}>
+                    className='select-item'>
+                    <Select.ItemIndicator className='item-indicator'>
                       <span aria-hidden>✓</span>
                     </Select.ItemIndicator>
                     <Select.ItemText>{label}</Select.ItemText>

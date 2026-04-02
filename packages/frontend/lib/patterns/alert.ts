@@ -98,28 +98,19 @@ export const alertPattern: Pattern = {
         role='status'
         aria-live='polite'
         aria-atomic='true'
-        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+        className='sr-only'>
         {alerts.map((a) => a.message).join('. ')}
       </div>
 
       {/* Visual toast */}
       <div
-        style={{ position: 'fixed', top: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8 }}
+        className='toast-container-tr'
         aria-label='Notifications'>
         {alerts.map((alert) => (
           <div
             key={alert.id}
             role='alert'
-            style={{
-              padding: '12px 16px',
-              borderRadius: 8,
-              backgroundColor: alert.type === 'success' ? '#dcfce7' : '#fee2e2',
-              border: '1px solid',
-              borderColor: alert.type === 'success' ? '#86efac' : '#fca5a5',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8
-            }}>
+            className={'toast-item ' + (alert.type === 'success' ? 'toast-success' : 'toast-error')}>
             <span>{alert.message}</span>
             <button
               onClick={() => removeAlert(alert.id)}
@@ -459,7 +450,7 @@ export default function App() {
             variant='ghost'
             onClick={() => setShowError(false)}
             aria-label='Dismiss error alert'
-            style={{ marginLeft: 'auto' }}>
+            className='ml-auto'>
             ✕
           </Button>
         </Alert.Root>

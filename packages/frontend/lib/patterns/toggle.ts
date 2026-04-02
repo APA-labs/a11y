@@ -36,31 +36,30 @@ export const togglePattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `<label htmlFor="notifications">Notification settings</label>
-<button
-  id="notifications"
-  role="switch"
-  aria-checked={isEnabled}
-  onClick={() => setIsEnabled(!isEnabled)}
-  style={{
-    position: 'relative', display: 'inline-flex', alignItems: 'center',
-    height: 24, width: 44, borderRadius: 9999, border: 'none', padding: 2,
-    backgroundColor: isEnabled ? '#2563eb' : '#d1d5db',
-    transition: 'background-color 0.2s', cursor: 'pointer'
-  }}>
-  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
-    {isEnabled ? 'On' : 'Off'}
-  </span>
-  <span
-    aria-hidden
-    style={{
-      display: 'inline-block', height: 20, width: 20, borderRadius: 9999,
-      backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-      transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
-      transition: 'transform 0.2s'
-    }}
-  />
-</button>`
+      code: `import './index.css'
+import { useState } from 'react'
+
+export default function App() {
+  const [isEnabled, setIsEnabled] = useState(false)
+
+  return (
+    <div className='app'>
+      <label htmlFor='notifications'>Notification settings</label>
+      <button
+        id='notifications'
+        role='switch'
+        aria-checked={isEnabled}
+        onClick={() => setIsEnabled(!isEnabled)}
+        className='switch-root'>
+        <span className='sr-only'>{isEnabled ? 'On' : 'Off'}</span>
+        <span
+          aria-hidden
+          className='switch-thumb'
+        />
+      </button>
+    </div>
+  )
+}`
     }
   },
   designSystems: {
@@ -104,9 +103,7 @@ export default function App() {
   const [alignment, setAlignment] = useState('left')
 
   return (
-    <div
-      className='app stack'
-      style={{ gap: 24 }}>
+    <div className='app stack gap-24'>
       <div>
         <Typography
           variant='subtitle1'
@@ -222,45 +219,22 @@ export default function App() {
 
   return (
     <div className='app stack'>
-      <p style={{ margin: 0, fontWeight: 600 }}>Notification preferences</p>
+      <p className='font-bold mt-0 mb-0'>Notification preferences</p>
       {SETTINGS.map((s) => (
         <div
           key={s.id}
-          className='row'
-          style={{ justifyContent: 'space-between' }}>
+          className='row justify-between'>
           <label
             htmlFor={s.id}
-            style={{ cursor: 'pointer' }}>
+            className='cursor-pointer'>
             {s.label}
           </label>
           <Switch.Root
             id={s.id}
             checked={settings[s.id]}
             onCheckedChange={(val) => toggle(s.id, val)}
-            style={{
-              width: 44,
-              height: 24,
-              borderRadius: 9999,
-              border: 'none',
-              padding: 2,
-              backgroundColor: settings[s.id] ? '#6e56cf' : '#d1d5db',
-              transition: 'background-color 0.15s',
-              cursor: 'pointer',
-              flexShrink: 0,
-              position: 'relative'
-            }}>
-            <Switch.Thumb
-              style={{
-                display: 'block',
-                width: 20,
-                height: 20,
-                borderRadius: 9999,
-                backgroundColor: 'white',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
-                transform: settings[s.id] ? 'translateX(20px)' : 'translateX(0)',
-                transition: 'transform 0.15s'
-              }}
-            />
+            className='switch-root'>
+            <Switch.Thumb className='switch-thumb' />
           </Switch.Root>
         </div>
       ))}
@@ -320,26 +294,23 @@ export default function App() {
   const toggle = (id: string, checked: boolean) => setValues((prev) => ({ ...prev, [id]: checked }))
 
   return (
-    <div
-      className='app stack'
-      style={{ maxWidth: 360 }}>
+    <div className='app stack max-w-360'>
       <Typography.Title
         level={5}
-        style={{ margin: 0 }}>
+        className='mt-0 mb-0'>
         Notification Preferences
       </Typography.Title>
       <Space
         direction='vertical'
-        style={{ width: '100%' }}
+        className='w-full'
         size={16}>
         {SETTINGS.map((s) => (
           <div
             key={s.id}
-            className='row'
-            style={{ justifyContent: 'space-between' }}>
+            className='row justify-between'>
             <label
               htmlFor={s.id}
-              style={{ cursor: 'pointer' }}>
+              className='cursor-pointer'>
               {s.label}
             </label>
             <Switch
@@ -392,10 +363,8 @@ export default function App() {
   const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.default])))
 
   return (
-    <div
-      className='app stack'
-      style={{ maxWidth: 360 }}>
-      <p style={{ margin: 0, fontWeight: 600 }}>Notification Preferences</p>
+    <div className='app stack max-w-360'>
+      <p className='font-bold mt-0 mb-0'>Notification Preferences</p>
       {SETTINGS.map((s) => (
         <Switch.Root
           key={s.id}
@@ -452,56 +421,28 @@ export default function App() {
   const toggle = (id: string, val: boolean) => setSettings((prev) => ({ ...prev, [id]: val }))
 
   return (
-    <div
-      className='app stack'
-      style={{ maxWidth: 320 }}>
-      <p style={{ margin: 0, fontWeight: 600 }}>Settings</p>
+    <div className='app stack max-w-320'>
+      <p className='font-bold mt-0 mb-0'>Settings</p>
       {SETTINGS.map((s) => (
         <Switch
           key={s.id}
           isSelected={settings[s.id]}
           onChange={(val) => toggle(s.id, val)}
-          className='row'
-          style={{ cursor: 'pointer' }}>
-          {({ isSelected }) => (
-            <>
-              <div
-                style={{
-                  width: 40,
-                  height: 22,
-                  borderRadius: 11,
-                  background: isSelected ? '#e03' : '#d1d5db',
-                  padding: 2,
-                  transition: 'background .2s',
-                  flexShrink: 0
-                }}>
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: '50%',
-                    background: '#fff',
-                    transform: isSelected ? 'translateX(18px)' : 'translateX(0)',
-                    transition: 'transform .2s'
-                  }}
-                />
-              </div>
-              {s.label}
-            </>
-          )}
+          className='row cursor-pointer'>
+          <div className='switch-sm'>
+            <div className='switch-thumb-sm' />
+          </div>
+          {s.label}
         </Switch>
       ))}
 
-      <div
-        className='stack'
-        style={{ gap: 8 }}>
-        <p style={{ margin: 0, fontWeight: 600 }}>ToggleButton</p>
+      <div className='stack gap-8'>
+        <p className='font-bold mt-0 mb-0'>ToggleButton</p>
         <ToggleButton
           isSelected={pinned}
           onChange={setPinned}
           aria-label='Pin this item'
-          className='btn'
-          style={{ background: pinned ? '#e03' : '#fff', color: pinned ? '#fff' : '#374151', borderColor: '#d1d5db' }}>
+          className='btn btn-toggle'>
           {pinned ? '★ Pinned' : '☆ Pin'}
         </ToggleButton>
       </div>
@@ -551,42 +492,18 @@ export default function App() {
   const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.defaultChecked])))
 
   return (
-    <div
-      className='app stack'
-      style={{ maxWidth: 320 }}>
-      <p style={{ margin: 0, fontWeight: 600 }}>Notification Preferences</p>
+    <div className='app stack max-w-320'>
+      <p className='font-bold mt-0 mb-0'>Notification Preferences</p>
       {SETTINGS.map((s) => (
         <label
           key={s.id}
-          className='row'
-          style={{ justifyContent: 'space-between', cursor: 'pointer' }}>
+          className='row justify-between cursor-pointer'>
           {s.label}
           <Switch.Root
             checked={values[s.id]}
             onCheckedChange={(checked) => setValues((prev) => ({ ...prev, [s.id]: checked }))}
-            style={{
-              width: 44,
-              height: 24,
-              borderRadius: 9999,
-              border: 'none',
-              padding: 2,
-              backgroundColor: values[s.id] ? '#18181b' : '#d1d5db',
-              cursor: 'pointer',
-              flexShrink: 0,
-              position: 'relative'
-            }}>
-            <Switch.Thumb
-              style={{
-                display: 'block',
-                width: 20,
-                height: 20,
-                borderRadius: 9999,
-                backgroundColor: 'white',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
-                transform: values[s.id] ? 'translateX(20px)' : 'translateX(0)',
-                transition: 'transform 0.15s'
-              }}
-            />
+            className='switch-root'>
+            <Switch.Thumb className='switch-thumb' />
           </Switch.Root>
         </label>
       ))}

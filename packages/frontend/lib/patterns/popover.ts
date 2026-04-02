@@ -239,22 +239,15 @@ export default function App() {
   return (
     <div className='app'>
       <Popover.Root>
-        <Popover.Trigger
-          className='btn'
-          style={{ color: '#6e56cf', borderColor: '#6e56cf' }}>
-          Notification settings
-        </Popover.Trigger>
+        <Popover.Trigger className='btn btn-radix'>Notification settings</Popover.Trigger>
 
         <Popover.Portal>
           <Popover.Content
             sideOffset={8}
-            className='panel'
-            style={{ minWidth: 260, zIndex: 100 }}>
-            <p style={{ margin: '0 0 12px', fontWeight: 600 }}>Notification settings</p>
+            className='panel min-w-260'>
+            <p className='font-bold mt-0 mb-12'>Notification settings</p>
 
-            <label
-              className='row'
-              style={{ justifyContent: 'space-between', marginBottom: 10, cursor: 'pointer' }}>
+            <label className='row justify-between cursor-pointer mb-8'>
               Push notifications
               <input
                 type='checkbox'
@@ -262,9 +255,7 @@ export default function App() {
                 onChange={(e) => setNotifications(e.target.checked)}
               />
             </label>
-            <label
-              className='row'
-              style={{ justifyContent: 'space-between', cursor: 'pointer' }}>
+            <label className='row justify-between cursor-pointer'>
               Email notifications
               <input
                 type='checkbox'
@@ -273,12 +264,11 @@ export default function App() {
               />
             </label>
 
-            <Popover.Arrow style={{ fill: 'white', filter: 'drop-shadow(0 -1px 0 #e5e7eb)' }} />
+            <Popover.Arrow className='popover-arrow' />
 
             <Popover.Close
               aria-label='Close notification settings'
-              className='dialog-close btn-ghost'
-              style={{ position: 'absolute', top: 8, right: 8 }}>
+              className='dialog-close-top-right btn-ghost'>
               ✕
             </Popover.Close>
           </Popover.Content>
@@ -333,15 +323,11 @@ export default function App() {
   const [open, setOpen] = useState(false)
 
   const content = (
-    <div style={{ width: 240 }}>
-      <Typography.Text
-        className='hint'
-        style={{ display: 'block', marginBottom: 8 }}>
-        Configure your notification preferences below.
-      </Typography.Text>
+    <div className='min-w-240'>
+      <Typography.Text className='hint mb-8'>Configure your notification preferences below.</Typography.Text>
       <Space
         direction='vertical'
-        style={{ width: '100%', marginBottom: 12 }}>
+        className='w-full mb-12'>
         <label className='row'>
           <input
             type='checkbox'
@@ -423,7 +409,7 @@ export default function App() {
           </Button>
         </Popover.Trigger>
         <Popover.Positioner>
-          <Popover.Content style={{ minWidth: 260 }}>
+          <Popover.Content className='min-w-260'>
             <Popover.Arrow>
               <Popover.ArrowTip />
             </Popover.Arrow>
@@ -432,16 +418,14 @@ export default function App() {
                 variant='ghost'
                 size='sm'
                 aria-label='Close settings popover'
-                style={{ position: 'absolute', top: 6, right: 6 }}>
+                className='popover-close'>
                 ✕
               </Button>
             </Popover.CloseTrigger>
             <Popover.Body>
-              <Popover.Title style={{ marginBottom: 12 }}>Notification Settings</Popover.Title>
+              <Popover.Title className='mb-12'>Notification Settings</Popover.Title>
               <Stack gap={3}>
-                <label
-                  className='row'
-                  style={{ justifyContent: 'space-between' }}>
+                <label className='row justify-between'>
                   Push notifications
                   <input
                     type='checkbox'
@@ -449,9 +433,7 @@ export default function App() {
                     onChange={(e) => setNotifications(e.target.checked)}
                   />
                 </label>
-                <label
-                  className='row'
-                  style={{ justifyContent: 'space-between' }}>
+                <label className='row justify-between'>
                   Email notifications
                   <input
                     type='checkbox'
@@ -505,11 +487,11 @@ export default function App() {
         <Button className='btn'>⚙ Settings</Button>
         <Popover
           placement='bottom start'
-          style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none', minWidth: 220 }}>
-          <Dialog style={{ outline: 'none' }}>
+          className='panel min-w-220 outline-none'>
+          <Dialog className='outline-none'>
             <Heading
               slot='title'
-              style={{ margin: '0 0 12px', fontWeight: 600 }}>
+              className='font-bold mt-0 mb-12'>
               Quick Settings
             </Heading>
             <div className='stack'>
@@ -521,33 +503,11 @@ export default function App() {
                   key={s.label}
                   isSelected={s.isSelected}
                   onChange={s.onChange}
-                  className='row'
-                  style={{ justifyContent: 'space-between', cursor: 'pointer' }}>
-                  {({ isSelected }) => (
-                    <>
-                      {s.label}
-                      <div
-                        style={{
-                          width: 36,
-                          height: 20,
-                          borderRadius: 10,
-                          background: isSelected ? '#e03' : '#d1d5db',
-                          padding: 2,
-                          transition: 'background .2s'
-                        }}>
-                        <div
-                          style={{
-                            width: 16,
-                            height: 16,
-                            borderRadius: '50%',
-                            background: '#fff',
-                            transform: isSelected ? 'translateX(16px)' : 'translateX(0)',
-                            transition: 'transform .2s'
-                          }}
-                        />
-                      </div>
-                    </>
-                  )}
+                  className='row justify-between cursor-pointer'>
+                  <span>{s.label}</span>
+                  <div className='switch-sm'>
+                    <div className='switch-thumb-sm' />
+                  </div>
                 </Switch>
               ))}
             </div>
@@ -597,16 +557,10 @@ export default function App() {
         <Popover.Trigger className='btn'>Notification settings</Popover.Trigger>
         <Popover.Portal>
           <Popover.Positioner sideOffset={8}>
-            <Popover.Popup
-              className='panel'
-              style={{ minWidth: 240 }}>
-              <Popover.Arrow style={{ fill: '#fff', stroke: '#e5e7eb', strokeWidth: 1 }} />
-              <Popover.Title style={{ margin: '0 0 4px', fontWeight: 600 }}>Notifications</Popover.Title>
-              <Popover.Description
-                className='hint'
-                style={{ margin: '0 0 12px' }}>
-                You are all caught up. Good job!
-              </Popover.Description>
+            <Popover.Popup className='panel min-w-240'>
+              <Popover.Arrow className='popover-arrow-bordered' />
+              <Popover.Title className='font-bold mt-0 mb-4'>Notifications</Popover.Title>
+              <Popover.Description className='hint mt-0 mb-12'>You are all caught up. Good job!</Popover.Description>
               <Popover.Close className='btn btn-sm'>Dismiss</Popover.Close>
             </Popover.Popup>
           </Popover.Positioner>
