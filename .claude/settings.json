@@ -25,10 +25,6 @@
             "command": "node .claude/hooks/verify.js",
             "statusMessage": "Verifying type-check & lint...",
             "timeout": 60
-          },
-          {
-            "type": "command",
-            "command": "node .claude/hooks/token-guard.js"
           }
         ]
       }

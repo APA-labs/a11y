@@ -40,10 +40,8 @@ tools/typescript-config   → @a11y/typescript-config
 4. Export it in `packages/frontend/lib/patterns/index.ts` and add to the `patterns` array
 5. No other code changes needed — rule engine and frontend pick it up automatically
 
-## Tooling
+## Session Wrap
 
-- **Node 22.14.0 / pnpm 9.15.9** — managed via mise (`.mise.toml`)
-- **Lefthook** — pre-commit: lint + format + type-check; pre-push: + build
-- **ESLint 9 flat config** — base in `tools/eslint-config/base.js`, extended per package
-- **Prettier** — single `.prettierrc.json` at root (print width 150, no trailing commas)
-- **ANTHROPIC_API_KEY** — required env var for backend; set in `.env.local`
+세션 마무리 전에 `/wrap`을 실행하세요. 문서 업데이트, 자동화 기회, 학습 포인트, 다음 세션 우선순위를 분석해줍니다.
+
+> session-wrap 플러그인이 설치되어 있지 않다면 `/wrap`은 동작하지 않습니다.
