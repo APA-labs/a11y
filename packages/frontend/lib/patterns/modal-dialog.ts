@@ -59,10 +59,13 @@ export const modalDialogPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `function Modal({ isOpen, onClose, title, children }) {
+      code: `import { useId, useRef, useState, useEffect } from 'react'
+
+function Modal() {
   const titleId = useId()
   const descId = useId()
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (!isOpen) return
@@ -75,22 +78,27 @@ export const modalDialogPattern: Pattern = {
     }
   }, [isOpen])
 
-  if (!isOpen) return null
   return (
-    <div
-      role='dialog'
-      aria-modal='true'
-      aria-labelledby={titleId}
-      aria-describedby={descId}
-      onKeyDown={(e) => e.key === 'Escape' && onClose()}>
-      <h2 id={titleId}>{title}</h2>
-      <div id={descId}>{children}</div>
-      <button
-        id='modal-close'
-        onClick={onClose}>
-        Close
-      </button>
-    </div>
+    <>
+      {isOpen ? (
+        <div
+          role='dialog'
+          aria-modal='true'
+          aria-labelledby={titleId}
+          aria-describedby={descId}
+          onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}>
+          <h2 id={titleId}>Modal Title</h2>
+          <div id={descId}>Modal Description</div>
+          <button
+            id='modal-close'
+            onClick={() => setIsOpen(false)}>
+            Close
+          </button>
+        </div>
+      ) : (
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+      )}
+    </>
   )
 }`
     }
@@ -103,47 +111,74 @@ export const modalDialogPattern: Pattern = {
       additionalChecks: [
         {
           id: 'modal-mui-1',
-          title: 'MUI Dialog keepMounted 주의',
-          description: 'keepMounted prop 사용 시 숨겨진 Dialog가 DOM에 남아 스크린리더에 노출될 수 있습니다.',
+          title: 'aria-labelledby와 aria-describedby 명시',
+          description:
+            'Dialog에 aria-labelledby로 DialogTitle의 id를, aria-describedby로 DialogContent의 id를 연결하세요. 자동 처리되지 않으므로 직접 설정해야 합니다.',
           level: 'must'
         },
         {
           id: 'modal-mui-2',
-          title: 'disablePortal 사용 금지',
-          description: 'disablePortal은 포커스 트랩과 inert 처리를 방해합니다.',
+          title: 'keepMounted 사용 금지',
+          description: 'keepMounted={true}는 닫힌 Dialog를 DOM에 유지합니다. 스크린리더가 숨겨진 콘텐츠를 읽을 수 있으므로 사용하지 마세요.',
           level: 'avoid'
+        },
+        {
+          id: 'modal-mui-3',
+          title: 'autoFocus로 초기 포커스 제어',
+          description: '모달 열릴 때 포커스를 특정 요소로 이동하려면 해당 요소에 autoFocus prop을 추가하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Dialog',
-        code: `import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
-<Dialog
-  open={isOpen}
-  onClose={() => setIsOpen(false)}
-  aria-labelledby='dialog-title'
-  aria-describedby='dialog-description'
-  // Warning about keepMounted!
->
-  <DialogTitle id='dialog-title'>Delete File</DialogTitle>
-  <DialogContent>
-    <p id='dialog-description'>Are you sure you want to delete this file? This action cannot be undone.</p>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-    <Button
-      onClick={() => {}}
-      color='error'
-      autoFocus>
-      Delete
-    </Button>
-  </DialogActions>
-</Dialog>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className='app'>
+      <Button
+        variant='outlined'
+        color='error'
+        onClick={() => setOpen(true)}>
+        Delete file
+      </Button>
+
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby='delete-dialog-title'
+        aria-describedby='delete-dialog-description'>
+        <DialogTitle id='delete-dialog-title'>Delete File</DialogTitle>
+        <DialogContent>
+          <DialogContentText id='delete-dialog-description'>
+            Are you sure you want to permanently delete this file? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button
+            onClick={() => setOpen(false)}
+            color='error'
+            variant='contained'
+            autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
+}`
       },
       notes: [
-        'MUI Dialog는 포커스 트랩을 자동으로 처리합니다.',
-        'autoFocus prop으로 열림 시 포커스 위치를 제어하세요.',
-        'TransitionProps.onExited로 닫힘 후 포커스 복원을 처리할 수 있습니다.'
+        'MUI Dialog는 포커스 트랩, Escape 닫기, 배경 클릭 닫기, 포커스 복원을 자동으로 처리합니다.',
+        'aria-labelledby와 aria-describedby는 MUI가 자동 처리하지 않으므로 직접 설정해야 합니다.',
+        'autoFocus prop으로 모달 열릴 때 첫 포커스 위치를 지정하세요. 일반적으로 기본 확인 버튼에 설정합니다.',
+        'DialogContentText는 자동으로 올바른 색상 대비와 타이포그래피를 적용합니다.'
       ]
     },
     radix: {
@@ -153,56 +188,78 @@ export const modalDialogPattern: Pattern = {
       additionalChecks: [
         {
           id: 'modal-radix-1',
-          title: 'Dialog.Description 필수 제공',
-          description: 'Dialog.Description이 없으면 Radix가 콘솔 경고를 발생시킵니다. visually-hidden으로라도 제공하세요.',
+          title: 'Dialog.Title과 Dialog.Description 필수 제공',
+          description:
+            'Dialog.Title이 없으면 Radix가 콘솔 경고를 발생시킵니다. 시각적으로 숨기려면 VisuallyHidden으로 감싸세요. Dialog.Description도 내용을 스크린리더에 전달하므로 함께 제공하세요.',
           level: 'must'
         },
         {
           id: 'modal-radix-2',
-          title: 'Modal 외부 클릭 처리',
-          description: 'onInteractOutside prop으로 외부 클릭 동작을 명시적으로 제어하세요.',
+          title: 'onInteractOutside로 외부 클릭 동작 제어',
+          description: 'Dialog.Content의 onInteractOutside prop으로 배경 클릭 시 동작(닫기/막기)을 명시적으로 제어하세요.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Dialog',
-        code: `import * as Dialog from '@radix-ui/react-dialog'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
-<Dialog.Root
-  open={isOpen}
-  onOpenChange={setIsOpen}>
-  <Dialog.Trigger asChild>
-    <button>Delete file</button>
-  </Dialog.Trigger>
-  <Dialog.Portal>
-    <Dialog.Overlay style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} />
-    <Dialog.Content
-      style={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%,-50%)',
-        backgroundColor: 'white',
-        padding: 24,
-        borderRadius: 8,
-        minWidth: 320
-      }}
-      onInteractOutside={(e) => e.preventDefault()}>
-      <Dialog.Title>Delete File</Dialog.Title>
-      <Dialog.Description>Are you sure you want to delete this file? This action cannot be undone.</Dialog.Description>
-      <Dialog.Close asChild>
-        <button>Cancel</button>
-      </Dialog.Close>
-      <button onClick={() => {}}>Delete</button>
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>`
+        code: `import './index.css'
+import { useState } from 'react'
+import * as Dialog from '@radix-ui/react-dialog'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className='app'>
+      <Dialog.Root
+        open={open}
+        onOpenChange={setOpen}>
+        <Dialog.Trigger
+          className='btn btn-danger-outline'>
+          Delete file
+        </Dialog.Trigger>
+
+        <Dialog.Portal>
+          <Dialog.Overlay className='overlay' />
+          <Dialog.Content
+            className='dialog dialog-wide'>
+            <Dialog.Title
+              className='dialog-title bottom-space-8'>
+              Delete File
+            </Dialog.Title>
+            <Dialog.Description
+              className='hint bottom-space-20'>
+              Are you sure you want to permanently delete this file? This action cannot be undone.
+            </Dialog.Description>
+
+            <div
+              className='row justify-end'>
+              <Dialog.Close className='btn'>Cancel</Dialog.Close>
+              <button
+                className='btn btn-primary btn-danger-solid'
+                onClick={() => setOpen(false)}
+                Delete
+              </button>
+            </div>
+
+            <Dialog.Close
+              aria-label='Close dialog'
+              className='dialog-close btn-ghost'>
+              ✕
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </div>
+  )
+}`
       },
       notes: [
-        'Radix Dialog는 포커스 트랩, ESC 닫기, 포커스 복원을 자동 처리합니다.',
-        'Portal을 사용해 z-index 이슈 없이 body에 렌더링합니다.',
-        'Dialog.Trigger를 사용하면 트리거 참조가 자동으로 관리됩니다.'
+        'Dialog.Trigger를 사용하면 트리거 요소 참조가 자동으로 관리되어 닫힐 때 포커스가 복원됩니다.',
+        'Dialog.Portal은 body 최상단에 렌더링하여 z-index 스태킹 컨텍스트 문제를 방지합니다.',
+        'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 Dialog.Content에 자동 연결됩니다.',
+        '포커스 트랩, Escape 키 닫기, aria-modal="true"가 자동으로 처리됩니다. onOpenChange={setOpen}으로 열림 상태를 제어하세요.'
       ]
     },
     antd: {
@@ -212,47 +269,72 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
       additionalChecks: [
         {
           id: 'modal-antd-1',
-          title: 'destroyOnClose 검토',
-          description: '접근성 보조기기는 DOM 존재 여부에 민감합니다. destroyOnClose로 닫힌 모달을 DOM에서 제거하세요.',
-          level: 'should'
+          title: 'title prop으로 모달 레이블 자동 연결',
+          description:
+            'title prop 설정 시 aria-labelledby가 자동으로 연결됩니다. 시각적 제목이 없는 경우에도 aria-label로 대체하여 스크린리더에 모달 목적을 전달하세요.',
+          level: 'must'
         },
         {
           id: 'modal-antd-2',
-          title: 'footer 버튼 순서',
-          description: 'footer의 확인/취소 버튼 순서가 논리적 탭 순서와 일치하는지 확인하세요.',
+          title: 'destroyOnHidden으로 닫힌 모달 정리',
+          description: 'destroyOnHidden(v5.25.0+)으로 닫힌 모달을 DOM에서 제거하세요. 보조 기기가 숨겨진 모달 콘텐츠를 읽는 문제를 방지합니다.',
           level: 'should'
+        },
+        {
+          id: 'modal-antd-3',
+          title: 'keyboard={true}로 Escape 닫기 보장',
+          description: 'keyboard 기본값은 true입니다. keyboard={false}로 설정하면 WCAG 2.1.2 No Keyboard Trap에 위반될 수 있으므로 변경하지 마세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Modal',
-        code: `import { Modal, Button } from 'antd'
-<Modal
-  open={isOpen}
-  onCancel={() => setIsOpen(false)}
-  title='Delete File'
-  destroyOnClose
-  footer={[
-    <Button
-      key='cancel'
-      onClick={() => setIsOpen(false)}>
-      Cancel
-    </Button>,
-    <Button
-      key='delete'
-      type='primary'
-      danger
-      onClick={() => {}}>
-      Delete
-    </Button>
-  ]}>
-  <p>Are you sure you want to delete this file? This action cannot be undone.</p>
-</Modal>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Modal, Button, Space } from 'antd'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className='app'>
+      <Button
+        type='primary'
+        danger
+        onClick={() => setOpen(true)}
+        aria-haspopup='dialog'>
+        Delete File
+      </Button>
+
+      <Modal
+        title='Delete File'
+        open={open}
+        onCancel={() => setOpen(false)}
+        keyboard
+        destroyOnHidden
+        footer={
+          <Space>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button
+              type='primary'
+              danger
+              onClick={() => setOpen(false)}>
+              Delete
+            </Button>
+          </Space>
+        }>
+        <p>Are you sure you want to permanently delete this file? This action cannot be undone.</p>
+      </Modal>
+    </div>
+  )
+}`
       },
       notes: [
-        'Ant Design Modal은 포커스 트랩을 기본 지원합니다.',
-        'focusTriggerAfterClose prop으로 닫힘 후 포커스 복원 동작을 제어합니다.',
-        'Modal.confirm()은 자동으로 접근성 속성을 적용합니다.'
+        'Ant Design Modal은 포커스 트랩, Escape 닫기, 닫힌 후 트리거로 포커스 복귀를 자동으로 처리합니다.',
+        'title prop 설정 시 내부적으로 aria-labelledby가 모달 헤더에 자동 연결됩니다.',
+        'destroyOnHidden(v5.25.0+)으로 닫힌 모달을 DOM에서 제거하세요. 구 버전은 destroyOnClose를 사용하세요.',
+        'focusable={{ focusTriggerAfterClose: true }}(v6.2.0+)로 닫힌 후 포커스 복원 동작을 명시적으로 설정하세요.'
       ]
     },
     chakra: {
@@ -270,42 +352,56 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Dialog',
-        code: `import { Button, Dialog } from '@chakra-ui/react'
-<Dialog.Root>
-  <Dialog.Trigger asChild>
-    <Button variant='outline'>Delete file</Button>
-  </Dialog.Trigger>
-  <Dialog.Backdrop />
-  <Dialog.Positioner>
-    <Dialog.Content>
-      <Dialog.Header>
-        <Dialog.Title>Delete File</Dialog.Title>
-        <Dialog.CloseTrigger asChild>
+        code: `import './index.css'
+import { Button, Dialog } from '@chakra-ui/react'
+
+export default function App() {
+  return (
+    <div className='app'>
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
           <Button
-            variant='ghost'
-            size='sm'
-            aria-label='Close'>
-            ✕
+            colorPalette='red'
+            variant='outline'>
+            Delete file
           </Button>
-        </Dialog.CloseTrigger>
-      </Dialog.Header>
-      <Dialog.Body>
-        <Dialog.Description>Are you sure you want to delete this file? This action cannot be undone.</Dialog.Description>
-      </Dialog.Body>
-      <Dialog.Footer>
-        <Dialog.ActionTrigger asChild>
-          <Button variant='outline'>Cancel</Button>
-        </Dialog.ActionTrigger>
-        <Button colorPalette='red'>Delete</Button>
-      </Dialog.Footer>
-    </Dialog.Content>
-  </Dialog.Positioner>
-</Dialog.Root>`
+        </Dialog.Trigger>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Delete File</Dialog.Title>
+              <Dialog.CloseTrigger asChild>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  aria-label='Close dialog'
+                  className='dialog-close-top-right'>
+                  ✕
+                </Button>
+              </Dialog.CloseTrigger>
+            </Dialog.Header>
+            <Dialog.Body>
+              <Dialog.Description>Are you sure you want to permanently delete this file? This action cannot be undone.</Dialog.Description>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Dialog.ActionTrigger asChild>
+                <Button variant='outline'>Cancel</Button>
+              </Dialog.ActionTrigger>
+              <Button colorPalette='red'>Delete</Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+    </div>
+  )
+}`
       },
       notes: [
-        'Chakra Dialog.Root는 포커스 트랩과 aria-modal을 자동으로 처리합니다.',
-        'Dialog.Backdrop 클릭으로 닫기를 비활성화하려면 closeOnInteractOutside={false}를 사용하세요.',
-        'Dialog.CloseTrigger는 자동으로 ESC 키 동작과 연결됩니다.'
+        'Chakra Dialog.Root는 포커스 트랩, aria-modal, Escape 키 닫기를 자동으로 처리합니다.',
+        'Dialog.Title은 aria-labelledby로 자동 연결됩니다. 반드시 포함하세요.',
+        'Dialog.CloseTrigger에 aria-label을 추가하면 닫기 버튼 목적이 스크린리더에 전달됩니다.',
+        'closeOnInteractOutside={false}로 외부 클릭 닫기를 비활성화할 수 있습니다.'
       ]
     },
     spectrum: {
@@ -316,42 +412,66 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
         {
           id: 'modal-spectrum-1',
           title: 'Heading slot="title" 필수',
-          description: 'Dialog의 제목은 반드시 Heading slot="title"을 사용해야 aria-labelledby가 자동 연결됩니다.',
+          description:
+            'Dialog 제목에 반드시 Heading slot="title"을 사용해야 aria-labelledby가 자동 연결됩니다. 생략하면 dialog에 접근 가능한 이름이 없어집니다.',
           level: 'must'
+        },
+        {
+          id: 'modal-spectrum-2',
+          title: 'isDismissable로 배경 클릭 닫기 제어',
+          description: 'isDismissable={true} 설정 시 배경 클릭으로 닫힙니다. 기본값은 false로 명시적 닫기 버튼이 필요합니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria Modal',
-        code: `import { Button, DialogTrigger, Modal, Dialog, Heading } from 'react-aria-components'
+        code: `import './index.css'
+import { Button, DialogTrigger, Modal, ModalOverlay, Dialog, Heading } from 'react-aria-components'
 
-const openBtnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #dc2626', background: '#fff', color: '#dc2626', cursor: 'pointer', fontSize: 14, fontWeight: 500 }
-const overlayStyle = { position: 'fixed' as const, inset: 0, background: 'rgba(0,0,0,.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }
-const dialogStyle = { background: '#fff', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', outline: 'none', boxShadow: '0 8px 32px rgba(0,0,0,.15)' }
-const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 13 }
-
-<DialogTrigger>
-  <Button style={openBtnStyle}>Delete file</Button>
-  <Modal isDismissable style={overlayStyle}>
-    <Dialog style={dialogStyle}>
-      {({ close }) => (
-        <>
-          <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 16 }}>Delete File</Heading>
-          <p style={{ margin: '0 0 16px', fontSize: 14, color: '#4b5563' }}>Are you sure you want to delete this file? This action cannot be undone.</p>
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-            <Button onPress={close} style={btnStyle}>Cancel</Button>
-            <Button onPress={close} style={{ ...btnStyle, background: '#dc2626', color: '#fff', border: 'none' }}>Delete</Button>
-          </div>
-        </>
-      )}
-    </Dialog>
-  </Modal>
-</DialogTrigger>`
+export default function App() {
+  return (
+    <div className='app'>
+      <DialogTrigger>
+        <Button className='btn btn-primary btn-accent'>Delete file</Button>
+        <ModalOverlay className='overlay center'>
+          <Modal className='dialog-spectrum'>
+            <Dialog className='outline-none'>
+              {({ close }) => (
+                <>
+                  <Heading
+                    slot='title'
+                    className='dialog-title bottom-space-8'>
+                    Delete File
+                  </Heading>
+                  <p className='hint bottom-space-20'>Are you sure? This action cannot be undone.</p>
+                  <div className='row justify-end'>
+                    <Button
+                      onPress={close}
+                      className='btn btn-sm'>
+                      Cancel
+                    </Button>
+                    <Button
+                      onPress={close}
+                      className='btn btn-primary btn-danger-solid'>
+                      Delete
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Dialog>
+          </Modal>
+        </ModalOverlay>
+      </DialogTrigger>
+    </div>
+  )
+}`
       },
       notes: [
-        'React Aria Modal은 포커스 트랩, aria-modal, ESC 닫기를 자동 처리합니다.',
-        'isDismissable prop으로 배경 클릭 닫기를 제어할 수 있습니다.',
-        "Heading의 slot='title'은 Dialog와 aria-labelledby를 자동 연결합니다."
+        'ModalOverlay로 백드롭을 커스터마이즈하고 Modal로 모달 콘텐츠를 감쌉니다.',
+        'Dialog 내부에서 close 함수를 render prop으로 받아 닫기 버튼에 사용하세요.',
+        "Heading slot='title'은 dialog의 aria-labelledby를 자동 연결합니다.",
+        'Modal은 포커스 트랩, aria-modal, ESC 닫기, 포커스 복원을 모두 자동 처리합니다.'
       ]
     },
     baseui: {
@@ -370,33 +490,47 @@ const btnStyle = { padding: '6px 14px', borderRadius: 6, border: '1px solid #d1d
           title: 'Dialog.Title과 Dialog.Description 제공',
           description: 'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 자동 연결됩니다. 생략하지 마세요.',
           level: 'must'
+        },
+        {
+          id: 'dialog-baseui-3',
+          title: 'AlertDialog는 Dialog와 별도 컴포넌트',
+          description:
+            'Base UI는 Dialog와 AlertDialog를 별도로 제공합니다. 사용자 확인이 필요한 경우 @base-ui-components/react/alert-dialog를 사용하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Base UI Dialog',
-        code: `import { Dialog } from '@base-ui/react/dialog'
+        code: `import './index.css'
+import { Dialog } from '@base-ui-components/react/dialog'
 
 export default function App() {
   return (
-    <Dialog.Root>
-      <Dialog.Trigger>View notifications</Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Backdrop />
-        <Dialog.Popup>
-          <Dialog.Title>Notifications</Dialog.Title>
-          <Dialog.Description>You are all caught up. Good job!</Dialog.Description>
-          <Dialog.Close>Close</Dialog.Close>
-        </Dialog.Popup>
-      </Dialog.Portal>
-    </Dialog.Root>
+    <div className='app'>
+      <Dialog.Root>
+        <Dialog.Trigger className='btn btn-primary'>View notifications</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Backdrop className='overlay' />
+          <Dialog.Popup className='dialog'>
+            <Dialog.Title className='dialog-title bottom-space-8'>Notifications</Dialog.Title>
+            <Dialog.Description className='hint bottom-space-20'>You are all caught up. Good job!</Dialog.Description>
+            <div className='row justify-end'>
+              <Dialog.Close className='btn'>Close</Dialog.Close>
+            </div>
+          </Dialog.Popup>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </div>
   )
 }`
       },
       notes: [
         'Dialog.Popup은 자동으로 포커스 트랩, Escape 키 닫기, aria-modal="true"를 처리합니다.',
         'Dialog.Title은 aria-labelledby로, Dialog.Description은 aria-describedby로 자동 연결됩니다.',
-        'Dialog.Portal은 body에 렌더링하여 z-index 충돌을 방지합니다.'
+        'Dialog.Portal은 body에 렌더링하여 z-index 충돌을 방지합니다.',
+        'open/onOpenChange prop으로 제어 모드, defaultOpen으로 비제어 모드로 사용할 수 있습니다.',
+        'AlertDialog(@base-ui-components/react/alert-dialog)는 사용자 확인이 필요한 위험한 액션에 사용하세요.'
       ]
     }
   }

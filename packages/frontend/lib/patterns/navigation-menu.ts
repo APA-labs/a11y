@@ -91,9 +91,11 @@ export const navigationMenuPattern: Pattern = {
 
   return (
     <nav aria-label='Main navigation'>
-      <ul style={{ listStyle: 'none', display: 'flex', gap: '8px', padding: 0, margin: 0 }}>
+      <ul className='nav-toplist'>
         {items.map((item) => (
-          <li key={item.id}>
+          <li
+            key={item.id}
+            className='nav-item-rel'>
             {item.children ? (
               <>
                 <button
@@ -106,15 +108,7 @@ export const navigationMenuPattern: Pattern = {
                 {openMenu === item.id && (
                   <ul
                     role='menu'
-                    style={{
-                      listStyle: 'none',
-                      padding: '4px',
-                      margin: 0,
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      position: 'absolute',
-                      background: 'white'
-                    }}>
+                    className='nav-submenu'>
                     {item.children.map((child) => (
                       <li
                         key={child.id}
@@ -123,12 +117,7 @@ export const navigationMenuPattern: Pattern = {
                           href={child.href}
                           role='menuitem'
                           aria-current={currentPath === child.href ? 'page' : undefined}
-                          style={{
-                            display: 'block',
-                            padding: '4px 8px',
-                            textDecoration: 'none',
-                            color: currentPath === child.href ? '#6d28d9' : 'inherit'
-                          }}>
+                          className='nav-menu-link-block'>
                           {child.label}
                         </a>
                       </li>
@@ -140,11 +129,7 @@ export const navigationMenuPattern: Pattern = {
               <a
                 href={item.href}
                 aria-current={currentPath === item.href ? 'page' : undefined}
-                style={{
-                  textDecoration: 'none',
-                  color: currentPath === item.href ? '#6d28d9' : 'inherit',
-                  fontWeight: currentPath === item.href ? 'bold' : 'normal'
-                }}>
+                className='nav-top-link'>
                 {item.label}
               </a>
             )}
@@ -164,64 +149,109 @@ export const navigationMenuPattern: Pattern = {
       additionalChecks: [
         {
           id: 'nav-mui-1',
-          title: 'AppBar + Drawer 조합',
-          description: 'MUI에서 내비게이션은 보통 AppBar + Drawer 조합으로 구현합니다. Drawer에 aria-label을 제공하세요.',
-          level: 'should'
+          title: 'Toolbar에 component="nav"와 aria-label 설정',
+          description:
+            'AppBar의 Toolbar를 component="nav"로 사용하고 aria-label="Main navigation"을 제공하세요. 이렇게 하면 <nav aria-label>로 렌더링되어 스크린리더 랜드마크 탐색이 가능합니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-mui-2',
+          title: 'Menu 트리거에 aria-haspopup과 aria-expanded',
+          description:
+            '하위 메뉴 트리거 버튼에 aria-haspopup="menu"와 aria-expanded를 설정해야 스크린리더가 서브메뉴의 존재와 상태를 파악할 수 있습니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-mui-3',
+          title: '현재 페이지 링크에 aria-current="page"',
+          description: 'MUI는 aria-current를 자동으로 설정하지 않습니다. 현재 경로에 해당하는 링크에 직접 aria-current="page"를 추가하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI AppBar Navigation',
-        code: `import { AppBar, Toolbar, Button, Menu, MenuItem } from '@mui/material'
+        code: `import './index.css'
+import { useState } from 'react'
+import { AppBar, Toolbar, Button, Menu, MenuItem, Box, Typography } from '@mui/material'
 
-function NavigationMuiDemo() {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const currentPath = '/'
+const currentPath = '/'
+
+export default function App() {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const menuOpen = Boolean(anchorEl)
+  const menuId = menuOpen ? 'products-menu' : undefined
 
   return (
-    <AppBar
-      position='static'
-      component='header'>
-      <Toolbar
-        component='nav'
-        aria-label='Main navigation'>
-        <Button
-          color='inherit'
-          href='/'
-          aria-current={currentPath === '/' ? 'page' : undefined}>
-          Home
-        </Button>
-        <Button
-          color='inherit'
-          aria-haspopup='menu'
-          aria-expanded={Boolean(anchorEl)}
-          onClick={(e) => setAnchorEl(e.currentTarget)}>
-          Products
-        </Button>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={() => setAnchorEl(null)}>
-          <MenuItem
+    <Box>
+      <AppBar
+        position='static'
+        component='header'>
+        <Toolbar
+          component='nav'
+          aria-label='Main navigation'
+          sx={{ gap: 1 }}>
+          <Typography
+            variant='h6'
+            sx={{ flexGrow: 0, mr: 2 }}>
+            My App
+          </Typography>
+
+          <Button
+            color='inherit'
+            href='/'
             component='a'
-            href='/products/all'>
-            All Products
-          </MenuItem>
-          <MenuItem
+            aria-current={currentPath === '/' ? 'page' : undefined}>
+            Home
+          </Button>
+
+          <Button
+            color='inherit'
+            href='/about'
             component='a'
-            href='/products/new'>
-            New
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+            aria-current={currentPath === '/about' ? 'page' : undefined}>
+            About
+          </Button>
+
+          <Button
+            color='inherit'
+            aria-haspopup='menu'
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+            onClick={(e) => setAnchorEl(e.currentTarget)}>
+            Products ▾
+          </Button>
+
+          <Menu
+            id={menuId}
+            anchorEl={anchorEl}
+            open={menuOpen}
+            onClose={() => setAnchorEl(null)}
+            MenuListProps={{ 'aria-label': 'Products submenu' }}>
+            <MenuItem
+              component='a'
+              href='/products/all'
+              onClick={() => setAnchorEl(null)}>
+              All Products
+            </MenuItem>
+            <MenuItem
+              component='a'
+              href='/products/new'
+              onClick={() => setAnchorEl(null)}>
+              New Arrivals
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+      </AppBar>
+    </Box>
   )
 }`
       },
       notes: [
-        'AppBar의 component="header"로 의미론적 마크업을 사용하세요.',
-        'MUI Menu는 자동으로 포커스 관리와 키보드 내비게이션을 처리합니다.',
-        '현재 페이지 링크에 aria-current를 직접 추가해야 합니다.'
+        'Toolbar component="nav"로 <nav> 시맨틱을 부여하고 aria-label로 목적을 명시하세요.',
+        'MUI Menu는 방향키 탐색, Escape 닫기, 포커스 복원을 자동으로 처리합니다.',
+        '현재 페이지 링크에 aria-current="page"를 직접 추가해야 합니다. MUI는 자동 처리하지 않습니다.',
+        'MenuListProps={{ "aria-label": "..." }}로 메뉴 목록에 레이블을 추가할 수 있습니다.'
       ]
     },
     radix: {
@@ -231,50 +261,97 @@ function NavigationMuiDemo() {
       additionalChecks: [
         {
           id: 'nav-radix-1',
-          title: 'NavigationMenu.Indicator 사용',
-          description: 'Radix NavigationMenu.Indicator로 현재 활성 항목을 시각적으로 강조할 수 있습니다.',
-          level: 'should'
+          title: 'NavigationMenu.Viewport 필수 배치',
+          description:
+            'NavigationMenu.Viewport는 Trigger로 열리는 Content를 실제로 표시하는 컨테이너입니다. NavigationMenu.List 외부, Root 내부에 배치해야 합니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-radix-2',
+          title: 'aria-current="page"로 현재 페이지 표시',
+          description: 'NavigationMenu.Link의 active prop 또는 aria-current="page"로 현재 활성 페이지를 명시하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix NavigationMenu',
-        code: `import * as NavigationMenu from '@radix-ui/react-navigation-menu'
-<NavigationMenu.Root aria-label='Main navigation'>
-  <NavigationMenu.List>
-    <NavigationMenu.Item>
-      <NavigationMenu.Link
-        href='/'
-        aria-current='page'>
-        Home
-      </NavigationMenu.Link>
-    </NavigationMenu.Item>
+        code: `import './index.css'
+import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 
-    <NavigationMenu.Item>
-      <NavigationMenu.Trigger>
-        Products
-        <span aria-hidden>▾</span>
-      </NavigationMenu.Trigger>
-      <NavigationMenu.Content>
-        <ul>
-          <li>
-            <NavigationMenu.Link href='/products/all'>All Products</NavigationMenu.Link>
-          </li>
-          <li>
-            <NavigationMenu.Link href='/products/new'>New</NavigationMenu.Link>
-          </li>
-        </ul>
-      </NavigationMenu.Content>
-    </NavigationMenu.Item>
-  </NavigationMenu.List>
+export default function App() {
+  return (
+    <NavigationMenu.Root className='nav-relative-pad'>
+      <NavigationMenu.List className='tab-list nav-radix-list'>
+        <NavigationMenu.Item>
+          <NavigationMenu.Link
+            href='/'
+            className='menu-item nav-link-block'
+            aria-current='page'>
+            Home
+          </NavigationMenu.Link>
+        </NavigationMenu.Item>
 
-  <NavigationMenu.Viewport />
-</NavigationMenu.Root>`
+        <NavigationMenu.Item>
+          <NavigationMenu.Trigger className='btn btn-ghost'>
+            Products <span aria-hidden>▾</span>
+          </NavigationMenu.Trigger>
+          <NavigationMenu.Content className='panel stack nav-content-min180'>
+            <NavigationMenu.Link
+              href='/products/all'
+              className='menu-item nav-link-block'>
+              All Products
+            </NavigationMenu.Link>
+            <NavigationMenu.Link
+              href='/products/new'
+              className='menu-item nav-link-block'>
+              New Arrivals
+            </NavigationMenu.Link>
+            <NavigationMenu.Link
+              href='/products/sale'
+              className='menu-item nav-link-block'>
+              Sale
+            </NavigationMenu.Link>
+          </NavigationMenu.Content>
+        </NavigationMenu.Item>
+
+        <NavigationMenu.Item>
+          <NavigationMenu.Trigger className='btn btn-ghost'>
+            Company <span aria-hidden>▾</span>
+          </NavigationMenu.Trigger>
+          <NavigationMenu.Content className='panel stack nav-content-min180'>
+            <NavigationMenu.Link
+              href='/about'
+              className='menu-item nav-link-block'>
+              About us
+            </NavigationMenu.Link>
+            <NavigationMenu.Link
+              href='/careers'
+              className='menu-item nav-link-block'>
+              Careers
+            </NavigationMenu.Link>
+          </NavigationMenu.Content>
+        </NavigationMenu.Item>
+
+        <NavigationMenu.Item>
+          <NavigationMenu.Link
+            href='/contact'
+            className='menu-item nav-link-block'>
+            Contact
+          </NavigationMenu.Link>
+        </NavigationMenu.Item>
+      </NavigationMenu.List>
+
+      <NavigationMenu.Viewport className='nav-viewport' />
+    </NavigationMenu.Root>
+  )
+}`
       },
       notes: [
-        'Radix NavigationMenu는 WAI-ARIA disclosure navigation 패턴을 준수합니다.',
-        'Space/Enter로 트리거 활성화, ArrowDown으로 콘텐츠 진입, Escape로 닫기가 기본 지원됩니다.',
-        'NavigationMenu.Viewport는 애니메이션과 포커스 관리를 담당합니다.'
+        'NavigationMenu.Trigger는 aria-expanded와 aria-controls를 자동으로 관리합니다. Space/Enter로 열기, Escape로 닫기, ArrowDown으로 Content 진입이 지원됩니다.',
+        'NavigationMenu.Viewport는 Content가 렌더링되는 위치로, Root 내부에서 List 외부에 배치해야 합니다. 생략하면 Content가 표시되지 않습니다.',
+        'NavigationMenu.Link의 active prop 또는 aria-current="page"로 현재 페이지를 스크린리더에 전달하세요.',
+        'NavigationMenu.Root는 role="navigation"을 렌더링합니다. aria-label을 추가해 목적을 명시하세요.'
       ]
     },
     antd: {
@@ -284,45 +361,76 @@ function NavigationMuiDemo() {
       additionalChecks: [
         {
           id: 'nav-antd-1',
-          title: 'aria-label 직접 추가',
-          description: 'Ant Design Menu는 <ul> 역할을 하지만 aria-label을 자동으로 추가하지 않습니다. 감싸는 <nav>에 aria-label을 추가하세요.',
+          title: '<nav> 랜드마크와 aria-label 추가',
+          description: 'Ant Design Menu는 <ul>로 렌더링됩니다. <nav aria-label="Main navigation">으로 감싸 내비게이션 랜드마크를 제공하세요.',
           level: 'must'
+        },
+        {
+          id: 'nav-antd-2',
+          title: 'selectedKeys로 현재 활성 항목 표시',
+          description: 'selectedKeys prop으로 현재 활성 메뉴 항목을 명시하면 해당 항목에 aria-selected가 자동으로 설정됩니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-antd-3',
+          title: 'items API 사용 (v4.20.0+)',
+          description:
+            '구형 <Menu.Item> 방식 대신 items prop으로 메뉴 구조를 정의하세요. type: "group"으로 그룹을 만들고 children으로 하위 메뉴를 구성합니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Menu',
-        code: `import { Menu } from 'antd'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Menu } from 'antd'
 
-function AntdNavDemo() {
-  const currentKey = 'home'
-  const items = [
-    { key: 'home', label: <a href='/'>Home</a> },
-    {
-      key: 'products',
-      label: 'Products',
-      children: [
-        { key: 'all', label: <a href='/products/all'>All Products</a> },
-        { key: 'new', label: <a href='/products/new'>New</a> }
-      ]
-    }
-  ]
+const items = [
+  {
+    key: 'home',
+    label: <a href='/'>Home</a>
+  },
+  {
+    key: 'products',
+    label: 'Products',
+    children: [
+      { key: 'all', label: <a href='/products'>All Products</a> },
+      { key: 'new', label: <a href='/products/new'>New Arrivals</a> },
+      { key: 'sale', label: <a href='/products/sale'>On Sale</a> }
+    ]
+  },
+  {
+    key: 'about',
+    label: <a href='/about'>About</a>
+  },
+  {
+    key: 'contact',
+    label: <a href='/contact'>Contact</a>
+  }
+]
+
+export default function App() {
+  const [current, setCurrent] = useState('home')
 
   return (
     <nav aria-label='Main navigation'>
       <Menu
         mode='horizontal'
         items={items}
-        selectedKeys={[currentKey]}
+        selectedKeys={[current]}
+        onClick={({ key }) => setCurrent(key)}
+        className='nav-ant-menu-border-none'
       />
     </nav>
   )
 }`
       },
       notes: [
-        'Ant Design Menu를 <nav> 요소로 감싸고 aria-label을 추가하세요.',
-        'mode="horizontal"은 수평 내비게이션, mode="inline"은 사이드바에 적합합니다.',
-        'selectedKeys prop으로 현재 활성 항목을 표시하세요.'
+        'Ant Design Menu는 <ul>로 렌더링되므로 <nav aria-label>로 감싸 내비게이션 랜드마크를 제공하세요.',
+        'selectedKeys prop으로 현재 활성 항목을 관리하면 해당 항목에 aria-selected가 자동 설정됩니다.',
+        '하위 메뉴(SubMenu)는 aria-expanded, aria-haspopup을 자동으로 관리합니다.',
+        'items prop에서 label을 <a href>로 설정하면 실제 링크로 동작해 키보드 탐색과 북마크를 지원합니다.'
       ]
     },
     chakra: {
@@ -368,36 +476,153 @@ function AntdNavDemo() {
       additionalChecks: [
         {
           id: 'nav-spectrum-1',
-          title: 'nav 요소로 감싸기',
-          description: 'MenuTrigger/Menu를 <nav aria-label>로 감싸 내비게이션 랜드마크를 제공하세요.',
+          title: 'nav 요소로 랜드마크 제공',
+          description:
+            'MenuTrigger/Menu를 <nav aria-label>로 감싸 내비게이션 랜드마크를 제공하세요. 스크린리더 사용자가 랜드마크로 빠르게 이동할 수 있습니다.',
+          level: 'must'
+        },
+        {
+          id: 'nav-spectrum-2',
+          title: 'onAction으로 메뉴 항목 동작 처리',
+          description: 'MenuItem에 onAction 또는 Menu에 onAction을 설정하세요. href prop으로 링크 메뉴 항목을 만들 수 있습니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'React Aria Menu',
+        code: `import './index.css'
+import { MenuTrigger, Menu, MenuItem, MenuSection, Separator, Button, Popover, Text, Header } from 'react-aria-components'
+
+export default function App() {
+  return (
+    <nav
+      aria-label='Main navigation'
+      className='app'>
+      <MenuTrigger>
+        <Button className='btn'>File ▾</Button>
+        <Popover className='panel nav-spectrum-popover'>
+          <Menu
+            onAction={(key) => alert(\`Action: \${key}\`)}
+            className='nav-spectrum-menu'>
+            <MenuSection>
+              <Header
+                className='label'
+                className='label nav-spectrum-section-header'>
+                Actions
+              </Header>
+              <MenuItem
+                id='new'
+                className='nav-spectrum-menuitem'>
+                <Text slot='label'>New file</Text>
+                <Text slot='description'>Create a new document</Text>
+              </MenuItem>
+              <MenuItem
+                id='open'
+                className='nav-spectrum-menuitem'>
+                <Text slot='label'>Open...</Text>
+              </MenuItem>
+            </MenuSection>
+            <Separator className='nav-spectrum-separator' />
+            <MenuItem
+              id='quit'
+              className='nav-spectrum-menuitem nav-spectrum-quit'>
+              Quit
+            </MenuItem>
+          </Menu>
+        </Popover>
+      </MenuTrigger>
+    </nav>
+  )
+}`
+      },
+      notes: [
+        'Menu/MenuTrigger는 WAI-ARIA Menu 패턴(role="menu", role="menuitem", 방향키 네비게이션)을 완전히 구현합니다.',
+        'MenuSection으로 항목을 그룹화하고 Header로 섹션 제목을 제공하세요. 제목 없는 섹션은 aria-label이 필요합니다.',
+        'MenuItem의 Text slot="label"과 slot="description"으로 주요/보조 텍스트를 분리하면 스크린리더 안내가 개선됩니다.',
+        'onAction은 Menu 레벨에서 Key를 받거나 각 MenuItem에 개별 지정할 수 있습니다.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'nav-baseui-1',
+          title: 'NavigationMenu.Root에 <nav> 랜드마크 포함',
+          description: 'NavigationMenu.Root는 기본적으로 <nav> 요소를 렌더링하여 랜드마크를 자동 제공합니다. aria-label로 목적을 추가하세요.',
+          level: 'must'
+        },
+        {
+          id: 'nav-baseui-2',
+          title: 'Portal + Positioner + Viewport 구조 준수',
+          description:
+            'NavigationMenu.Portal, Positioner, Popup, Viewport의 중첩 구조를 정확히 사용해야 서브메뉴 전환 애니메이션과 포커스 관리가 올바르게 동작합니다.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
-        label: 'React Aria MenuTrigger',
-        code: `import { MenuTrigger, Menu, MenuItem, Button, Popover } from 'react-aria-components'
+        label: 'Base UI Navigation Menu',
+        code: `import './index.css'
+import { NavigationMenu } from '@base-ui-components/react/navigation-menu'
 
-const btnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 500 }
-const menuStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
-const itemStyle = { padding: '8px 14px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
+const ITEMS = [
+  { id: 'overview', label: 'Overview', links: ['Quick Start', 'Accessibility', 'Releases'] },
+  { id: 'handbook', label: 'Handbook', links: ['Styling', 'Animation', 'TypeScript'] }
+]
 
-<nav aria-label='Main navigation'>
-  <MenuTrigger>
-    <Button style={btnStyle}>Products ▾</Button>
-    <Popover style={menuStyle}>
-      <Menu onAction={() => {}}>
-        <MenuItem id='web' style={itemStyle}>Web Products</MenuItem>
-        <MenuItem id='mobile' style={itemStyle}>Mobile Products</MenuItem>
-      </Menu>
-    </Popover>
-  </MenuTrigger>
-</nav>`
+export default function App() {
+  return (
+    <NavigationMenu.Root
+      aria-label='Main navigation'
+      className='app'>
+      <NavigationMenu.List className='row'>
+        {ITEMS.map((item) => (
+          <NavigationMenu.Item key={item.id}>
+            <NavigationMenu.Trigger className='btn btn-ghost row'>
+              {item.label}
+              <NavigationMenu.Icon>
+                <span aria-hidden>▾</span>
+              </NavigationMenu.Icon>
+            </NavigationMenu.Trigger>
+            <NavigationMenu.Content>
+              <ul className='menu'>
+                {item.links.map((link) => (
+                  <li key={link}>
+                    <NavigationMenu.Link
+                      render={<a href='#' />}
+                      className='menu-item'>
+                      {link}
+                    </NavigationMenu.Link>
+                  </li>
+                ))}
+              </ul>
+            </NavigationMenu.Content>
+          </NavigationMenu.Item>
+        ))}
+      </NavigationMenu.List>
+
+      <NavigationMenu.Portal>
+        <NavigationMenu.Positioner
+          sideOffset={10}
+          className='nav-viewport'>
+          <NavigationMenu.Popup className='panel'>
+            <NavigationMenu.Viewport />
+          </NavigationMenu.Popup>
+        </NavigationMenu.Positioner>
+      </NavigationMenu.Portal>
+    </NavigationMenu.Root>
+  )
+}`
       },
       notes: [
-        'React Aria Menu/MenuTrigger는 WAI-ARIA Menu 패턴을 완전히 구현합니다.',
-        '내비게이션으로 사용 시 <nav aria-label>로 감싸세요.',
-        'onAction 콜백으로 메뉴 항목 선택 시 동작을 처리하세요.'
+        'NavigationMenu.Root는 기본적으로 <nav> 요소를 렌더링합니다. aria-label을 추가해 목적을 명시하세요.',
+        'NavigationMenu.Trigger는 aria-expanded와 aria-controls를 자동으로 관리합니다.',
+        'NavigationMenu.Link의 render prop으로 프레임워크의 Link 컴포넌트를 사용하여 클라이언트 사이드 라우팅을 구현하세요.',
+        'NavigationMenu.Viewport는 Content를 렌더링하는 단일 공간으로, Popup 내부에 위치해야 합니다.',
+        'Escape 키와 Tab 키로 메뉴를 닫고 포커스를 관리하는 기능이 자동으로 처리됩니다.'
       ]
     }
   }

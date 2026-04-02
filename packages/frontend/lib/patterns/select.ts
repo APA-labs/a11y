@@ -146,32 +146,81 @@ export const selectPattern: Pattern = {
       additionalChecks: [
         {
           id: 'select-mui-1',
-          title: 'FormControl + InputLabel 조합 필수',
-          description: 'MUI Select는 FormControl과 InputLabel을 함께 사용해야 올바른 레이블이 연결됩니다.',
+          title: 'FormControl + InputLabel + labelId 연결 필수',
+          description:
+            'MUI Select는 FormControl, InputLabel(id), Select(labelId)를 일치시켜야 스크린리더가 레이블을 올바르게 읽습니다. outlined variant에서는 Select의 label prop도 동일하게 설정하세요.',
           level: 'must'
+        },
+        {
+          id: 'select-mui-2',
+          title: 'error + helperText로 오류 안내',
+          description: 'FormControl의 error prop과 FormHelperText를 함께 사용하면 오류 상태와 메시지가 aria-describedby로 자동 연결됩니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Select',
-        code: `import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
-<FormControl fullWidth>
-  <InputLabel id='fruit-label'>Select fruit</InputLabel>
-  <Select
-    labelId='fruit-label'
-    value={selected}
-    label='Select fruit'
-    onChange={(e) => setSelected(e.target.value)}>
-    <MenuItem value='apple'>Apple</MenuItem>
-    <MenuItem value='banana'>Banana</MenuItem>
-    <MenuItem value='cherry'>Cherry</MenuItem>
-  </Select>
-</FormControl>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText, Box, Typography } from '@mui/material'
+
+export default function App() {
+  const [country, setCountry] = useState('')
+  const [role, setRole] = useState('')
+  const hasError = !role
+
+  return (
+    <Box className='p-24 stack gap-24 max-w-400'>
+      <Typography variant='h6'>User Preferences</Typography>
+
+      <FormControl fullWidth>
+        <InputLabel id='country-label'>Country</InputLabel>
+        <Select
+          labelId='country-label'
+          id='country-select'
+          value={country}
+          label='Country'
+          onChange={(e) => setCountry(e.target.value)}>
+          <MenuItem value='us'>United States</MenuItem>
+          <MenuItem value='kr'>South Korea</MenuItem>
+          <MenuItem value='jp'>Japan</MenuItem>
+          <MenuItem value='de'>Germany</MenuItem>
+        </Select>
+        <FormHelperText>Select your country of residence</FormHelperText>
+      </FormControl>
+
+      <FormControl
+        fullWidth
+        error={hasError}
+        required>
+        <InputLabel id='role-label'>Role</InputLabel>
+        <Select
+          labelId='role-label'
+          id='role-select'
+          value={role}
+          label='Role'
+          onChange={(e) => setRole(e.target.value)}>
+          <MenuItem value='developer'>Developer</MenuItem>
+          <MenuItem value='designer'>Designer</MenuItem>
+          <MenuItem value='manager'>Product Manager</MenuItem>
+          <MenuItem
+            value='qa'
+            disabled>
+            QA Engineer (unavailable)
+          </MenuItem>
+        </Select>
+        {hasError && <FormHelperText>Please select your role</FormHelperText>}
+      </FormControl>
+    </Box>
+  )
+}`
       },
       notes: [
-        'labelId와 InputLabel의 id가 일치해야 스크린리더가 레이블을 읽습니다.',
-        'native prop을 사용하면 브라우저 기본 <select>로 렌더링됩니다.',
-        'disabled 옵션에는 aria-disabled가 자동으로 적용됩니다.'
+        'InputLabel의 id와 Select의 labelId를 반드시 동일하게 설정하세요. 미설정 시 스크린리더가 레이블을 읽지 못합니다.',
+        'outlined variant에서는 Select의 label prop도 InputLabel 텍스트와 동일하게 설정해야 floating label 애니메이션이 올바르게 동작합니다.',
+        'disabled MenuItem은 aria-disabled가 자동 적용됩니다.',
+        'native={true} prop으로 브라우저 기본 <select> 렌더링으로 전환할 수 있어 모바일 접근성이 향상됩니다.'
       ]
     },
     radix: {
@@ -181,41 +230,83 @@ export const selectPattern: Pattern = {
       additionalChecks: [
         {
           id: 'select-radix-1',
-          title: 'Label 컴포넌트와 함께 사용',
-          description: 'Radix Label 컴포넌트를 Select.Trigger와 연결해 스크린리더 레이블을 제공하세요.',
+          title: 'Select.Trigger에 aria-label 또는 Label 연결 필수',
+          description:
+            'Select.Trigger에 aria-label을 직접 추가하거나 @radix-ui/react-label의 Label.Root(htmlFor)로 연결하세요. 레이블 없이는 스크린리더가 목적을 알 수 없습니다.',
+          level: 'must'
+        },
+        {
+          id: 'select-radix-2',
+          title: 'Select.ItemText로 접근 가능한 옵션 텍스트 제공',
+          description: 'Select.Item 내부에 Select.ItemText를 반드시 사용하세요. 이 텍스트가 스크린리더에 전달되는 옵션 레이블입니다.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Select',
-        code: `import * as Select from '@radix-ui/react-select';
-import * as Label from '@radix-ui/react-label';
+        code: `import './index.css'
+import { useState } from 'react'
+import * as Select from '@radix-ui/react-select'
 
-<Label.Root htmlFor="fruit-trigger">Select fruit</Label.Root>
-<Select.Root value={selected} onValueChange={setSelected}>
-<Select.Trigger id="fruit-trigger" aria-label="Select fruit">
-  <Select.Value placeholder="Choose an option" />
-  <Select.Icon />
-</Select.Trigger>
-<Select.Portal>
-  <Select.Content>
-    <Select.Viewport>
-      <Select.Item value="apple">
-        <Select.ItemText>Apple</Select.ItemText>
-      </Select.Item>
-      <Select.Item value="banana">
-        <Select.ItemText>Banana</Select.ItemText>
-      </Select.Item>
-    </Select.Viewport>
-  </Select.Content>
-</Select.Portal>
-</Select.Root>`
+const COUNTRIES = [
+  { value: 'us', label: 'United States' },
+  { value: 'kr', label: 'South Korea' },
+  { value: 'jp', label: 'Japan' },
+  { value: 'de', label: 'Germany' },
+  { value: 'fr', label: 'France' }
+]
+
+export default function App() {
+  const [value, setValue] = useState('')
+
+  return (
+    <div className='p-24'>
+      <label
+        htmlFor='country-trigger'
+        className='label'>
+        Country
+      </label>
+      <Select.Root
+        value={value}
+        onValueChange={setValue}>
+        <Select.Trigger
+          id='country-trigger'
+          className='select-trigger'
+          aria-label='Select country'>
+          <Select.Value placeholder='Select a country' />
+          <Select.Icon aria-hidden>▾</Select.Icon>
+        </Select.Trigger>
+
+        <Select.Portal>
+          <Select.Content
+            position='popper'
+            sideOffset={4}
+            className='select-popup'>
+            <Select.Viewport>
+              {COUNTRIES.map((country) => (
+                <Select.Item
+                  key={country.value}
+                  value={country.value}
+                  className='select-item'>
+                  <Select.ItemIndicator aria-hidden>✓</Select.ItemIndicator>
+                  <Select.ItemText>{country.label}</Select.ItemText>
+                </Select.Item>
+              ))}
+            </Select.Viewport>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+      {value && <p className='hint mt-8'>Selected: {COUNTRIES.find((c) => c.value === value)?.label}</p>}
+    </div>
+  )
+}`
       },
       notes: [
-        'Radix Select는 W3C ListBox 및 Select-Only Combobox 패턴을 준수합니다.',
-        'Select.Item에 disabled prop을 추가하면 aria-disabled가 자동 적용됩니다.',
-        'Select.Content의 position="popper"로 위치 조정이 가능합니다.'
+        'Select.Trigger는 role="combobox"와 aria-expanded를 자동으로 관리합니다. 스크린리더는 선택된 값을 Select.Value로 읽습니다.',
+        'Select.Item에 disabled prop을 추가하면 aria-disabled="true"가 자동 적용되어 키보드 탐색에서 건너뜁니다.',
+        'Select.ItemIndicator는 선택된 항목에만 표시됩니다. aria-hidden 처리를 권장합니다.',
+        'position="popper"로 설정하면 Select.Content가 Trigger에 상대적으로 배치됩니다. Select.Portal 사용으로 z-index 문제를 방지하세요.'
       ]
     },
     antd: {
@@ -225,32 +316,111 @@ import * as Label from '@radix-ui/react-label';
       additionalChecks: [
         {
           id: 'select-antd-1',
-          title: '레이블 연결',
-          description: 'Ant Design Select는 Form.Item 안에서 label prop으로 사용하거나 aria-label을 직접 지정하세요.',
+          title: 'Form.Item으로 레이블 자동 연결',
+          description:
+            'Select를 Form.Item 안에서 label + name prop과 함께 사용하면 label이 htmlFor로 자동 연결됩니다. 독립 사용 시 aria-label을 직접 지정하세요.',
           level: 'must'
+        },
+        {
+          id: 'select-antd-2',
+          title: 'virtual={false}로 스크린리더 호환성 향상',
+          description:
+            '기본적으로 가상 스크롤이 활성화되어 있어 일부 스크린리더에서 옵션 목록을 올바르게 읽지 못할 수 있습니다. virtual={false}로 설정하면 모든 옵션을 DOM에 렌더링합니다.',
+          level: 'should'
+        },
+        {
+          id: 'select-antd-3',
+          title: 'showSearch 시 combobox 패턴 확인',
+          description:
+            'showSearch 활성화 시 Select가 combobox 패턴으로 전환됩니다. filterOption 콜백으로 검색 로직을 커스텀하고 notFoundContent로 결과 없음 메시지를 제공하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Select',
-        code: `import { Select, Form } from 'antd'
-<Form.Item
-  label='Select fruit'
-  name='fruit'>
-  <Select
-    placeholder='Choose an option'
-    options={[
-      { value: 'apple', label: 'Apple' },
-      { value: 'banana', label: 'Banana' },
-      { value: 'cherry', label: 'Cherry' }
-    ]}
-  />
-</Form.Item>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Form, Select, Button, Typography } from 'antd'
+
+const FRUIT_OPTIONS = [
+  { value: 'apple', label: 'Apple' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'cherry', label: 'Cherry' },
+  { value: 'grape', label: 'Grape' },
+  { value: 'mango', label: 'Mango', disabled: true }
+]
+
+const COUNTRY_OPTIONS = [
+  { value: 'kr', label: 'South Korea' },
+  { value: 'us', label: 'United States' },
+  { value: 'jp', label: 'Japan' },
+  { value: 'de', label: 'Germany' }
+]
+
+export default function App() {
+  const [submitted, setSubmitted] = useState<Record<string, string> | null>(null)
+
+  return (
+    <div className='p-24 max-w-480'>
+      <Typography.Title
+        level={4}
+        className='mb-24'>
+        Preferences
+      </Typography.Title>
+
+      <Form
+        layout='vertical'
+        onFinish={(values) => setSubmitted(values)}>
+        <Form.Item
+          label='Favorite fruit'
+          name='fruit'
+          rules={[{ required: true, message: 'Please select a fruit' }]}>
+          <Select
+            placeholder='Choose a fruit'
+            options={FRUIT_OPTIONS}
+            virtual={false}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label='Country'
+          name='country'
+          rules={[{ required: true, message: 'Please select a country' }]}>
+          <Select
+            placeholder='Search or select a country'
+            options={COUNTRY_OPTIONS}
+            showSearch
+            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+            notFoundContent='No matching country'
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type='primary'
+            htmlType='submit'>
+            Save preferences
+          </Button>
+        </Form.Item>
+      </Form>
+
+      {submitted && (
+        <div
+          role='status'
+          className='status-badge mt-16'>
+          Saved: {submitted.fruit}, {submitted.country}
+        </div>
+      )}
+    </div>
+  )
+}`
       },
       notes: [
-        'Form.Item을 사용하면 label과 input이 htmlFor로 자동 연결됩니다.',
-        'showSearch prop으로 검색 기능 추가 시 combobox 패턴으로 전환됩니다.',
-        'virtual={false}로 가상 스크롤을 비활성화하면 스크린리더 호환성이 향상됩니다.'
+        'Form.Item의 label + name prop이 Select input에 htmlFor로 자동 연결됩니다. 별도 aria-label 불필요합니다.',
+        'showSearch 활성화 시 Select가 combobox 패턴으로 전환되며 aria-autocomplete가 자동 적용됩니다.',
+        'virtual={false}로 가상 스크롤을 비활성화하면 스크린리더가 모든 옵션을 순서대로 읽을 수 있습니다.',
+        'disabled 옵션에는 aria-disabled가 자동 적용됩니다.'
       ]
     },
     chakra: {
@@ -268,91 +438,194 @@ import * as Label from '@radix-ui/react-label';
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Select',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Select, useListCollection } from '@chakra-ui/react'
 
-const countries = [
+const COUNTRIES = [
   { label: 'South Korea', value: 'kr' },
   { label: 'United States', value: 'us' },
-  { label: 'Japan', value: 'jp' }
+  { label: 'Japan', value: 'jp' },
+  { label: 'Germany', value: 'de' }
 ]
 
 export default function App() {
-  const [value, setValue] = useState('')
-  const { collection } = useListCollection({ initialItems: countries })
+  const [value, setValue] = useState<string[]>([])
+  const { collection } = useListCollection({ initialItems: COUNTRIES })
+
   return (
-    <Select.Root
-      collection={collection}
-      value={[value]}
-      onValueChange={(e) => setValue(e.value[0])}>
-      <Select.Label>Country</Select.Label>
-      <Select.Control>
-        <Select.Trigger>
-          <Select.ValueText placeholder='Select a country' />
-        </Select.Trigger>
-      </Select.Control>
-      <Select.Positioner>
-        <Select.Content>
-          {collection.items.map((item) => (
-            <Select.Item
-              key={item.value}
-              item={item}>
-              {item.label}
-              <Select.ItemIndicator />
-            </Select.Item>
-          ))}
-        </Select.Content>
-      </Select.Positioner>
-      <Select.HiddenSelect />
-    </Select.Root>
+    <div className='p-24 max-w-320'>
+      <Select.Root
+        collection={collection}
+        value={value}
+        onValueChange={(e) => setValue(e.value)}>
+        <Select.Label>Country</Select.Label>
+        <Select.Control>
+          <Select.Trigger>
+            <Select.ValueText placeholder='Select a country' />
+            <Select.IndicatorGroup>
+              <Select.Indicator />
+            </Select.IndicatorGroup>
+          </Select.Trigger>
+        </Select.Control>
+        <Select.Positioner>
+          <Select.Content>
+            {collection.items.map((item) => (
+              <Select.Item
+                key={item.value}
+                item={item}>
+                {item.label}
+                <Select.ItemIndicator />
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Positioner>
+        <Select.HiddenSelect name='country' />
+      </Select.Root>
+    </div>
   )
 }`
       },
       notes: [
-        'Chakra Select.Root는 listbox 패턴으로 WAI-ARIA 요구사항을 충족합니다.',
-        'Select.HiddenSelect는 폼 제출을 위한 네이티브 요소입니다.',
-        'useListCollection으로 아이템 컬렉션을 관리하세요.'
+        'Chakra Select.Root는 WAI-ARIA listbox 패턴으로 aria-expanded, aria-selected를 자동 처리합니다.',
+        'useListCollection으로 아이템 컬렉션을 관리하세요.',
+        'Select.HiddenSelect에 name prop을 설정하면 네이티브 폼 제출이 가능합니다.',
+        'closeOnSelect 기본값은 true로 항목 선택 후 팝업이 자동으로 닫힙니다.'
       ]
     },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'select-spectrum-1',
+          title: 'Select Label 연결 필수',
+          description:
+            'Select의 Label 컴포넌트가 버튼과 listbox에 자동으로 연결됩니다. aria-label로 대체 가능하지만 Label 컴포넌트 사용을 권장합니다.',
+          level: 'must'
+        }
+      ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria Select',
-        code: `import { Select, Label, Button, SelectValue, Popover, ListBox, ListBoxItem } from 'react-aria-components'
+        code: `import './index.css'
+import { Select, Label, Button, SelectValue, Popover, ListBox, ListBoxItem } from 'react-aria-components'
 
-const triggerStyle = { display: 'inline-flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 12px', background: '#fff', cursor: 'pointer', fontSize: 14, minWidth: 180 }
-const popoverStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
-const itemStyle = { padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
+const ANIMALS = [
+  { id: 'aardvark', name: 'Aardvark' },
+  { id: 'cat', name: 'Cat' },
+  { id: 'dog', name: 'Dog' },
+  { id: 'kangaroo', name: 'Kangaroo' },
+  { id: 'panda', name: 'Panda' }
+]
 
-function SpectrumSelectDemo() {
-  const [value, setValue] = useState('')
-
+export default function App() {
   return (
-    <Select selectedKey={value} onSelectionChange={setValue}>
-      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Country</Label>
-      <Button style={triggerStyle}>
-        <SelectValue>{value || 'Select a country'}</SelectValue>
-        <span aria-hidden>▼</span>
-      </Button>
-      <Popover style={popoverStyle}>
-        <ListBox>
-          <ListBoxItem id='kr' style={itemStyle}>South Korea</ListBoxItem>
-          <ListBoxItem id='us' style={itemStyle}>United States</ListBoxItem>
-          <ListBoxItem id='jp' style={itemStyle}>Japan</ListBoxItem>
-        </ListBox>
-      </Popover>
-    </Select>
+    <div className='p-24'>
+      <Select placeholder='Select an animal'>
+        <Label className='label'>Favorite Animal</Label>
+        <Button className='select-trigger'>
+          <SelectValue />
+          <span aria-hidden>▼</span>
+        </Button>
+        <Popover className='select-popup'>
+          <ListBox>
+            {ANIMALS.map((animal) => (
+              <ListBoxItem
+                key={animal.id}
+                id={animal.id}
+                className='select-item'>
+                {animal.name}
+              </ListBoxItem>
+            ))}
+          </ListBox>
+        </Popover>
+      </Select>
+    </div>
   )
 }`
       },
       notes: [
-        'react-aria-components Select는 compound component로 Label, Button, SelectValue, Popover, ListBox를 조합합니다.',
-        'SelectValue는 현재 선택된 값을 자동으로 표시합니다.',
-        'selectedKey/onSelectionChange로 제어 컴포넌트로 사용하세요.'
+        'Select는 Label, Button(트리거), SelectValue, Popover, ListBox를 compound component로 조합합니다.',
+        'SelectValue는 현재 선택된 항목의 텍스트를 자동으로 표시합니다.',
+        'selectedKey/onSelectionChange로 제어 컴포넌트, defaultSelectedKey로 비제어 컴포넌트로 사용하세요.',
+        'ListBoxItem children에 함수를 전달하면 isSelected, isFocused 등의 상태를 활용할 수 있습니다.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'select-baseui-1',
+          title: 'Select.Label 또는 aria-label로 접근 가능한 이름 제공',
+          description: 'Select.Label을 사용하거나 Select.Trigger에 aria-label을 추가해 스크린리더에 선택 목적을 전달하세요.',
+          level: 'must'
+        },
+        {
+          id: 'select-baseui-2',
+          title: 'Select.Portal과 Select.Positioner 사용',
+          description:
+            'Select.Portal은 body에 드롭다운을 렌더링하고 Select.Positioner는 위치 계산을 처리합니다. z-index 충돌 방지를 위해 Portal을 사용하세요.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Select',
+        code: `import './index.css'
+import { Select } from '@base-ui-components/react/select'
+
+const FRUITS = [
+  { label: 'Apple', value: 'apple' },
+  { label: 'Banana', value: 'banana' },
+  { label: 'Cherry', value: 'cherry' },
+  { label: 'Mango', value: 'mango' }
+]
+
+export default function App() {
+  return (
+    <div className='p-24'>
+      <Select.Root>
+        <Select.Label className='label'>Favorite fruit</Select.Label>
+        <Select.Trigger className='select-trigger'>
+          <Select.Value placeholder='Select a fruit' />
+          <Select.Icon>
+            <span aria-hidden>▼</span>
+          </Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Positioner sideOffset={8}>
+            <Select.Popup className='select-popup'>
+              <Select.List>
+                {FRUITS.map(({ label, value }) => (
+                  <Select.Item
+                    key={value}
+                    value={value}
+                    className='select-item'>
+                    <Select.ItemIndicator className='item-indicator'>
+                      <span aria-hidden>✓</span>
+                    </Select.ItemIndicator>
+                    <Select.ItemText>{label}</Select.ItemText>
+                  </Select.Item>
+                ))}
+              </Select.List>
+            </Select.Popup>
+          </Select.Positioner>
+        </Select.Portal>
+      </Select.Root>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Select.Trigger는 aria-expanded와 aria-haspopup을 자동으로 관리합니다.',
+        'Select.ItemIndicator는 선택된 항목에만 표시되는 체크 표시입니다.',
+        'Select.Label을 사용하면 label과 트리거가 자동으로 연결됩니다.',
+        'defaultValue(비제어) 또는 value/onValueChange(제어 모드)로 선택 상태를 관리하세요.',
+        'Select.ScrollUpArrow, Select.ScrollDownArrow로 긴 목록의 스크롤 UI를 구현할 수 있습니다.'
       ]
     }
   }

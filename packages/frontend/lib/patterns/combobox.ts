@@ -79,60 +79,64 @@ export const comboboxPattern: Pattern = {
 const OPTIONS = ['Apple', 'Banana', 'Cherry']
 
 export function Combobox({ label }: { label: string }) {
-const [open, setOpen] = useState(false)
-const [selected, setSelected] = useState('')
-const [activeIndex, setActiveIndex] = useState(-1)
-const inputId = useId()
-const listId = useId()
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState('')
+  const [activeIndex, setActiveIndex] = useState(-1)
+  const inputId = useId()
+  const listId = useId()
 
-const handleKeyDown = (e: React.KeyboardEvent) => {
-  if (e.key === 'ArrowDown') {
-    e.preventDefault()
-    setOpen(true)
-    setActiveIndex((i) => Math.min(i + 1, OPTIONS.length - 1))
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    setActiveIndex((i) => Math.max(i - 1, 0))
-  } else if (e.key === 'Enter' && activeIndex >= 0) {
-    setSelected(OPTIONS[activeIndex])
-    setOpen(false)
-  } else if (e.key === 'Escape') {
-    setOpen(false)
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setOpen(true)
+      setActiveIndex((i) => Math.min(i + 1, OPTIONS.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveIndex((i) => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      setSelected(OPTIONS[activeIndex])
+      setOpen(false)
+    } else if (e.key === 'Escape') {
+      setOpen(false)
+    }
   }
-}
 
-return (
-  <div>
-    <label htmlFor={inputId}>{label}</label>
-    <input
-      id={inputId}
-      role="combobox"
-      aria-expanded={open}
-      aria-controls={listId}
-      aria-autocomplete="list"
-      aria-activedescendant={activeIndex >= 0 ? \`opt-\${activeIndex}\` : undefined}
-      value={selected}
-      readOnly
-      onKeyDown={handleKeyDown}
-      onClick={() => setOpen(!open)}
-    />
-    {open && (
-      <ul id={listId} role="listbox">
-        {OPTIONS.map((opt, i) => (
-          <li
-            key={opt}
-            id={\`opt-\${i}\`}
-            role="option"
-            aria-selected={selected === opt}
-            onClick={() => { setSelected(opt); setOpen(false) }}
-          >
-            {opt}
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-)
+  return (
+    <div>
+      <label htmlFor={inputId}>{label}</label>
+      <input
+        id={inputId}
+        role='combobox'
+        aria-expanded={open}
+        aria-controls={listId}
+        aria-autocomplete='list'
+        aria-activedescendant={activeIndex >= 0 ? \`opt-\${activeIndex}\` : undefined}
+        value={selected}
+        readOnly
+        onKeyDown={handleKeyDown}
+        onClick={() => setOpen(!open)}
+      />
+      {open && (
+        <ul
+          id={listId}
+          role='listbox'>
+          {OPTIONS.map((opt, i) => (
+            <li
+              key={opt}
+              id={\`opt-\${i}\`}
+              role='option'
+              aria-selected={selected === opt}
+              onClick={() => {
+                setSelected(opt)
+                setOpen(false)
+              }}>
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }`
     }
   },
@@ -152,17 +156,27 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Autocomplete',
-        code: `import { Autocomplete, TextField } from '@mui/material'
+        code: `import './index.css'
+import { Autocomplete, TextField } from '@mui/material'
 
 const OPTIONS = ['Apple', 'Banana', 'Cherry']
 
-<Autocomplete
-id="fruit-select"
-options={OPTIONS}
-renderInput={(params) => (
-  <TextField {...params} label="Select fruit" />
-)}
-/>`
+export default function App() {
+  return (
+    <div className='app'>
+      <Autocomplete
+        id='fruit-select'
+        options={OPTIONS}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label='Select fruit'
+          />
+        )}
+      />
+    </div>
+  )
+}`
       },
       notes: [
         'MUI Autocomplete는 combobox 역할과 aria-expanded를 자동으로 처리합니다.',
@@ -184,21 +198,23 @@ renderInput={(params) => (
       codeSample: {
         language: 'tsx',
         label: 'Ant Design AutoComplete',
-        code: `import { AutoComplete } from 'antd'
+        code: `import './index.css'
+import { AutoComplete } from 'antd'
 
-const OPTIONS = [
-{ value: 'Apple' },
-{ value: 'Banana' },
-]
+const OPTIONS = [{ value: 'Apple' }, { value: 'Banana' }]
 
-<AutoComplete
-options={OPTIONS}
-placeholder="Type a fruit"
-filterOption={(input, option) =>
-  (option?.value ?? '').toLowerCase().includes(input.toLowerCase())
-}
-aria-label="Select fruit"
-/>`
+export default function App() {
+  return (
+    <div className='app'>
+      <AutoComplete
+        options={OPTIONS}
+        placeholder='Type a fruit'
+        filterOption={(input, option) => (option?.value ?? '').toLowerCase().includes(input.toLowerCase())}
+        aria-label='Select fruit'
+      />
+    </div>
+  )
+}`
       },
       notes: ['Ant Design AutoComplete는 접근성 속성을 자동으로 처리합니다.', '빈 결과 상태를 사용자에게 알리는 notFoundContent를 설정하세요.']
     },
@@ -217,7 +233,8 @@ aria-label="Select fruit"
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Combobox',
-        code: `import { Combobox, useListCollection } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Combobox, useListCollection } from '@chakra-ui/react'
 
 const frameworks = ['React', 'Vue', 'Angular', 'Svelte'].map((f) => ({ label: f, value: f.toLowerCase() }))
 
@@ -262,41 +279,64 @@ export default function App() {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'combobox-spectrum-1',
+          title: 'allowsCustomValue로 자유 입력 허용 제어',
+          description: 'allowsCustomValue={true}면 목록에 없는 값도 입력할 수 있습니다. 기본값은 false로 목록 항목만 선택 가능합니다.',
+          level: 'should'
+        }
+      ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria ComboBox',
-        code: `import { ComboBox, Label, Group, Input, Button, Popover, ListBox, ListBoxItem } from 'react-aria-components'
+        code: `import './index.css'
+import { ComboBox, Label, Group, Input, Button, Popover, ListBox, ListBoxItem } from 'react-aria-components'
 
-const fieldStyle = { display: 'inline-flex', alignItems: 'center', border: '1px solid #d1d5db', borderRadius: 6, padding: '4px 8px', background: '#fff' }
-const btnStyle = { background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px', fontSize: 14 }
-const popoverStyle = { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,.1)', padding: 4, outline: 'none' }
-const itemStyle = { padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: 14, outline: 'none' }
+const FRAMEWORKS = [
+  { id: 'react', name: 'React' },
+  { id: 'vue', name: 'Vue' },
+  { id: 'angular', name: 'Angular' },
+  { id: 'svelte', name: 'Svelte' },
+  { id: 'solid', name: 'Solid' }
+]
 
 export default function App() {
   return (
-    <ComboBox>
-      <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Select framework</Label>
-      <Group style={fieldStyle}>
-        <Input style={{ border: 'none', outline: 'none', fontSize: 14 }} />
-        <Button style={btnStyle}>▼</Button>
-      </Group>
-      <Popover style={popoverStyle}>
-        <ListBox>
-          <ListBoxItem id='react' style={itemStyle}>React</ListBoxItem>
-          <ListBoxItem id='vue' style={itemStyle}>Vue</ListBoxItem>
-          <ListBoxItem id='angular' style={itemStyle}>Angular</ListBoxItem>
-          <ListBoxItem id='svelte' style={itemStyle}>Svelte</ListBoxItem>
-        </ListBox>
-      </Popover>
-    </ComboBox>
+    <div className='app'>
+      <ComboBox>
+        <Label className='label'>Framework</Label>
+        <Group className='combobox-group'>
+          <Input
+            className='combobox-input'
+            placeholder='Search...'
+          />
+          <Button className='combobox-btn'>
+            <span aria-hidden>▼</span>
+          </Button>
+        </Group>
+        <Popover className='select-popup'>
+          <ListBox>
+            {FRAMEWORKS.map((fw) => (
+              <ListBoxItem
+                key={fw.id}
+                id={fw.id}
+                className='combobox-item'>
+                {fw.name}
+              </ListBoxItem>
+            ))}
+          </ListBox>
+        </Popover>
+      </ComboBox>
+    </div>
   )
 }`
       },
       notes: [
-        'React Aria ComboBox는 자동완성, 키보드 네비게이션, aria를 완전히 자동 처리합니다.',
-        'label prop으로 레이블을 설정하면 자동으로 aria-label이 연결됩니다.',
-        'allowsCustomValue prop으로 직접 입력 허용 여부를 제어할 수 있습니다.'
+        'ComboBox는 role="combobox", aria-expanded, aria-autocomplete, aria-controls를 자동으로 관리합니다.',
+        'Label, Group(입력 래퍼), Input, Button(토글), Popover, ListBox를 compound component로 조합합니다.',
+        'allowsCustomValue={true}로 목록에 없는 값도 입력 가능하게 할 수 있습니다.',
+        'defaultFilter prop으로 필터링 함수를 지정하거나, items prop을 직접 조작해 서버 필터링을 구현하세요.'
       ]
     }
   }

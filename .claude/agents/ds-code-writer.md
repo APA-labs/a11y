@@ -105,15 +105,24 @@ export default function App() {
 
 `import React from 'react'` 금지. 훅만 named import로 가져올 것.
 
-### 4. inline style만 사용
+### 4. className + ./index.css 사용 (inline style 금지)
+
+코드 샘플 최상단에 `import './index.css'`를 추가하고, `SandpackPreview.tsx`의 `indexCss`에 정의된 클래스를 사용.
 
 ```tsx
 // ✅ 올바름
-style={{ padding: '8px 16px', borderRadius: 6 }}
+import './index.css'
+// ...
+<button className='btn btn-primary'>저장</button>
+<div className='stack'>...</div>
 
 // ❌ 금지
-className={styles.Button}
+style={{ padding: '8px 16px', borderRadius: 6 }}
 ```
+
+사용 가능한 주요 클래스: `.app`, `.stack`, `.row`, `.center`, `.btn`, `.btn-primary`, `.btn-ghost`, `.dialog`, `.dialog-title`, `.overlay`, `.field`, `.label`, `.hint`, `.error`, `.sr-only`
+
+필요한 클래스가 없다면 `SandpackPreview.tsx`의 `indexCss`에 먼저 추가한 뒤 사용.
 
 ### 5. 외부 아이콘 컴포넌트 금지
 

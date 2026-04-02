@@ -38,14 +38,29 @@ export const buttonPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `<button
-  type='button'
-  aria-label='Save file'
-  aria-disabled={isLoading}
-  aria-busy={isLoading}
-  style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}>
-  {isLoading ? <span aria-hidden>⏳</span> : 'Save'}
-</button>`
+      code: `import './index.css'
+import { useState } from 'react'
+
+export default function App() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  return (
+    <div className='app'>
+      <button
+        type='button'
+        aria-label='Save file'
+        aria-disabled={isLoading}
+        aria-busy={isLoading}
+        className='btn'
+        onClick={() => {
+          setIsLoading(true)
+          setTimeout(() => setIsLoading(false), 1500)
+        }}>
+        {isLoading ? <span aria-hidden>⏳</span> : 'Save'}
+      </button>
+    </div>
+  )
+}`
     }
   },
   designSystems: {
@@ -56,41 +71,85 @@ export const buttonPattern: Pattern = {
       additionalChecks: [
         {
           id: 'btn-mui-1',
-          title: 'Ripple 효과 접근성',
-          description: 'MUI의 TouchRipple은 시각적 피드백만 제공하므로 추가적인 aria 피드백이 필요합니다.',
+          title: 'loading 상태 aria-busy 처리',
+          description:
+            '로딩 중인 버튼에 aria-busy="true"를 추가하고 CircularProgress에 aria-hidden을 적용해 스크린리더에 스피너가 노출되지 않도록 하세요.',
           level: 'should'
         },
         {
           id: 'btn-mui-2',
-          title: 'variant별 대비 검증',
-          description: 'outlined variant는 border 색상까지 대비 3:1을 충족해야 합니다.',
+          title: 'outlined variant 대비 검증',
+          description: 'outlined variant의 border 색상은 배경과 최소 3:1 대비를 충족해야 합니다. 기본 테마에서 확인이 필요합니다.',
+          level: 'must'
+        },
+        {
+          id: 'btn-mui-3',
+          title: 'component="a"로 변경 시 role 확인',
+          description: 'component prop으로 <a>를 사용하면 버튼이 아닌 링크가 됩니다. 탐색 목적이 아닌 액션에는 <button>을 유지하세요.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Button',
-        code: `import { Button, CircularProgress } from '@mui/material'
-<Button
-  variant='contained'
-  disabled={isLoading}
-  aria-busy={isLoading}
-  startIcon={
-    isLoading ? (
-      <CircularProgress
-        size={16}
-        aria-hidden
-      />
-    ) : undefined
+        code: `import './index.css'
+import { useState } from 'react'
+import { Button, CircularProgress, Stack } from '@mui/material'
+
+export default function App() {
+  const [loading, setLoading] = useState(false)
+
+  const handleSave = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 2000)
   }
-  sx={{ minWidth: 44, minHeight: 44 }}>
-  {isLoading ? 'Saving...' : 'Save'}
-</Button>`
+
+  return (
+    <Stack
+      spacing={2}
+      direction='row'
+      className='app'>
+      <Button
+        variant='contained'
+        onClick={handleSave}
+        disabled={loading}
+        aria-busy={loading}
+        startIcon={
+          loading ? (
+            <CircularProgress
+              size={16}
+              aria-hidden='true'
+            />
+          ) : undefined
+        }
+        sx={{ minHeight: 44 }}>
+        {loading ? 'Saving...' : 'Save'}
+      </Button>
+
+      <Button
+        variant='outlined'
+        disabled
+        aria-disabled='true'
+        sx={{ minHeight: 44 }}>
+        Disabled
+      </Button>
+
+      <Button
+        variant='contained'
+        color='error'
+        aria-label='Delete selected item'
+        sx={{ minHeight: 44 }}>
+        Delete
+      </Button>
+    </Stack>
+  )
+}`
       },
       notes: [
-        'MUI Button은 기본적으로 <button> 요소를 렌더링합니다.',
-        'component prop으로 <a>로 변경 시 href와 role을 명시적으로 관리하세요.',
-        'disableRipple prop은 접근성에 영향 없이 사용 가능합니다.'
+        'MUI Button은 기본적으로 <button type="button">을 렌더링합니다.',
+        'disabled prop은 aria-disabled와 포커스 제거를 동시에 처리합니다. 포커스 유지가 필요한 경우 aria-disabled만 사용하세요.',
+        'component prop으로 <a>로 변경 시 버튼 의미가 사라지므로 탐색 목적에만 사용하세요.',
+        'sx={{ minHeight: 44 }}로 WCAG 2.5.5 터치 타겟 크기를 확보하세요.'
       ]
     },
     radix: {
@@ -114,7 +173,8 @@ export const buttonPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'Radix Slot',
-        code: `import * as React from 'react'
+        code: `import './index.css'
+import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -129,7 +189,7 @@ function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
     <Comp
       aria-busy={isLoading}
       aria-disabled={isLoading || props.disabled}
-      style={{ minHeight: 44, minWidth: 44, padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}
+      className='btn'
       {...props}>
       {children}
     </Comp>
@@ -139,7 +199,7 @@ function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(false)
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
+    <div className='app'>
       <Button
         isLoading={isLoading}
         onClick={() => setIsLoading(!isLoading)}>
@@ -162,44 +222,83 @@ export default function App() {
       additionalChecks: [
         {
           id: 'btn-antd-1',
-          title: 'danger 버튼 aria 보완',
-          description: 'danger prop은 시각적 표시만 합니다. aria-label로 "삭제" 등 목적을 명시하세요.',
+          title: 'danger 버튼 aria-label 보완',
+          description: 'danger prop은 시각적으로 위험 상태를 나타내지만 스크린리더에 전달되지 않습니다. aria-label로 목적을 명시하세요.',
           level: 'must'
         },
         {
           id: 'btn-antd-2',
-          title: 'loading 스피너 숨김 처리',
-          description: 'Ant Design의 loading 스피너는 aria-hidden이 없어 스크린리더에 노출됩니다.',
+          title: 'loading 상태 aria-busy 추가',
+          description:
+            'loading prop만으로는 스크린리더에 로딩 중임을 알리지 않습니다. aria-busy={true}와 함께 버튼 텍스트를 "Saving..."으로 변경하세요.',
           level: 'should'
+        },
+        {
+          id: 'btn-antd-3',
+          title: 'htmlType으로 form 제출 버튼 명시',
+          description: 'Form 내 버튼은 htmlType="submit"을 명시하세요. 기본값은 "button"이므로 Form.onFinish가 트리거되지 않습니다.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Button',
-        code: `import { Button } from 'antd'
-<Button
-  type='primary'
-  loading={isLoading}
-  aria-label={isLoading ? 'Saving' : 'Save'}
-  style={{ minWidth: 44, minHeight: 44 }}
-  onClick={() => {}}>
-  Save
-</Button>
+        code: `import './index.css'
+import { useState } from 'react'
+import { Button, Space } from 'antd'
 
-{
-  /* Delete button: danger + explicit label */
-}
-<Button
-  danger
-  aria-label='Delete item'
-  onClick={() => {}}>
-  Delete
-</Button>`
+export default function App() {
+  const [loading, setLoading] = useState(false)
+
+  const handleSave = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 2000)
+  }
+
+  return (
+    <Space
+      className='app'
+      wrap>
+      <Button
+        type='primary'
+        loading={loading}
+        aria-busy={loading}
+        aria-label={loading ? 'Saving, please wait' : 'Save'}
+        className='max-h-44'
+        onClick={handleSave}>
+        {loading ? 'Saving...' : 'Save'}
+      </Button>
+
+      <Button
+        type='default'
+        disabled
+        aria-disabled='true'
+        className='max-h-44'>
+        Disabled
+      </Button>
+
+      <Button
+        danger
+        aria-label='Delete selected item'
+        className='max-h-44'>
+        Delete
+      </Button>
+
+      <Button
+        variant='outlined'
+        color='primary'
+        className='max-h-44'>
+        Outlined
+      </Button>
+    </Space>
+  )
+}`
       },
       notes: [
-        'Ant Design Button은 내부적으로 <button> 요소를 사용합니다.',
-        'htmlType prop으로 submit/reset/button type을 지정하세요.',
-        'Block prop으로 full-width 버튼 구현 시 레이아웃 맥락을 고려하세요.'
+        'Button은 내부적으로 <button> 요소를 렌더링합니다. htmlType prop으로 submit/reset/button을 지정하세요.',
+        'loading prop 사용 시 aria-busy={true}와 설명적 텍스트를 함께 제공해 스크린리더에 상태를 전달하세요.',
+        'disabled prop은 포커스를 제거합니다. 포커스를 유지하려면 aria-disabled만 사용하고 onClick 핸들러에서 직접 차단하세요.',
+        'v5.21.0부터 color와 variant prop으로 더 세밀한 버튼 스타일을 지정할 수 있습니다.'
       ]
     },
     chakra: {
@@ -209,59 +308,126 @@ export default function App() {
       additionalChecks: [
         {
           id: 'btn-chakra-1',
-          title: 'isLoading 시 loadingText 제공',
-          description: 'Chakra Button의 isLoading prop 사용 시 loadingText로 스크린리더에 의미 있는 메시지를 전달하세요.',
+          title: 'loading 시 loadingText 제공',
+          description: 'Chakra Button의 loading prop 사용 시 loadingText로 스크린리더에 의미 있는 로딩 메시지를 전달하세요.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Button',
-        code: `import { Button } from '@chakra-ui/react'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Button, Stack } from '@chakra-ui/react'
 
-function ButtonDemo() {
-  const [isLoading, setIsLoading] = useState(false)
+export default function App() {
+  const [loading, setLoading] = useState(false)
+
+  const handleSave = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 2000)
+  }
+
   return (
-    <Button
-      colorPalette='blue'
-      loading={isLoading}
-      loadingText='Saving'
-      onClick={() => setIsLoading(true)}>
-      Save
-    </Button>
+    <Stack
+      direction='row'
+      gap={3}
+      className='app'
+      wrap='wrap'>
+      <Button
+        colorPalette='teal'
+        loading={loading}
+        loadingText='Saving...'
+        onClick={handleSave}>
+        Save
+      </Button>
+
+      <Button
+        colorPalette='teal'
+        variant='outline'>
+        Outlined
+      </Button>
+
+      <Button
+        disabled
+        aria-disabled='true'>
+        Disabled
+      </Button>
+
+      <Button
+        colorPalette='red'
+        variant='solid'
+        aria-label='Delete selected item'>
+        Delete
+      </Button>
+    </Stack>
   )
 }`
       },
       notes: [
-        'Chakra Button은 내부적으로 <button> 요소를 사용합니다.',
-        'isLoading prop이 true일 때 버튼이 자동으로 disabled 처리됩니다.',
-        'loadingText를 설정하면 스피너와 함께 텍스트가 표시됩니다.'
+        'Chakra Button은 내부적으로 <button> 요소를 렌더링합니다.',
+        'loading prop이 true일 때 버튼이 자동으로 disabled 처리되며 스피너가 표시됩니다.',
+        'loadingText를 설정하면 스크린리더에 로딩 상태가 텍스트로 전달됩니다.',
+        'colorPalette로 Chakra 브랜드 색상을 적용하세요.'
       ]
     },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'btn-spectrum-1',
+          title: 'isPending으로 대기 상태 처리',
+          description:
+            'isPending prop은 포커스를 유지하면서 press/hover 이벤트를 차단하고 스크린리더에 대기 상태를 알립니다. ProgressBar를 함께 렌더링하세요.',
+          level: 'should'
+        }
+      ],
       codeSample: {
         language: 'tsx',
-        label: 'React Spectrum Button',
-        code: `import { Button } from '@adobe/react-spectrum'
+        label: 'React Aria Button',
+        code: `import './index.css'
+import { useState } from 'react'
+import { Button } from 'react-aria-components'
 
-function ButtonDemo() {
+export default function App() {
+  const [isPending, setPending] = useState(false)
+
+  const handleSave = () => {
+    setPending(true)
+    setTimeout(() => setPending(false), 2000)
+  }
+
   return (
-    <Button
-      variant='cta'
-      onPress={() => {}}>
-      Save
-    </Button>
+    <div className='app row'>
+      <Button
+        isPending={isPending}
+        onPress={handleSave}
+        className='btn btn-accent max-h-44'>
+        {isPending ? 'Saving...' : 'Save'}
+      </Button>
+
+      <Button
+        isDisabled
+        className='btn max-h-44'>
+        Disabled
+      </Button>
+
+      <Button
+        aria-label='Delete selected item'
+        className='btn btn-danger-outline max-h-44'>
+        Delete
+      </Button>
+    </div>
   )
 }`
       },
       notes: [
-        'React Spectrum Button은 onPress를 사용합니다 (onClick 대신).',
-        'variant로 cta, primary, secondary, negative를 지정할 수 있습니다.',
-        '키보드, 마우스, 터치 모두 자동으로 처리됩니다.'
+        'onPress 이벤트 핸들러를 사용합니다. onClick도 동작하지만 onPress가 마우스/키보드/터치를 통합 처리합니다.',
+        'isPending prop은 포커스를 유지한 채로 비활성화되며 스크린리더에 대기 상태를 자동 안내합니다.',
+        'isDisabled prop은 aria-disabled와 포커스 제거를 자동 처리합니다.',
+        'render props로 isHovered, isPressed, isFocusVisible 상태를 활용해 스타일을 지정할 수 있습니다.'
       ]
     },
     baseui: {
@@ -285,26 +451,48 @@ function ButtonDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Button',
-        code: `import { useState } from 'react'
-import { Button } from '@base-ui/react/button'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Button } from '@base-ui-components/react/button'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)
+
   return (
-    <Button
-      disabled={isLoading}
-      focusableWhenDisabled
-      aria-busy={isLoading}
-      onClick={() => setIsLoading(!isLoading)}>
-      {isLoading ? 'Saving...' : 'Save'}
-    </Button>
+    <div className='app row'>
+      <Button
+        disabled={isLoading}
+        focusableWhenDisabled
+        aria-busy={isLoading}
+        className='btn btn-primary max-h-44'
+        onClick={() => {
+          setIsLoading(true)
+          setTimeout(() => setIsLoading(false), 2000)
+        }}>
+        {isLoading ? 'Saving...' : 'Save'}
+      </Button>
+
+      <Button
+        disabled
+        focusableWhenDisabled
+        className='btn max-h-44'>
+        Disabled
+      </Button>
+
+      <Button
+        aria-label='Delete selected item'
+        className='btn btn-danger-solid max-h-44'>
+        Delete
+      </Button>
+    </div>
   )
 }`
       },
       notes: [
-        'Base UI Button은 기본적으로 <button> 요소를 렌더링합니다.',
+        'Base UI Button은 기본적으로 <button type="button"> 요소를 렌더링합니다.',
         'focusableWhenDisabled prop으로 disabled 상태에서도 포커스가 유지되어 로딩 상태 UX가 개선됩니다.',
-        'render prop으로 <a> 등 다른 태그로 렌더링 시 nativeButton={false}를 명시하세요.'
+        'render prop으로 다른 요소로 렌더링할 수 있습니다. <a>로 변경 시 nativeButton={false}를 명시하세요.',
+        'data-disabled 속성으로 disabled 상태를 CSS에서 스타일링할 수 있습니다.'
       ]
     }
   }

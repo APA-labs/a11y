@@ -67,15 +67,20 @@ export const linkPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (React)',
-      code: `export function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
+      code: `import './index.css'
+
+export default function App() {
   return (
-    <a
-      href={href}
-      target='_blank'
-      rel='noreferrer noopener'>
-      {children}
-      <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
-    </a>
+    <div className='app stack'>
+      <a href='/about'>About Us</a>
+      <a
+        href='https://example.com'
+        target='_blank'
+        rel='noreferrer noopener'>
+        External site
+        <span className='sr-only'> (opens in new tab)</span>
+      </a>
+    </div>
   )
 }`
     }
@@ -89,32 +94,36 @@ export const linkPattern: Pattern = {
         {
           id: 'link-mui-1',
           title: 'MUI Link 컴포넌트 사용',
-          description: 'MUI Link는 <a>를 기반으로 하므로 기본 접근성이 유지됩니다. underline prop을 "always"로 설정하는 것을 권장합니다.',
+          description: 'MUI Link는 `<a>`를 기반으로 하므로 기본 접근성이 유지됩니다. `underline` prop을 `"always"`로 설정하는 것을 권장합니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Link',
-        code: `import { Link } from '@mui/material'
-<Link
-  href='/about'
-  underline='always'>
-  About Us
-</Link>
+        code: `import './index.css'
+import { Link } from '@mui/material'
 
-{
-  /* External link */
-}
-<Link
-  href='https://example.com'
-  target='_blank'
-  rel='noreferrer'>
-  External site
-  <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
-</Link>`
+export default function App() {
+  return (
+    <div className='app stack'>
+      <Link
+        href='/about'
+        underline='always'>
+        About Us
+      </Link>
+      <Link
+        href='https://example.com'
+        target='_blank'
+        rel='noreferrer'>
+        External site
+        <span className='sr-only'> (opens in new tab)</span>
+      </Link>
+    </div>
+  )
+}`
       },
-      notes: ['MUI Link는 component prop으로 Next.js Link 등 라우터와 통합할 수 있습니다.', 'color prop 변경 시 대비율을 확인하세요.']
+      notes: ['MUI Link는 `component` prop으로 Next.js Link 등 라우터와 통합할 수 있습니다.', '`color` prop 변경 시 대비율을 확인하세요.']
     },
     antd: {
       id: 'antd',
@@ -124,28 +133,35 @@ export const linkPattern: Pattern = {
         {
           id: 'link-antd-1',
           title: 'Typography.Link 사용',
-          description: 'Ant Design의 Typography.Link는 <a>를 기반으로 하며 기본 스타일과 접근성을 제공합니다.',
+          description: 'Ant Design의 `Typography.Link`는 `<a>`를 기반으로 하며 기본 스타일과 접근성을 제공합니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Typography.Link',
-        code: `import { Typography } from 'antd'
+        code: `import './index.css'
+import { Typography } from 'antd'
 
 const { Link } = Typography
 
-<Link href="/about">About Us</Link>
-
-{/* External link */}
-<Link href="https://example.com" target="_blank">
-External site
-<span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
-</Link>`
+export default function App() {
+  return (
+    <div className='app stack'>
+      <Link href='/about'>About Us</Link>
+      <Link
+        href='https://example.com'
+        target='_blank'>
+        External site
+        <span className='sr-only'> (opens in new tab)</span>
+      </Link>
+    </div>
+  )
+}`
       },
       notes: [
-        'Ant Design Typography.Link는 href 없이 onClick만 사용하면 <button>처럼 동작합니다.',
-        'disabled prop을 사용할 때 색상 대비를 확인하세요.'
+        'Ant Design `Typography.Link`는 `href` 없이 `onClick`만 사용하면 `<button>`처럼 동작합니다.',
+        '`disabled` prop을 사용할 때 색상 대비를 확인하세요.'
       ]
     },
     chakra: {
@@ -157,16 +173,17 @@ External site
           id: 'link-chakra-1',
           title: 'isExternal로 새 탭 안내',
           description:
-            'isExternal prop 사용 시 target="_blank"와 rel="noopener noreferrer"가 자동 설정되지만, 스크린리더 사용자를 위한 "(새 탭에서 열림)" 안내는 별도로 추가해야 합니다.',
+            '`target="_blank"` 사용 시 `rel="noopener noreferrer"`를 함께 지정하고, 스크린리더 사용자를 위한 "(새 탭에서 열림)" 안내는 별도로 추가해야 합니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Link',
-        code: `import { Link } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Link } from '@chakra-ui/react'
 
-function LinkDemo() {
+export default function App() {
   return (
     <p>
       For more details, see the{' '}
@@ -176,7 +193,7 @@ function LinkDemo() {
         target='_blank'
         rel='noopener noreferrer'>
         official docs
-        <span style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}> (opens in new tab)</span>
+        <span className='sr-only'> (opens in new tab)</span>
       </Link>
       .
     </p>
@@ -184,9 +201,9 @@ function LinkDemo() {
 }`
       },
       notes: [
-        'Chakra Link는 기본적으로 <a> 요소를 렌더링합니다.',
-        'isExternal prop으로 새 탭 열기를 처리하세요.',
-        'Next.js와 함께 사용 시 as={NextLink} prop을 활용하세요.'
+        'Chakra Link는 기본적으로 `<a>` 요소를 렌더링합니다.',
+        '`target="_blank"` 사용 시 `rel="noopener noreferrer"`를 함께 추가하세요.',
+        'Next.js와 함께 사용 시 `as={NextLink}` prop을 활용하세요.'
       ]
     },
     spectrum: {
@@ -197,9 +214,10 @@ function LinkDemo() {
       codeSample: {
         language: 'tsx',
         label: 'React Spectrum Link',
-        code: `import { Link } from '@adobe/react-spectrum'
+        code: `import './index.css'
+import { Link } from '@adobe/react-spectrum'
 
-function LinkDemo() {
+export default function App() {
   return (
     <p>
       For more details, see the <Link href='#'>official docs</Link>.
@@ -209,8 +227,8 @@ function LinkDemo() {
       },
       notes: [
         'React Spectrum Link는 키보드 접근성과 포커스 관리를 자동으로 처리합니다.',
-        'variant="secondary"로 보조 스타일을 적용할 수 있습니다.',
-        '새 탭으로 열릴 경우 target="_blank"와 함께 시각적 안내를 추가하세요.'
+        '`variant="secondary"`로 보조 스타일을 적용할 수 있습니다.',
+        '새 탭으로 열릴 경우 `target="_blank"`와 함께 시각적 안내를 추가하세요.'
       ]
     }
   }

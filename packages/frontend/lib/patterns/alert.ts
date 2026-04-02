@@ -98,19 +98,19 @@ export const alertPattern: Pattern = {
         role='status'
         aria-live='polite'
         aria-atomic='true'
-        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+        className='sr-only'>
         {alerts.map((a) => a.message).join('. ')}
       </div>
 
       {/* Visual toast */}
       <div
-        style={{ position: 'fixed', top: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8 }}
+        className='toast-container-tr'
         aria-label='Notifications'>
         {alerts.map((alert) => (
           <div
             key={alert.id}
             role='alert'
-            style={{ padding: '12px 16px', borderRadius: 8, backgroundColor: alert.type === 'success' ? '#dcfce7' : '#fee2e2', border: '1px solid', borderColor: alert.type === 'success' ? '#86efac' : '#fca5a5', display: 'flex', alignItems: 'center', gap: 8 }}>
+            className={'toast-item ' + (alert.type === 'success' ? 'toast-success' : 'toast-error')}>
             <span>{alert.message}</span>
             <button
               onClick={() => removeAlert(alert.id)}
@@ -133,38 +133,99 @@ export const alertPattern: Pattern = {
       additionalChecks: [
         {
           id: 'alert-mui-1',
-          title: 'Snackbar + Alert 조합',
-          description: 'MUI에서 토스트 알림은 Snackbar 안에 Alert를 넣어 사용합니다. Snackbar가 위치를, Alert가 의미론적 role을 담당합니다.',
+          title: 'Snackbar + Alert 조합으로 토스트 구현',
+          description:
+            'MUI에서 토스트 알림은 Snackbar 안에 Alert를 넣어 사용합니다. Snackbar가 위치와 타이밍을, Alert가 role="alert"와 severity를 담당합니다.',
           level: 'must'
         },
         {
           id: 'alert-mui-2',
           title: 'autoHideDuration 최소 5000ms',
-          description: 'autoHideDuration을 5000 미만으로 설정하면 WCAG 2.2.3에 위배됩니다.',
+          description: 'autoHideDuration을 5000 미만으로 설정하면 WCAG 2.2.3(No Timing)에 위배됩니다. null로 설정하면 수동 닫기만 허용합니다.',
           level: 'must'
+        },
+        {
+          id: 'alert-mui-3',
+          title: '인라인 Alert와 토스트 Alert 구분',
+          description: '페이지에 고정된 상태 메시지는 Alert 단독 사용, 일시적인 토스트는 Snackbar + Alert 조합을 사용하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Snackbar + Alert',
-        code: `import { Snackbar, Alert } from '@mui/material'
-<Snackbar
-  open={isOpen}
-  autoHideDuration={5000}
-  onClose={() => setIsOpen(false)}
-  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-  <Alert
-    onClose={() => setIsOpen(false)}
-    severity='success'
-    variant='filled'>
-    File saved successfully.
-  </Alert>
-</Snackbar>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Button, Snackbar, Alert, AlertTitle, Stack } from '@mui/material'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+  const [severity, setSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('success')
+
+  const showAlert = (type: typeof severity) => {
+    setSeverity(type)
+    setOpen(true)
+  }
+
+  return (
+    <Stack
+      spacing={2}
+      className='app'>
+      <Stack
+        direction='row'
+        spacing={1}>
+        <Button
+          variant='outlined'
+          color='success'
+          onClick={() => showAlert('success')}>
+          Success
+        </Button>
+        <Button
+          variant='outlined'
+          color='error'
+          onClick={() => showAlert('error')}>
+          Error
+        </Button>
+        <Button
+          variant='outlined'
+          color='warning'
+          onClick={() => showAlert('warning')}>
+          Warning
+        </Button>
+        <Button
+          variant='outlined'
+          color='info'
+          onClick={() => showAlert('info')}>
+          Info
+        </Button>
+      </Stack>
+
+      <Alert severity='info'>
+        <AlertTitle>Inline Alert</AlertTitle>
+        This alert is always visible on the page.
+      </Alert>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={(_, reason) => reason !== 'clickaway' && setOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert
+          onClose={() => setOpen(false)}
+          severity={severity}
+          variant='filled'>
+          {severity === 'success' ? 'Changes saved successfully.' : \`\${severity} notification triggered.\`}
+        </Alert>
+      </Snackbar>
+    </Stack>
+  )
+}`
       },
       notes: [
-        'MUI Alert 단독 사용 시 role="alert"가 자동 적용됩니다.',
-        'Snackbar의 onClose는 Escape 키 및 외부 클릭에 반응합니다.',
-        'severity prop (success/info/warning/error)이 아이콘과 색상을 자동 적용합니다.'
+        'Alert 단독 사용 시 role="alert"가 자동 적용되어 스크린리더에 즉시 읽힙니다.',
+        'Snackbar의 onClose reason이 "clickaway"일 때 닫지 않으면 의도치 않은 닫힘을 방지할 수 있습니다.',
+        'severity prop (success/info/warning/error)이 아이콘, 색상, 접근 가능한 의미를 자동 적용합니다.',
+        'autoHideDuration={null}로 설정하면 사용자가 명시적으로 닫기 전까지 유지됩니다.'
       ]
     },
     radix: {
@@ -188,20 +249,29 @@ export const alertPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'Radix Toast',
-        code: `import * as Toast from '@radix-ui/react-toast'
+        code: `import './index.css'
+import { useState } from 'react'
+import * as Toast from '@radix-ui/react-toast'
 
-function ToastDemo() {
+export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
     <Toast.Provider swipeDirection='right'>
-      <button onClick={() => setOpen(true)}>Save</button>
+      <div className='app'>
+        <button
+          className='btn'
+          onClick={() => setOpen(true)}>
+          Save
+        </button>
+      </div>
 
       <Toast.Root
         open={open}
         onOpenChange={setOpen}
         type='foreground'
-        duration={5000}>
+        duration={5000}
+        className='toast-root'>
         <Toast.Title>Saved</Toast.Title>
         <Toast.Description>File saved successfully.</Toast.Description>
         <Toast.Close aria-label='Close'>×</Toast.Close>
@@ -209,7 +279,7 @@ function ToastDemo() {
 
       <Toast.Viewport
         label='Notifications. Press F8 to navigate.'
-        style={{ position: 'fixed', bottom: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 50, maxWidth: 360 }}
+        className='toast-viewport'
       />
     </Toast.Provider>
   )
@@ -228,45 +298,92 @@ function ToastDemo() {
       additionalChecks: [
         {
           id: 'alert-antd-1',
-          title: 'message/notification 접근성 한계',
+          title: 'showIcon으로 아이콘 반드시 표시',
+          description: 'type prop만으로는 색상만 변경됩니다. showIcon={true}를 함께 사용해 색상 외 아이콘으로도 severity를 전달하세요.',
+          level: 'must'
+        },
+        {
+          id: 'alert-antd-2',
+          title: 'closable에 aria-* 속성 지원',
           description:
-            'Ant Design의 message.success() 등 명령형 API는 aria-live 영역에 삽입되지 않을 수 있습니다. Alert 컴포넌트를 직접 사용하는 방식을 권장합니다.',
+            'antd v5.15.0부터 closable prop에 aria-* 속성을 전달할 수 있습니다. closable={{ "aria-label": "알림 닫기" }}로 닫기 버튼 레이블을 명시하세요.',
+          level: 'should'
+        },
+        {
+          id: 'alert-antd-3',
+          title: 'App.useApp() 훅으로 notification 사용',
+          description: 'antd v5의 App wrapper와 useApp() 훅을 사용하면 ConfigProvider 컨텍스트를 올바르게 상속한 notification을 사용할 수 있습니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Alert',
-        code: `import { Alert, notification, Button, Space } from 'antd'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Alert, Button, Space, App } from 'antd'
 
-function AntdAlertDemo() {
-  const openNotification = () => {
+function AlertDemo() {
+  const { notification } = App.useApp()
+  const [visible, setVisible] = useState(true)
+
+  const showToast = () => {
     notification.success({
-      message: 'Saved',
-      description: 'File saved successfully.',
-      duration: 5
+      message: 'Saved successfully',
+      description: 'Your changes have been saved.',
+      duration: 5,
+      role: 'status'
     })
   }
 
   return (
-    <Space direction='vertical' style={{ width: '100%' }}>
+    <Space
+      direction='vertical'
+      className='app w-full'>
+      {visible && (
+        <Alert
+          title='File saved'
+          description='Your changes have been saved successfully.'
+          type='success'
+          showIcon
+          closable={{ 'aria-label': 'Close success alert' }}
+          onClose={() => setVisible(false)}
+        />
+      )}
       <Alert
-        message='Saved'
-        description='File saved successfully.'
-        type='success'
+        title='Warning'
+        description='Your session will expire in 5 minutes.'
+        type='warning'
         showIcon
-        closable
-        onClose={() => {}}
       />
-      <Button onClick={openNotification}>Show Toast</Button>
+      <Alert
+        title='Error'
+        description='Failed to connect to the server. Please try again.'
+        type='error'
+        showIcon
+      />
+      <Button
+        type='primary'
+        onClick={showToast}>
+        Show notification toast
+      </Button>
     </Space>
+  )
+}
+
+export default function App() {
+  return (
+    <App>
+      <AlertDemo />
+    </App>
   )
 }`
       },
       notes: [
-        'Alert 컴포넌트의 showIcon prop은 severity 유형을 아이콘으로 자동 표시합니다.',
-        'notification API는 duration을 0으로 설정하면 수동으로 닫기 전까지 유지됩니다.',
-        'closable prop 사용 시 닫기 버튼이 자동으로 추가됩니다.'
+        'Alert의 title prop(구 message)과 description prop으로 제목과 설명을 분리하세요.',
+        'showIcon={true}와 type을 함께 사용하면 색상과 아이콘 모두로 severity를 전달합니다.',
+        'closable prop에 aria-* 속성을 전달해 닫기 버튼 레이블을 명시하세요. (v5.15.0+)',
+        'notification API 사용 시 duration: 5(5초)를 기본으로 설정하고, 중요한 알림은 duration: 0으로 수동 닫기를 요구하세요.'
       ]
     },
     chakra: {
@@ -284,21 +401,69 @@ function AntdAlertDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Alert',
-        code: `import { Alert } from '@chakra-ui/react'
-<Alert.Root
-  status='error'
-  role='alert'>
-  <Alert.Indicator aria-hidden />
-  <Alert.Content>
-    <Alert.Title>Error</Alert.Title>
-    <Alert.Description>Unable to connect to the server. Please try again later.</Alert.Description>
-  </Alert.Content>
-</Alert.Root>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Alert, Button, Stack } from '@chakra-ui/react'
+
+export default function App() {
+  const [showError, setShowError] = useState(true)
+
+  return (
+    <Stack
+      gap={3}
+      className='app max-w-480'>
+      <Alert.Root status='info'>
+        <Alert.Indicator aria-hidden />
+        <Alert.Content>
+          <Alert.Title>Information</Alert.Title>
+          <Alert.Description>Your account settings have been updated.</Alert.Description>
+        </Alert.Content>
+      </Alert.Root>
+
+      <Alert.Root status='success'>
+        <Alert.Indicator aria-hidden />
+        <Alert.Content>
+          <Alert.Title>Success</Alert.Title>
+          <Alert.Description>File uploaded successfully.</Alert.Description>
+        </Alert.Content>
+      </Alert.Root>
+
+      <Alert.Root status='warning'>
+        <Alert.Indicator aria-hidden />
+        <Alert.Content>
+          <Alert.Title>Warning</Alert.Title>
+          <Alert.Description>Your session will expire in 10 minutes.</Alert.Description>
+        </Alert.Content>
+      </Alert.Root>
+
+      {showError && (
+        <Alert.Root
+          status='error'
+          role='alert'>
+          <Alert.Indicator aria-hidden />
+          <Alert.Content>
+            <Alert.Title>Error</Alert.Title>
+            <Alert.Description>Unable to connect to the server. Please try again.</Alert.Description>
+          </Alert.Content>
+          <Button
+            size='sm'
+            variant='ghost'
+            onClick={() => setShowError(false)}
+            aria-label='Dismiss error alert'
+            className='ml-auto'>
+            ✕
+          </Button>
+        </Alert.Root>
+      )}
+    </Stack>
+  )
+}`
       },
       notes: [
-        'Chakra Alert.Root의 status prop이 시각적 스타일과 aria 속성을 결정합니다.',
-        "동적으로 추가되는 알림에는 role='alert'를 명시하세요.",
-        'Alert.Indicator는 자동으로 aria-hidden 처리됩니다.'
+        'Alert.Root의 status prop(info/success/warning/error)이 시각적 스타일과 색상을 자동으로 설정합니다.',
+        '동적으로 추가되는 긴급 알림에는 role="alert"를 명시해 스크린리더에 즉시 전달되게 하세요.',
+        'Alert.Indicator는 자동으로 aria-hidden 처리되는 상태 아이콘입니다.',
+        'neutral variant는 status="neutral"로 설정할 수 있습니다.'
       ]
     }
   }

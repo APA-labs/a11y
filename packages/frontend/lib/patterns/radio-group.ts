@@ -173,7 +173,7 @@ export function RadixRadioGroup() {
     <RadioGroup.Root
       defaultValue='standard'
       aria-label='Shipping speed'>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className='stack gap-8'>
         <label>
           <RadioGroup.Item value='standard'>
             <RadioGroup.Indicator />
@@ -311,6 +311,76 @@ function RadioDemo() {
         'React Spectrum RadioGroup은 label prop으로 그룹 레이블을 설정합니다.',
         '방향키 탐색과 포커스 관리가 자동으로 처리됩니다.',
         'isDisabled, isRequired prop을 지원합니다.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'radio-baseui-1',
+          title: 'RadioGroup에 aria-labelledby 연결',
+          description:
+            '`RadioGroup`에 `aria-labelledby`로 그룹 레이블 요소의 id를 연결하세요. 레이블 없이는 스크린리더가 그룹의 목적을 전달하지 못합니다.',
+          level: 'must'
+        },
+        {
+          id: 'radio-baseui-2',
+          title: 'Radio.Indicator는 CSS로 스타일링',
+          description:
+            'Base UI는 unstyled 라이브러리입니다. `Radio.Indicator`의 선택 상태는 `data-checked` 속성을 활용한 CSS로 직접 구현해야 합니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI RadioGroup',
+        code: `import './index.css'
+import { useState } from 'react'
+import { RadioGroup } from '@base-ui-components/react/radio-group'
+import { Radio } from '@base-ui-components/react/radio'
+
+const options = [
+  { value: 'email', label: '이메일' },
+  { value: 'sms', label: 'SMS' },
+  { value: 'push', label: '푸시 알림' }
+]
+
+export default function App() {
+  const [value, setValue] = useState('email')
+
+  return (
+    <div className='app stack'>
+      <p
+        id='notification-label'
+        className='label mb-8'>
+        알림 수단
+      </p>
+      <RadioGroup
+        value={value}
+        onValueChange={setValue}
+        aria-labelledby='notification-label'
+        className='stack gap-8'>
+        {options.map((opt) => (
+          <Radio.Root
+            key={opt.value}
+            value={opt.value}
+            className='row cursor-pointer'>
+            <div className='radio-btn'>{value === opt.value && <span className='radio-indicator' />}</div>
+            <Radio.Label className='cursor-pointer'>{opt.label}</Radio.Label>
+          </Radio.Root>
+        ))}
+      </RadioGroup>
+    </div>
+  )
+}`
+      },
+      notes: [
+        '`RadioGroup`의 `value` + `onValueChange`로 선택 상태를 제어합니다.',
+        '`aria-labelledby`로 그룹 레이블을 연결하면 스크린리더가 그룹 목적을 읽습니다.',
+        '`Radio.Indicator`는 기본 스타일이 없습니다. `data-checked` 속성으로 선택 상태를 CSS에서 처리하세요.',
+        '방향키로 라디오 간 이동, Space로 선택이 자동 처리됩니다.'
       ]
     }
   }

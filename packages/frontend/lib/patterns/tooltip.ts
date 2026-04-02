@@ -74,7 +74,7 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
   const id = useId()
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block' }}>
+    <span className='tooltip-wrapper'>
       <span
         aria-describedby={visible ? id : undefined}
         onMouseEnter={() => setVisible(true)}
@@ -88,7 +88,7 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
         <span
           id={id}
           role='tooltip'
-          style={{ position: 'absolute', bottom: '100%', left: 0, whiteSpace: 'nowrap' }}>
+          className='tooltip-popup'>
           {label}
         </span>
       )}
@@ -105,26 +105,84 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
       additionalChecks: [
         {
           id: 'tooltip-mui-1',
-          title: 'enterDelay 설정',
-          description: 'enterDelay prop으로 300ms 이상의 지연을 추가해 우발적 표시를 방지하세요.',
+          title: 'enterDelay 300ms 이상 설정',
+          description: 'enterDelay prop으로 300ms 이상의 지연을 추가해 우발적 표시를 방지하세요. 기본값은 100ms로 너무 짧을 수 있습니다.',
           level: 'should'
+        },
+        {
+          id: 'tooltip-mui-2',
+          title: '아이콘 버튼 트리거에 aria-label 필수',
+          description:
+            'Tooltip의 title은 시각적 설명을 보조하지만 접근 가능한 이름을 대체하지 않습니다. 아이콘만 있는 버튼에는 반드시 aria-label을 제공하세요.',
+          level: 'must'
+        },
+        {
+          id: 'tooltip-mui-3',
+          title: '커스텀 children에 forwardRef 구현',
+          description:
+            'Tooltip은 children에 DOM 이벤트 리스너를 주입합니다. 커스텀 컴포넌트를 children으로 사용할 경우 React.forwardRef로 ref를 전달해야 합니다.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Tooltip',
-        code: `import { Tooltip, IconButton } from '@mui/material'
-import { InfoOutlined } from '@mui/icons-material'
-<Tooltip
-  title='Additional information'
-  enterDelay={300}
-  arrow>
-  <IconButton aria-label='Info'>
-    <InfoOutlined />
-  </IconButton>
-</Tooltip>`
+        code: `import { Tooltip, Button, Stack, Typography } from '@mui/material'
+
+export default function App() {
+  return (
+    <Stack
+      spacing={3}
+      className='p-32 items-start'>
+      <Typography variant='h6'>Tooltip examples</Typography>
+
+      <Tooltip
+        title='Save your current changes to the server'
+        enterDelay={300}
+        arrow>
+        <Button
+          variant='contained'
+          aria-label='Save file'>
+          Save
+        </Button>
+      </Tooltip>
+
+      <Tooltip
+        title='This action cannot be undone'
+        enterDelay={300}
+        placement='right'
+        arrow>
+        <Button
+          variant='outlined'
+          color='error'
+          aria-label='Delete selected item'>
+          Delete
+        </Button>
+      </Tooltip>
+
+      <Tooltip
+        title='Keyboard shortcut: Ctrl+Z'
+        enterDelay={300}
+        arrow>
+        <span>
+          <Button
+            disabled
+            aria-label='Undo last action'>
+            Undo
+          </Button>
+        </span>
+      </Tooltip>
+    </Stack>
+  )
+}`
       },
-      notes: ['MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.', '커스텀 children을 사용할 경우 forwardRef를 구현해야 합니다.']
+      notes: [
+        'MUI Tooltip은 role="tooltip"과 aria-describedby를 자동으로 설정합니다.',
+        'enterDelay: 툴팁 표시 지연(ms), 기본값 100 — 300 이상 권장.',
+        'leaveDelay: 툴팁 숨김 지연(ms), 기본값 0.',
+        'disabled 버튼에 툴팁을 표시하려면 <span>으로 감싸야 합니다. disabled 버튼은 포인터 이벤트를 수신하지 않습니다.',
+        '커스텀 children 컴포넌트는 React.forwardRef를 구현해야 이벤트 리스너가 올바르게 연결됩니다.'
+      ]
     },
     radix: {
       id: 'radix',
@@ -133,35 +191,85 @@ import { InfoOutlined } from '@mui/icons-material'
       additionalChecks: [
         {
           id: 'tooltip-radix-1',
-          title: 'TooltipProvider 최상위 배치',
-          description: 'TooltipProvider를 앱 최상위에 배치해 delayDuration을 전역으로 관리하세요.',
+          title: 'Tooltip.Provider 배치로 delayDuration 전역 관리',
+          description: 'Tooltip.Provider를 앱 루트 또는 컴포넌트 최상위에 배치해 모든 Tooltip.Root의 지연 시간을 일관되게 설정하세요.',
+          level: 'should'
+        },
+        {
+          id: 'tooltip-radix-2',
+          title: 'Tooltip.Trigger에 접근 가능한 이름 필수',
+          description:
+            '아이콘 전용 트리거에는 aria-label을 추가하세요. Tooltip은 aria-describedby로 연결되어 보조 설명을 제공하지만 접근 가능한 이름을 대체하지 않습니다.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Tooltip',
-        code: `import * as Tooltip from '@radix-ui/react-tooltip'
+        code: `import './index.css'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
-export function RadixTooltip({ label, children }) {
+export default function App() {
   return (
     <Tooltip.Provider delayDuration={300}>
-      <Tooltip.Root>
-        <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content
-            side='top'
-            sideOffset={4}>
-            {label}
-            <Tooltip.Arrow />
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
+      <div className='row gap-16 p-32'>
+        <Tooltip.Root>
+          <Tooltip.Trigger className='btn'>Save</Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              side='top'
+              sideOffset={6}
+              className='tooltip-content-dark'>
+              Save your current changes (Ctrl+S)
+              <Tooltip.Arrow className='tooltip-arrow-dark' />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+
+        <Tooltip.Root>
+          <Tooltip.Trigger
+            aria-label='Copy to clipboard'
+            className='btn-icon'>
+            ⎘
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              side='top'
+              sideOffset={6}
+              className='tooltip-content-dark'>
+              Copy to clipboard
+              <Tooltip.Arrow className='tooltip-arrow-dark' />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+
+        <Tooltip.Root>
+          <Tooltip.Trigger
+            aria-label='Delete item'
+            className='btn-icon btn-icon-danger'>
+            ✕
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              side='top'
+              sideOffset={6}
+              className='tooltip-content-error'>
+              Delete this item permanently
+              <Tooltip.Arrow className='tooltip-arrow-error' />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </div>
     </Tooltip.Provider>
   )
 }`
       },
-      notes: ['Radix Tooltip은 role="tooltip"과 aria-describedby를 자동으로 처리합니다.', 'Portal로 렌더링하면 z-index 문제를 방지할 수 있습니다.']
+      notes: [
+        'Tooltip.Content는 role="tooltip"으로 렌더링되며, Tooltip.Trigger에 aria-describedby로 자동 연결됩니다.',
+        'Tooltip.Provider의 delayDuration(기본 700ms)으로 표시 지연을 설정하세요. 300ms 권장.',
+        'Tooltip.Portal로 body에 렌더링하면 overflow:hidden이나 z-index 문제를 방지합니다.',
+        '아이콘 전용 트리거는 aria-label을 반드시 제공하세요. Tooltip 텍스트는 보조 설명이지 접근 가능한 이름이 아닙니다.'
+      ]
     },
     antd: {
       id: 'antd',
@@ -170,22 +278,72 @@ export function RadixTooltip({ label, children }) {
       additionalChecks: [
         {
           id: 'tooltip-antd-1',
-          title: 'mouseEnterDelay 설정',
-          description: 'mouseEnterDelay prop으로 지연 시간을 설정하세요 (기본값 0.1초는 너무 짧을 수 있습니다).',
+          title: 'trigger에 "focus" 포함',
+          description:
+            'trigger 기본값은 "hover"입니다. 키보드 사용자도 툴팁을 볼 수 있도록 trigger="focus" 또는 trigger={["hover", "focus"]}로 설정하세요.',
+          level: 'must'
+        },
+        {
+          id: 'tooltip-antd-2',
+          title: 'mouseEnterDelay로 지연 시간 설정',
+          description: 'mouseEnterDelay 기본값은 0.1초로 너무 짧을 수 있습니다. WCAG 1.4.13을 위해 0.3초(300ms) 이상으로 설정하세요.',
           level: 'should'
+        },
+        {
+          id: 'tooltip-antd-3',
+          title: '아이콘 전용 트리거에 aria-label 필수',
+          description:
+            '아이콘이나 기호만 있는 버튼에 Tooltip을 사용하는 경우 트리거 요소에 aria-label을 반드시 추가하세요. Tooltip의 title은 aria-describedby로 연결되며 접근 가능한 이름을 대체하지 않습니다.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Tooltip',
-        code: `import { Tooltip, Button } from 'antd'
-<Tooltip
-  title='Save file'
-  mouseEnterDelay={0.3}>
-  <Button>Save</Button>
-</Tooltip>`
+        code: `import { Tooltip, Button, Space } from 'antd'
+
+export default function App() {
+  return (
+    <div className='p-32'>
+      <Space
+        size={12}
+        wrap>
+        <Tooltip
+          title='Save your current changes (Ctrl+S)'
+          trigger={['hover', 'focus']}
+          mouseEnterDelay={0.3}>
+          <Button type='primary'>Save</Button>
+        </Tooltip>
+
+        <Tooltip
+          title='Copy to clipboard'
+          trigger={['hover', 'focus']}
+          mouseEnterDelay={0.3}>
+          <Button aria-label='Copy to clipboard'>⎘</Button>
+        </Tooltip>
+
+        <Tooltip
+          title='Delete this item permanently'
+          trigger={['hover', 'focus']}
+          mouseEnterDelay={0.3}
+          color='#dc2626'>
+          <Button
+            danger
+            aria-label='Delete item'>
+            ✕
+          </Button>
+        </Tooltip>
+      </Space>
+    </div>
+  )
+}`
       },
-      notes: ['Ant Design Tooltip은 내부적으로 접근성 속성을 처리합니다.', 'color prop 변경 시 텍스트 대비율을 재확인하세요.']
+      notes: [
+        'trigger={["hover", "focus"]}로 설정하면 마우스 호버와 키보드 포커스 모두에서 툴팁이 표시됩니다.',
+        'mouseEnterDelay 기본값은 0.1초입니다. WCAG 1.4.13 준수를 위해 0.3초 이상으로 설정하세요.',
+        '아이콘 전용 트리거에는 aria-label을 반드시 추가하세요. Tooltip title은 aria-describedby로 연결되어 보조 설명만 제공합니다.',
+        'color prop으로 배경색 변경 시 텍스트와의 대비율(4.5:1 이상)을 재확인하세요.'
+      ]
     },
     chakra: {
       id: 'chakra',
@@ -202,44 +360,114 @@ export function RadixTooltip({ label, children }) {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Tooltip',
-        code: `import { Tooltip, Button } from '@chakra-ui/react'
-<Tooltip content='Open settings'>
-  <Button
-    variant='outline'
-    size='sm'
-    aria-label='Settings'>
-    ⚙️
-  </Button>
-</Tooltip>`
+        code: `import { Tooltip, Button, Stack } from '@chakra-ui/react'
+
+export default function App() {
+  return (
+    <Stack
+      direction='row'
+      gap={4}
+      className='p-32'
+      wrap='wrap'>
+      <Tooltip.Root
+        openDelay={300}
+        closeDelay={100}>
+        <Tooltip.Trigger asChild>
+          <Button
+            colorPalette='teal'
+            variant='solid'>
+            Save
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Positioner>
+          <Tooltip.Content>
+            <Tooltip.Arrow>
+              <Tooltip.ArrowTip />
+            </Tooltip.Arrow>
+            Save your current changes (Ctrl+S)
+          </Tooltip.Content>
+        </Tooltip.Positioner>
+      </Tooltip.Root>
+
+      <Tooltip.Root
+        openDelay={300}
+        closeDelay={100}>
+        <Tooltip.Trigger asChild>
+          <Button
+            variant='outline'
+            aria-label='Copy to clipboard'>
+            ⎘
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Positioner>
+          <Tooltip.Content>
+            <Tooltip.Arrow>
+              <Tooltip.ArrowTip />
+            </Tooltip.Arrow>
+            Copy to clipboard
+          </Tooltip.Content>
+        </Tooltip.Positioner>
+      </Tooltip.Root>
+    </Stack>
+  )
+}`
       },
       notes: [
-        'Chakra Tooltip은 hover/focus 이벤트를 자동으로 처리합니다.',
-        'showDelay/closeDelay prop으로 표시 타이밍을 조절하세요.',
-        'content prop에 설명 텍스트를 제공하세요.'
+        'Chakra Tooltip.Root는 hover와 focus 이벤트를 자동으로 처리합니다.',
+        'openDelay(기본 400ms)와 closeDelay(기본 150ms) prop으로 표시 타이밍을 조절하세요.',
+        '아이콘 전용 트리거에는 aria-label을 반드시 추가하세요. Tooltip 텍스트는 aria-describedby로 연결되며 접근 가능한 이름을 대체하지 않습니다.',
+        'Tooltip.Content는 role="tooltip"으로 자동 렌더링됩니다.'
       ]
     },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'tooltip-spectrum-1',
+          title: '터치스크린에서 툴팁 미표시 고려',
+          description:
+            '툴팁은 터치 인터랙션에서 표시되지 않습니다. 아이콘 전용 버튼은 aria-label을 반드시 제공하여 툴팁 없이도 목적을 전달해야 합니다.',
+          level: 'must'
+        }
+      ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria Tooltip',
         code: `import { TooltipTrigger, Tooltip, Button } from 'react-aria-components'
 
-const btnStyle = { padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6, background: '#fff', cursor: 'pointer', fontSize: 16 }
-const tipStyle = { background: '#1f2937', color: '#fff', padding: '4px 10px', borderRadius: 4, fontSize: 12 }
+const ACTIONS = [
+  { id: 'edit', label: 'Edit', icon: '✎' },
+  { id: 'copy', label: 'Copy', icon: '⧉' },
+  { id: 'delete', label: 'Delete', icon: '✕' }
+]
 
-<TooltipTrigger delay={500}>
-  <Button aria-label='Settings' style={btnStyle}>⚙️</Button>
-  <Tooltip style={tipStyle}>Open settings</Tooltip>
-</TooltipTrigger>`
+export default function App() {
+  return (
+    <div className='row gap-8 p-24'>
+      {ACTIONS.map((action) => (
+        <TooltipTrigger
+          key={action.id}
+          delay={700}
+          closeDelay={300}>
+          <Button
+            aria-label={action.label}
+            className='btn-icon'>
+            {action.icon}
+          </Button>
+          <Tooltip className='tooltip-content-dark'>{action.label}</Tooltip>
+        </TooltipTrigger>
+      ))}
+    </div>
+  )
+}`
       },
       notes: [
-        'React Aria TooltipTrigger는 hover, focus, keyboard를 모두 처리합니다.',
-        'delay prop으로 표시 딜레이를 설정하세요 (기본 1200ms).',
-        'Tooltip은 자동으로 aria-describedby로 트리거에 연결됩니다.'
+        'TooltipTrigger는 hover와 focus에서 툴팁을 표시하고 자동으로 aria-describedby를 연결합니다.',
+        'delay prop으로 표시 딜레이(기본 1500ms), closeDelay prop으로 닫힘 딜레이(기본 500ms)를 설정하세요.',
+        '툴팁은 터치스크린에서 표시되지 않습니다. 아이콘 전용 버튼에는 aria-label을 필수로 제공하세요.',
+        "trigger='focus' prop으로 hover 없이 포커스에서만 툴팁을 표시할 수 있습니다."
       ]
     },
     baseui: {

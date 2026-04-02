@@ -124,56 +124,90 @@ export const drawerPattern: Pattern = {
       additionalChecks: [
         {
           id: 'drawer-mui-1',
-          title: 'variant="temporary"로 모달 동작',
-          description: 'MUI Drawer의 variant="temporary"는 포커스 트랩과 배경 오버레이를 자동으로 처리합니다.',
+          title: 'Drawer에 aria-labelledby 연결',
+          description: 'Drawer에 aria-labelledby prop으로 드로어 제목 요소의 id를 연결해야 스크린리더가 드로어를 올바르게 식별합니다.',
+          level: 'must'
+        },
+        {
+          id: 'drawer-mui-2',
+          title: 'variant="temporary"는 Modal 기반',
+          description: 'variant="temporary"(기본값)는 Modal 위에 렌더링되어 포커스 트랩, Escape 닫기, 배경 오버레이를 자동으로 처리합니다.',
           level: 'should'
+        },
+        {
+          id: 'drawer-mui-3',
+          title: '닫기 버튼에 aria-label 필수',
+          description: '아이콘만 있는 닫기 버튼에는 반드시 aria-label="Close navigation"처럼 목적을 설명하는 레이블을 제공하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'MUI Drawer',
-        code: `import { Drawer, Box, Button, Typography, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Drawer, Box, Button, Typography, List, ListItem, ListItemButton, ListItemText, Divider, IconButton } from '@mui/material'
 
-function MuiDrawerDemo() {
-  const [open, setIsOpen] = useState(false)
+const NAV_ITEMS = ['Home', 'About', 'Services', 'Contact']
+
+export default function App() {
+  const [open, setOpen] = useState(false)
 
   return (
-    <>
-      <Button onClick={() => setIsOpen(true)}>Open menu</Button>
+    <div className='app'>
+      <Button
+        variant='outlined'
+        onClick={() => setOpen(true)}
+        aria-haspopup='dialog'>
+        Open navigation
+      </Button>
+
       <Drawer
         open={open}
-        onClose={() => setIsOpen(false)}
-        aria-labelledby='drawer-title'>
+        onClose={() => setOpen(false)}
+        aria-labelledby='drawer-heading'>
         <Box
-          sx={{ width: 280, p: 2 }}
+          sx={{ width: 280 }}
           role='presentation'>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
             <Typography
-              id='drawer-title'
-              variant='h6'>
-              Menu
+              id='drawer-heading'
+              variant='h6'
+              component='h2'>
+              Navigation
             </Typography>
             <IconButton
-              onClick={() => setIsOpen(false)}
-              aria-label='Close drawer'>
-              <CloseIcon />
+              onClick={() => setOpen(false)}
+              aria-label='Close navigation drawer'
+              size='small'>
+              ✕
             </IconButton>
           </Box>
-          <nav>
-            <a href='/'>Home</a>
-            <a href='/about'>About</a>
+          <Divider />
+          <nav aria-label='Main navigation'>
+            <List>
+              {NAV_ITEMS.map((item) => (
+                <ListItem
+                  key={item}
+                  disablePadding>
+                  <ListItemButton onClick={() => setOpen(false)}>
+                    <ListItemText primary={item} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
           </nav>
         </Box>
       </Drawer>
-    </>
+    </div>
   )
 }`
       },
       notes: [
-        'MUI Drawer variant="temporary"는 Modal 기반으로 포커스 트랩과 Escape 닫기를 자동 처리합니다.',
-        'aria-labelledby를 드로어 제목 ID와 연결하세요.',
-        'keepMounted={false}로 설정하면 닫혔을 때 DOM에서 제거됩니다.'
+        'MUI Drawer variant="temporary"는 Modal 기반으로 포커스 트랩, Escape 닫기, 포커스 복원을 자동 처리합니다.',
+        'aria-labelledby를 드로어 제목 id와 연결하면 스크린리더가 "다이얼로그, Navigation"으로 읽습니다.',
+        '내비게이션 목적의 드로어 내부에는 <nav aria-label>로 시맨틱 랜드마크를 제공하세요.',
+        'keepMounted={false}(기본값)는 닫혔을 때 DOM에서 제거하여 스크린리더 혼란을 방지합니다.'
       ]
     },
     antd: {
@@ -183,35 +217,83 @@ function MuiDrawerDemo() {
       additionalChecks: [
         {
           id: 'drawer-antd-1',
-          title: '닫기 버튼 aria-label 확인',
+          title: 'title prop으로 드로어 레이블 제공',
           description:
-            'Ant Design Drawer의 기본 닫기 버튼은 × 문자만 표시됩니다. 스크린리더를 위해 aria-label을 추가하거나 closable 영역을 커스텀하세요.',
+            'title prop을 사용하면 드로어 헤더 제목이 aria-labelledby로 자동 연결됩니다. 시각적으로 숨겨야 하는 경우에도 title을 제공하세요.',
+          level: 'must'
+        },
+        {
+          id: 'drawer-antd-2',
+          title: 'keyboard prop으로 Escape 닫기 보장',
+          description: 'keyboard 기본값은 true로 Escape로 닫힙니다. keyboard={false}로 설정하면 WCAG 2.1.2 No Keyboard Trap에 위반될 수 있습니다.',
+          level: 'must'
+        },
+        {
+          id: 'drawer-antd-3',
+          title: 'focusable prop으로 포커스 관리',
+          description:
+            'v6.2.0에서 추가된 focusable={{ trap: true, focusTriggerAfterClose: true }}로 포커스 트랩과 닫힌 후 트리거로 포커스 복귀를 설정하세요.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Drawer',
-        code: `import { Drawer, Button } from 'antd'
-<>
-  <Button onClick={() => setIsOpen(true)}>Open menu</Button>
-  <Drawer
-    title='Menu'
-    open={isOpen}
-    onClose={() => setIsOpen(false)}
-    placement='left'
-    closeIcon={<span aria-label='Close drawer'>×</span>}>
-    <nav>
-      <a href='/'>Home</a>
-      <a href='/about'>About</a>
-    </nav>
-  </Drawer>
-</>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Drawer, Button, Space } from 'antd'
+
+export default function App() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className='app'>
+      <Button
+        type='primary'
+        onClick={() => setOpen(true)}
+        aria-haspopup='dialog'>
+        Open Settings
+      </Button>
+
+      <Drawer
+        title='Settings'
+        open={open}
+        onClose={() => setOpen(false)}
+        placement='right'
+        keyboard
+        footer={
+          <Space>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button
+              type='primary'
+              onClick={() => setOpen(false)}>
+              Save
+            </Button>
+          </Space>
+        }>
+        <div className='stack'>
+          <p className='mt-0 mb-0'>Notification preferences</p>
+          <label className='row'>
+            <input type='checkbox' /> Email notifications
+          </label>
+          <label className='row'>
+            <input
+              type='checkbox'
+              defaultChecked
+            />{' '}
+            Push notifications
+          </label>
+        </div>
+      </Drawer>
+    </div>
+  )
+}`
       },
       notes: [
-        'Ant Design Drawer는 Escape 키로 자동으로 닫힙니다.',
-        'placement prop으로 left/right/top/bottom 위치를 설정합니다.',
-        'closeIcon prop으로 닫기 버튼을 커스텀하여 aria-label을 추가하세요.'
+        'Ant Design Drawer는 내부적으로 role="dialog"와 포커스 트랩을 자동으로 처리합니다.',
+        'title prop 설정 시 aria-labelledby가 자동으로 연결됩니다.',
+        'keyboard={true}(기본값)로 Escape 키로 닫을 수 있습니다. 이 값을 false로 변경하지 마세요.',
+        'footer prop을 활용해 주요 액션 버튼을 드로어 하단에 배치하세요.'
       ]
     },
     chakra: {
@@ -229,43 +311,66 @@ function MuiDrawerDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Drawer',
-        code: `import { Drawer, Button } from '@chakra-ui/react'
-<Drawer.Root>
-  <Drawer.Trigger asChild>
-    <Button variant='outline'>Open menu</Button>
-  </Drawer.Trigger>
-  <Drawer.Backdrop />
-  <Drawer.Positioner>
-    <Drawer.Content>
-      <Drawer.CloseTrigger asChild>
-        <Button
-          variant='ghost'
-          aria-label='Close'
-          position='absolute'
-          top={2}
-          right={2}>
-          ✕
-        </Button>
-      </Drawer.CloseTrigger>
-      <Drawer.Header>
-        <Drawer.Title>Navigation Menu</Drawer.Title>
-      </Drawer.Header>
-      <Drawer.Body>
-        <a href='/home'>Home</a>
-        <a href='/about'>About</a>
-      </Drawer.Body>
-      <Drawer.Footer>
-        <Drawer.ActionTrigger asChild>
-          <Button variant='outline'>Close</Button>
-        </Drawer.ActionTrigger>
-      </Drawer.Footer>
-    </Drawer.Content>
-  </Drawer.Positioner>
-</Drawer.Root>`
+        code: `import './index.css'
+import { Button, Drawer, Stack } from '@chakra-ui/react'
+
+const NAV_ITEMS = ['Home', 'About', 'Services', 'Contact']
+
+export default function App() {
+  return (
+    <div className='app'>
+      <Drawer.Root placement='end'>
+        <Drawer.Trigger asChild>
+          <Button
+            colorPalette='teal'
+            variant='outline'>
+            Open navigation
+          </Button>
+        </Drawer.Trigger>
+        <Drawer.Backdrop />
+        <Drawer.Positioner>
+          <Drawer.Content>
+            <Drawer.Header>
+              <Drawer.Title>Navigation</Drawer.Title>
+              <Drawer.CloseTrigger asChild>
+                <Button
+                  variant='ghost'
+                  aria-label='Close navigation drawer'
+                  className='dialog-close-top-right'>
+                  ✕
+                </Button>
+              </Drawer.CloseTrigger>
+            </Drawer.Header>
+            <Drawer.Body>
+              <nav aria-label='Main navigation'>
+                <Stack gap={2}>
+                  {NAV_ITEMS.map((item) => (
+                    <a
+                      key={item}
+                      href={'#' + item.toLowerCase()}
+                      className='link-plain'>
+                      {item}
+                    </a>
+                  ))}
+                </Stack>
+              </nav>
+            </Drawer.Body>
+            <Drawer.Footer>
+              <Drawer.ActionTrigger asChild>
+                <Button variant='outline'>Close</Button>
+              </Drawer.ActionTrigger>
+            </Drawer.Footer>
+          </Drawer.Content>
+        </Drawer.Positioner>
+      </Drawer.Root>
+    </div>
+  )
+}`
       },
       notes: [
-        'Chakra Drawer.Root는 포커스 트랩과 aria-modal을 자동 처리합니다.',
-        'placement prop으로 bottom, left, right, top 방향을 지정하세요.',
+        'Chakra Drawer.Root는 포커스 트랩, aria-modal, Escape 키 닫기를 자동 처리합니다.',
+        'Drawer.Title은 aria-labelledby로 자동 연결됩니다. 반드시 포함하세요.',
+        'placement prop으로 end(기본), start, top, bottom 방향을 지정하세요.',
         '닫기 버튼에 aria-label을 반드시 추가하세요.'
       ]
     }

@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
 import { getTranslations } from '../lib/i18n'
+import { renderWithCode } from '../lib/inline-code'
 import { DS_ORDER } from '../lib/types'
 
 import type { Lang } from '../lib/i18n'
@@ -16,9 +17,10 @@ const DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW: readonly DesignSystemId[] = ['baseui']
 interface Props {
   designSystems: Pattern['designSystems']
   lang?: Lang
+  slug?: string
 }
 
-export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) {
+export default function DesignSystemTabs({ designSystems, lang = 'ko', slug }: Props) {
   const t = getTranslations(lang)
   const availableIds = DS_ORDER.filter((id) => designSystems[id] != null)
   const [active, setActive] = useState<DesignSystemId>(availableIds[0] ?? 'material')
@@ -84,7 +86,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
                     )}
                     <div>
                       <p className='font-medium text-body text-[13px]'>{item.title}</p>
-                      <p className='text-xs text-soft mt-0.5 leading-relaxed'>{item.description}</p>
+                      <p className='text-xs text-soft mt-0.5 leading-relaxed'>{renderWithCode(item.description)}</p>
                     </div>
                   </li>
                 )
@@ -107,6 +109,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
             sample={current.codeSample}
             lang={lang}
             disablePreview={DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW.includes(active)}
+            slug={slug}
           />
         </div>
 
@@ -123,7 +126,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
                   key={i}
                   className='flex gap-2 text-sm text-soft'>
                   <span className='text-faint shrink-0 mt-0.5'>–</span>
-                  {note}
+                  {renderWithCode(note)}
                 </li>
               ))}
             </ul>
