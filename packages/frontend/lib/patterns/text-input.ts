@@ -126,7 +126,7 @@ export default function App() {
     <Box
       component='form'
       noValidate
-      style={{ padding: 24, maxWidth: 400, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      className='p-24 max-w-400 stack gap-16'>
       <Typography variant='h6'>Create Account</Typography>
 
       <TextField
@@ -204,7 +204,7 @@ export default function App() {
         type='email'
         required
         autoComplete='email'
-        style={{ padding: '6px 8px', border: '1px solid #d1d5db', borderRadius: 4 }}
+        className='input'
       />
     </Form.Control>
     <Form.Message match='valueMissing'>Please enter your email.</Form.Message>
@@ -255,7 +255,7 @@ export default function App() {
   const [submitted, setSubmitted] = useState(false)
 
   return (
-    <div style={{ padding: '24px', maxWidth: 480 }}>
+    <div className='p-24 max-w-480'>
       <Form
         form={form}
         layout='vertical'
@@ -307,7 +307,7 @@ export default function App() {
       {submitted && (
         <p
           role='status'
-          style={{ color: '#52c41a', marginTop: 8 }}>
+          className='text-success mt-8'>
           Form submitted successfully!
         </p>
       )}
@@ -351,7 +351,7 @@ export default function App() {
   return (
     <Stack
       gap={4}
-      style={{ padding: '1.5rem', maxWidth: 400 }}>
+      className='p-24 max-w-400'>
       <Field.Root
         required
         invalid={hasError}>
@@ -402,52 +402,42 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria TextField',
-        code: `import { TextField, Label, Input, Text, FieldError } from 'react-aria-components'
-
-const inputBase = {
-  display: 'block',
-  width: '100%',
-  boxSizing: 'border-box' as const,
-  border: '1px solid #d1d5db',
-  borderRadius: 6,
-  padding: '6px 10px',
-  fontSize: 14,
-  outline: 'none'
-}
+        code: `import './index.css'
+import { TextField, Label, Input, Text, FieldError } from 'react-aria-components'
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className='p-24 max-w-360 stack gap-16'>
       <TextField isRequired>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Full name</Label>
+        <Label className='label'>Full name</Label>
         <Input
-          style={inputBase}
+          className='input'
           placeholder='Enter your full name'
         />
-        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+        <FieldError className='error' />
       </TextField>
 
       <TextField
         isRequired
         type='email'>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Email</Label>
+        <Label className='label'>Email</Label>
         <Input
-          style={inputBase}
+          className='input'
           placeholder='you@example.com'
           autoComplete='email'
         />
         <Text
           slot='description'
-          style={{ display: 'block', fontSize: 12, color: '#6b7280', marginTop: 4 }}>
+          className='hint'>
           We will never share your email.
         </Text>
-        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+        <FieldError className='error' />
       </TextField>
 
       <TextField isReadOnly>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Username</Label>
+        <Label className='label'>Username</Label>
         <Input
-          style={{ ...inputBase, background: '#f9fafb', color: '#6b7280' }}
+          className='input'
           defaultValue='@devongovett'
         />
       </TextField>
@@ -483,48 +473,39 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Field + Input',
-        code: `import { Field } from '@base-ui-components/react/field'
+        code: `import './index.css'
+import { Field } from '@base-ui-components/react/field'
 import { Input } from '@base-ui-components/react/input'
-
-const inputStyle = {
-  display: 'block',
-  width: '100%',
-  boxSizing: 'border-box' as const,
-  border: '1px solid #d1d5db',
-  borderRadius: 6,
-  padding: '6px 10px',
-  fontSize: 14
-}
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className='p-24 max-w-360 stack gap-16'>
       <Field.Root name='name'>
-        <Field.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>
+        <Field.Label className='label'>
           Full name <span aria-hidden>*</span>
         </Field.Label>
         <Field.Control
-          render={<Input style={inputStyle} />}
+          render={<Input className='input' />}
           required
           placeholder='Enter your full name'
         />
         <Field.Error
           match='valueMissing'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Please enter your full name.
         </Field.Error>
-        <Field.Description style={{ display: 'block', fontSize: 12, color: '#6b7280', marginTop: 4 }}>Visible on your profile.</Field.Description>
+        <Field.Description className='hint'>Visible on your profile.</Field.Description>
       </Field.Root>
 
       <Field.Root name='email'>
-        <Field.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>
+        <Field.Label className='label'>
           Email <span aria-hidden>*</span>
         </Field.Label>
         <Field.Control
           render={
             <Input
               type='email'
-              style={inputStyle}
+              className='input'
             />
           }
           required
@@ -532,12 +513,12 @@ export default function App() {
         />
         <Field.Error
           match='valueMissing'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Please enter your email.
         </Field.Error>
         <Field.Error
           match='typeMismatch'
-          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          className='error'>
           Please enter a valid email address.
         </Field.Error>
       </Field.Root>

@@ -506,6 +506,33 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
 .switch-sm { background-color: #d1d5db; }
 [data-selected] .switch-sm { background-color: #e03; }
 [data-selected] .switch-thumb-sm { transform: translateX(18px); }
+
+/* Layout helpers */
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+
+/* Pagination */
+.pagination { display: flex; gap: 4px; list-style: none; padding: 0; margin: 0; }
+.page-btn { padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #374151; cursor: pointer; font-size: 14px; }
+.page-btn[aria-current="page"] { background: #2563eb; color: #fff; font-weight: 700; border-color: #2563eb; }
+.page-btn:disabled, .page-btn[aria-disabled="true"] { opacity: 0.4; cursor: default; }
+
+/* Radio */
+.radio-btn { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #d1d5db; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
+.radio-btn[data-checked] { border-color: #18181b; }
+.radio-indicator { width: 10px; height: 10px; border-radius: 50%; background: #18181b; }
+
+/* Tooltip */
+.tooltip-wrapper { position: relative; display: inline-block; }
+.tooltip-popup { position: absolute; bottom: 100%; left: 0; white-space: nowrap; background: #1f2937; color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 12px; }
+.btn-icon { width: 36px; height: 36px; border-radius: 6px; border: 1px solid #d1d5db; background: white; cursor: pointer; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; }
+.btn-icon-danger { border-color: #fca5a5; color: #dc2626; }
+.tooltip-content-dark { background: #1f2937; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; line-height: 1.4; max-width: 200px; }
+.tooltip-content-error { background: #dc2626; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; line-height: 1.4; max-width: 200px; }
+.tooltip-arrow-dark { fill: #1f2937; }
+.tooltip-arrow-error { fill: #dc2626; }
 `
 
   return (

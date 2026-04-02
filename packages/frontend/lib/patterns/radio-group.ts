@@ -173,7 +173,7 @@ export function RadixRadioGroup() {
     <RadioGroup.Root
       defaultValue='standard'
       aria-label='Shipping speed'>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className='stack gap-8'>
         <label>
           <RadioGroup.Item value='standard'>
             <RadioGroup.Indicator />
@@ -336,7 +336,8 @@ function RadioDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI RadioGroup',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { RadioGroup } from '@base-ui-components/react/radio-group'
 import { Radio } from '@base-ui-components/react/radio'
 
@@ -349,51 +350,25 @@ const options = [
 export default function App() {
   const [value, setValue] = useState('email')
 
-  const s = {
-    group: { display: 'flex', flexDirection: 'column' as const, gap: 12, padding: 20 },
-    legend: { fontSize: 14, fontWeight: 600, marginBottom: 8, color: '#111' },
-    item: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' },
-    radio: {
-      width: 20,
-      height: 20,
-      borderRadius: '50%',
-      border: '2px solid #d1d5db',
-      background: 'white',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0,
-      cursor: 'pointer'
-    },
-    indicator: { width: 10, height: 10, borderRadius: '50%', background: '#18181b' },
-    label: { fontSize: 14, color: '#374151', cursor: 'pointer' }
-  }
-
   return (
-    <div style={s.group}>
+    <div className='app stack'>
       <p
         id='notification-label'
-        style={s.legend}>
+        className='label mb-8'>
         알림 수단
       </p>
       <RadioGroup
         value={value}
         onValueChange={setValue}
         aria-labelledby='notification-label'
-        style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        className='stack gap-8'>
         {options.map((opt) => (
           <Radio.Root
             key={opt.value}
             value={opt.value}
-            style={s.item}>
-            <div
-              style={{
-                ...s.radio,
-                borderColor: value === opt.value ? '#18181b' : '#d1d5db'
-              }}>
-              {value === opt.value && <span style={s.indicator} />}
-            </div>
-            <Radio.Label style={s.label}>{opt.label}</Radio.Label>
+            className='row cursor-pointer'>
+            <div className='radio-btn'>{value === opt.value && <span className='radio-indicator' />}</div>
+            <Radio.Label className='cursor-pointer'>{opt.label}</Radio.Label>
           </Radio.Root>
         ))}
       </RadioGroup>

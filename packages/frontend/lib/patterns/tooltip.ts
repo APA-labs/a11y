@@ -74,7 +74,7 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
   const id = useId()
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block' }}>
+    <span className='tooltip-wrapper'>
       <span
         aria-describedby={visible ? id : undefined}
         onMouseEnter={() => setVisible(true)}
@@ -88,7 +88,7 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
         <span
           id={id}
           role='tooltip'
-          style={{ position: 'absolute', bottom: '100%', left: 0, whiteSpace: 'nowrap' }}>
+          className='tooltip-popup'>
           {label}
         </span>
       )}
@@ -133,7 +133,7 @@ export default function App() {
   return (
     <Stack
       spacing={3}
-      style={{ padding: 32, alignItems: 'flex-start' }}>
+      className='p-32 items-start'>
       <Typography variant='h6'>Tooltip examples</Typography>
 
       <Tooltip
@@ -206,52 +206,22 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Tooltip',
-        code: `import * as Tooltip from '@radix-ui/react-tooltip'
-
-const btnStyle = {
-  padding: '8px 16px',
-  borderRadius: 6,
-  border: '1px solid #d1d5db',
-  background: 'white',
-  cursor: 'pointer',
-  fontSize: 14,
-  fontWeight: 500
-}
-const iconBtnStyle = {
-  width: 36,
-  height: 36,
-  borderRadius: 6,
-  border: '1px solid #d1d5db',
-  background: 'white',
-  cursor: 'pointer',
-  fontSize: 16,
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center'
-}
-const contentStyle = {
-  background: '#1f2937',
-  color: 'white',
-  padding: '5px 10px',
-  borderRadius: 4,
-  fontSize: 12,
-  lineHeight: 1.4,
-  maxWidth: 200
-}
+        code: `import './index.css'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
 export default function App() {
   return (
     <Tooltip.Provider delayDuration={300}>
-      <div style={{ display: 'flex', gap: 16, padding: 32, flexWrap: 'wrap' }}>
+      <div className='row gap-16 p-32'>
         <Tooltip.Root>
-          <Tooltip.Trigger style={btnStyle}>Save</Tooltip.Trigger>
+          <Tooltip.Trigger className='btn'>Save</Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
               side='top'
               sideOffset={6}
-              style={contentStyle}>
+              className='tooltip-content-dark'>
               Save your current changes (Ctrl+S)
-              <Tooltip.Arrow style={{ fill: '#1f2937' }} />
+              <Tooltip.Arrow className='tooltip-arrow-dark' />
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip.Root>
@@ -259,16 +229,16 @@ export default function App() {
         <Tooltip.Root>
           <Tooltip.Trigger
             aria-label='Copy to clipboard'
-            style={iconBtnStyle}>
+            className='btn-icon'>
             ⎘
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
               side='top'
               sideOffset={6}
-              style={contentStyle}>
+              className='tooltip-content-dark'>
               Copy to clipboard
-              <Tooltip.Arrow style={{ fill: '#1f2937' }} />
+              <Tooltip.Arrow className='tooltip-arrow-dark' />
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip.Root>
@@ -276,16 +246,16 @@ export default function App() {
         <Tooltip.Root>
           <Tooltip.Trigger
             aria-label='Delete item'
-            style={{ ...iconBtnStyle, borderColor: '#fca5a5', color: '#dc2626' }}>
+            className='btn-icon btn-icon-danger'>
             ✕
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
               side='top'
               sideOffset={6}
-              style={{ ...contentStyle, background: '#dc2626' }}>
+              className='tooltip-content-error'>
               Delete this item permanently
-              <Tooltip.Arrow style={{ fill: '#dc2626' }} />
+              <Tooltip.Arrow className='tooltip-arrow-error' />
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip.Root>
@@ -334,7 +304,7 @@ export default function App() {
 
 export default function App() {
   return (
-    <div style={{ padding: '32px' }}>
+    <div className='p-32'>
       <Space
         size={12}
         wrap>
@@ -397,7 +367,7 @@ export default function App() {
     <Stack
       direction='row'
       gap={4}
-      style={{ padding: '2rem' }}
+      className='p-32'
       wrap='wrap'>
       <Tooltip.Root
         openDelay={300}
@@ -475,7 +445,7 @@ const ACTIONS = [
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', display: 'flex', gap: 8 }}>
+    <div className='row gap-8 p-24'>
       {ACTIONS.map((action) => (
         <TooltipTrigger
           key={action.id}
@@ -483,21 +453,10 @@ export default function App() {
           closeDelay={300}>
           <Button
             aria-label={action.label}
-            style={{
-              width: 36,
-              height: 36,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid #d1d5db',
-              borderRadius: 6,
-              background: '#fff',
-              cursor: 'pointer',
-              fontSize: 16
-            }}>
+            className='btn-icon'>
             {action.icon}
           </Button>
-          <Tooltip style={{ background: '#1f2937', color: '#fff', padding: '4px 10px', borderRadius: 4, fontSize: 12 }}>{action.label}</Tooltip>
+          <Tooltip className='tooltip-content-dark'>{action.label}</Tooltip>
         </TooltipTrigger>
       ))}
     </div>

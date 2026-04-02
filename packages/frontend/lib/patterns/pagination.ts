@@ -66,61 +66,56 @@ export const paginationPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (React)',
-      code: `function PaginationDemo() {
+      code: `import './index.css'
+import { useState } from 'react'
+
+export default function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = 5
 
-  const btnStyle = (active) => ({
-    padding: '6px 12px',
-    border: '1px solid #d1d5db',
-    borderRadius: 6,
-    background: active ? '#2563eb' : '#fff',
-    color: active ? '#fff' : '#374151',
-    fontWeight: active ? 700 : 400,
-    cursor: 'pointer'
-  })
-
   return (
-    <nav aria-label='Pagination'>
-      <ul style={{ display: 'flex', gap: 4, listStyle: 'none', padding: 0, margin: 0 }}>
-        <li>
-          <button
-            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-            aria-label='Previous page'
-            aria-disabled={currentPage === 1}
-            disabled={currentPage === 1}
-            style={{ ...btnStyle(false), opacity: currentPage === 1 ? 0.4 : 1 }}>
-            ‹
-          </button>
-        </li>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <li key={page}>
+    <div className='app'>
+      <nav aria-label='Pagination'>
+        <ul className='pagination'>
+          <li>
             <button
-              onClick={() => setCurrentPage(page)}
-              aria-label={\`Go to page \${page}\`}
-              aria-current={page === currentPage ? 'page' : undefined}
-              style={btnStyle(page === currentPage)}>
-              {page}
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              aria-label='Previous page'
+              aria-disabled={currentPage === 1}
+              disabled={currentPage === 1}
+              className='page-btn'>
+              ‹
             </button>
           </li>
-        ))}
-        <li>
-          <button
-            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-            aria-label='Next page'
-            aria-disabled={currentPage === totalPages}
-            disabled={currentPage === totalPages}
-            style={{ ...btnStyle(false), opacity: currentPage === totalPages ? 0.4 : 1 }}>
-            ›
-          </button>
-        </li>
-      </ul>
-      <div
-        role='status'
-        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
-        Page {currentPage} of {totalPages}
-      </div>
-    </nav>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <li key={page}>
+              <button
+                onClick={() => setCurrentPage(page)}
+                aria-label={\`Go to page \${page}\`}
+                aria-current={page === currentPage ? 'page' : undefined}
+                className='page-btn'>
+                {page}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              aria-label='Next page'
+              aria-disabled={currentPage === totalPages}
+              disabled={currentPage === totalPages}
+              className='page-btn'>
+              ›
+            </button>
+          </li>
+        </ul>
+        <div
+          role='status'
+          className='sr-only'>
+          Page {currentPage} of {totalPages}
+        </div>
+      </nav>
+    </div>
   )
 }`
     }
@@ -149,7 +144,8 @@ export const paginationPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Pagination',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Pagination, Typography, Box } from '@mui/material'
 
 export default function App() {
@@ -157,7 +153,7 @@ export default function App() {
   const totalPages = 10
 
   return (
-    <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
+    <Box className='p-24 stack gap-16 items-center'>
       <Typography
         variant='body2'
         color='text.secondary'
@@ -222,7 +218,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Pagination',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Pagination, ConfigProvider } from 'antd'
 import enUS from 'antd/locale/en_US'
 
@@ -240,9 +237,9 @@ export default function App() {
   const end = Math.min(current * PAGE_SIZE, TOTAL)
 
   return (
-    <div style={{ padding: '24px' }}>
-      <div style={{ marginBottom: 16, padding: '12px 16px', background: '#fafafa', borderRadius: 6, border: '1px solid #f0f0f0' }}>
-        <p style={{ margin: 0, fontSize: 14, color: '#595959' }}>
+    <div className='p-24'>
+      <div className='info-box mb-16'>
+        <p className='mt-0 mb-0'>
           Showing {start}–{end} of {TOTAL} results
         </p>
       </div>
@@ -262,7 +259,7 @@ export default function App() {
         role='status'
         aria-live='polite'
         aria-atomic='true'
-        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+        className='sr-only'>
         Page {current} of {Math.ceil(TOTAL / PAGE_SIZE)}
       </div>
     </div>
@@ -291,7 +288,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Pagination',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Pagination, ButtonGroup, Button } from '@chakra-ui/react'
 
 const TOTAL = 87
@@ -304,9 +302,9 @@ export default function App() {
   const end = Math.min(page * PAGE_SIZE, TOTAL)
 
   return (
-    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
+    <div className='p-24 stack gap-12 items-center'>
       <p
-        style={{ margin: 0, fontSize: 14, color: '#718096' }}
+        className='mt-0 mb-0 text-muted'
         aria-live='polite'
         aria-atomic='true'>
         Showing {start}–{end} of {TOTAL} results
