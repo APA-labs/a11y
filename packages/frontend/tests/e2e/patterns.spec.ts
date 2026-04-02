@@ -19,7 +19,7 @@ const DS_NAMES = Object.fromEntries(DS_ORDER.map((id) => [id, DS_META[id].name])
 test.describe('패턴 목록 페이지', () => {
   test('패턴 카드가 렌더링된다', async ({ page }) => {
     await page.goto(`/${LANG}`)
-    const cards = page.locator('a[href*="/patterns/"]')
+    const cards = page.locator('a.group[href*="/patterns/"]')
     await expect(cards.first()).toBeVisible()
     const count = await cards.count()
     expect(count).toBeGreaterThan(0)
@@ -27,8 +27,8 @@ test.describe('패턴 목록 페이지', () => {
 
   test('패턴 수 통계가 표시된다', async ({ page }) => {
     await page.goto(`/${LANG}`)
-    await expect(page.getByText('Patterns')).toBeVisible()
-    await expect(page.getByText('Design Systems')).toBeVisible()
+    await expect(page.getByText('Patterns').first()).toBeVisible()
+    await expect(page.getByText('Design Systems').first()).toBeVisible()
   })
 })
 
@@ -48,6 +48,11 @@ for (const slug of TEST_PATTERNS) {
     })
 
     test('Baseline 코드 블록이 표시된다', async ({ page }) => {
+      const codeTabButton = page
+        .locator('button[aria-pressed]')
+        .filter({ hasText: /코드|Code/ })
+        .first()
+      if ((await codeTabButton.count()) > 0) await codeTabButton.click()
       const codeBlock = page.locator('pre code').first()
       await expect(codeBlock).toBeVisible()
     })
@@ -68,6 +73,11 @@ for (const slug of TEST_PATTERNS) {
       const codeLabels = page.locator('span.font-mono').filter({ hasText: /MUI|Radix|Ant|Chakra|Spectrum|Base/ })
       const codeBlockCount = await codeLabels.count()
       expect(codeBlockCount).toBeGreaterThanOrEqual(0)
+      const codeTabButton = page
+        .locator('button[aria-pressed]')
+        .filter({ hasText: /코드|Code/ })
+        .first()
+      if ((await codeTabButton.count()) > 0) await codeTabButton.click()
       await expect(page.locator('pre code').last()).toBeVisible()
       void tabName
     })
