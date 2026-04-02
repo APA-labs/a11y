@@ -56,7 +56,10 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
         {/* ── 기본 코드 예시 (최상단) ── */}
         <div>
           <h3 className='text-xs font-semibold text-mist-700 uppercase tracking-wider mb-3'>기본 코드 예시</h3>
-          <CodeBlock sample={pattern.baseline.codeSample} />
+          <CodeBlock
+            sample={pattern.baseline.codeSample}
+            slug={slug}
+          />
         </div>
 
         {/* ── SECTION 1: 공통 베이스라인 ── */}
@@ -82,7 +85,10 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
 
         {/* ── SECTION 2: 디자인 시스템 탭 ── */}
         <section>
-          <DesignSystemTabs designSystems={pattern.designSystems} />
+          <DesignSystemTabs
+            designSystems={pattern.designSystems}
+            slug={slug}
+          />
         </section>
 
         {/* References */}

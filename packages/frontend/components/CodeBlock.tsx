@@ -25,7 +25,17 @@ const T = {
 
 const PREVIEWABLE_LANGUAGES = new Set(['tsx', 'jsx', 'ts', 'js', 'html'])
 
-export default function CodeBlock({ sample, lang = 'ko', disablePreview = false }: { sample: CodeSample; lang?: Lang; disablePreview?: boolean }) {
+export default function CodeBlock({
+  sample,
+  lang = 'ko',
+  disablePreview = false,
+  slug
+}: {
+  sample: CodeSample
+  lang?: Lang
+  disablePreview?: boolean
+  slug?: string
+}) {
   const t = T[lang]
   const [copied, setCopied] = useState(false)
   const languageAllowsPreview = PREVIEWABLE_LANGUAGES.has(sample.language)
@@ -113,6 +123,7 @@ export default function CodeBlock({ sample, lang = 'ko', disablePreview = false 
           key={sample.code}
           code={sample.code}
           language={sample.language}
+          slug={slug}
         />
       )}
     </div>

@@ -64,6 +64,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
           <CodeBlock
             sample={pattern.baseline.codeSample}
             lang={lang}
+            slug={slug}
           />
         </div>
 
@@ -91,6 +92,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
           <DesignSystemTabs
             designSystems={pattern.designSystems}
             lang={lang}
+            slug={slug}
           />
         </section>
 

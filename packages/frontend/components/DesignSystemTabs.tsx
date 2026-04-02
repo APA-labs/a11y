@@ -17,9 +17,10 @@ const DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW: readonly DesignSystemId[] = ['baseui']
 interface Props {
   designSystems: Pattern['designSystems']
   lang?: Lang
+  slug?: string
 }
 
-export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) {
+export default function DesignSystemTabs({ designSystems, lang = 'ko', slug }: Props) {
   const t = getTranslations(lang)
   const availableIds = DS_ORDER.filter((id) => designSystems[id] != null)
   const [active, setActive] = useState<DesignSystemId>(availableIds[0] ?? 'material')
@@ -108,6 +109,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko' }: Props) 
             sample={current.codeSample}
             lang={lang}
             disablePreview={DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW.includes(active)}
+            slug={slug}
           />
         </div>
 
