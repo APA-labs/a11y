@@ -14,12 +14,3 @@ components/SandpackPreview.tsx → Live preview component
   - hasShadcn / hasChakra: provider injection logic
 components/CodeBlock.tsx → Code display + preview tab toggle
 ```
-
-## Sandpack dependency map
-
-When adding a new design system or library to code samples, register it in **two places**:
-
-1. `components/SandpackPreview.tsx` → `DS_DEPS` (detection key → package versions)
-2. `.claude/hooks/validate-code-samples.js` → `KNOWN_DEPS` Set (same packages)
-
-Detection key in `DS_DEPS` must appear as a substring of the `import ... from '...'` path in user code (e.g. key `@mui/material` matches `from '@mui/material'`).
