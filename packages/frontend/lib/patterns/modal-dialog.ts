@@ -80,20 +80,24 @@ function Modal() {
 
   return (
     <>
-      {isOpen ? <div
-        role='dialog'
-        aria-modal='true'
-        aria-labelledby={titleId}
-        aria-describedby={descId}
-        onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}>
-        <h2 id={titleId}>Modal Title</h2>
-        <div id={descId}>Modal Description</div>
-        <button
-          id='modal-close'
-          onClick={() => setIsOpen(false)}>
-          Close
-        </button>
-      </div> : <button onClick={() => setIsOpen(true)}>Open Modal</button>}
+      {isOpen ? (
+        <div
+          role='dialog'
+          aria-modal='true'
+          aria-labelledby={titleId}
+          aria-describedby={descId}
+          onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}>
+          <h2 id={titleId}>Modal Title</h2>
+          <div id={descId}>Modal Description</div>
+          <button
+            id='modal-close'
+            onClick={() => setIsOpen(false)}>
+            Close
+          </button>
+        </div>
+      ) : (
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+      )}
     </>
   )
 }`
@@ -212,35 +216,29 @@ export default function App() {
         open={open}
         onOpenChange={setOpen}>
         <Dialog.Trigger
-          className='btn'
-          style={{ color: '#dc2626', borderColor: '#dc2626' }}>
+          className='btn btn-danger-outline'>
           Delete file
         </Dialog.Trigger>
 
         <Dialog.Portal>
           <Dialog.Overlay className='overlay' />
           <Dialog.Content
-            className='dialog'
-            style={{ minWidth: 360, maxWidth: '90vw' }}>
+            className='dialog dialog-wide'>
             <Dialog.Title
-              className='dialog-title'
-              style={{ marginBottom: 8 }}>
+              className='dialog-title bottom-space-8'>
               Delete File
             </Dialog.Title>
             <Dialog.Description
-              className='hint'
-              style={{ marginBottom: 20 }}>
+              className='hint bottom-space-20'>
               Are you sure you want to permanently delete this file? This action cannot be undone.
             </Dialog.Description>
 
             <div
-              className='row'
-              style={{ justifyContent: 'flex-end' }}>
+              className='row justify-end'>
               <Dialog.Close className='btn'>Cancel</Dialog.Close>
               <button
-                className='btn btn-primary'
+                className='btn btn-primary btn-danger-solid'
                 onClick={() => setOpen(false)}
-                style={{ background: '#dc2626' }}>
                 Delete
               </button>
             </div>
@@ -378,7 +376,7 @@ export default function App() {
                   variant='ghost'
                   size='sm'
                   aria-label='Close dialog'
-                  style={{ position: 'absolute', top: 8, right: 8 }}>
+                  className='dialog-close-top-right'>
                   ✕
                 </Button>
               </Dialog.CloseTrigger>
@@ -435,39 +433,19 @@ export default function App() {
   return (
     <div className='app'>
       <DialogTrigger>
-        <Button
-          className='btn btn-primary'
-          style={{ background: '#e03' }}>
-          Delete file
-        </Button>
+        <Button className='btn btn-primary btn-accent'>Delete file</Button>
         <ModalOverlay className='overlay center'>
-          <Modal
-            style={{
-              background: '#fff',
-              borderRadius: 12,
-              padding: 24,
-              maxWidth: 400,
-              width: '90%',
-              outline: 'none',
-              boxShadow: '0 8px 32px rgba(0,0,0,.2)'
-            }}>
-            <Dialog style={{ outline: 'none' }}>
+          <Modal className='dialog-spectrum'>
+            <Dialog className='outline-none'>
               {({ close }) => (
                 <>
                   <Heading
                     slot='title'
-                    className='dialog-title'
-                    style={{ marginBottom: 8 }}>
+                    className='dialog-title bottom-space-8'>
                     Delete File
                   </Heading>
-                  <p
-                    className='hint'
-                    style={{ marginBottom: 20 }}>
-                    Are you sure? This action cannot be undone.
-                  </p>
-                  <div
-                    className='row'
-                    style={{ justifyContent: 'flex-end' }}>
+                  <p className='hint bottom-space-20'>Are you sure? This action cannot be undone.</p>
+                  <div className='row justify-end'>
                     <Button
                       onPress={close}
                       className='btn btn-sm'>
@@ -475,8 +453,7 @@ export default function App() {
                     </Button>
                     <Button
                       onPress={close}
-                      className='btn btn-primary'
-                      style={{ background: '#dc2626' }}>
+                      className='btn btn-primary btn-danger-solid'>
                       Delete
                     </Button>
                   </div>
@@ -535,22 +512,10 @@ export default function App() {
         <Dialog.Trigger className='btn btn-primary'>View notifications</Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Backdrop className='overlay' />
-          <Dialog.Popup
-            className='dialog'
-            style={{ minWidth: 320 }}>
-            <Dialog.Title
-              className='dialog-title'
-              style={{ marginBottom: 8 }}>
-              Notifications
-            </Dialog.Title>
-            <Dialog.Description
-              className='hint'
-              style={{ marginBottom: 20 }}>
-              You are all caught up. Good job!
-            </Dialog.Description>
-            <div
-              className='row'
-              style={{ justifyContent: 'flex-end' }}>
+          <Dialog.Popup className='dialog'>
+            <Dialog.Title className='dialog-title bottom-space-8'>Notifications</Dialog.Title>
+            <Dialog.Description className='hint bottom-space-20'>You are all caught up. Good job!</Dialog.Description>
+            <div className='row justify-end'>
               <Dialog.Close className='btn'>Close</Dialog.Close>
             </div>
           </Dialog.Popup>

@@ -336,7 +336,7 @@ export default function App() {
                 <Button
                   variant='ghost'
                   aria-label='Close navigation drawer'
-                  style={{ position: 'absolute', top: 8, right: 8 }}>
+                  className='dialog-close-top-right'>
                   ✕
                 </Button>
               </Drawer.CloseTrigger>
@@ -348,8 +348,7 @@ export default function App() {
                     <a
                       key={item}
                       href={'#' + item.toLowerCase()}
-                      className='menu-item'
-                      style={{ display: 'block', textDecoration: 'none', color: '#2d3748' }}>
+                      className='link-plain'>
                       {item}
                     </a>
                   ))}

@@ -163,7 +163,8 @@ export const alertPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Snackbar + Alert',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button, Snackbar, Alert, AlertTitle, Stack } from '@mui/material'
 
 export default function App() {
@@ -178,7 +179,7 @@ export default function App() {
   return (
     <Stack
       spacing={2}
-      style={{ padding: 24 }}>
+      className='app'>
       <Stack
         direction='row'
         spacing={1}>
@@ -257,20 +258,29 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Toast',
-        code: `import * as Toast from '@radix-ui/react-toast'
+        code: `import './index.css'
+import { useState } from 'react'
+import * as Toast from '@radix-ui/react-toast'
 
-function ToastDemo() {
+export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
     <Toast.Provider swipeDirection='right'>
-      <button onClick={() => setOpen(true)}>Save</button>
+      <div className='app'>
+        <button
+          className='btn'
+          onClick={() => setOpen(true)}>
+          Save
+        </button>
+      </div>
 
       <Toast.Root
         open={open}
         onOpenChange={setOpen}
         type='foreground'
-        duration={5000}>
+        duration={5000}
+        className='toast-root'>
         <Toast.Title>Saved</Toast.Title>
         <Toast.Description>File saved successfully.</Toast.Description>
         <Toast.Close aria-label='Close'>×</Toast.Close>
@@ -278,7 +288,7 @@ function ToastDemo() {
 
       <Toast.Viewport
         label='Notifications. Press F8 to navigate.'
-        style={{ position: 'fixed', bottom: 16, right: 16, display: 'flex', flexDirection: 'column', gap: 8, zIndex: 50, maxWidth: 360 }}
+        className='toast-viewport'
       />
     </Toast.Provider>
   )
@@ -318,7 +328,8 @@ function ToastDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Alert',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Alert, Button, Space, App } from 'antd'
 
 function AlertDemo() {
@@ -337,7 +348,7 @@ function AlertDemo() {
   return (
     <Space
       direction='vertical'
-      style={{ width: '100%', padding: '24px' }}>
+      className='app w-full'>
       {visible && (
         <Alert
           title='File saved'
@@ -399,7 +410,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Alert',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Alert, Button, Stack } from '@chakra-ui/react'
 
 export default function App() {
@@ -408,7 +420,7 @@ export default function App() {
   return (
     <Stack
       gap={3}
-      style={{ padding: '1.5rem', maxWidth: 480 }}>
+      className='app max-w-480'>
       <Alert.Root status='info'>
         <Alert.Indicator aria-hidden />
         <Alert.Content>

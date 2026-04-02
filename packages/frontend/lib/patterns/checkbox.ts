@@ -110,28 +110,40 @@ export function Checkbox({ id = 'cb-example', label = 'Label', indeterminate = f
       codeSample: {
         language: 'tsx',
         label: 'MUI Checkbox',
-        code: `import { Checkbox, FormControlLabel, FormGroup, FormLabel } from '@mui/material'
-<FormGroup>
-  <FormLabel component='legend'>Notification Settings</FormLabel>
-  <FormControlLabel
-    control={
-      <Checkbox
-        checked={emailChecked}
-        onChange={(e) => setEmailChecked(e.target.checked)}
-      />
-    }
-    label='Email notifications'
-  />
-  <FormControlLabel
-    control={
-      <Checkbox
-        checked={smsChecked}
-        onChange={(e) => setSmsChecked(e.target.checked)}
-      />
-    }
-    label='SMS notifications'
-  />
-</FormGroup>`
+        code: `import './index.css'
+import { useState } from 'react'
+import { Checkbox, FormControlLabel, FormGroup, FormLabel } from '@mui/material'
+
+export default function App() {
+  const [emailChecked, setEmailChecked] = useState(false)
+  const [smsChecked, setSmsChecked] = useState(false)
+
+  return (
+    <div className='app'>
+      <FormGroup>
+        <FormLabel component='legend'>Notification Settings</FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={emailChecked}
+              onChange={(e) => setEmailChecked(e.target.checked)}
+            />
+          }
+          label='Email notifications'
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={smsChecked}
+              onChange={(e) => setSmsChecked(e.target.checked)}
+            />
+          }
+          label='SMS notifications'
+        />
+      </FormGroup>
+    </div>
+  )
+}`
       },
       notes: ['MUI Checkbox는 네이티브 input을 사용하므로 기본 접근성이 보장됩니다.', 'color prop 변경 시 4.5:1 대비율을 확인하세요.']
     },
@@ -156,21 +168,9 @@ export function Checkbox({ id = 'cb-example', label = 'Label', indeterminate = f
       codeSample: {
         language: 'tsx',
         label: 'Radix Checkbox',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import * as Checkbox from '@radix-ui/react-checkbox'
-
-const rootStyle = {
-  width: 20,
-  height: 20,
-  borderRadius: 4,
-  border: '2px solid #6e56cf',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  backgroundColor: 'white',
-  flexShrink: 0
-}
 
 const ITEMS = [
   { id: 'email', label: 'Email notifications' },
@@ -182,32 +182,28 @@ export default function App() {
   const [checked, setChecked] = useState<Record<string, boolean>>({ email: true, sms: false, push: false })
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 24 }}>
-      <p style={{ margin: '0 0 8px', fontWeight: 600 }}>Notification preferences</p>
+    <div className='app stack'>
+      <p className='mb-0 font-bold'>Notification preferences</p>
       {ITEMS.map((item) => (
         <div
           key={item.id}
-          style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          className='checkbox-row'>
           <Checkbox.Root
             id={item.id}
+            className='checkbox-root'
             checked={checked[item.id]}
-            onCheckedChange={(val) => setChecked((prev) => ({ ...prev, [item.id]: val === true }))}
-            style={{
-              ...rootStyle,
-              backgroundColor: checked[item.id] ? '#6e56cf' : 'white',
-              border: \`2px solid \${checked[item.id] ? '#6e56cf' : '#c4c4c4'}\`
-            }}>
+            onCheckedChange={(val) => setChecked((prev) => ({ ...prev, [item.id]: val === true }))}>
             <Checkbox.Indicator>
               <span
                 aria-hidden
-                style={{ color: 'white', fontSize: 14, lineHeight: 1 }}>
+                className='checkbox-indicator'>
                 ✓
               </span>
             </Checkbox.Indicator>
           </Checkbox.Root>
           <label
             htmlFor={item.id}
-            style={{ fontSize: 14, cursor: 'pointer' }}>
+            className='cursor-pointer'>
             {item.label}
           </label>
         </div>
@@ -238,18 +234,25 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Checkbox Group',
-        code: `import { Checkbox } from 'antd'
+        code: `import './index.css'
+import { Checkbox } from 'antd'
 
 const OPTIONS = [
-{ label: 'Email', value: 'email' },
-{ label: 'SMS', value: 'sms' },
+  { label: 'Email', value: 'email' },
+  { label: 'SMS', value: 'sms' }
 ]
 
-<Checkbox.Group
-options={OPTIONS}
-onChange={(values) => console.log(values)}
-aria-label="Notification method"
-/>`
+export default function App() {
+  return (
+    <div className='app'>
+      <Checkbox.Group
+        options={OPTIONS}
+        onChange={(values) => console.log(values)}
+        aria-label='Notification method'
+      />
+    </div>
+  )
+}`
       },
       notes: ['Ant Design Checkbox는 네이티브 input을 사용해 접근성을 유지합니다.', 'indeterminate prop으로 중간 선택 상태를 표현할 수 있습니다.']
     },
@@ -268,20 +271,24 @@ aria-label="Notification method"
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Checkbox',
-        code: `import { Checkbox } from '@chakra-ui/react'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Checkbox } from '@chakra-ui/react'
 
-function CheckboxDemo() {
+export default function App() {
   const [checked, setChecked] = useState(false)
   return (
-    <Checkbox.Root
-      checked={checked}
-      onCheckedChange={(e) => setChecked(!!e.checked)}>
-      <Checkbox.HiddenInput />
-      <Checkbox.Control>
-        <Checkbox.Indicator />
-      </Checkbox.Control>
-      <Checkbox.Label>I agree to the terms of service</Checkbox.Label>
-    </Checkbox.Root>
+    <div className='app'>
+      <Checkbox.Root
+        checked={checked}
+        onCheckedChange={(e) => setChecked(!!e.checked)}>
+        <Checkbox.HiddenInput />
+        <Checkbox.Control>
+          <Checkbox.Indicator />
+        </Checkbox.Control>
+        <Checkbox.Label>I agree to the terms of service</Checkbox.Label>
+      </Checkbox.Root>
+    </div>
   )
 }`
       },
@@ -299,16 +306,20 @@ function CheckboxDemo() {
       codeSample: {
         language: 'tsx',
         label: 'React Spectrum Checkbox',
-        code: `import { Checkbox } from '@adobe/react-spectrum'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Checkbox } from '@adobe/react-spectrum'
 
-function CheckboxDemo() {
+export default function App() {
   const [isSelected, setIsSelected] = useState(false)
   return (
-    <Checkbox
-      isSelected={isSelected}
-      onChange={setIsSelected}>
-      I agree to the terms of service
-    </Checkbox>
+    <div className='app'>
+      <Checkbox
+        isSelected={isSelected}
+        onChange={setIsSelected}>
+        I agree to the terms of service
+      </Checkbox>
+    </div>
   )
 }`
       },
@@ -339,14 +350,15 @@ function CheckboxDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Checkbox',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Checkbox } from '@base-ui/react/checkbox'
 
 export default function App() {
   const [emailChecked, setEmailChecked] = useState(true)
   const [smsChecked, setSmsChecked] = useState(false)
   return (
-    <>
+    <div className='app stack'>
       <label>
         <Checkbox.Root
           checked={emailChecked}
@@ -363,7 +375,7 @@ export default function App() {
         </Checkbox.Root>
         SMS notifications
       </label>
-    </>
+    </div>
   )
 }`
       },

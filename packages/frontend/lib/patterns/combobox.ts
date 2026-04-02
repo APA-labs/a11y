@@ -156,17 +156,27 @@ export function Combobox({ label }: { label: string }) {
       codeSample: {
         language: 'tsx',
         label: 'MUI Autocomplete',
-        code: `import { Autocomplete, TextField } from '@mui/material'
+        code: `import './index.css'
+import { Autocomplete, TextField } from '@mui/material'
 
 const OPTIONS = ['Apple', 'Banana', 'Cherry']
 
-<Autocomplete
-  id="fruit-select"
-  options={OPTIONS}
-  renderInput={(params) => (
-    <TextField {...params} label="Select fruit" />
-  )}
-/>`
+export default function App() {
+  return (
+    <div className='app'>
+      <Autocomplete
+        id='fruit-select'
+        options={OPTIONS}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label='Select fruit'
+          />
+        )}
+      />
+    </div>
+  )
+}`
       },
       notes: [
         'MUI Autocomplete는 combobox 역할과 aria-expanded를 자동으로 처리합니다.',
@@ -188,21 +198,23 @@ const OPTIONS = ['Apple', 'Banana', 'Cherry']
       codeSample: {
         language: 'tsx',
         label: 'Ant Design AutoComplete',
-        code: `import { AutoComplete } from 'antd'
+        code: `import './index.css'
+import { AutoComplete } from 'antd'
 
-const OPTIONS = [
-  { value: 'Apple' },
-  { value: 'Banana' },
-]
+const OPTIONS = [{ value: 'Apple' }, { value: 'Banana' }]
 
-<AutoComplete
-  options={OPTIONS}
-  placeholder="Type a fruit"
-  filterOption={(input, option) =>
-    (option?.value ?? '').toLowerCase().includes(input.toLowerCase())
-  }
-  aria-label="Select fruit"
-/>`
+export default function App() {
+  return (
+    <div className='app'>
+      <AutoComplete
+        options={OPTIONS}
+        placeholder='Type a fruit'
+        filterOption={(input, option) => (option?.value ?? '').toLowerCase().includes(input.toLowerCase())}
+        aria-label='Select fruit'
+      />
+    </div>
+  )
+}`
       },
       notes: ['Ant Design AutoComplete는 접근성 속성을 자동으로 처리합니다.', '빈 결과 상태를 사용자에게 알리는 notFoundContent를 설정하세요.']
     },
@@ -221,7 +233,8 @@ const OPTIONS = [
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Combobox',
-        code: `import { Combobox, useListCollection } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Combobox, useListCollection } from '@chakra-ui/react'
 
 const frameworks = ['React', 'Vue', 'Angular', 'Svelte'].map((f) => ({ label: f, value: f.toLowerCase() }))
 
@@ -277,7 +290,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria ComboBox',
-        code: `import { ComboBox, Label, Group, Input, Button, Popover, ListBox, ListBoxItem } from 'react-aria-components'
+        code: `import './index.css'
+import { ComboBox, Label, Group, Input, Button, Popover, ListBox, ListBoxItem } from 'react-aria-components'
 
 const FRAMEWORKS = [
   { id: 'react', name: 'React' },
@@ -289,51 +303,25 @@ const FRAMEWORKS = [
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <ComboBox>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Framework</Label>
-        <Group
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            border: '1px solid #d1d5db',
-            borderRadius: 6,
-            background: '#fff',
-            overflow: 'hidden'
-          }}>
+        <Label className='label'>Framework</Label>
+        <Group className='combobox-group'>
           <Input
-            style={{ border: 'none', outline: 'none', fontSize: 14, padding: '6px 10px', minWidth: 160 }}
+            className='combobox-input'
             placeholder='Search...'
           />
-          <Button
-            style={{ background: 'none', border: 'none', borderLeft: '1px solid #e5e7eb', cursor: 'pointer', padding: '6px 10px', fontSize: 13 }}>
+          <Button className='combobox-btn'>
             <span aria-hidden>▼</span>
           </Button>
         </Group>
-        <Popover
-          style={{
-            background: '#fff',
-            border: '1px solid #e5e7eb',
-            borderRadius: 8,
-            boxShadow: '0 4px 16px rgba(0,0,0,.1)',
-            padding: 4,
-            outline: 'none',
-            minWidth: 200
-          }}>
+        <Popover className='select-popup'>
           <ListBox>
             {FRAMEWORKS.map((fw) => (
               <ListBoxItem
                 key={fw.id}
                 id={fw.id}
-                style={({ isSelected, isFocused }) => ({
-                  padding: '6px 12px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  fontSize: 14,
-                  outline: 'none',
-                  background: isSelected ? '#e03' : isFocused ? '#fef2f2' : 'transparent',
-                  color: isSelected ? '#fff' : '#374151'
-                })}>
+                className='combobox-item'>
                 {fw.name}
               </ListBoxItem>
             ))}

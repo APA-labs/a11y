@@ -137,7 +137,8 @@ return (
       codeSample: {
         language: 'tsx',
         label: 'MUI Date Picker',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -149,7 +150,7 @@ export default function App() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 360 }}>
+      <Box className='app stack max-w-360'>
         <Typography variant='h6'>Schedule</Typography>
 
         <DatePicker
@@ -217,8 +218,9 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design DatePicker',
-        code: `import { useState } from 'react'
-import { DatePicker, Form, ConfigProvider, Space } from 'antd'
+        code: `import './index.css'
+import { useState } from 'react'
+import { DatePicker, Form, ConfigProvider } from 'antd'
 import dayjs from 'dayjs'
 
 export default function App() {
@@ -230,7 +232,7 @@ export default function App() {
 
   return (
     <ConfigProvider>
-      <div style={{ padding: '24px' }}>
+      <div className='app stack'>
         <Form layout='vertical'>
           <Form.Item
             label='Appointment Date'
@@ -242,7 +244,7 @@ export default function App() {
               format='YYYY-MM-DD'
               placeholder='Select appointment date'
               disabledDate={disablePastDates}
-              style={{ width: '100%' }}
+              className='w-full'
             />
           </Form.Item>
           <Form.Item
@@ -251,13 +253,11 @@ export default function App() {
             <DatePicker
               format='YYYY-MM-DD'
               placeholder='Select birth date'
-              style={{ width: '100%' }}
+              className='w-full'
             />
           </Form.Item>
         </Form>
-        <Space style={{ marginTop: 16 }}>
-          <span style={{ fontSize: 13, color: '#666' }}>Selected: {value ? value.format('YYYY-MM-DD') : 'None'}</span>
-        </Space>
+        <span className='text-muted'>Selected: {value ? value.format('YYYY-MM-DD') : 'None'}</span>
       </div>
     </ConfigProvider>
   )
@@ -285,19 +285,18 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI DatePicker',
-        code: `import { DatePicker, Portal } from '@chakra-ui/react'
+        code: `import './index.css'
+import { DatePicker, Portal } from '@chakra-ui/react'
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 320 }}>
+    <div className='app max-w-320'>
       <DatePicker.Root>
         <DatePicker.Label>Select date</DatePicker.Label>
         <DatePicker.Control>
           <DatePicker.Input />
           <DatePicker.IndicatorGroup>
-            <DatePicker.Trigger
-              aria-label='Open calendar'
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 6px' }}>
+            <DatePicker.Trigger aria-label='Open calendar'>
               <span aria-hidden>&#128197;</span>
             </DatePicker.Trigger>
           </DatePicker.IndicatorGroup>
@@ -383,7 +382,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria DatePicker',
-        code: `import {
+        code: `import './index.css'
+import {
   DatePicker,
   Label,
   Group,
@@ -403,73 +403,49 @@ export default function App() {
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <DatePicker>
-        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Appointment date</Label>
-        <Group
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 2,
-            border: '1px solid #d1d5db',
-            borderRadius: 6,
-            padding: '4px 8px',
-            background: '#fff'
-          }}>
-          <DateInput style={{ display: 'flex', gap: 1 }}>
+        <Label className='label'>Appointment date</Label>
+        <Group className='datepicker-group'>
+          <DateInput className='datepicker-input'>
             {(segment) => (
               <DateSegment
                 segment={segment}
-                style={{ padding: '1px 2px', borderRadius: 2, outline: 'none', fontSize: 14 }}
+                className='datepicker-segment'
               />
             )}
           </DateInput>
           <Button
             aria-label='Open calendar'
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px', borderRadius: 4, fontSize: 16 }}>
+            className='datepicker-btn'>
             ▼
           </Button>
         </Group>
-        <Popover style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.15)', padding: 16, outline: 'none' }}>
-          <Dialog style={{ outline: 'none' }}>
+        <Popover className='calendar-popover'>
+          <Dialog className='outline-none'>
             <Calendar>
-              <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+              <header className='calendar-header'>
                 <Button
                   slot='previous'
                   aria-label='Previous month'
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 16 }}>
+                  className='calendar-nav-btn'>
                   ‹
                 </Button>
-                <Heading style={{ fontWeight: 600, fontSize: 14 }} />
+                <Heading className='calendar-heading' />
                 <Button
                   slot='next'
                   aria-label='Next month'
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 16 }}>
+                  className='calendar-nav-btn'>
                   ›
                 </Button>
               </header>
-              <CalendarGrid style={{ borderCollapse: 'collapse', width: '100%' }}>
-                <CalendarGridHeader>
-                  {(day) => (
-                    <CalendarHeaderCell style={{ padding: 6, fontSize: 12, fontWeight: 600, color: '#6b7280', textAlign: 'center' }}>
-                      {day}
-                    </CalendarHeaderCell>
-                  )}
-                </CalendarGridHeader>
+              <CalendarGrid className='calendar-grid'>
+                <CalendarGridHeader>{(day) => <CalendarHeaderCell className='calendar-header-cell'>{day}</CalendarHeaderCell>}</CalendarGridHeader>
                 <CalendarGridBody>
                   {(date) => (
                     <CalendarCell
                       date={date}
-                      style={({ isSelected, isOutsideMonth }) => ({
-                        textAlign: 'center',
-                        padding: 6,
-                        borderRadius: 4,
-                        cursor: 'pointer',
-                        fontSize: 14,
-                        background: isSelected ? '#e03' : 'transparent',
-                        color: isSelected ? '#fff' : isOutsideMonth ? '#d1d5db' : '#374151',
-                        outline: 'none'
-                      })}
+                      className='calendar-cell'
                     />
                   )}
                 </CalendarGridBody>

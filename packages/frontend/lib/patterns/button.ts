@@ -77,7 +77,8 @@ export const buttonPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Button',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button, CircularProgress, Stack } from '@mui/material'
 
 export default function App() {
@@ -92,7 +93,7 @@ export default function App() {
     <Stack
       spacing={2}
       direction='row'
-      style={{ padding: 24 }}>
+      className='app'>
       <Button
         variant='contained'
         onClick={handleSave}
@@ -157,7 +158,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Slot',
-        code: `import * as React from 'react'
+        code: `import './index.css'
+import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -172,7 +174,7 @@ function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
     <Comp
       aria-busy={isLoading}
       aria-disabled={isLoading || props.disabled}
-      style={{ minHeight: 44, minWidth: 44, padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', cursor: 'pointer' }}
+      className='btn'
       {...props}>
       {children}
     </Comp>
@@ -182,7 +184,7 @@ function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(false)
   return (
-    <div style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
+    <div className='app'>
       <Button
         isLoading={isLoading}
         onClick={() => setIsLoading(!isLoading)}>
@@ -226,7 +228,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Button',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button, Space } from 'antd'
 
 export default function App() {
@@ -239,7 +242,7 @@ export default function App() {
 
   return (
     <Space
-      style={{ padding: '24px' }}
+      className='app'
       wrap>
       <Button
         type='primary'
@@ -298,7 +301,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Button',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button, Stack } from '@chakra-ui/react'
 
 export default function App() {
@@ -313,7 +317,7 @@ export default function App() {
     <Stack
       direction='row'
       gap={3}
-      style={{ padding: '1.5rem' }}
+      className='app'
       wrap='wrap'>
       <Button
         colorPalette='teal'
@@ -368,7 +372,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Button',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button } from 'react-aria-components'
 
 export default function App() {
@@ -380,51 +385,23 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: '1.5rem', display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+    <div className='app row'>
       <Button
         isPending={isPending}
         onPress={handleSave}
-        style={{
-          padding: '8px 20px',
-          borderRadius: 6,
-          border: 'none',
-          background: '#e03',
-          color: '#fff',
-          cursor: 'pointer',
-          fontSize: 14,
-          fontWeight: 500,
-          minHeight: 44
-        }}>
+        className='btn btn-accent max-h-44'>
         {isPending ? 'Saving...' : 'Save'}
       </Button>
 
       <Button
         isDisabled
-        style={{
-          padding: '8px 20px',
-          borderRadius: 6,
-          border: '1px solid #d1d5db',
-          background: '#f9fafb',
-          color: '#9ca3af',
-          cursor: 'not-allowed',
-          fontSize: 14,
-          minHeight: 44
-        }}>
+        className='btn max-h-44'>
         Disabled
       </Button>
 
       <Button
         aria-label='Delete selected item'
-        style={{
-          padding: '8px 20px',
-          borderRadius: 6,
-          border: 'none',
-          background: '#fef2f2',
-          color: '#dc2626',
-          cursor: 'pointer',
-          fontSize: 14,
-          minHeight: 44
-        }}>
+        className='btn btn-danger-outline max-h-44'>
         Delete
       </Button>
     </div>
@@ -459,31 +436,20 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Button',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button } from '@base-ui-components/react/button'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)
 
-  const btnStyle = {
-    padding: '8px 20px',
-    borderRadius: 6,
-    border: 'none',
-    background: '#18181b',
-    color: '#fff',
-    cursor: 'pointer',
-    fontSize: 14,
-    fontWeight: 500,
-    minHeight: 44
-  }
-
   return (
-    <div style={{ padding: '1.5rem', display: 'flex', gap: 12, flexWrap: 'wrap' as const }}>
+    <div className='app row'>
       <Button
         disabled={isLoading}
         focusableWhenDisabled
         aria-busy={isLoading}
-        style={btnStyle}
+        className='btn btn-primary max-h-44'
         onClick={() => {
           setIsLoading(true)
           setTimeout(() => setIsLoading(false), 2000)
@@ -494,13 +460,13 @@ export default function App() {
       <Button
         disabled
         focusableWhenDisabled
-        style={{ ...btnStyle, background: '#d1d5db', color: '#6b7280', cursor: 'not-allowed' }}>
+        className='btn max-h-44'>
         Disabled
       </Button>
 
       <Button
         aria-label='Delete selected item'
-        style={{ ...btnStyle, background: '#dc2626' }}>
+        className='btn btn-danger-solid max-h-44'>
         Delete
       </Button>
     </div>

@@ -105,22 +105,23 @@ export function Disclosure({ title, children }: { title: string; children: React
       codeSample: {
         language: 'tsx',
         label: 'MUI Disclosure',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Button, Collapse, Box } from '@mui/material'
 
-export function MuiDisclosure({ title, children }) {
+export default function App() {
   const [open, setOpen] = useState(false)
   return (
-    <Box>
+    <Box className='app'>
       <Button
         aria-expanded={open}
         aria-controls='mui-disclosure-content'
         onClick={() => setOpen(!open)}
         variant='text'>
-        {title}
+        System requirements
       </Button>
       <Collapse in={open}>
-        <Box id='mui-disclosure-content'>{children}</Box>
+        <Box id='mui-disclosure-content'>OS: Windows 10+, macOS 10.15+. RAM: 4GB minimum.</Box>
       </Collapse>
     </Box>
   )
@@ -152,41 +153,25 @@ export function MuiDisclosure({ title, children }) {
       codeSample: {
         language: 'tsx',
         label: 'Radix Collapsible',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import * as Collapsible from '@radix-ui/react-collapsible'
 
 export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ maxWidth: 480, margin: '24px auto', padding: '0 16px' }}>
+    <div className='app max-w-480'>
       <Collapsible.Root
         open={open}
         onOpenChange={setOpen}
-        style={{ border: '1px solid #e2e8f0', borderRadius: 8 }}>
-        <Collapsible.Trigger
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-            padding: '14px 16px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: 15,
-            fontWeight: 500,
-            textAlign: 'left'
-          }}>
+        className='accordion-item'>
+        <Collapsible.Trigger className='accordion-trigger-padded'>
           System requirements
-          <span
-            aria-hidden
-            style={{ transform: open ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>
-            ›
-          </span>
+          <span aria-hidden>{open ? '▲' : '▼'}</span>
         </Collapsible.Trigger>
-        <Collapsible.Content style={{ padding: '0 16px 16px', fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>
-          <ul style={{ margin: 0, paddingLeft: 20 }}>
+        <Collapsible.Content className='accordion-panel'>
+          <ul>
             <li>OS: Windows 10 or later, macOS 10.15 or later</li>
             <li>Memory: 4 GB RAM minimum</li>
             <li>Storage: 2 GB available disk space</li>
@@ -219,7 +204,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Collapse',
-        code: `import { Collapse } from 'antd'
+        code: `import './index.css'
+import { Collapse } from 'antd'
 
 const items = [
   {
@@ -229,8 +215,12 @@ const items = [
   }
 ]
 
-export function AntDisclosure() {
-  return <Collapse items={items} />
+export default function App() {
+  return (
+    <div className='app'>
+      <Collapse items={items} />
+    </div>
+  )
 }`
       },
       notes: ['Ant Design Collapse는 내부적으로 aria-expanded를 관리합니다.', 'destroyInactivePanel prop으로 닫힌 패널 DOM 제거 여부를 제어하세요.']
@@ -250,7 +240,8 @@ export function AntDisclosure() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Disclosure',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Disclosure, Heading, DisclosurePanel, Button } from 'react-aria-components'
 
 const ITEMS = [
@@ -262,34 +253,22 @@ export default function App() {
   const [expanded, setExpanded] = useState<string | null>('req')
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <div className='app stack-sm max-w-480'>
       {ITEMS.map((item) => (
         <Disclosure
           key={item.id}
           isExpanded={expanded === item.id}
           onExpandedChange={(open) => setExpanded(open ? item.id : null)}
-          style={{ borderBottom: '1px solid #e5e7eb' }}>
+          className='accordion-item-sep'>
           <Heading>
             <Button
               slot='trigger'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                padding: '12px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: 600,
-                textAlign: 'left'
-              }}>
+              className='accordion-trigger-btn'>
               {item.title}
               <span aria-hidden>{expanded === item.id ? '▲' : '▼'}</span>
             </Button>
           </Heading>
-          <DisclosurePanel style={{ padding: '0 0 12px', fontSize: 14, color: '#4b5563' }}>{item.content}</DisclosurePanel>
+          <DisclosurePanel className='accordion-content-text'>{item.content}</DisclosurePanel>
         </Disclosure>
       ))}
     </div>
@@ -324,30 +303,18 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Collapsible',
-        code: `import { Collapsible } from '@base-ui-components/react/collapsible'
+        code: `import './index.css'
+import { Collapsible } from '@base-ui-components/react/collapsible'
 
 export default function App() {
   return (
-    <div style={{ maxWidth: 480, margin: '24px auto', padding: '0 16px' }}>
-      <Collapsible.Root style={{ border: '1px solid #e2e8f0', borderRadius: 8 }}>
-        <Collapsible.Trigger
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-            padding: '14px 16px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: 15,
-            fontWeight: 500,
-            textAlign: 'left'
-          }}>
+    <div className='app max-w-480'>
+      <Collapsible.Root className='accordion-item'>
+        <Collapsible.Trigger className='accordion-trigger-padded'>
           Recovery keys
           <span aria-hidden>›</span>
         </Collapsible.Trigger>
-        <Collapsible.Panel style={{ padding: '0 16px 16px', fontSize: 14, color: '#4a5568', lineHeight: 1.8 }}>
+        <Collapsible.Panel className='accordion-panel'>
           <div>alien-bean-pasta</div>
           <div>wild-irish-burrito</div>
           <div>horse-battery-staple</div>

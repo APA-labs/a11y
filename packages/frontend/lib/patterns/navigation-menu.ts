@@ -91,9 +91,11 @@ export const navigationMenuPattern: Pattern = {
 
   return (
     <nav aria-label='Main navigation'>
-      <ul style={{ listStyle: 'none', display: 'flex', gap: '8px', padding: 0, margin: 0 }}>
+      <ul className='nav-toplist'>
         {items.map((item) => (
-          <li key={item.id}>
+          <li
+            key={item.id}
+            className='nav-item-rel'>
             {item.children ? (
               <>
                 <button
@@ -106,15 +108,7 @@ export const navigationMenuPattern: Pattern = {
                 {openMenu === item.id && (
                   <ul
                     role='menu'
-                    style={{
-                      listStyle: 'none',
-                      padding: '4px',
-                      margin: 0,
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      position: 'absolute',
-                      background: 'white'
-                    }}>
+                    className='nav-submenu'>
                     {item.children.map((child) => (
                       <li
                         key={child.id}
@@ -123,12 +117,7 @@ export const navigationMenuPattern: Pattern = {
                           href={child.href}
                           role='menuitem'
                           aria-current={currentPath === child.href ? 'page' : undefined}
-                          style={{
-                            display: 'block',
-                            padding: '4px 8px',
-                            textDecoration: 'none',
-                            color: currentPath === child.href ? '#6d28d9' : 'inherit'
-                          }}>
+                          className='nav-menu-link-block'>
                           {child.label}
                         </a>
                       </li>
@@ -140,11 +129,7 @@ export const navigationMenuPattern: Pattern = {
               <a
                 href={item.href}
                 aria-current={currentPath === item.href ? 'page' : undefined}
-                style={{
-                  textDecoration: 'none',
-                  color: currentPath === item.href ? '#6d28d9' : 'inherit',
-                  fontWeight: currentPath === item.href ? 'bold' : 'normal'
-                }}>
+                className='nav-top-link'>
                 {item.label}
               </a>
             )}
@@ -296,15 +281,12 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 
 export default function App() {
   return (
-    <NavigationMenu.Root style={{ position: 'relative', padding: '12px 16px' }}>
-      <NavigationMenu.List
-        className='tab-list'
-        style={{ listStyle: 'none', margin: 0, padding: 0, borderBottom: 'none', gap: 4 }}>
+    <NavigationMenu.Root className='nav-relative-pad'>
+      <NavigationMenu.List className='tab-list nav-radix-list'>
         <NavigationMenu.Item>
           <NavigationMenu.Link
             href='/'
-            className='menu-item'
-            style={{ display: 'block', textDecoration: 'none' }}
+            className='menu-item nav-link-block'
             aria-current='page'>
             Home
           </NavigationMenu.Link>
@@ -314,25 +296,20 @@ export default function App() {
           <NavigationMenu.Trigger className='btn btn-ghost'>
             Products <span aria-hidden>▾</span>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content
-            className='panel stack'
-            style={{ minWidth: 180, gap: 4 }}>
+          <NavigationMenu.Content className='panel stack nav-content-min180'>
             <NavigationMenu.Link
               href='/products/all'
-              className='menu-item'
-              style={{ display: 'block', textDecoration: 'none' }}>
+              className='menu-item nav-link-block'>
               All Products
             </NavigationMenu.Link>
             <NavigationMenu.Link
               href='/products/new'
-              className='menu-item'
-              style={{ display: 'block', textDecoration: 'none' }}>
+              className='menu-item nav-link-block'>
               New Arrivals
             </NavigationMenu.Link>
             <NavigationMenu.Link
               href='/products/sale'
-              className='menu-item'
-              style={{ display: 'block', textDecoration: 'none' }}>
+              className='menu-item nav-link-block'>
               Sale
             </NavigationMenu.Link>
           </NavigationMenu.Content>
@@ -342,19 +319,15 @@ export default function App() {
           <NavigationMenu.Trigger className='btn btn-ghost'>
             Company <span aria-hidden>▾</span>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content
-            className='panel stack'
-            style={{ minWidth: 180, gap: 4 }}>
+          <NavigationMenu.Content className='panel stack nav-content-min180'>
             <NavigationMenu.Link
               href='/about'
-              className='menu-item'
-              style={{ display: 'block', textDecoration: 'none' }}>
+              className='menu-item nav-link-block'>
               About us
             </NavigationMenu.Link>
             <NavigationMenu.Link
               href='/careers'
-              className='menu-item'
-              style={{ display: 'block', textDecoration: 'none' }}>
+              className='menu-item nav-link-block'>
               Careers
             </NavigationMenu.Link>
           </NavigationMenu.Content>
@@ -363,14 +336,13 @@ export default function App() {
         <NavigationMenu.Item>
           <NavigationMenu.Link
             href='/contact'
-            className='menu-item'
-            style={{ display: 'block', textDecoration: 'none' }}>
+            className='menu-item nav-link-block'>
             Contact
           </NavigationMenu.Link>
         </NavigationMenu.Item>
       </NavigationMenu.List>
 
-      <NavigationMenu.Viewport style={{ position: 'absolute', top: '100%', left: 0 }} />
+      <NavigationMenu.Viewport className='nav-viewport' />
     </NavigationMenu.Root>
   )
 }`
@@ -448,7 +420,7 @@ export default function App() {
         items={items}
         selectedKeys={[current]}
         onClick={({ key }) => setCurrent(key)}
-        style={{ borderBottom: 'none' }}
+        className='nav-ant-menu-border-none'
       />
     </nav>
   )
@@ -529,53 +501,32 @@ export default function App() {
       className='app'>
       <MenuTrigger>
         <Button className='btn'>File ▾</Button>
-        <Popover
-          className='panel'
-          style={{ padding: 4, outline: 'none', minWidth: 180 }}>
+        <Popover className='panel nav-spectrum-popover'>
           <Menu
             onAction={(key) => alert(\`Action: \${key}\`)}
-            style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+            className='nav-spectrum-menu'>
             <MenuSection>
               <Header
                 className='label'
-                style={{ padding: '4px 12px', textTransform: 'uppercase', fontSize: 11, color: '#6b7280' }}>
+                className='label nav-spectrum-section-header'>
                 Actions
               </Header>
               <MenuItem
                 id='new'
-                style={({ isFocused }) => ({
-                  padding: '8px 14px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  outline: 'none',
-                  background: isFocused ? '#fef2f2' : 'transparent'
-                })}>
+                className='nav-spectrum-menuitem'>
                 <Text slot='label'>New file</Text>
                 <Text slot='description'>Create a new document</Text>
               </MenuItem>
               <MenuItem
                 id='open'
-                style={({ isFocused }) => ({
-                  padding: '8px 14px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  outline: 'none',
-                  background: isFocused ? '#fef2f2' : 'transparent'
-                })}>
+                className='nav-spectrum-menuitem'>
                 <Text slot='label'>Open...</Text>
               </MenuItem>
             </MenuSection>
-            <Separator style={{ height: 1, background: '#e5e7eb', margin: '4px 0' }} />
+            <Separator className='nav-spectrum-separator' />
             <MenuItem
               id='quit'
-              style={({ isFocused }) => ({
-                padding: '8px 14px',
-                borderRadius: 4,
-                cursor: 'pointer',
-                outline: 'none',
-                background: isFocused ? '#fef2f2' : 'transparent',
-                color: '#dc2626'
-              })}>
+              className='nav-spectrum-menuitem nav-spectrum-quit'>
               Quit
             </MenuItem>
           </Menu>
@@ -626,30 +577,23 @@ export default function App() {
   return (
     <NavigationMenu.Root
       aria-label='Main navigation'
-      style={{ position: 'relative', padding: '1rem' }}>
-      <NavigationMenu.List
-        className='row'
-        style={{ listStyle: 'none', margin: 0, padding: 0, gap: 4 }}>
+      className='app'>
+      <NavigationMenu.List className='row'>
         {ITEMS.map((item) => (
           <NavigationMenu.Item key={item.id}>
-            <NavigationMenu.Trigger
-              className='btn btn-ghost row'
-              style={{ gap: 4, fontWeight: 500 }}>
+            <NavigationMenu.Trigger className='btn btn-ghost row'>
               {item.label}
               <NavigationMenu.Icon>
                 <span aria-hidden>▾</span>
               </NavigationMenu.Icon>
             </NavigationMenu.Trigger>
             <NavigationMenu.Content>
-              <ul
-                className='menu'
-                style={{ margin: 0 }}>
+              <ul className='menu'>
                 {item.links.map((link) => (
                   <li key={link}>
                     <NavigationMenu.Link
                       render={<a href='#' />}
-                      className='menu-item'
-                      style={{ display: 'block', textDecoration: 'none', color: '#374151' }}>
+                      className='menu-item'>
                       {link}
                     </NavigationMenu.Link>
                   </li>
@@ -663,10 +607,8 @@ export default function App() {
       <NavigationMenu.Portal>
         <NavigationMenu.Positioner
           sideOffset={10}
-          style={{ position: 'absolute', top: '100%', left: 0 }}>
-          <NavigationMenu.Popup
-            className='panel'
-            style={{ minWidth: 180 }}>
+          className='nav-viewport'>
+          <NavigationMenu.Popup className='panel'>
             <NavigationMenu.Viewport />
           </NavigationMenu.Popup>
         </NavigationMenu.Positioner>

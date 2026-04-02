@@ -131,7 +131,8 @@ export function Accordion() {
       codeSample: {
         language: 'tsx',
         label: 'MUI Accordion',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
 
 const ITEMS = [
@@ -148,7 +149,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: '24px auto', padding: '0 16px' }}>
+    <div className='app accordion-root'>
       {ITEMS.map((item) => (
         <Accordion
           key={item.id}
@@ -199,7 +200,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Accordion',
-        code: `import * as Accordion from '@radix-ui/react-accordion'
+        code: `import './index.css'
+import * as Accordion from '@radix-ui/react-accordion'
 
 const ITEMS = [
   {
@@ -224,32 +226,19 @@ export default function App() {
     <Accordion.Root
       type='single'
       collapsible
-      style={{ width: '100%', maxWidth: 560, margin: '24px auto' }}>
+      className='app accordion-root'>
       {ITEMS.map((item) => (
         <Accordion.Item
           key={item.value}
           value={item.value}
-          style={{ borderBottom: '1px solid #e2e8f0' }}>
+          className='accordion-item-sep'>
           <Accordion.Header>
-            <Accordion.Trigger
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-                padding: '14px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 15,
-                fontWeight: 500,
-                textAlign: 'left'
-              }}>
+            <Accordion.Trigger className='accordion-trigger-btn'>
               {item.heading}
               <span aria-hidden>›</span>
             </Accordion.Trigger>
           </Accordion.Header>
-          <Accordion.Content style={{ padding: '0 0 14px', fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>{item.content}</Accordion.Content>
+          <Accordion.Content className='accordion-content-text'>{item.content}</Accordion.Content>
         </Accordion.Item>
       ))}
     </Accordion.Root>
@@ -292,30 +281,31 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Collapse',
-        code: `import { Collapse } from 'antd'
+        code: `import './index.css'
+import { Collapse } from 'antd'
 
 const items = [
   {
     key: '1',
     label: 'What is Ant Design?',
-    children: <p style={{ margin: 0 }}>Ant Design is an enterprise-class UI design language and React component library.</p>
+    children: <p className='mb-0'>Ant Design is an enterprise-class UI design language and React component library.</p>
   },
   {
     key: '2',
     label: 'Is it accessible?',
-    children: <p style={{ margin: 0 }}>Ant Design Collapse manages aria-expanded automatically and supports keyboard navigation.</p>
+    children: <p className='mb-0'>Ant Design Collapse manages aria-expanded automatically and supports keyboard navigation.</p>
   },
   {
     key: '3',
     label: 'Disabled panel',
-    children: <p style={{ margin: 0 }}>This panel cannot be collapsed.</p>,
+    children: <p className='mb-0'>This panel cannot be collapsed.</p>,
     collapsible: 'disabled'
   }
 ]
 
 export default function App() {
   return (
-    <div style={{ padding: '24px', maxWidth: 600 }}>
+    <div className='app max-w-560'>
       <Collapse
         accordion
         items={items}
@@ -347,7 +337,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Accordion',
-        code: `import { Accordion } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Accordion } from '@chakra-ui/react'
 
 const ITEMS = [
   { value: 'shipping', label: 'Shipping Info', body: 'Ships within 2–3 business days after order confirmation.' },
@@ -360,30 +351,18 @@ export default function App() {
     <Accordion.Root
       collapsible
       defaultValue={['shipping']}
-      style={{ maxWidth: 480, padding: '1rem' }}>
+      className='app max-w-480'>
       {ITEMS.map((item) => (
         <Accordion.Item
           key={item.value}
           value={item.value}
-          style={{ borderBottom: '1px solid #e2e8f0' }}>
-          <Accordion.ItemTrigger
-            style={{
-              padding: '12px 0',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer',
-              background: 'none',
-              border: 'none',
-              fontSize: 15,
-              fontWeight: 500
-            }}>
+          className='accordion-item-sep'>
+          <Accordion.ItemTrigger className='accordion-trigger-btn'>
             {item.label}
             <Accordion.ItemIndicator aria-hidden />
           </Accordion.ItemTrigger>
           <Accordion.ItemContent>
-            <Accordion.ItemBody style={{ padding: '0 0 12px', fontSize: 14, color: '#4a5568' }}>{item.body}</Accordion.ItemBody>
+            <Accordion.ItemBody className='accordion-content-text'>{item.body}</Accordion.ItemBody>
           </Accordion.ItemContent>
         </Accordion.Item>
       ))}
@@ -413,7 +392,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria DisclosureGroup',
-        code: `import { Disclosure, DisclosureGroup, Heading, DisclosurePanel, Button } from 'react-aria-components'
+        code: `import './index.css'
+import { Disclosure, DisclosureGroup, Heading, DisclosurePanel, Button } from 'react-aria-components'
 
 const ITEMS = [
   { id: 'shipping', title: 'Shipping Info', content: 'Ships within 2–3 business days after order confirmation.' },
@@ -425,33 +405,21 @@ export default function App() {
   return (
     <DisclosureGroup
       defaultExpandedKeys={['shipping']}
-      style={{ maxWidth: 480, padding: '1rem' }}>
+      className='app max-w-480'>
       {ITEMS.map((item) => (
         <Disclosure
           key={item.id}
           id={item.id}
-          style={{ borderBottom: '1px solid #e5e7eb' }}>
+          className='accordion-item-sep'>
           <Heading>
             <Button
               slot='trigger'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                padding: '12px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: 600,
-                textAlign: 'left'
-              }}>
+              className='accordion-trigger-btn'>
               {item.title}
               <span aria-hidden>›</span>
             </Button>
           </Heading>
-          <DisclosurePanel style={{ padding: '0 0 12px', fontSize: 14, color: '#4b5563' }}>{item.content}</DisclosurePanel>
+          <DisclosurePanel className='accordion-content-text'>{item.content}</DisclosurePanel>
         </Disclosure>
       ))}
     </DisclosureGroup>
@@ -486,7 +454,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Accordion',
-        code: `import { Accordion } from '@base-ui-components/react/accordion'
+        code: `import './index.css'
+import { Accordion } from '@base-ui-components/react/accordion'
 
 const ITEMS = [
   { value: 'q1', heading: 'What is Base UI?', content: 'Base UI is a library of unstyled React components for design systems and web apps.' },
@@ -500,32 +469,19 @@ const ITEMS = [
 
 export default function App() {
   return (
-    <Accordion.Root style={{ width: '100%', maxWidth: 560, margin: '24px auto', padding: '0 16px' }}>
+    <Accordion.Root className='app accordion-root'>
       {ITEMS.map((item) => (
         <Accordion.Item
           key={item.value}
           value={item.value}
-          style={{ borderBottom: '1px solid #e2e8f0' }}>
+          className='accordion-item-sep'>
           <Accordion.Header>
-            <Accordion.Trigger
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%',
-                padding: '14px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 15,
-                fontWeight: 500,
-                textAlign: 'left'
-              }}>
+            <Accordion.Trigger className='accordion-trigger-btn'>
               {item.heading}
               <span aria-hidden>+</span>
             </Accordion.Trigger>
           </Accordion.Header>
-          <Accordion.Panel style={{ padding: '0 0 14px', fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>{item.content}</Accordion.Panel>
+          <Accordion.Panel className='accordion-content-text'>{item.content}</Accordion.Panel>
         </Accordion.Item>
       ))}
     </Accordion.Root>
