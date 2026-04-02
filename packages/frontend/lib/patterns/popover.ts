@@ -213,35 +213,105 @@ export default function App() {
       additionalChecks: [
         {
           id: 'popover-radix-1',
-          title: '접근성 자동 처리',
-          description: 'Radix Popover는 aria-expanded, 포커스 관리, Escape 닫기를 모두 자동으로 처리합니다. 별도 구현 불필요합니다.',
+          title: 'Popover.Close에 aria-label 제공',
+          description: '닫기 버튼에 아이콘이나 텍스트 심볼만 사용할 경우 aria-label을 추가해 스크린리더 사용자에게 동작을 알리세요.',
+          level: 'must'
+        },
+        {
+          id: 'popover-radix-2',
+          title: 'sideOffset으로 팝오버 간격 조정',
+          description: 'Popover.Content의 sideOffset prop으로 트리거와 팝오버 간의 간격을 설정하세요. 너무 가까우면 시각적으로 혼동될 수 있습니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Popover',
-        code: `import * as Popover from '@radix-ui/react-popover'
-<Popover.Root>
-  <Popover.Trigger asChild>
-    <button>Open settings</button>
-  </Popover.Trigger>
-  <Popover.Portal>
-    <Popover.Content
-      sideOffset={5}
-      aria-label='Settings'>
-      <h3>Settings</h3>
-      <button>Enable notifications</button>
-      <Popover.Close aria-label='Close'>×</Popover.Close>
-      <Popover.Arrow />
-    </Popover.Content>
-  </Popover.Portal>
-</Popover.Root>`
+        code: `import { useState } from 'react'
+import * as Popover from '@radix-ui/react-popover'
+
+export default function App() {
+  const [notifications, setNotifications] = useState(true)
+  const [emails, setEmails] = useState(false)
+
+  return (
+    <div style={{ padding: 24 }}>
+      <Popover.Root>
+        <Popover.Trigger
+          style={{
+            padding: '8px 16px',
+            borderRadius: 6,
+            border: '1px solid #6e56cf',
+            background: 'white',
+            color: '#6e56cf',
+            cursor: 'pointer',
+            fontSize: 14,
+            fontWeight: 500
+          }}>
+          Notification settings
+        </Popover.Trigger>
+
+        <Popover.Portal>
+          <Popover.Content
+            sideOffset={8}
+            style={{
+              background: 'white',
+              border: '1px solid #e5e7eb',
+              borderRadius: 10,
+              padding: 16,
+              minWidth: 260,
+              boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+              zIndex: 100
+            }}>
+            <p style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 600 }}>Notification settings</p>
+
+            <label
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, fontSize: 14, cursor: 'pointer' }}>
+              Push notifications
+              <input
+                type='checkbox'
+                checked={notifications}
+                onChange={(e) => setNotifications(e.target.checked)}
+              />
+            </label>
+            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14, cursor: 'pointer' }}>
+              Email notifications
+              <input
+                type='checkbox'
+                checked={emails}
+                onChange={(e) => setEmails(e.target.checked)}
+              />
+            </label>
+
+            <Popover.Arrow style={{ fill: 'white', filter: 'drop-shadow(0 -1px 0 #e5e7eb)' }} />
+
+            <Popover.Close
+              aria-label='Close notification settings'
+              style={{
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 16,
+                color: '#9ca3af',
+                lineHeight: 1
+              }}>
+              ✕
+            </Popover.Close>
+          </Popover.Content>
+        </Popover.Portal>
+      </Popover.Root>
+    </div>
+  )
+}`
       },
       notes: [
-        'Radix Popover는 Space/Enter로 열기, Escape로 닫기, 트리거로 포커스 복귀를 자동 처리합니다.',
-        'aria-expanded는 Popover.Trigger에 자동으로 적용됩니다.',
-        'Popover.Portal로 감싸면 z-index 문제 없이 DOM 최상단에 렌더링됩니다.'
+        'Popover.Trigger에 aria-expanded가 자동으로 관리됩니다. Space/Enter로 열기, Escape로 닫기, 외부 클릭으로 닫기가 기본 지원됩니다.',
+        'Popover.Portal로 감싸면 body 최상단에 렌더링되어 overflow:hidden이나 z-index 문제를 방지합니다.',
+        'Popover.Content는 열릴 때 내부의 첫 번째 포커스 가능한 요소로 포커스가 이동합니다. 닫힐 때 Trigger로 포커스가 복원됩니다.',
+        'side("top"|"right"|"bottom"|"left"), align("start"|"center"|"end"), sideOffset으로 팝오버 위치를 제어하세요.'
       ]
     },
     antd: {
@@ -252,45 +322,87 @@ export default function App() {
         {
           id: 'popover-antd-1',
           title: '트리거에 aria-expanded 직접 추가',
-          description: 'Ant Design Popover는 트리거 버튼에 aria-expanded를 자동으로 추가하지 않습니다. open 상태를 직접 관리하여 추가하세요.',
+          description:
+            'Ant Design Popover는 트리거 버튼에 aria-expanded를 자동으로 추가하지 않습니다. open 상태를 직접 관리하여 aria-expanded={open}을 추가하세요.',
+          level: 'must'
+        },
+        {
+          id: 'popover-antd-2',
+          title: 'content 안에 닫기 버튼 포함',
+          description:
+            'Ant Design Popover는 기본적으로 Escape 키로 닫히지 않습니다. 키보드 사용자를 위해 팝오버 내부에 명시적 닫기 버튼을 항상 제공하세요.',
+          level: 'must'
+        },
+        {
+          id: 'popover-antd-3',
+          title: 'trigger="click"으로 키보드 접근성 확보',
+          description:
+            'trigger="hover"만 설정하면 키보드 사용자가 팝오버를 열 수 없습니다. trigger="click"이나 trigger={["hover", "focus"]}로 설정하세요.',
           level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Popover',
-        code: `import { Popover, Button } from 'antd'
+        code: `import { useState } from 'react'
+import { Popover, Button, Space, Typography } from 'antd'
 
-function AntdPopoverDemo() {
+export default function App() {
   const [open, setOpen] = useState(false)
 
   const content = (
-    <div>
-      <p>Settings content</p>
-      <Button onClick={() => setOpen(false)}>Close</Button>
+    <div style={{ width: 240 }}>
+      <Typography.Text style={{ display: 'block', marginBottom: 8, color: '#595959', fontSize: 13 }}>
+        Configure your notification preferences below.
+      </Typography.Text>
+      <Space
+        direction='vertical'
+        style={{ width: '100%', marginBottom: 12 }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+          <input
+            type='checkbox'
+            defaultChecked
+          />{' '}
+          Email notifications
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+          <input type='checkbox' /> Push notifications
+        </label>
+      </Space>
+      <Button
+        size='small'
+        onClick={() => setOpen(false)}
+        aria-label='Close settings popover'>
+        Close
+      </Button>
     </div>
   )
 
   return (
-    <Popover
-      content={content}
-      title='Settings'
-      open={open}
-      onOpenChange={setOpen}
-      trigger='click'>
-      <Button
-        aria-expanded={open}
-        aria-haspopup='dialog'>
-        Open settings
-      </Button>
-    </Popover>
+    <div style={{ padding: '24px' }}>
+      <Popover
+        content={content}
+        title='Notification Settings'
+        open={open}
+        onOpenChange={setOpen}
+        trigger='click'
+        placement='bottomLeft'>
+        <Button
+          type='default'
+          aria-expanded={open}
+          aria-haspopup='dialog'>
+          ⚙ Settings
+        </Button>
+      </Popover>
+    </div>
   )
 }`
       },
       notes: [
-        'trigger="click"으로 설정하면 키보드 Enter/Space로도 열립니다.',
-        '트리거 버튼에 aria-expanded와 aria-haspopup을 직접 추가해야 합니다.',
-        'Ant Design Popover는 Escape 키로 닫히지 않으므로 닫기 버튼을 content 안에 포함하세요.'
+        'trigger="click"으로 설정하면 키보드 Enter/Space로도 팝오버를 열 수 있습니다.',
+        'open 상태를 직접 관리하고 트리거에 aria-expanded={open}과 aria-haspopup="dialog"를 추가해야 합니다.',
+        'Ant Design Popover는 Escape 키 닫기를 자동 처리하지 않으므로 content 안에 닫기 버튼을 반드시 포함하세요.',
+        'onOpenChange 콜백으로 외부 클릭 시 닫기 동작을 제어할 수 있습니다.'
       ]
     },
     chakra: {
@@ -308,65 +420,272 @@ function AntdPopoverDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Popover',
-        code: `import { Popover, Button } from '@chakra-ui/react'
-<Popover.Root>
-  <Popover.Trigger asChild>
-    <Button variant='outline'>Open settings</Button>
-  </Popover.Trigger>
-  <Popover.Positioner>
-    <Popover.Content>
-      <Popover.Arrow>
-        <Popover.ArrowTip />
-      </Popover.Arrow>
-      <Popover.Body>
-        <Popover.Title>Notification Settings</Popover.Title>
-        <p>Configure your notification preferences.</p>
-      </Popover.Body>
-      <Popover.CloseTrigger asChild>
-        <Button
-          variant='ghost'
-          size='sm'
-          aria-label='Close'>
-          ✕
-        </Button>
-      </Popover.CloseTrigger>
-    </Popover.Content>
-  </Popover.Positioner>
-</Popover.Root>`
+        code: `import { useState } from 'react'
+import { Popover, Button, Stack } from '@chakra-ui/react'
+
+export default function App() {
+  const [notifications, setNotifications] = useState(true)
+  const [emails, setEmails] = useState(false)
+
+  return (
+    <div style={{ padding: '1.5rem' }}>
+      <Popover.Root>
+        <Popover.Trigger asChild>
+          <Button
+            colorPalette='teal'
+            variant='outline'>
+            Notification settings
+          </Button>
+        </Popover.Trigger>
+        <Popover.Positioner>
+          <Popover.Content style={{ minWidth: 260 }}>
+            <Popover.Arrow>
+              <Popover.ArrowTip />
+            </Popover.Arrow>
+            <Popover.CloseTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                aria-label='Close settings popover'
+                style={{ position: 'absolute', top: 6, right: 6 }}>
+                ✕
+              </Button>
+            </Popover.CloseTrigger>
+            <Popover.Body>
+              <Popover.Title style={{ marginBottom: 12 }}>Notification Settings</Popover.Title>
+              <Stack gap={3}>
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14 }}>
+                  Push notifications
+                  <input
+                    type='checkbox'
+                    checked={notifications}
+                    onChange={(e) => setNotifications(e.target.checked)}
+                  />
+                </label>
+                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14 }}>
+                  Email notifications
+                  <input
+                    type='checkbox'
+                    checked={emails}
+                    onChange={(e) => setEmails(e.target.checked)}
+                  />
+                </label>
+              </Stack>
+            </Popover.Body>
+          </Popover.Content>
+        </Popover.Positioner>
+      </Popover.Root>
+    </div>
+  )
+}`
       },
       notes: [
-        'Chakra Popover.Root는 포커스 트랩과 aria 속성을 자동 처리합니다.',
-        'Popover.CloseTrigger에 aria-label을 추가하세요.',
-        'closeOnInteractOutside prop으로 외부 클릭 닫기를 제어하세요.'
+        'Chakra Popover.Root는 포커스 트랩, aria-expanded, Escape 키 닫기를 자동 처리합니다.',
+        'Popover.CloseTrigger에 aria-label을 반드시 추가하세요.',
+        'closeOnInteractOutside prop으로 외부 클릭 닫기 동작을 제어하세요.',
+        'autoFocus 기본값은 true로 팝오버 열릴 때 첫 번째 포커스 가능 요소로 포커스가 이동합니다.'
       ]
     },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'popover-spectrum-1',
+          title: 'placement prop으로 위치 제어',
+          description:
+            "placement='top' | 'bottom' | 'left' | 'right' 등으로 팝오버 위치를 지정하세요. shouldFlip={true}(기본)로 뷰포트 경계에서 자동 반전됩니다.",
+          level: 'should'
+        }
+      ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria Popover',
-        code: `import { DialogTrigger, Button, Popover, Dialog, Heading } from 'react-aria-components'
+        code: `import { useState } from 'react'
+import { DialogTrigger, Button, Popover, Dialog, Heading, Switch } from 'react-aria-components'
 
-const btnStyle = { padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 14 }
-const popoverStyle = { background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none', maxWidth: 280 }
+export default function App() {
+  const [wifi, setWifi] = useState(true)
+  const [bluetooth, setBluetooth] = useState(false)
 
-<DialogTrigger>
-  <Button style={btnStyle}>Open settings</Button>
-  <Popover style={popoverStyle}>
-    <Dialog style={{ outline: 'none' }}>
-      <Heading slot='title' style={{ margin: '0 0 8px', fontSize: 15, fontWeight: 600 }}>Notification Settings</Heading>
-      <p style={{ margin: 0, fontSize: 13, color: '#4b5563' }}>Configure your notification preferences.</p>
-    </Dialog>
-  </Popover>
-</DialogTrigger>`
+  return (
+    <div style={{ padding: '1.5rem' }}>
+      <DialogTrigger>
+        <Button style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 14 }}>
+          ⚙ Settings
+        </Button>
+        <Popover
+          placement='bottom start'
+          style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none', minWidth: 220 }}>
+          <Dialog style={{ outline: 'none' }}>
+            <Heading
+              slot='title'
+              style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 600 }}>
+              Quick Settings
+            </Heading>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <Switch
+                isSelected={wifi}
+                onChange={setWifi}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 13 }}>
+                {({ isSelected }) => (
+                  <>
+                    Wi-Fi
+                    <div
+                      style={{
+                        width: 36,
+                        height: 20,
+                        borderRadius: 10,
+                        background: isSelected ? '#e03' : '#d1d5db',
+                        padding: 2,
+                        transition: 'background .2s'
+                      }}>
+                      <div
+                        style={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: '50%',
+                          background: '#fff',
+                          transform: isSelected ? 'translateX(16px)' : 'translateX(0)',
+                          transition: 'transform .2s'
+                        }}
+                      />
+                    </div>
+                  </>
+                )}
+              </Switch>
+              <Switch
+                isSelected={bluetooth}
+                onChange={setBluetooth}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 13 }}>
+                {({ isSelected }) => (
+                  <>
+                    Bluetooth
+                    <div
+                      style={{
+                        width: 36,
+                        height: 20,
+                        borderRadius: 10,
+                        background: isSelected ? '#e03' : '#d1d5db',
+                        padding: 2,
+                        transition: 'background .2s'
+                      }}>
+                      <div
+                        style={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: '50%',
+                          background: '#fff',
+                          transform: isSelected ? 'translateX(16px)' : 'translateX(0)',
+                          transition: 'transform .2s'
+                        }}
+                      />
+                    </div>
+                  </>
+                )}
+              </Switch>
+            </div>
+          </Dialog>
+        </Popover>
+      </DialogTrigger>
+    </div>
+  )
+}`
       },
       notes: [
-        'React Aria Popover는 DialogTrigger와 함께 사용합니다.',
-        "Dialog의 Heading에 slot='title'을 설정하면 aria-labelledby가 자동 연결됩니다.",
-        'Popover는 자동으로 포커스 관리와 aria 속성을 처리합니다.'
+        "Popover는 DialogTrigger와 함께 사용합니다. Dialog 내부의 Heading에 slot='title'을 지정하면 aria-labelledby가 자동 연결됩니다.",
+        'placement prop으로 위치를 지정하고 shouldFlip(기본 true)으로 뷰포트 경계에서 자동 반전됩니다.',
+        'ESC 키로 팝오버를 닫고 트리거로 포커스가 자동 복원됩니다.',
+        'isNonModal prop을 설정하면 팝오버 외부 요소와 상호작용할 수 있습니다.'
+      ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'popover-baseui-1',
+          title: 'Popover.Title과 Popover.Description 제공',
+          description:
+            'Popover.Title은 aria-labelledby로, Popover.Description은 aria-describedby로 자동 연결됩니다. 의미 있는 팝오버에는 반드시 포함하세요.',
+          level: 'should'
+        },
+        {
+          id: 'popover-baseui-2',
+          title: 'Portal과 Positioner 사용',
+          description: 'Popover.Portal은 body에 렌더링하고 Popover.Positioner는 앵커 기반 위치 계산을 처리합니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI Popover',
+        code: `import { Popover } from '@base-ui-components/react/popover'
+
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem' }}>
+      <Popover.Root>
+        <Popover.Trigger
+          style={{
+            padding: '8px 20px',
+            borderRadius: 6,
+            border: '1px solid #e5e7eb',
+            background: '#fff',
+            cursor: 'pointer',
+            fontSize: 14
+          }}>
+          Notification settings
+        </Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Positioner sideOffset={8}>
+            <Popover.Popup
+              style={{
+                background: '#fff',
+                border: '1px solid #e5e7eb',
+                borderRadius: 8,
+                padding: '16px',
+                minWidth: 240,
+                boxShadow: '0 4px 16px rgba(0,0,0,.1)'
+              }}>
+              <Popover.Arrow
+                style={{
+                  fill: '#fff',
+                  stroke: '#e5e7eb',
+                  strokeWidth: 1
+                }}
+              />
+              <Popover.Title style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 600 }}>Notifications</Popover.Title>
+              <Popover.Description style={{ margin: '0 0 12px', fontSize: 13, color: '#6b7280' }}>
+                You are all caught up. Good job!
+              </Popover.Description>
+              <Popover.Close
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 6,
+                  border: '1px solid #e5e7eb',
+                  background: '#fff',
+                  cursor: 'pointer',
+                  fontSize: 13
+                }}>
+                Dismiss
+              </Popover.Close>
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
+    </div>
+  )
+}`
+      },
+      notes: [
+        'Popover.Trigger는 aria-expanded와 aria-haspopup을 자동으로 관리합니다.',
+        'Popover.Title은 aria-labelledby로, Popover.Description은 aria-describedby로 자동 연결됩니다.',
+        'Popover.Positioner의 sideOffset prop으로 트리거와의 간격을 설정하세요.',
+        'Escape 키로 팝오버를 닫고 트리거로 포커스가 자동 복원됩니다.',
+        'open/onOpenChange prop으로 제어 모드, defaultOpen으로 비제어 모드로 사용하세요.'
       ]
     }
   }

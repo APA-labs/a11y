@@ -186,60 +186,90 @@ export default function App() {
       additionalChecks: [
         {
           id: 'tog-radix-1',
-          title: 'Switch.Thumb 시각적 표시',
-          description: 'Switch.Thumb은 aria-hidden으로 처리되며 시각적 표시만 담당합니다. 충분한 색상 대비를 유지하세요.',
-          level: 'should'
+          title: 'Switch.Root에 label 연결 필수',
+          description:
+            'Switch.Root를 <label>로 감싸거나 htmlFor/id로 연결해 접근 가능한 이름을 제공하세요. label이 없으면 스크린리더가 목적을 알 수 없습니다.',
+          level: 'must'
         },
         {
           id: 'tog-radix-2',
-          title: 'onCheckedChange 상태 관리',
-          description: 'controlled 모드에서 checked prop과 onCheckedChange를 함께 사용하세요.',
-          level: 'must'
+          title: 'Switch.Thumb에 충분한 색상 대비 유지',
+          description:
+            'Switch.Thumb은 aria-hidden으로 처리되며 시각적 표시만 담당합니다. on/off 상태 모두에서 배경과의 대비율을 3:1 이상 유지하세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Switch',
-        code: `import * as Switch from '@radix-ui/react-switch'
-<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-  <label
-    htmlFor='notifications'
-    style={{ fontSize: 14, fontWeight: 500 }}>
-    Notification settings
-  </label>
-  <Switch.Root
-    id='notifications'
-    checked={isEnabled}
-    onCheckedChange={setIsEnabled}
-    style={{
-      width: 44,
-      height: 24,
-      borderRadius: 9999,
-      border: 'none',
-      padding: 2,
-      backgroundColor: isEnabled ? '#2563eb' : '#e5e7eb',
-      transition: 'background-color 0.2s',
-      cursor: 'pointer'
-    }}>
-    <Switch.Thumb
-      style={{
-        display: 'block',
-        width: 20,
-        height: 20,
-        borderRadius: 9999,
-        backgroundColor: 'white',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-        transform: isEnabled ? 'translateX(20px)' : 'translateX(0)',
-        transition: 'transform 0.2s'
-      }}
-    />
-  </Switch.Root>
-</div>`
+        code: `import { useState } from 'react'
+import * as Switch from '@radix-ui/react-switch'
+
+const SETTINGS = [
+  { id: 'push', label: 'Push notifications', defaultChecked: true },
+  { id: 'email', label: 'Email notifications', defaultChecked: false },
+  { id: 'sms', label: 'SMS alerts', defaultChecked: false }
+]
+
+export default function App() {
+  const [settings, setSettings] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.defaultChecked])))
+
+  const toggle = (id: string, val: boolean) => setSettings((prev) => ({ ...prev, [id]: val }))
+
+  return (
+    <div style={{ maxWidth: 360, margin: '24px auto', padding: '0 16px' }}>
+      <p style={{ margin: '0 0 16px', fontWeight: 600 }}>Notification preferences</p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {SETTINGS.map((s) => (
+          <div
+            key={s.id}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label
+              htmlFor={s.id}
+              style={{ fontSize: 14, cursor: 'pointer' }}>
+              {s.label}
+            </label>
+            <Switch.Root
+              id={s.id}
+              checked={settings[s.id]}
+              onCheckedChange={(val) => toggle(s.id, val)}
+              style={{
+                width: 44,
+                height: 24,
+                borderRadius: 9999,
+                border: 'none',
+                padding: 2,
+                backgroundColor: settings[s.id] ? '#6e56cf' : '#d1d5db',
+                transition: 'background-color 0.15s',
+                cursor: 'pointer',
+                flexShrink: 0,
+                position: 'relative'
+              }}>
+              <Switch.Thumb
+                style={{
+                  display: 'block',
+                  width: 20,
+                  height: 20,
+                  borderRadius: 9999,
+                  backgroundColor: 'white',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+                  transform: settings[s.id] ? 'translateX(20px)' : 'translateX(0)',
+                  transition: 'transform 0.15s'
+                }}
+              />
+            </Switch.Root>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}`
       },
       notes: [
-        'Radix Switch는 role="switch"와 aria-checked를 자동으로 관리합니다.',
-        'Switch.Root에 연결된 label은 htmlFor/id로 연결하세요.',
-        'Thumb은 자동으로 aria-hidden 처리됩니다.'
+        'Switch.Root는 role="switch"와 aria-checked를 자동으로 관리합니다. Space 키로 토글이 기본 지원됩니다.',
+        'htmlFor/id로 label을 연결하거나 Switch.Root를 <label>로 감싸 접근 가능한 이름을 제공하세요.',
+        'Switch.Thumb은 aria-hidden으로 자동 처리됩니다. 시각적 표시를 위한 스타일만 담당합니다.',
+        'checked + onCheckedChange(제어 모드) 또는 defaultChecked(비제어 모드)로 상태를 관리하세요.'
       ]
     },
     antd: {
@@ -249,37 +279,81 @@ export default function App() {
       additionalChecks: [
         {
           id: 'tog-antd-1',
-          title: 'checkedChildren 텍스트 제공',
-          description: 'checkedChildren과 unCheckedChildren으로 on/off 상태를 텍스트로 표시하세요.',
-          level: 'should'
+          title: 'aria-label로 스위치 목적 명시',
+          description:
+            'Ant Design Switch에 aria-label을 직접 추가하거나 htmlFor/id로 label과 연결하세요. 시각적 레이블이 없으면 스크린리더가 스위치 목적을 알 수 없습니다.',
+          level: 'must'
         },
         {
           id: 'tog-antd-2',
-          title: 'aria-label 추가',
-          description: 'Ant Design Switch에 aria-label을 직접 추가해 목적을 명시하세요.',
-          level: 'must'
+          title: 'checkedChildren/unCheckedChildren으로 상태 텍스트 제공',
+          description:
+            'checkedChildren과 unCheckedChildren prop으로 on/off 상태를 텍스트로 표시하면 색맹 사용자와 스크린리더 사용자 모두에게 유용합니다.',
+          level: 'should'
+        },
+        {
+          id: 'tog-antd-3',
+          title: 'loading 상태 시 aria-busy 추가',
+          description: 'loading={true}로 비동기 처리 중임을 표시할 경우 aria-busy="true"를 함께 추가해 스크린리더에 처리 중임을 알리세요.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Switch',
-        code: `import { Switch } from 'antd'
-<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-  <label htmlFor='notifications'>Notification settings</label>
-  <Switch
-    id='notifications'
-    checked={isEnabled}
-    onChange={setIsEnabled}
-    checkedChildren='On'
-    unCheckedChildren='Off'
-    aria-label='Notification settings'
-  />
-</div>`
+        code: `import { useState } from 'react'
+import { Switch, Typography, Space } from 'antd'
+
+const SETTINGS = [
+  { id: 'push', label: 'Push notifications', defaultChecked: true },
+  { id: 'email', label: 'Email notifications', defaultChecked: false },
+  { id: 'sms', label: 'SMS alerts', defaultChecked: false }
+]
+
+export default function App() {
+  const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.defaultChecked])))
+
+  const toggle = (id: string, checked: boolean) => setValues((prev) => ({ ...prev, [id]: checked }))
+
+  return (
+    <div style={{ padding: '24px', maxWidth: 360 }}>
+      <Typography.Title
+        level={5}
+        style={{ marginBottom: 16 }}>
+        Notification Preferences
+      </Typography.Title>
+      <Space
+        direction='vertical'
+        style={{ width: '100%' }}
+        size={16}>
+        {SETTINGS.map((s) => (
+          <div
+            key={s.id}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label
+              htmlFor={s.id}
+              style={{ fontSize: 14, cursor: 'pointer' }}>
+              {s.label}
+            </label>
+            <Switch
+              id={s.id}
+              checked={values[s.id]}
+              onChange={(checked) => toggle(s.id, checked)}
+              checkedChildren='On'
+              unCheckedChildren='Off'
+            />
+          </div>
+        ))}
+      </Space>
+    </div>
+  )
+}`
       },
       notes: [
-        'Ant Design Switch는 내부적으로 role="switch"를 사용합니다.',
+        'Ant Design Switch는 내부적으로 role="switch"와 aria-checked를 자동으로 관리합니다.',
+        'htmlFor/id로 label과 Switch를 연결하면 스크린리더가 레이블을 올바르게 읽습니다.',
         'checkedChildren/unCheckedChildren으로 상태를 텍스트로 나타내면 색맹 사용자에게 유용합니다.',
-        'loading prop 사용 시 aria-busy를 함께 설정하세요.'
+        'loading prop 사용 시 aria-busy="true"를 함께 추가하세요.'
       ]
     },
     chakra: {
@@ -297,48 +371,142 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Switch',
-        code: `import { Switch } from '@chakra-ui/react'
-<Switch.Root
-  checked={isEnabled}
-  onCheckedChange={(e) => setIsEnabled(e.checked)}>
-  <Switch.HiddenInput />
-  <Switch.Control>
-    <Switch.Thumb />
-  </Switch.Control>
-  <Switch.Label>Notification settings</Switch.Label>
-</Switch.Root>`
+        code: `import { useState } from 'react'
+import { Switch, Stack } from '@chakra-ui/react'
+
+const SETTINGS = [
+  { id: 'push', label: 'Push notifications', default: true },
+  { id: 'email', label: 'Email notifications', default: false },
+  { id: 'sms', label: 'SMS alerts', default: false }
+]
+
+export default function App() {
+  const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.default])))
+
+  return (
+    <Stack
+      gap={4}
+      style={{ padding: '1.5rem', maxWidth: 360 }}>
+      <p style={{ margin: 0, fontWeight: 600 }}>Notification Preferences</p>
+      {SETTINGS.map((s) => (
+        <Switch.Root
+          key={s.id}
+          colorPalette='teal'
+          checked={values[s.id]}
+          onCheckedChange={(e) => setValues((prev) => ({ ...prev, [s.id]: e.checked }))}>
+          <Switch.HiddenInput />
+          <Switch.Control>
+            <Switch.Thumb />
+          </Switch.Control>
+          <Switch.Label>{s.label}</Switch.Label>
+        </Switch.Root>
+      ))}
+    </Stack>
+  )
+}`
       },
       notes: [
-        "Chakra Switch.Root는 role='switch'와 aria-checked를 자동 설정합니다.",
+        "Chakra Switch.Root는 role='switch'와 aria-checked를 자동으로 설정합니다.",
+        'Switch.Label을 사용하면 label과 input이 자동 연결됩니다. 별도 htmlFor 불필요합니다.',
         'Switch.HiddenInput은 폼 제출에 필요한 실제 input 요소입니다.',
-        'onCheckedChange 이벤트의 checked 값으로 상태를 업데이트하세요.'
+        'onCheckedChange 이벤트의 e.checked 값으로 상태를 업데이트하세요.'
       ]
     },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'tog-spectrum-1',
+          title: 'Switch와 ToggleButton 구분',
+          description:
+            "Switch는 설정 on/off에 role='switch'를 사용하고, ToggleButton은 버튼 토글 동작에 aria-pressed를 사용합니다. 맥락에 맞게 선택하세요.",
+          level: 'must'
+        }
+      ],
       codeSample: {
         language: 'tsx',
-        label: 'React Aria Switch',
-        code: `import { Switch } from 'react-aria-components'
+        label: 'React Aria Switch & ToggleButton',
+        code: `import { useState } from 'react'
+import { Switch, ToggleButton } from 'react-aria-components'
 
-const switchStyle = { display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, cursor: 'pointer' }
-const trackStyle = (on: boolean) => ({ width: 40, height: 22, borderRadius: 11, background: on ? '#4f46e5' : '#d1d5db', padding: 2, transition: 'background .2s' })
-const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%', background: '#fff', transform: on ? 'translateX(18px)' : 'translateX(0)', transition: 'transform .2s' })
+const SETTINGS = [
+  { id: 'wifi', label: 'Wi-Fi', default: true },
+  { id: 'bluetooth', label: 'Bluetooth', default: false }
+]
 
-<Switch isSelected={isEnabled} onChange={setIsEnabled} style={switchStyle}>
-  {({ isSelected }) => (<>
-    <div style={trackStyle(isSelected)}><div style={thumbStyle(isSelected)} /></div>
-    Notification settings
-  </>)}
-</Switch>`
+export default function App() {
+  const [settings, setSettings] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.default])))
+  const [pinned, setPinned] = useState(false)
+
+  const toggle = (id: string, val: boolean) => setSettings((prev) => ({ ...prev, [id]: val }))
+
+  return (
+    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 320 }}>
+      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Settings</p>
+      {SETTINGS.map((s) => (
+        <Switch
+          key={s.id}
+          isSelected={settings[s.id]}
+          onChange={(val) => toggle(s.id, val)}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: 14 }}>
+          {({ isSelected }) => (
+            <>
+              <div
+                style={{
+                  width: 40,
+                  height: 22,
+                  borderRadius: 11,
+                  background: isSelected ? '#e03' : '#d1d5db',
+                  padding: 2,
+                  transition: 'background .2s',
+                  flexShrink: 0
+                }}>
+                <div
+                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: '50%',
+                    background: '#fff',
+                    transform: isSelected ? 'translateX(18px)' : 'translateX(0)',
+                    transition: 'transform .2s'
+                  }}
+                />
+              </div>
+              {s.label}
+            </>
+          )}
+        </Switch>
+      ))}
+
+      <div>
+        <p style={{ margin: '0 0 8px', fontWeight: 600, fontSize: 14 }}>ToggleButton</p>
+        <ToggleButton
+          isSelected={pinned}
+          onChange={setPinned}
+          aria-label='Pin this item'
+          style={{
+            padding: '6px 14px',
+            borderRadius: 6,
+            border: '1px solid #d1d5db',
+            background: pinned ? '#e03' : '#fff',
+            color: pinned ? '#fff' : '#374151',
+            cursor: 'pointer',
+            fontSize: 13
+          }}>
+          {pinned ? '★ Pinned' : '☆ Pin'}
+        </ToggleButton>
+      </div>
+    </div>
+  )
+}`
       },
       notes: [
-        "React Aria Switch는 role='switch', aria-checked, 키보드 지원을 모두 자동 처리합니다.",
-        'children으로 레이블 텍스트를 직접 제공하세요.',
-        'isSelected/onChange로 제어 컴포넌트로 사용 가능합니다.'
+        "Switch는 role='switch'와 aria-checked를 자동 관리합니다. isSelected/onChange로 상태를 제어하세요.",
+        'ToggleButton은 aria-pressed를 자동 관리합니다. isSelected/onChange 패턴이 동일합니다.',
+        'Switch children에 함수를 전달하면 isSelected 상태에 따른 렌더 프롭을 활용할 수 있습니다.',
+        'isReadOnly prop으로 읽기 전용 스위치를 만들 수 있습니다.'
       ]
     },
     baseui: {
@@ -348,14 +516,15 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
       additionalChecks: [
         {
           id: 'toggle-baseui-1',
-          title: 'Switch.Root에 render={<button />} 필수',
-          description: 'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 시맨틱 버튼 요소를 사용해야 합니다.',
+          title: 'Switch.Root 레이블 연결 필수',
+          description: 'Switch.Root를 <label>로 감싸거나 htmlFor/id로 연결하여 접근 가능한 이름을 제공하세요.',
           level: 'must'
         },
         {
           id: 'toggle-baseui-2',
-          title: 'Thumb 위치 CSS 직접 구현',
-          description: 'Base UI Switch는 스타일이 없으므로 checked 상태에 따른 Thumb translateX를 CSS로 직접 구현해야 합니다.',
+          title: 'Toggle은 aria-pressed 기반, Switch는 role="switch" 기반',
+          description:
+            'Toggle(@base-ui-components/react/toggle)은 aria-pressed를 사용하는 토글 버튼이고, Switch(@base-ui-components/react/switch)는 role="switch"를 사용하는 설정 컨트롤입니다.',
           level: 'must'
         }
       ],
@@ -363,27 +532,63 @@ const thumbStyle = (on: boolean) => ({ width: 18, height: 18, borderRadius: '50%
         language: 'tsx',
         label: 'Base UI Switch',
         code: `import { useState } from 'react'
-import { Switch } from '@base-ui/react/switch'
+import { Switch } from '@base-ui-components/react/switch'
+
+const SETTINGS = [
+  { id: 'push', label: 'Push notifications', defaultChecked: true },
+  { id: 'email', label: 'Email notifications', defaultChecked: false }
+]
 
 export default function App() {
-  const [checked, setChecked] = useState(false)
+  const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.defaultChecked])))
+
   return (
-    <label>
-      <Switch.Root
-        checked={checked}
-        onCheckedChange={setChecked}
-        render={<button />}>
-        <Switch.Thumb />
-      </Switch.Root>
-      Enable notifications
-    </label>
+    <div style={{ padding: '1.5rem', maxWidth: 320, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Notification Preferences</p>
+      {SETTINGS.map((s) => (
+        <label
+          key={s.id}
+          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontSize: 14 }}>
+          {s.label}
+          <Switch.Root
+            checked={values[s.id]}
+            onCheckedChange={(checked) => setValues((prev) => ({ ...prev, [s.id]: checked }))}
+            style={{
+              width: 44,
+              height: 24,
+              borderRadius: 9999,
+              border: 'none',
+              padding: 2,
+              backgroundColor: values[s.id] ? '#18181b' : '#d1d5db',
+              cursor: 'pointer',
+              flexShrink: 0,
+              position: 'relative'
+            }}>
+            <Switch.Thumb
+              style={{
+                display: 'block',
+                width: 20,
+                height: 20,
+                borderRadius: 9999,
+                backgroundColor: 'white',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+                transform: values[s.id] ? 'translateX(20px)' : 'translateX(0)',
+                transition: 'transform 0.15s'
+              }}
+            />
+          </Switch.Root>
+        </label>
+      ))}
+    </div>
   )
 }`
       },
       notes: [
-        'Switch.Root는 기본적으로 <span>을 렌더링합니다. render={<button />}으로 반드시 버튼 요소를 사용하세요.',
+        'Switch.Root는 기본적으로 <span>을 렌더링합니다. <label>로 감싸면 wrapping label 패턴으로 동작합니다.',
         'role="switch"와 aria-checked는 자동으로 관리됩니다.',
-        'Toggle 컴포넌트(@base-ui/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.'
+        'nativeButton prop(기본 false)을 true로 설정하고 render={<button />}을 사용하면 시맨틱 버튼으로 렌더링합니다.',
+        'Toggle 컴포넌트(@base-ui-components/react/toggle)는 aria-pressed 기반의 토글 버튼에 사용하세요.',
+        'data-checked / data-unchecked 속성으로 CSS 스타일링이 가능합니다.'
       ]
     }
   }

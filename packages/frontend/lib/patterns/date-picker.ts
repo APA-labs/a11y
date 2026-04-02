@@ -196,42 +196,78 @@ export default function App() {
       additionalChecks: [
         {
           id: 'datepicker-antd-1',
-          title: 'locale로 한국어 설정',
-          description: 'Ant Design DatePicker는 기본 영어입니다. ConfigProvider에 koKR locale을 설정해 캘린더 UI를 한국어로 변경하세요.',
+          title: 'ConfigProvider로 로케일 설정',
+          description: 'DatePicker 기본 로케일은 영어입니다. ConfigProvider에 locale prop을 설정해 캘린더 UI와 접근 가능한 레이블을 현지화하세요.',
           level: 'must'
+        },
+        {
+          id: 'datepicker-antd-2',
+          title: 'status prop으로 유효성 상태 전달',
+          description:
+            "유효성 검사 실패 시 status='error'를 사용하고 인접한 텍스트로 오류를 설명하세요. Form.Item과 함께 사용하면 aria-describedby가 자동 연결됩니다.",
+          level: 'must'
+        },
+        {
+          id: 'datepicker-antd-3',
+          title: 'disabledDate로 선택 불가 날짜 제한',
+          description: 'disabledDate prop으로 선택 불가 날짜를 지정하면 해당 날짜 셀에 aria-disabled가 자동으로 적용됩니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design DatePicker',
-        code: `import { DatePicker, ConfigProvider } from 'antd'
-import enUS from 'antd/locale/en_US'
+        code: `import { useState } from 'react'
+import { DatePicker, Form, ConfigProvider, Space } from 'antd'
 import dayjs from 'dayjs'
-import 'dayjs/locale/en'
 
-dayjs.locale('en')
+export default function App() {
+  const [value, setValue] = useState(null)
 
-function AntdDatePickerDemo() {
-  const [date, setDate] = useState(null)
+  const disablePastDates = (current) => {
+    return current && current < dayjs().startOf('day')
+  }
 
   return (
-    <ConfigProvider locale={enUS}>
-      <DatePicker
-        value={date}
-        onChange={(value) => setDate(value)}
-        placeholder='Select date'
-        format='YYYY-MM-DD'
-        aria-label='Select date'
-        getPopupContainer={(trigger) => trigger.parentElement}
-      />
+    <ConfigProvider>
+      <div style={{ padding: '24px' }}>
+        <Form layout='vertical'>
+          <Form.Item
+            label='Appointment Date'
+            name='date'
+            rules={[{ required: true, message: 'Please select a date' }]}>
+            <DatePicker
+              value={value}
+              onChange={(date) => setValue(date)}
+              format='YYYY-MM-DD'
+              placeholder='Select appointment date'
+              disabledDate={disablePastDates}
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+          <Form.Item
+            label='Birth Date'
+            name='birthDate'>
+            <DatePicker
+              format='YYYY-MM-DD'
+              placeholder='Select birth date'
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+        </Form>
+        <Space style={{ marginTop: 16 }}>
+          <span style={{ fontSize: 13, color: '#666' }}>Selected: {value ? value.format('YYYY-MM-DD') : 'None'}</span>
+        </Space>
+      </div>
     </ConfigProvider>
   )
 }`
       },
       notes: [
-        'ConfigProvider locale={koKR}으로 캘린더 UI를 한국어로 변경하세요.',
-        'Ant Design DatePicker는 키보드 내비게이션을 지원하지만 스크린리더 지원이 완전하지 않을 수 있습니다.',
-        '중요한 날짜 입력에는 직접 텍스트 입력 옵션도 함께 제공하세요.'
+        'DatePicker를 Form.Item 안에서 사용하면 유효성 오류가 자동으로 aria-describedby로 연결됩니다.',
+        'Ant Design DatePicker는 키보드 내비게이션(Arrow 키 날짜 이동, Page Up/Down 월 이동, Escape 닫기)을 지원합니다.',
+        'disabledDate로 선택 불가 날짜를 지정하면 해당 셀에 aria-disabled가 자동으로 적용됩니다.',
+        'antd DatePicker는 dayjs 기반입니다. 앱 전체에 ConfigProvider locale을 설정해 캘린더 레이블을 현지화하세요.'
       ]
     },
     chakra: {
@@ -250,40 +286,79 @@ function AntdDatePickerDemo() {
         language: 'tsx',
         label: 'Chakra UI DatePicker',
         code: `import { DatePicker, Portal } from '@chakra-ui/react'
-<DatePicker.Root>
-  <DatePicker.Label>Select date</DatePicker.Label>
-  <DatePicker.Control>
-    <DatePicker.Input />
-    <DatePicker.IndicatorGroup>
-      <DatePicker.Trigger aria-label='Open calendar'>
-        <span aria-hidden>📅</span>
-      </DatePicker.Trigger>
-    </DatePicker.IndicatorGroup>
-  </DatePicker.Control>
-  <Portal>
-    <DatePicker.Positioner>
-      <DatePicker.Content>
-        <DatePicker.View view='day'>
-          <DatePicker.Header />
-          <DatePicker.DayTable />
-        </DatePicker.View>
-        <DatePicker.View view='month'>
-          <DatePicker.Header />
-          <DatePicker.MonthTable />
-        </DatePicker.View>
-        <DatePicker.View view='year'>
-          <DatePicker.Header />
-          <DatePicker.YearTable />
-        </DatePicker.View>
-      </DatePicker.Content>
-    </DatePicker.Positioner>
-  </Portal>
-</DatePicker.Root>`
+
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem', maxWidth: 320 }}>
+      <DatePicker.Root>
+        <DatePicker.Label>Select date</DatePicker.Label>
+        <DatePicker.Control>
+          <DatePicker.Input />
+          <DatePicker.IndicatorGroup>
+            <DatePicker.Trigger
+              aria-label='Open calendar'
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 6px' }}>
+              <span aria-hidden>&#128197;</span>
+            </DatePicker.Trigger>
+          </DatePicker.IndicatorGroup>
+        </DatePicker.Control>
+        <Portal>
+          <DatePicker.Positioner>
+            <DatePicker.Content>
+              <DatePicker.View view='day'>
+                <DatePicker.Context>
+                  {(api) => (
+                    <>
+                      <DatePicker.ViewControl>
+                        <DatePicker.PrevTrigger aria-label='Previous month'>‹</DatePicker.PrevTrigger>
+                        <DatePicker.ViewTrigger>
+                          <DatePicker.RangeText />
+                        </DatePicker.ViewTrigger>
+                        <DatePicker.NextTrigger aria-label='Next month'>›</DatePicker.NextTrigger>
+                      </DatePicker.ViewControl>
+                      <DatePicker.Table>
+                        <DatePicker.TableHead>
+                          <DatePicker.TableRow>
+                            {api.weekDays.map((day) => (
+                              <DatePicker.TableHeader
+                                key={day.short}
+                                aria-label={day.long}>
+                                {day.narrow}
+                              </DatePicker.TableHeader>
+                            ))}
+                          </DatePicker.TableRow>
+                        </DatePicker.TableHead>
+                        <DatePicker.TableBody>
+                          {api.weeks.map((week, i) => (
+                            <DatePicker.TableRow key={i}>
+                              {week.map((day, j) => (
+                                <DatePicker.TableCell
+                                  key={j}
+                                  value={day}>
+                                  <DatePicker.TableCellTrigger>{day.day}</DatePicker.TableCellTrigger>
+                                </DatePicker.TableCell>
+                              ))}
+                            </DatePicker.TableRow>
+                          ))}
+                        </DatePicker.TableBody>
+                      </DatePicker.Table>
+                    </>
+                  )}
+                </DatePicker.Context>
+              </DatePicker.View>
+            </DatePicker.Content>
+          </DatePicker.Positioner>
+        </Portal>
+      </DatePicker.Root>
+    </div>
+  )
+}`
       },
       notes: [
-        'DatePicker.Header는 이전/다음 달 버튼과 현재 월/연도 텍스트를 자동으로 렌더링합니다.',
-        'day/month/year 세 가지 View를 모두 포함해야 월·연도 선택이 가능합니다.',
-        '@internationalized/date 패키지로 날짜 타입을 관리합니다. Portal로 감싸면 z-index 문제를 방지할 수 있습니다.'
+        'DatePicker.PrevTrigger와 DatePicker.NextTrigger에 aria-label을 추가하세요.',
+        'DatePicker.TableCellTrigger는 각 날짜 셀로 aria-label에 전체 날짜를 자동 설정합니다.',
+        '@internationalized/date 패키지로 날짜 타입을 관리합니다.',
+        'Portal로 감싸면 z-index 문제를 방지할 수 있습니다.'
       ]
     },
     spectrum: {
@@ -293,51 +368,125 @@ function AntdDatePickerDemo() {
       additionalChecks: [
         {
           id: 'dp-spectrum-1',
-          title: 'aria-label prop 필수',
-          description: 'React Aria DatePicker에 label 또는 aria-label prop을 반드시 제공하세요.',
+          title: 'Label 컴포넌트 연결 필수',
+          description:
+            'DatePicker에 Label 컴포넌트 또는 aria-label prop을 반드시 제공하세요. Label을 사용하면 DateInput과 Calendar에도 자동 연결됩니다.',
           level: 'must'
+        },
+        {
+          id: 'dp-spectrum-2',
+          title: 'granularity prop으로 정밀도 설정',
+          description: "granularity='day' | 'hour' | 'minute' | 'second'로 표시할 최소 단위를 설정하세요. 기본값은 날짜에 'day'입니다.",
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria DatePicker',
-        code: `import { DatePicker, Label, Group, DateInput, DateSegment, Button, Popover, Dialog, Heading } from 'react-aria-components'
-import { Calendar, CalendarGrid, CalendarCell } from 'react-aria-components'
+        code: `import {
+  DatePicker,
+  Label,
+  Group,
+  DateInput,
+  DateSegment,
+  Button,
+  Popover,
+  Dialog,
+  Heading,
+  Calendar,
+  CalendarGrid,
+  CalendarCell,
+  CalendarGridHeader,
+  CalendarHeaderCell,
+  CalendarGridBody
+} from 'react-aria-components'
 
-const fieldStyle = { display: 'inline-flex', alignItems: 'center', gap: 2, border: '1px solid #d1d5db', borderRadius: 6, padding: '4px 8px', background: '#fff' }
-const segStyle = { padding: '1px 2px', borderRadius: 2, outline: 'none' }
-const btnStyle = { background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px', borderRadius: 4, fontSize: 16 }
-const headerStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }
-const cellStyle = { textAlign: 'center' as const, padding: 6, borderRadius: 4, cursor: 'pointer' }
-
-<DatePicker>
-  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Select date</Label>
-  <Group style={fieldStyle}>
-    <DateInput style={{ display: 'flex', gap: 1 }}>
-      {(segment) => <DateSegment segment={segment} style={segStyle} />}
-    </DateInput>
-    <Button aria-label='Open calendar' style={btnStyle}>📅</Button>
-  </Group>
-  <Popover>
-    <Dialog style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none' }}>
-      <Calendar>
-        <header style={headerStyle}>
-          <Button slot='previous' aria-label='Previous month' style={btnStyle}>‹</Button>
-          <Heading style={{ fontWeight: 600, fontSize: 14 }} />
-          <Button slot='next' aria-label='Next month' style={btnStyle}>›</Button>
-        </header>
-        <CalendarGrid style={{ borderCollapse: 'collapse' }}>
-          {(date) => <CalendarCell date={date} style={cellStyle} />}
-        </CalendarGrid>
-      </Calendar>
-    </Dialog>
-  </Popover>
-</DatePicker>`
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem' }}>
+      <DatePicker>
+        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Appointment date</Label>
+        <Group
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 2,
+            border: '1px solid #d1d5db',
+            borderRadius: 6,
+            padding: '4px 8px',
+            background: '#fff'
+          }}>
+          <DateInput style={{ display: 'flex', gap: 1 }}>
+            {(segment) => (
+              <DateSegment
+                segment={segment}
+                style={{ padding: '1px 2px', borderRadius: 2, outline: 'none', fontSize: 14 }}
+              />
+            )}
+          </DateInput>
+          <Button
+            aria-label='Open calendar'
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px', borderRadius: 4, fontSize: 16 }}>
+            ▼
+          </Button>
+        </Group>
+        <Popover style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.15)', padding: 16, outline: 'none' }}>
+          <Dialog style={{ outline: 'none' }}>
+            <Calendar>
+              <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                <Button
+                  slot='previous'
+                  aria-label='Previous month'
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 16 }}>
+                  ‹
+                </Button>
+                <Heading style={{ fontWeight: 600, fontSize: 14 }} />
+                <Button
+                  slot='next'
+                  aria-label='Next month'
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 16 }}>
+                  ›
+                </Button>
+              </header>
+              <CalendarGrid style={{ borderCollapse: 'collapse', width: '100%' }}>
+                <CalendarGridHeader>
+                  {(day) => (
+                    <CalendarHeaderCell style={{ padding: 6, fontSize: 12, fontWeight: 600, color: '#6b7280', textAlign: 'center' }}>
+                      {day}
+                    </CalendarHeaderCell>
+                  )}
+                </CalendarGridHeader>
+                <CalendarGridBody>
+                  {(date) => (
+                    <CalendarCell
+                      date={date}
+                      style={({ isSelected, isOutsideMonth }) => ({
+                        textAlign: 'center',
+                        padding: 6,
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                        fontSize: 14,
+                        background: isSelected ? '#e03' : 'transparent',
+                        color: isSelected ? '#fff' : isOutsideMonth ? '#d1d5db' : '#374151',
+                        outline: 'none'
+                      })}
+                    />
+                  )}
+                </CalendarGridBody>
+              </CalendarGrid>
+            </Calendar>
+          </Dialog>
+        </Popover>
+      </DatePicker>
+    </div>
+  )
+}`
       },
       notes: [
-        'Popover 안에 Dialog를 감싸야 접근성 트리가 올바르게 구성됩니다.',
-        'Group으로 DateInput과 Button을 감싸면 시각적·의미적으로 하나의 입력 필드로 인식됩니다.',
-        'Label 컴포넌트를 사용하면 모든 하위 요소의 aria 연결이 자동 처리됩니다.'
+        'DatePicker는 DateInput(키보드 입력)과 Calendar(팝오버)를 결합한 compound component입니다.',
+        'DateInput 안의 DateSegment를 children 함수로 렌더링하면 각 날짜 세그먼트(월/일/년)가 개별 접근 가능합니다.',
+        'Label 컴포넌트를 사용하면 DateInput과 Calendar 모두에 접근 가능한 이름이 자동 연결됩니다.',
+        'granularity prop으로 day/hour/minute/second 중 최소 단위를 설정할 수 있습니다.'
       ]
     }
   }

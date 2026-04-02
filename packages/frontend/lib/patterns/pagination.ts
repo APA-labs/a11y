@@ -201,37 +201,79 @@ export default function App() {
       additionalChecks: [
         {
           id: 'pagination-antd-1',
-          title: 'locale로 한국어 aria-label 설정',
-          description: 'Ant Design Pagination의 기본 aria-label은 영어입니다. locale prop이나 ConfigProvider로 한국어를 설정하세요.',
+          title: 'aria-live로 페이지 변경 알림',
+          description: '페이지가 변경될 때 콘텐츠가 동적으로 교체되므로 aria-live="polite" 영역으로 현재 페이지 번호를 스크린리더에 알려야 합니다.',
+          level: 'must'
+        },
+        {
+          id: 'pagination-antd-2',
+          title: 'ConfigProvider locale로 aria-label 언어 설정',
+          description:
+            'Ant Design Pagination의 기본 aria-label은 영어입니다. ConfigProvider에 locale={enUS}(또는 koKR)를 설정하면 이전/다음 버튼 레이블이 해당 언어로 변경됩니다.',
+          level: 'should'
+        },
+        {
+          id: 'pagination-antd-3',
+          title: 'showSizeChanger 시 레이블 제공',
+          description: 'showSizeChanger={true}로 페이지 크기 선택기를 활성화할 경우 Form.Item 또는 aria-label로 선택기의 목적을 설명하세요.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Pagination',
-        code: `import { Pagination, ConfigProvider } from 'antd'
+        code: `import { useState } from 'react'
+import { Pagination, ConfigProvider } from 'antd'
 import enUS from 'antd/locale/en_US'
 
-function AntdPaginationDemo() {
-  const [currentPage, setCurrentPage] = useState(1)
+const PAGE_SIZE = 10
+const TOTAL = 87
+
+export default function App() {
+  const [current, setCurrent] = useState(1)
+
+  const handleChange = (page: number) => {
+    setCurrent(page)
+  }
+
+  const start = (current - 1) * PAGE_SIZE + 1
+  const end = Math.min(current * PAGE_SIZE, TOTAL)
 
   return (
-    <ConfigProvider locale={enUS}>
-      <Pagination
-        current={currentPage}
-        total={100}
-        pageSize={10}
-        onChange={(page) => setCurrentPage(page)}
-        showSizeChanger={false}
-      />
-    </ConfigProvider>
+    <div style={{ padding: '24px' }}>
+      <div style={{ marginBottom: 16, padding: '12px 16px', background: '#fafafa', borderRadius: 6, border: '1px solid #f0f0f0' }}>
+        <p style={{ margin: 0, fontSize: 14, color: '#595959' }}>
+          Showing {start}–{end} of {TOTAL} results
+        </p>
+      </div>
+
+      <ConfigProvider locale={enUS}>
+        <Pagination
+          current={current}
+          total={TOTAL}
+          pageSize={PAGE_SIZE}
+          onChange={handleChange}
+          showSizeChanger={false}
+          showQuickJumper
+        />
+      </ConfigProvider>
+
+      <div
+        role='status'
+        aria-live='polite'
+        aria-atomic='true'
+        style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+        Page {current} of {Math.ceil(TOTAL / PAGE_SIZE)}
+      </div>
+    </div>
   )
 }`
       },
       notes: [
-        'ConfigProvider의 locale을 koKR로 설정하면 aria-label이 한국어로 변경됩니다.',
-        'Ant Design Pagination은 자동으로 <ul> 목록 구조를 사용합니다.',
-        '현재 페이지에 aria-current가 자동으로 적용됩니다.'
+        'Ant Design Pagination은 현재 페이지에 aria-current="page"를 자동 적용하고 <ul> 목록 구조를 사용합니다.',
+        'ConfigProvider locale={enUS}로 이전/다음 버튼의 aria-label을 영어로 설정하세요.',
+        'aria-live="polite" 영역을 별도로 추가해 페이지 변경을 스크린리더에 즉시 알릴 수 있습니다.',
+        'showQuickJumper로 페이지 직접 이동 입력 필드를 제공하면 키보드 사용자 편의가 향상됩니다.'
       ]
     },
     chakra: {
@@ -249,36 +291,61 @@ function AntdPaginationDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Pagination',
-        code: `import { Pagination } from '@chakra-ui/react'
+        code: `import { useState } from 'react'
+import { Pagination, ButtonGroup, Button } from '@chakra-ui/react'
 
-function ChakraPaginationDemo() {
+const TOTAL = 87
+const PAGE_SIZE = 10
+
+export default function App() {
   const [page, setPage] = useState(1)
+  const totalPages = Math.ceil(TOTAL / PAGE_SIZE)
+  const start = (page - 1) * PAGE_SIZE + 1
+  const end = Math.min(page * PAGE_SIZE, TOTAL)
 
   return (
-    <Pagination.Root
-      count={50}
-      pageSize={10}
-      page={page}
-      onPageChange={(e) => setPage(e.page)}>
-      <Pagination.PrevTrigger aria-label='Previous page' />
-      {[1, 2, 3, 4, 5].map((p) => (
-        <Pagination.Item
-          key={p}
-          value={p}
-          aria-label={'Page ' + p}
-          aria-current={p === page ? 'page' : undefined}>
-          {p}
-        </Pagination.Item>
-      ))}
-      <Pagination.NextTrigger aria-label='Next page' />
-    </Pagination.Root>
+    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
+      <p
+        style={{ margin: 0, fontSize: 14, color: '#718096' }}
+        aria-live='polite'
+        aria-atomic='true'>
+        Showing {start}–{end} of {TOTAL} results
+      </p>
+      <Pagination.Root
+        count={TOTAL}
+        pageSize={PAGE_SIZE}
+        page={page}
+        onPageChange={(e) => setPage(e.page)}>
+        <ButtonGroup
+          variant='outline'
+          size='sm'>
+          <Pagination.PrevTrigger asChild>
+            <Button aria-label='Previous page'>‹</Button>
+          </Pagination.PrevTrigger>
+          <Pagination.Items
+            render={(page) => (
+              <Pagination.Item
+                key={page.value}
+                {...page}
+                aria-label={page.type === 'ellipsis' ? 'More pages' : \`Page \${page.value}\`}>
+                {page.type === 'ellipsis' ? '…' : page.value}
+              </Pagination.Item>
+            )}
+          />
+          <Pagination.NextTrigger asChild>
+            <Button aria-label='Next page'>›</Button>
+          </Pagination.NextTrigger>
+        </ButtonGroup>
+      </Pagination.Root>
+    </div>
   )
 }`
       },
       notes: [
-        'Chakra Pagination.Root는 페이지 상태를 자동 관리합니다.',
-        'count와 pageSize로 총 페이지 수를 계산하세요.',
-        '각 페이지 버튼에 aria-label을 추가해 접근성을 높이세요.'
+        'Pagination.Root의 count와 pageSize prop으로 총 페이지 수를 자동 계산합니다.',
+        'Pagination.Items의 render prop으로 각 페이지 버튼을 커스텀하세요.',
+        '각 페이지 버튼에 aria-label을 추가해 스크린리더가 페이지 번호를 읽을 수 있게 하세요.',
+        'aria-live 영역으로 현재 표시 범위를 스크린리더에 알리세요.'
       ]
     }
   }

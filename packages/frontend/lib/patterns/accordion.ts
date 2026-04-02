@@ -184,8 +184,15 @@ export default function App() {
       additionalChecks: [
         {
           id: 'accordion-radix-1',
-          title: 'type="single" vs "multiple"',
-          description: 'type="single"이면 하나의 패널만 열립니다. 이 동작을 시각적으로 명확하게 표시하세요.',
+          title: 'type prop으로 단일/다중 열기 제어',
+          description:
+            'type="single"이면 하나의 패널만 열립니다. type="multiple"이면 여러 패널을 동시에 열 수 있습니다. 이 동작을 UI로 명확히 전달하세요.',
+          level: 'should'
+        },
+        {
+          id: 'accordion-radix-2',
+          title: 'collapsible prop으로 모두 닫기 허용',
+          description: 'type="single"일 때 collapsible prop을 추가하면 열린 패널을 다시 클릭해 닫을 수 있습니다.',
           level: 'should'
         }
       ],
@@ -194,22 +201,67 @@ export default function App() {
         label: 'Radix Accordion',
         code: `import * as Accordion from '@radix-ui/react-accordion'
 
-export function RadixAccordion() {
+const ITEMS = [
+  {
+    value: 'item-1',
+    heading: 'What is Radix UI?',
+    content: 'Radix UI is a low-level UI component library focused on accessibility, customization, and developer experience.'
+  },
+  {
+    value: 'item-2',
+    heading: 'Is it accessible?',
+    content: 'Yes. Radix components follow WAI-ARIA patterns and handle keyboard navigation automatically.'
+  },
+  {
+    value: 'item-3',
+    heading: 'Can I style it?',
+    content: 'Radix is unstyled by default. Apply any CSS solution — inline styles, CSS modules, Tailwind, or CSS-in-JS.'
+  }
+]
+
+export default function App() {
   return (
     <Accordion.Root
       type='single'
-      collapsible>
-      <Accordion.Item value='item-1'>
-        <Accordion.Header>
-          <Accordion.Trigger>Section 1</Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content>Content for section 1</Accordion.Content>
-      </Accordion.Item>
+      collapsible
+      style={{ width: '100%', maxWidth: 560, margin: '24px auto' }}>
+      {ITEMS.map((item) => (
+        <Accordion.Item
+          key={item.value}
+          value={item.value}
+          style={{ borderBottom: '1px solid #e2e8f0' }}>
+          <Accordion.Header>
+            <Accordion.Trigger
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                padding: '14px 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 15,
+                fontWeight: 500,
+                textAlign: 'left'
+              }}>
+              {item.heading}
+              <span aria-hidden>›</span>
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content style={{ padding: '0 0 14px', fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>{item.content}</Accordion.Content>
+        </Accordion.Item>
+      ))}
     </Accordion.Root>
   )
 }`
       },
-      notes: ['Radix Accordion.Header는 h3를 기본으로 렌더링합니다.', 'aria-expanded와 data-state 속성이 자동으로 관리됩니다.']
+      notes: [
+        'Accordion.Root의 type prop: "single"(한 번에 하나 열기), "multiple"(여러 개 동시 열기). collapsible은 type="single"일 때만 유효합니다.',
+        'Accordion.Header는 기본적으로 <h3>를 렌더링합니다. asChild prop으로 헤딩 레벨을 변경할 수 있습니다.',
+        'aria-expanded와 data-state("open" | "closed") 속성이 Accordion.Trigger에 자동으로 관리됩니다.',
+        'defaultValue(비제어) 또는 value + onValueChange(제어)로 열림 상태를 관리할 수 있습니다.'
+      ]
     },
     antd: {
       id: 'antd',
@@ -218,8 +270,22 @@ export function RadixAccordion() {
       additionalChecks: [
         {
           id: 'accordion-antd-1',
-          title: 'accordion prop 사용',
-          description: 'accordion={true}로 설정하면 한 번에 하나의 패널만 열립니다. 이 동작을 사용자에게 알리세요.',
+          title: 'accordion prop으로 단일 열기 모드 사용',
+          description:
+            'accordion={true}로 설정하면 한 번에 하나의 패널만 열립니다. WAI-ARIA Accordion 패턴에 부합하며 이 동작을 UI로 명확히 전달하세요.',
+          level: 'should'
+        },
+        {
+          id: 'accordion-antd-2',
+          title: 'items API 사용 (v5.6.0+)',
+          description:
+            '구형 Collapse.Panel 대신 items prop을 사용하세요. label(제목)과 children(내용)으로 구성하며 내부적으로 aria-expanded가 자동 관리됩니다.',
+          level: 'must'
+        },
+        {
+          id: 'accordion-antd-3',
+          title: 'collapsible 속성으로 트리거 영역 제어',
+          description: "collapsible='disabled'로 특정 패널을 비활성화할 수 있습니다. 이때 헤더에 aria-disabled가 자동으로 적용되는지 확인하세요.",
           level: 'should'
         }
       ],
@@ -229,20 +295,42 @@ export function RadixAccordion() {
         code: `import { Collapse } from 'antd'
 
 const items = [
-  { key: '1', label: 'Section 1', children: <p>Content 1</p> },
-  { key: '2', label: 'Section 2', children: <p>Content 2</p> }
+  {
+    key: '1',
+    label: 'What is Ant Design?',
+    children: <p style={{ margin: 0 }}>Ant Design is an enterprise-class UI design language and React component library.</p>
+  },
+  {
+    key: '2',
+    label: 'Is it accessible?',
+    children: <p style={{ margin: 0 }}>Ant Design Collapse manages aria-expanded automatically and supports keyboard navigation.</p>
+  },
+  {
+    key: '3',
+    label: 'Disabled panel',
+    children: <p style={{ margin: 0 }}>This panel cannot be collapsed.</p>,
+    collapsible: 'disabled'
+  }
 ]
 
-export function AntAccordion() {
+export default function App() {
   return (
-    <Collapse
-      accordion
-      items={items}
-    />
+    <div style={{ padding: '24px', maxWidth: 600 }}>
+      <Collapse
+        accordion
+        items={items}
+        defaultActiveKey={['1']}
+      />
+    </div>
   )
 }`
       },
-      notes: ['Ant Design Collapse는 기본적으로 접근성 속성을 처리합니다.', 'showArrow={false}로 화살표를 숨기더라도 시각적 상태 변화는 유지하세요.']
+      notes: [
+        'Collapse는 각 패널 헤더에 버튼 역할과 aria-expanded를 자동으로 관리합니다.',
+        'items prop을 사용하세요. Collapse.Panel은 v5.6.0에서 deprecated되었습니다.',
+        'accordion={true} 설정 시 단일 패널 열기 모드로 동작합니다.',
+        'expandIconPlacement prop으로 확장 아이콘 위치를 start 또는 end로 설정할 수 있습니다.'
+      ]
     },
     chakra: {
       id: 'chakra',
@@ -260,33 +348,121 @@ export function AntAccordion() {
         language: 'tsx',
         label: 'Chakra UI Accordion',
         code: `import { Accordion } from '@chakra-ui/react'
-<Accordion.Root
-  collapsible
-  defaultValue={['item-1']}>
-  <Accordion.Item value='item-1'>
-    <Accordion.ItemTrigger>
-      Shipping Info
-      <Accordion.ItemIndicator />
-    </Accordion.ItemTrigger>
-    <Accordion.ItemContent>
-      <Accordion.ItemBody>Ships within 2–3 business days after order.</Accordion.ItemBody>
-    </Accordion.ItemContent>
-  </Accordion.Item>
-  <Accordion.Item value='item-2'>
-    <Accordion.ItemTrigger>
-      Return Policy
-      <Accordion.ItemIndicator />
-    </Accordion.ItemTrigger>
-    <Accordion.ItemContent>
-      <Accordion.ItemBody>Returns accepted within 7 days of receipt.</Accordion.ItemBody>
-    </Accordion.ItemContent>
-  </Accordion.Item>
-</Accordion.Root>`
+
+const ITEMS = [
+  { value: 'shipping', label: 'Shipping Info', body: 'Ships within 2–3 business days after order confirmation.' },
+  { value: 'returns', label: 'Return Policy', body: 'Returns accepted within 7 days of receipt in original condition.' },
+  { value: 'warranty', label: 'Warranty', body: '1-year limited warranty covering manufacturing defects.' }
+]
+
+export default function App() {
+  return (
+    <Accordion.Root
+      collapsible
+      defaultValue={['shipping']}
+      style={{ maxWidth: 480, padding: '1rem' }}>
+      {ITEMS.map((item) => (
+        <Accordion.Item
+          key={item.value}
+          value={item.value}
+          style={{ borderBottom: '1px solid #e2e8f0' }}>
+          <Accordion.ItemTrigger
+            style={{
+              padding: '12px 0',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              cursor: 'pointer',
+              background: 'none',
+              border: 'none',
+              fontSize: 15,
+              fontWeight: 500
+            }}>
+            {item.label}
+            <Accordion.ItemIndicator aria-hidden />
+          </Accordion.ItemTrigger>
+          <Accordion.ItemContent>
+            <Accordion.ItemBody style={{ padding: '0 0 12px', fontSize: 14, color: '#4a5568' }}>{item.body}</Accordion.ItemBody>
+          </Accordion.ItemContent>
+        </Accordion.Item>
+      ))}
+    </Accordion.Root>
+  )
+}`
       },
       notes: [
-        'Chakra Accordion.Root는 키보드 네비게이션과 aria 속성을 자동 처리합니다.',
-        'ItemIndicator는 시각적 화살표로 aria-hidden 처리됩니다.',
-        'collapsible prop으로 모든 항목을 닫을 수 있는 옵션을 추가하세요.'
+        'Chakra Accordion.Root는 키보드 네비게이션과 aria-expanded를 자동 처리합니다.',
+        'multiple prop을 추가하면 여러 항목을 동시에 열 수 있습니다.',
+        'ItemIndicator는 aria-hidden 처리되는 시각적 화살표입니다.',
+        'collapsible prop으로 열린 항목을 다시 클릭해 닫을 수 있습니다.'
+      ]
+    },
+    spectrum: {
+      id: 'spectrum',
+      name: 'React Spectrum',
+      color: '#e03',
+      additionalChecks: [
+        {
+          id: 'accordion-spectrum-1',
+          title: 'allowsMultipleExpanded로 다중 열기 제어',
+          description: 'DisclosureGroup에 allowsMultipleExpanded prop을 추가하면 여러 항목을 동시에 열 수 있습니다. 기본값은 단일 열기입니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'React Aria DisclosureGroup',
+        code: `import { Disclosure, DisclosureGroup, Heading, DisclosurePanel, Button } from 'react-aria-components'
+
+const ITEMS = [
+  { id: 'shipping', title: 'Shipping Info', content: 'Ships within 2–3 business days after order confirmation.' },
+  { id: 'returns', title: 'Return Policy', content: 'Returns accepted within 7 days of receipt in original condition.' },
+  { id: 'warranty', title: 'Warranty', content: '1-year limited warranty covering manufacturing defects.' }
+]
+
+export default function App() {
+  return (
+    <DisclosureGroup
+      defaultExpandedKeys={['shipping']}
+      style={{ maxWidth: 480, padding: '1rem' }}>
+      {ITEMS.map((item) => (
+        <Disclosure
+          key={item.id}
+          id={item.id}
+          style={{ borderBottom: '1px solid #e5e7eb' }}>
+          <Heading>
+            <Button
+              slot='trigger'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '12px 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 14,
+                fontWeight: 600,
+                textAlign: 'left'
+              }}>
+              {item.title}
+              <span aria-hidden>›</span>
+            </Button>
+          </Heading>
+          <DisclosurePanel style={{ padding: '0 0 12px', fontSize: 14, color: '#4b5563' }}>{item.content}</DisclosurePanel>
+        </Disclosure>
+      ))}
+    </DisclosureGroup>
+  )
+}`
+      },
+      notes: [
+        'DisclosureGroup은 여러 Disclosure 항목을 그룹화하는 아코디언 컴포넌트입니다.',
+        'defaultExpandedKeys/expandedKeys에 각 Disclosure의 id를 배열로 전달해 열림 상태를 제어하세요.',
+        'allowsMultipleExpanded prop을 추가하면 여러 항목을 동시에 열 수 있습니다. 기본값은 false입니다.',
+        "Heading 내부의 Button에 slot='trigger'를 지정해야 aria-expanded가 자동 관리됩니다."
       ]
     },
     baseui: {
@@ -303,44 +479,65 @@ export function AntAccordion() {
         {
           id: 'accordion-baseui-2',
           title: 'multiple prop으로 다중 열기 제어',
-          description: 'Accordion.Root에 multiple prop을 추가하면 여러 패널을 동시에 열 수 있습니다. 기본은 단일 열기입니다.',
+          description: 'Accordion.Root에 multiple prop을 추가하면 여러 패널을 동시에 열 수 있습니다. 기본은 단일 열기(false)입니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Base UI Accordion',
-        code: `import { Accordion } from '@base-ui/react/accordion'
+        code: `import { Accordion } from '@base-ui-components/react/accordion'
+
+const ITEMS = [
+  { value: 'q1', heading: 'What is Base UI?', content: 'Base UI is a library of unstyled React components for design systems and web apps.' },
+  {
+    value: 'q2',
+    heading: 'Is it accessible?',
+    content: 'Yes. All components follow WAI-ARIA patterns and handle keyboard navigation automatically.'
+  },
+  { value: 'q3', heading: 'Can I style it?', content: 'Yes. Apply any CSS solution — inline styles, CSS modules, Tailwind, or CSS-in-JS.' }
+]
 
 export default function App() {
   return (
-    <Accordion.Root>
-      <Accordion.Item>
-        <Accordion.Header>
-          <Accordion.Trigger>
-            What is Base UI?
-            <span aria-hidden>+</span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Panel>Base UI is a library of high-quality unstyled React components for design systems and web apps.</Accordion.Panel>
-      </Accordion.Item>
-      <Accordion.Item>
-        <Accordion.Header>
-          <Accordion.Trigger>
-            Is it accessible?
-            <span aria-hidden>+</span>
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Panel>Yes, all components follow WAI-ARIA patterns out of the box.</Accordion.Panel>
-      </Accordion.Item>
+    <Accordion.Root style={{ width: '100%', maxWidth: 560, margin: '24px auto', padding: '0 16px' }}>
+      {ITEMS.map((item) => (
+        <Accordion.Item
+          key={item.value}
+          value={item.value}
+          style={{ borderBottom: '1px solid #e2e8f0' }}>
+          <Accordion.Header>
+            <Accordion.Trigger
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                padding: '14px 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 15,
+                fontWeight: 500,
+                textAlign: 'left'
+              }}>
+              {item.heading}
+              <span aria-hidden>+</span>
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Panel style={{ padding: '0 0 14px', fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>{item.content}</Accordion.Panel>
+        </Accordion.Item>
+      ))}
     </Accordion.Root>
   )
 }`
       },
       notes: [
-        'Accordion.Header는 기본적으로 <h3>를 렌더링합니다. render prop으로 레벨을 변경할 수 있습니다.',
-        'Accordion.Trigger는 aria-expanded를 자동으로 관리합니다.',
-        'multiple prop을 추가하면 여러 패널을 동시에 열 수 있습니다. 기본값은 false(단일 열기)입니다.'
+        'Accordion.Header는 기본적으로 <h3>를 렌더링합니다. render prop으로 헤딩 레벨을 변경할 수 있습니다.',
+        'Accordion.Trigger는 aria-expanded를 자동으로 관리합니다. data-panel-open 속성으로 CSS 스타일링이 가능합니다.',
+        'multiple prop(기본 false)을 추가하면 여러 패널을 동시에 열 수 있습니다.',
+        'loopFocus prop(기본 true)으로 화살표 키 탐색 시 처음/끝에서 순환 여부를 제어합니다.',
+        'hiddenUntilFound prop을 사용하면 브라우저 내 검색(Ctrl+F)에서 닫힌 패널 내용도 찾을 수 있습니다.'
       ]
     }
   }

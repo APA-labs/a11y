@@ -142,45 +142,85 @@ export function Checkbox({ id = 'cb-example', label = 'Label', indeterminate = f
       additionalChecks: [
         {
           id: 'checkbox-radix-1',
-          title: 'Checkbox.Indicator 숨김 처리',
-          description: 'Checkbox.Indicator는 체크 표시만 담당하며 aria-hidden으로 처리됩니다.',
+          title: 'Checkbox.Indicator는 체크 상태일 때만 렌더링',
+          description: 'Checkbox.Indicator는 checked 상태일 때만 마운트됩니다. 내부에 아이콘이나 텍스트로 시각적 표시를 반드시 제공하세요.',
+          level: 'must'
+        },
+        {
+          id: 'checkbox-radix-2',
+          title: 'onCheckedChange 값 타입 확인',
+          description: 'onCheckedChange 콜백은 boolean | "indeterminate"를 받습니다. indeterminate 상태를 사용할 경우 타입 가드가 필요합니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Checkbox',
-        code: `import * as Checkbox from '@radix-ui/react-checkbox'
-import { CheckIcon } from '@radix-ui/react-icons'
+        code: `import { useState } from 'react'
+import * as Checkbox from '@radix-ui/react-checkbox'
 
-export function RadixCheckbox({ id, label }) {
+const rootStyle = {
+  width: 20,
+  height: 20,
+  borderRadius: 4,
+  border: '2px solid #6e56cf',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  backgroundColor: 'white',
+  flexShrink: 0
+}
+
+const ITEMS = [
+  { id: 'email', label: 'Email notifications' },
+  { id: 'sms', label: 'SMS notifications' },
+  { id: 'push', label: 'Push notifications' }
+]
+
+export default function App() {
+  const [checked, setChecked] = useState<Record<string, boolean>>({ email: true, sms: false, push: false })
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <Checkbox.Root
-        id={id}
-        style={{
-          width: 20,
-          height: 20,
-          borderRadius: 4,
-          border: '2px solid #6e56cf',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          backgroundColor: 'white'
-        }}>
-        <Checkbox.Indicator>
-          <CheckIcon />
-        </Checkbox.Indicator>
-      </Checkbox.Root>
-      <label htmlFor={id}>{label}</label>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 24 }}>
+      <p style={{ margin: '0 0 8px', fontWeight: 600 }}>Notification preferences</p>
+      {ITEMS.map((item) => (
+        <div
+          key={item.id}
+          style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Checkbox.Root
+            id={item.id}
+            checked={checked[item.id]}
+            onCheckedChange={(val) => setChecked((prev) => ({ ...prev, [item.id]: val === true }))}
+            style={{
+              ...rootStyle,
+              backgroundColor: checked[item.id] ? '#6e56cf' : 'white',
+              border: \`2px solid \${checked[item.id] ? '#6e56cf' : '#c4c4c4'}\`
+            }}>
+            <Checkbox.Indicator>
+              <span
+                aria-hidden
+                style={{ color: 'white', fontSize: 14, lineHeight: 1 }}>
+                ✓
+              </span>
+            </Checkbox.Indicator>
+          </Checkbox.Root>
+          <label
+            htmlFor={item.id}
+            style={{ fontSize: 14, cursor: 'pointer' }}>
+            {item.label}
+          </label>
+        </div>
+      ))}
     </div>
   )
 }`
       },
       notes: [
-        'Radix Checkbox는 role="checkbox"와 aria-checked를 자동으로 처리합니다.',
-        'onCheckedChange의 값은 boolean | "indeterminate"이므로 타입을 확인하세요.'
+        'Checkbox.Root는 role="checkbox"와 aria-checked를 자동으로 관리합니다. htmlFor/id로 label을 연결하세요.',
+        'onCheckedChange 콜백의 값은 boolean | "indeterminate"입니다. indeterminate 상태는 checked prop에 "indeterminate"를 전달해 설정합니다.',
+        'Checkbox.Indicator는 checked 또는 indeterminate 상태일 때만 렌더링됩니다. 내부에 시각적 표시가 없으면 체크 여부를 알 수 없습니다.',
+        'data-state 속성("checked" | "unchecked" | "indeterminate")을 CSS 선택자로 사용하면 상태별 스타일링이 가능합니다.'
       ]
     },
     antd: {
@@ -308,13 +348,17 @@ export default function App() {
   return (
     <>
       <label>
-        <Checkbox.Root checked={emailChecked} onCheckedChange={setEmailChecked}>
+        <Checkbox.Root
+          checked={emailChecked}
+          onCheckedChange={setEmailChecked}>
           <Checkbox.Indicator>✓</Checkbox.Indicator>
         </Checkbox.Root>
         Email notifications
       </label>
       <label>
-        <Checkbox.Root checked={smsChecked} onCheckedChange={setSmsChecked}>
+        <Checkbox.Root
+          checked={smsChecked}
+          onCheckedChange={setSmsChecked}>
           <Checkbox.Indicator>✓</Checkbox.Indicator>
         </Checkbox.Root>
         SMS notifications

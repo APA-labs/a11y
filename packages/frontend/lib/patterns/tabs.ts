@@ -243,8 +243,15 @@ export default function App() {
       additionalChecks: [
         {
           id: 'tabs-radix-1',
-          title: 'Tabs.Root의 activationMode',
-          description: 'activationMode="manual"로 설정하면 화살표로 포커스만 이동하고 Enter/Space로 선택합니다. 자동 활성화보다 접근성이 높습니다.',
+          title: 'Tabs.List에 aria-label 필수',
+          description: 'Tabs.List에 aria-label을 추가해 탭 그룹의 목적을 스크린리더에 전달하세요.',
+          level: 'must'
+        },
+        {
+          id: 'tabs-radix-2',
+          title: 'activationMode="manual"로 포커스/활성화 분리',
+          description:
+            'activationMode="manual"로 설정하면 화살표 키로 포커스만 이동하고 Enter/Space로 탭을 활성화합니다. 콘텐츠 로딩이 느린 경우 더 접근성이 높습니다.',
           level: 'should'
         }
       ],
@@ -253,22 +260,80 @@ export default function App() {
         label: 'Radix Tabs',
         code: `import * as Tabs from '@radix-ui/react-tabs'
 
-export function RadixTabs() {
+const tabListStyle = {
+  display: 'flex',
+  borderBottom: '2px solid #e5e7eb',
+  gap: 0
+}
+const triggerStyle = {
+  padding: '10px 20px',
+  background: 'none',
+  border: 'none',
+  borderBottom: '2px solid transparent',
+  marginBottom: -2,
+  cursor: 'pointer',
+  fontSize: 14,
+  fontWeight: 500,
+  color: '#6b7280'
+}
+const contentStyle = {
+  padding: '20px 4px',
+  fontSize: 14,
+  lineHeight: 1.6,
+  color: '#374151'
+}
+
+export default function App() {
   return (
-    <Tabs.Root
-      defaultValue='tab1'
-      activationMode='manual'>
-      <Tabs.List aria-label='Content tabs'>
-        <Tabs.Trigger value='tab1'>Tab 1</Tabs.Trigger>
-        <Tabs.Trigger value='tab2'>Tab 2</Tabs.Trigger>
-      </Tabs.List>
-      <Tabs.Content value='tab1'>Panel 1 content</Tabs.Content>
-      <Tabs.Content value='tab2'>Panel 2 content</Tabs.Content>
-    </Tabs.Root>
+    <div style={{ maxWidth: 560, margin: '24px auto', padding: '0 16px' }}>
+      <Tabs.Root
+        defaultValue='profile'
+        activationMode='manual'>
+        <Tabs.List
+          aria-label='Account settings'
+          style={tabListStyle}>
+          <Tabs.Trigger
+            value='profile'
+            style={triggerStyle}>
+            Profile
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value='security'
+            style={triggerStyle}>
+            Security
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value='notifications'
+            style={triggerStyle}>
+            Notifications
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content
+          value='profile'
+          style={contentStyle}>
+          Manage your profile information, avatar, and display name.
+        </Tabs.Content>
+        <Tabs.Content
+          value='security'
+          style={contentStyle}>
+          Update your password and configure two-factor authentication.
+        </Tabs.Content>
+        <Tabs.Content
+          value='notifications'
+          style={contentStyle}>
+          Choose which notifications you receive via email or push.
+        </Tabs.Content>
+      </Tabs.Root>
+    </div>
   )
 }`
       },
-      notes: ['Radix Tabs는 모든 ARIA 역할과 키보드 탐색을 자동으로 처리합니다.', 'Tabs.List에 aria-label을 추가해 탭 그룹의 목적을 명시하세요.']
+      notes: [
+        'Tabs.Root는 role="tablist", aria-selected, aria-controls, aria-labelledby를 모두 자동으로 처리합니다.',
+        'Tabs.List에 aria-label을 추가해 탭 그룹의 목적을 명시하세요.',
+        'activationMode: "automatic"(기본, 화살표 이동 시 즉시 활성화) | "manual"(포커스와 활성화 분리). 콘텐츠 로딩이 느리면 "manual" 권장.',
+        'defaultValue(비제어) 또는 value + onValueChange(제어)로 활성 탭을 관리하세요.'
+      ]
     },
     antd: {
       id: 'antd',
@@ -277,31 +342,96 @@ export function RadixTabs() {
       additionalChecks: [
         {
           id: 'tabs-antd-1',
-          title: 'accessKey 충돌 주의',
-          description: 'Ant Design Tabs의 키보드 단축키가 브라우저 단축키와 충돌하지 않는지 확인하세요.',
+          title: 'items API 사용 (v4.20.0+)',
+          description: 'TabPane을 직접 사용하는 방식은 deprecated입니다. items prop에 key, label, children 객체 배열을 전달하는 방식을 사용하세요.',
+          level: 'must'
+        },
+        {
+          id: 'tabs-antd-2',
+          title: 'onChange로 활성 탭 상태 관리',
+          description:
+            'onChange 콜백으로 활성 탭 키를 관리하세요. 탭 변경 시 스크린리더가 새 콘텐츠를 인식할 수 있도록 tabpanel 영역을 적절히 구성하세요.',
+          level: 'should'
+        },
+        {
+          id: 'tabs-antd-3',
+          title: 'destroyInactiveTabPane으로 비활성 패널 관리',
+          description:
+            'destroyInactiveTabPane={true}로 설정하면 비활성 탭의 DOM이 제거되어 스크린리더가 숨겨진 콘텐츠를 읽지 않습니다. 반대로 false(기본)이면 비활성 탭이 DOM에 유지되어 aria-hidden 처리됩니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Tabs',
-        code: `import { Tabs } from 'antd'
+        code: `import { useState } from 'react'
+import { Tabs, Typography } from 'antd'
 
-const items = [
-  { key: '1', label: 'Tab 1', children: 'Panel 1 content' },
-  { key: '2', label: 'Tab 2', children: 'Panel 2 content' }
+const TAB_ITEMS = [
+  {
+    key: 'profile',
+    label: 'Profile',
+    children: (
+      <div style={{ padding: '16px 0' }}>
+        <Typography.Title
+          level={5}
+          style={{ marginTop: 0 }}>
+          Profile Settings
+        </Typography.Title>
+        <p style={{ color: '#595959' }}>Manage your profile information, avatar, and display name.</p>
+      </div>
+    )
+  },
+  {
+    key: 'security',
+    label: 'Security',
+    children: (
+      <div style={{ padding: '16px 0' }}>
+        <Typography.Title
+          level={5}
+          style={{ marginTop: 0 }}>
+          Security Settings
+        </Typography.Title>
+        <p style={{ color: '#595959' }}>Update your password and configure two-factor authentication.</p>
+      </div>
+    )
+  },
+  {
+    key: 'notifications',
+    label: 'Notifications',
+    children: (
+      <div style={{ padding: '16px 0' }}>
+        <Typography.Title
+          level={5}
+          style={{ marginTop: 0 }}>
+          Notification Preferences
+        </Typography.Title>
+        <p style={{ color: '#595959' }}>Choose which notifications you receive via email or push.</p>
+      </div>
+    )
+  }
 ]
 
-export function AntTabs() {
+export default function App() {
+  const [activeKey, setActiveKey] = useState('profile')
+
   return (
-    <Tabs
-      defaultActiveKey='1'
-      items={items}
-    />
+    <div style={{ padding: '24px', maxWidth: 560 }}>
+      <Tabs
+        activeKey={activeKey}
+        onChange={setActiveKey}
+        items={TAB_ITEMS}
+      />
+    </div>
   )
 }`
       },
-      notes: ['Ant Design Tabs는 기본적으로 접근성 속성을 처리합니다.', 'tabBarExtraContent 사용 시 해당 콘텐츠도 키보드로 접근 가능한지 확인하세요.']
+      notes: [
+        'Ant Design Tabs는 role="tablist", role="tab", role="tabpanel"과 aria-selected, aria-controls를 자동으로 처리합니다.',
+        'items prop(v4.20.0+)으로 탭을 선언하세요. TabPane 직접 사용 방식은 deprecated입니다.',
+        '화살표 키로 탭 간 이동, Enter/Space로 탭 활성화가 기본 지원됩니다.',
+        'tabBarExtraContent 사용 시 해당 콘텐츠도 키보드로 접근 가능한지 확인하세요.'
+      ]
     },
     chakra: {
       id: 'chakra',
@@ -319,49 +449,112 @@ export function AntTabs() {
         language: 'tsx',
         label: 'Chakra UI Tabs',
         code: `import { Tabs } from '@chakra-ui/react'
-<Tabs.Root defaultValue='account'>
-  <Tabs.List aria-label='Account settings'>
-    <Tabs.Trigger value='account'>Account</Tabs.Trigger>
-    <Tabs.Trigger value='password'>Password</Tabs.Trigger>
-    <Tabs.Indicator />
-  </Tabs.List>
-  <Tabs.Content value='account'>Account settings content</Tabs.Content>
-  <Tabs.Content value='password'>Change password content</Tabs.Content>
-</Tabs.Root>`
+
+export default function App() {
+  return (
+    <Tabs.Root
+      defaultValue='profile'
+      style={{ maxWidth: 560, padding: '1.5rem' }}>
+      <Tabs.List aria-label='Account settings'>
+        <Tabs.Trigger value='profile'>Profile</Tabs.Trigger>
+        <Tabs.Trigger value='security'>Security</Tabs.Trigger>
+        <Tabs.Trigger value='notifications'>Notifications</Tabs.Trigger>
+        <Tabs.Indicator />
+      </Tabs.List>
+      <Tabs.Content
+        value='profile'
+        style={{ padding: '1rem 0', fontSize: 14 }}>
+        Manage your profile information, avatar, and display name.
+      </Tabs.Content>
+      <Tabs.Content
+        value='security'
+        style={{ padding: '1rem 0', fontSize: 14 }}>
+        Update your password and configure two-factor authentication.
+      </Tabs.Content>
+      <Tabs.Content
+        value='notifications'
+        style={{ padding: '1rem 0', fontSize: 14 }}>
+        Choose which notifications you receive via email or push.
+      </Tabs.Content>
+    </Tabs.Root>
+  )
+}`
       },
       notes: [
-        'Chakra Tabs.Root는 키보드 네비게이션과 aria 속성을 자동 처리합니다.',
-        'lazyMount prop으로 비활성 탭 콘텐츠를 지연 렌더링할 수 있습니다.',
-        'Tabs.Indicator는 시각적 활성 표시로 aria-hidden 처리됩니다.'
+        'Chakra Tabs.Root는 WAI-ARIA Tabs 패턴의 키보드 네비게이션과 aria 속성을 자동 처리합니다.',
+        'Tabs.List에 aria-label을 추가해 탭 그룹의 목적을 스크린리더에 전달하세요.',
+        'Tabs.Indicator는 aria-hidden 처리되는 시각적 활성 표시입니다.',
+        'lazyMount prop으로 비활성 탭 콘텐츠를 지연 렌더링해 성능을 최적화할 수 있습니다.'
       ]
     },
     spectrum: {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'tabs-spectrum-1',
+          title: 'TabList aria-label 필수',
+          description: 'TabList에 aria-label을 지정하면 스크린리더가 탭 목록의 목적을 파악합니다. 페이지에 여러 TabList가 있을 때 특히 중요합니다.',
+          level: 'must'
+        }
+      ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria Tabs',
         code: `import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components'
 
-const tabListStyle = { display: 'flex', gap: 0, borderBottom: '2px solid #e5e7eb' }
-const tabStyle = { padding: '8px 16px', cursor: 'pointer', fontSize: 14, fontWeight: 500, border: 'none', background: 'none', borderBottom: '2px solid transparent', marginBottom: -2, outline: 'none' }
-const panelStyle = { padding: '16px 0', fontSize: 14 }
+const TABS = [
+  { id: 'overview', label: 'Overview', content: 'General information about your account.' },
+  { id: 'security', label: 'Security', content: 'Manage your password and two-factor authentication.' },
+  { id: 'notifications', label: 'Notifications', content: 'Configure your notification preferences.' }
+]
 
-<Tabs>
-  <TabList aria-label='Account settings' style={tabListStyle}>
-    <Tab id='account' style={tabStyle}>Account</Tab>
-    <Tab id='password' style={tabStyle}>Password</Tab>
-  </TabList>
-  <TabPanel id='account' style={panelStyle}>Account settings content</TabPanel>
-  <TabPanel id='password' style={panelStyle}>Change password content</TabPanel>
-</Tabs>`
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem', maxWidth: 480 }}>
+      <Tabs defaultSelectedKey='overview'>
+        <TabList
+          aria-label='Account settings'
+          style={{ display: 'flex', borderBottom: '2px solid #e5e7eb', gap: 0 }}>
+          {TABS.map((tab) => (
+            <Tab
+              key={tab.id}
+              id={tab.id}
+              style={({ isSelected }) => ({
+                padding: '8px 16px',
+                cursor: 'pointer',
+                fontSize: 14,
+                fontWeight: 500,
+                border: 'none',
+                background: 'none',
+                borderBottom: isSelected ? '2px solid #e03' : '2px solid transparent',
+                marginBottom: -2,
+                color: isSelected ? '#e03' : '#374151',
+                outline: 'none'
+              })}>
+              {tab.label}
+            </Tab>
+          ))}
+        </TabList>
+        {TABS.map((tab) => (
+          <TabPanel
+            key={tab.id}
+            id={tab.id}
+            style={{ padding: '16px 0', fontSize: 14, color: '#4b5563' }}>
+            {tab.content}
+          </TabPanel>
+        ))}
+      </Tabs>
+    </div>
+  )
+}`
       },
       notes: [
-        'React Aria Tabs는 방향키, Home, End 키보드 네비게이션을 자동 구현합니다.',
-        '각 Tab의 id가 대응하는 TabPanel의 id와 자동으로 연결됩니다.',
-        "keyboardActivation='manual'로 포커스와 활성화를 분리할 수 있습니다."
+        '방향키(좌/우), Home, End 키보드 네비게이션이 자동 구현됩니다.',
+        '각 Tab의 id와 TabPanel의 id가 일치하면 aria-controls/aria-labelledby가 자동 연결됩니다.',
+        "keyboardActivation='manual'로 포커스와 활성화를 분리하여 수동 활성화 패턴을 구현할 수 있습니다.",
+        'Tab children에 함수를 전달하면 isSelected, isFocused 등의 상태를 렌더 프롭으로 활용할 수 있습니다.'
       ]
     },
     baseui: {
@@ -385,28 +578,73 @@ const panelStyle = { padding: '16px 0', fontSize: 14 }
       codeSample: {
         language: 'tsx',
         label: 'Base UI Tabs',
-        code: `import { Tabs } from '@base-ui/react/tabs'
+        code: `import { Tabs } from '@base-ui-components/react/tabs'
 
 export default function App() {
   return (
-    <Tabs.Root defaultValue='overview'>
-      <Tabs.List aria-label='Content sections'>
-        <Tabs.Tab value='overview'>Overview</Tabs.Tab>
-        <Tabs.Tab value='projects'>Projects</Tabs.Tab>
-        <Tabs.Tab value='account'>Account</Tabs.Tab>
-        <Tabs.Indicator />
+    <Tabs.Root
+      defaultValue='overview'
+      style={{ maxWidth: 480, margin: '24px auto', padding: '0 16px' }}>
+      <Tabs.List
+        aria-label='Content sections'
+        style={{
+          display: 'flex',
+          gap: 4,
+          borderBottom: '1px solid #e2e8f0',
+          position: 'relative'
+        }}>
+        {['overview', 'projects', 'account'].map((val) => (
+          <Tabs.Tab
+            key={val}
+            value={val}
+            style={{
+              padding: '10px 16px',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 14,
+              fontWeight: 500,
+              textTransform: 'capitalize'
+            }}>
+            {val.charAt(0).toUpperCase() + val.slice(1)}
+          </Tabs.Tab>
+        ))}
+        <Tabs.Indicator
+          style={{
+            position: 'absolute',
+            bottom: -1,
+            left: 'var(--active-tab-left)',
+            width: 'var(--active-tab-width)',
+            height: 2,
+            background: '#18181b',
+            transition: 'left 0.2s, width 0.2s'
+          }}
+        />
       </Tabs.List>
-      <Tabs.Panel value='overview'>Overview content here.</Tabs.Panel>
-      <Tabs.Panel value='projects'>Projects content here.</Tabs.Panel>
-      <Tabs.Panel value='account'>Account settings here.</Tabs.Panel>
+      <Tabs.Panel
+        value='overview'
+        style={{ padding: '16px 0', fontSize: 14 }}>
+        Overview content here.
+      </Tabs.Panel>
+      <Tabs.Panel
+        value='projects'
+        style={{ padding: '16px 0', fontSize: 14 }}>
+        Projects content here.
+      </Tabs.Panel>
+      <Tabs.Panel
+        value='account'
+        style={{ padding: '16px 0', fontSize: 14 }}>
+        Account settings here.
+      </Tabs.Panel>
     </Tabs.Root>
   )
 }`
       },
       notes: [
         'Tabs.Root는 화살표 키, Home, End 키보드 탐색과 aria-selected를 자동으로 처리합니다.',
-        'Tabs.Indicator는 --active-tab-left, --active-tab-width CSS 변수로 위치를 추적합니다.',
-        'activateOnFocus prop을 추가하면 화살표 키 이동 시 즉시 탭이 활성화됩니다.'
+        'Tabs.Indicator는 --active-tab-left, --active-tab-width CSS 변수로 활성 탭 위치를 추적합니다.',
+        'activateOnFocus prop을 추가하면 화살표 키 이동 시 즉시 탭이 활성화됩니다.',
+        'defaultValue(비제어) 또는 value/onValueChange(제어 모드)로 탭 상태를 관리하세요.'
       ]
     }
   }

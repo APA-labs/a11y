@@ -225,40 +225,101 @@ export default function App() {
       additionalChecks: [
         {
           id: 'inp-antd-1',
-          title: 'Form.Item rules와 aria 동기화',
-          description: 'Ant Design Form의 rules 검증 메시지는 aria-describedby로 연결되지 않을 수 있습니다. 수동 확인이 필요합니다.',
+          title: 'Form.Item으로 레이블-입력 자동 연결',
+          description:
+            'Form.Item의 label과 name prop을 함께 사용하면 htmlFor-id 연결이 자동 처리됩니다. Input에 별도 id 지정 없이도 레이블과 연결됩니다.',
           level: 'must'
         },
         {
           id: 'inp-antd-2',
           title: 'prefix/suffix 아이콘 aria-hidden',
-          description: 'Input의 prefix/suffix 아이콘에 aria-hidden을 추가하세요.',
+          description: 'Input의 prefix/suffix에 아이콘을 사용할 경우 aria-hidden="true"를 추가해 스크린리더가 장식용 아이콘을 읽지 않도록 하세요.',
           level: 'should'
+        },
+        {
+          id: 'inp-antd-3',
+          title: 'status prop으로 유효성 상태 전달',
+          description:
+            "Form.Item 밖에서 Input을 사용할 때 status='error' 또는 'warning'으로 시각적 상태를 표시하고 aria-describedby로 오류 메시지를 연결하세요.",
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
-        label: 'Ant Design Form.Item',
-        code: `import { Form, Input } from 'antd'
-<Form.Item
-  name='email'
-  label='Email'
-  required
-  rules={[
-    { required: true, message: 'Please enter your email.' },
-    { type: 'email', message: 'Please enter a valid email address.' }
-  ]}>
-  <Input
-    type='email'
-    autoComplete='email'
-    aria-required='true'
-  />
-</Form.Item>`
+        label: 'Ant Design Input',
+        code: `import { useState } from 'react'
+import { Form, Input, Button, Space } from 'antd'
+
+export default function App() {
+  const [form] = Form.useForm()
+  const [submitted, setSubmitted] = useState(false)
+
+  return (
+    <div style={{ padding: '24px', maxWidth: 480 }}>
+      <Form
+        form={form}
+        layout='vertical'
+        onFinish={(values) => setSubmitted(true)}
+        validateTrigger='onBlur'>
+        <Form.Item
+          label='Full Name'
+          name='name'
+          rules={[{ required: true, message: 'Please enter your name.' }]}>
+          <Input
+            placeholder='John Doe'
+            autoComplete='name'
+          />
+        </Form.Item>
+
+        <Form.Item
+          label='Email'
+          name='email'
+          rules={[
+            { required: true, message: 'Please enter your email.' },
+            { type: 'email', message: 'Please enter a valid email address.' }
+          ]}>
+          <Input
+            type='email'
+            placeholder='you@example.com'
+            autoComplete='email'
+            prefix={<span aria-hidden>@</span>}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label='Password'
+          name='password'
+          rules={[{ required: true, message: 'Please enter a password.' }]}>
+          <Input.Password
+            placeholder='Enter password'
+            autoComplete='new-password'
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type='primary'
+            htmlType='submit'>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+      {submitted && (
+        <p
+          role='status'
+          style={{ color: '#52c41a', marginTop: 8 }}>
+          Form submitted successfully!
+        </p>
+      )}
+    </div>
+  )
+}`
       },
       notes: [
-        'Ant Design Form.Item은 레이블과 input을 자동으로 연결합니다.',
-        'validateTrigger로 실시간 검증 시점을 조절할 수 있습니다.',
-        'Form.Item의 tooltip prop으로 추가 설명을 제공할 수 있습니다.'
+        'Form.Item의 label과 name prop으로 레이블-input 연결이 자동 처리됩니다. Input에 별도 id가 필요하지 않습니다.',
+        'Form.Item의 rules 검증 실패 시 aria-invalid와 aria-describedby가 자동으로 설정됩니다.',
+        'Input.Password는 비밀번호 표시/숨기기 버튼을 내장하며 접근성 레이블이 자동 적용됩니다.',
+        'prefix/suffix에 아이콘 사용 시 aria-hidden을 추가해 장식용 아이콘이 스크린리더에 읽히지 않게 하세요.'
       ]
     },
     chakra: {
@@ -276,26 +337,53 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Field',
-        code: `import { Field, Input } from '@chakra-ui/react'
-<Field.Root
-  required
-  invalid={hasError}>
-  <Field.Label>
-    Email <Field.RequiredIndicator />
-  </Field.Label>
-  <Input
-    type='email'
-    autoComplete='email'
-    placeholder='user@example.com'
-  />
-  {hasError && <Field.ErrorText>Please enter a valid email address.</Field.ErrorText>}
-  <Field.HelperText>e.g. user@example.com</Field.HelperText>
-</Field.Root>`
+        code: `import { useState } from 'react'
+import { Field, Input, Button, Stack } from '@chakra-ui/react'
+
+export default function App() {
+  const [email, setEmail] = useState('')
+  const [hasError, setHasError] = useState(false)
+
+  const handleBlur = () => {
+    setHasError(email.length > 0 && !email.includes('@'))
+  }
+
+  return (
+    <Stack
+      gap={4}
+      style={{ padding: '1.5rem', maxWidth: 400 }}>
+      <Field.Root
+        required
+        invalid={hasError}>
+        <Field.Label>
+          Email <Field.RequiredIndicator />
+        </Field.Label>
+        <Input
+          type='email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={handleBlur}
+          autoComplete='email'
+          placeholder='user@example.com'
+        />
+        {hasError && <Field.ErrorText role='alert'>Please enter a valid email address.</Field.ErrorText>}
+        <Field.HelperText>e.g. user@example.com</Field.HelperText>
+      </Field.Root>
+
+      <Button
+        colorPalette='teal'
+        type='submit'>
+        Submit
+      </Button>
+    </Stack>
+  )
+}`
       },
       notes: [
-        'Chakra Field.Root의 invalid prop이 Input에 aria-invalid를 자동 설정합니다.',
-        'Field.ErrorText는 aria-live로 오류를 스크린리더에 전달합니다.',
-        'required prop은 Field.RequiredIndicator와 aria-required 모두 처리합니다.'
+        'Field.Root의 invalid prop이 하위 Input에 aria-invalid를 자동으로 전파합니다.',
+        'Field.ErrorText는 aria-describedby로 Input에 연결됩니다. role="alert"를 추가하면 즉시 전달됩니다.',
+        'required prop은 Field.RequiredIndicator 표시와 aria-required를 모두 처리합니다.',
+        'Field.HelperText는 aria-describedby로 Input에 자동 연결됩니다.'
       ]
     },
     spectrum: {
@@ -305,8 +393,9 @@ export default function App() {
       additionalChecks: [
         {
           id: 'inp-spectrum-1',
-          title: 'isRequired/isInvalid 사용',
-          description: 'React Aria TextField는 isRequired, isInvalid, errorMessage로 자동으로 aria 속성을 관리합니다.',
+          title: 'FieldError로 오류 메시지 자동 연결',
+          description:
+            'FieldError 컴포넌트를 사용하면 유효성 검사 실패 시 aria-describedby가 자동 설정됩니다. 별도로 aria-errormessage를 지정할 필요가 없습니다.',
           level: 'should'
         }
       ],
@@ -315,19 +404,62 @@ export default function App() {
         label: 'React Aria TextField',
         code: `import { TextField, Label, Input, Text, FieldError } from 'react-aria-components'
 
-const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db', borderRadius: 6, padding: '6px 10px', fontSize: 14, outline: 'none' }
+const inputBase = {
+  display: 'block',
+  width: '100%',
+  boxSizing: 'border-box' as const,
+  border: '1px solid #d1d5db',
+  borderRadius: 6,
+  padding: '6px 10px',
+  fontSize: 14,
+  outline: 'none'
+}
 
-<TextField isRequired>
-  <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4 }}>Email</Label>
-  <Input type='email' autoComplete='email' style={inputStyle} />
-  <Text slot='description' style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>e.g. user@example.com</Text>
-  <FieldError style={{ fontSize: 12, color: '#dc2626', marginTop: 4 }} />
-</TextField>`
+export default function App() {
+  return (
+    <div style={{ padding: '1.5rem', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <TextField isRequired>
+        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Full name</Label>
+        <Input
+          style={inputBase}
+          placeholder='Enter your full name'
+        />
+        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+      </TextField>
+
+      <TextField
+        isRequired
+        type='email'>
+        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Email</Label>
+        <Input
+          style={inputBase}
+          placeholder='you@example.com'
+          autoComplete='email'
+        />
+        <Text
+          slot='description'
+          style={{ display: 'block', fontSize: 12, color: '#6b7280', marginTop: 4 }}>
+          We will never share your email.
+        </Text>
+        <FieldError style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }} />
+      </TextField>
+
+      <TextField isReadOnly>
+        <Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>Username</Label>
+        <Input
+          style={{ ...inputBase, background: '#f9fafb', color: '#6b7280' }}
+          defaultValue='@devongovett'
+        />
+      </TextField>
+    </div>
+  )
+}`
       },
       notes: [
-        'react-aria-components TextField는 compound component로 Label, Input, Text, FieldError를 조합합니다.',
+        'TextField는 Label, Input, Text(description), FieldError를 compound component로 조합합니다.',
         'isRequired prop이 true면 aria-required가 자동 적용됩니다.',
-        'FieldError는 validation 실패 시 자동으로 aria-describedby로 연결됩니다.'
+        'FieldError는 유효성 검사 실패 시 aria-describedby로 자동 연결됩니다.',
+        'isReadOnly prop은 aria-readonly를 자동 적용합니다. isDisabled와 달리 포커스가 유지됩니다.'
       ]
     },
     baseui: {
@@ -340,33 +472,84 @@ const inputStyle = { display: 'block', width: '100%', border: '1px solid #d1d5db
           title: 'Field 컴포넌트로 label-input 자동 연결',
           description: 'Field.Root로 감싸면 Field.Label과 Field.Control이 자동으로 연결되고 Field.Error가 aria-describedby로 연결됩니다.',
           level: 'should'
+        },
+        {
+          id: 'input-baseui-2',
+          title: 'Input 단독 사용 시 label 직접 연결',
+          description: 'Input(@base-ui-components/react/input)을 Field 없이 단독 사용 시 <label htmlFor>로 직접 연결하거나 aria-label을 추가하세요.',
+          level: 'must'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Base UI Field + Input',
-        code: `import { Field } from '@base-ui/react/field'
+        code: `import { Field } from '@base-ui-components/react/field'
+import { Input } from '@base-ui-components/react/input'
+
+const inputStyle = {
+  display: 'block',
+  width: '100%',
+  boxSizing: 'border-box' as const,
+  border: '1px solid #d1d5db',
+  borderRadius: 6,
+  padding: '6px 10px',
+  fontSize: 14
+}
 
 export default function App() {
   return (
-    <Field.Root>
-      <Field.Label>
-        Name <span aria-hidden>*</span>
-      </Field.Label>
-      <Field.Control
-        required
-        placeholder='Enter your name'
-      />
-      <Field.Error match='valueMissing'>Please enter your name.</Field.Error>
-      <Field.Description>Visible on your profile</Field.Description>
-    </Field.Root>
+    <div style={{ padding: '1.5rem', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Field.Root name='name'>
+        <Field.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>
+          Full name <span aria-hidden>*</span>
+        </Field.Label>
+        <Field.Control
+          render={<Input style={inputStyle} />}
+          required
+          placeholder='Enter your full name'
+        />
+        <Field.Error
+          match='valueMissing'
+          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          Please enter your full name.
+        </Field.Error>
+        <Field.Description style={{ display: 'block', fontSize: 12, color: '#6b7280', marginTop: 4 }}>Visible on your profile.</Field.Description>
+      </Field.Root>
+
+      <Field.Root name='email'>
+        <Field.Label style={{ display: 'block', fontWeight: 600, marginBottom: 4, fontSize: 14 }}>
+          Email <span aria-hidden>*</span>
+        </Field.Label>
+        <Field.Control
+          render={
+            <Input
+              type='email'
+              style={inputStyle}
+            />
+          }
+          required
+          placeholder='you@example.com'
+        />
+        <Field.Error
+          match='valueMissing'
+          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          Please enter your email.
+        </Field.Error>
+        <Field.Error
+          match='typeMismatch'
+          style={{ display: 'block', fontSize: 12, color: '#dc2626', marginTop: 4 }}>
+          Please enter a valid email address.
+        </Field.Error>
+      </Field.Root>
+    </div>
   )
 }`
       },
       notes: [
         'Field.Root는 하위 컨트롤에 id와 aria-labelledby를 자동으로 연결합니다.',
-        'Field.Error의 match prop은 HTML5 constraint validation API의 유효성 키를 사용합니다.',
-        'Field.Control은 Input과 동일하게 동작하며 Field 컨텍스트를 자동으로 받습니다.'
+        'Field.Error의 match prop은 HTML5 constraint validation API 키를 사용합니다 (valueMissing, typeMismatch 등).',
+        'Field.Control은 Field 컨텍스트를 자동으로 받아 aria-invalid, aria-describedby를 관리합니다.',
+        'Input(@base-ui-components/react/input)을 단독 사용할 때는 Field 없이도 동작하지만 label 연결이 필요합니다.'
       ]
     }
   }

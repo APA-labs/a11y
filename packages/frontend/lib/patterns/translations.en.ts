@@ -67,41 +67,72 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'type="single" vs "multiple"',
-            description: 'With type="single", only one panel opens at a time. Make this behavior visually clear.'
+            title: 'Control single/multiple expand with the type prop',
+            description:
+              'Use type="single" to allow only one panel open at a time, or type="multiple" to allow several. Make this behavior clear through the UI.'
+          },
+          {
+            title: 'Allow full collapse with the collapsible prop',
+            description: 'When type="single", adding the collapsible prop lets users click an open panel again to close it.'
           }
         ],
-        notes: ['Radix Accordion.Header renders as h3 by default.', 'aria-expanded and data-state attributes are managed automatically.']
+        notes: [
+          'The type prop on Accordion.Root controls expansion behavior: "single" (one at a time) or "multiple" (simultaneous). collapsible is only valid with type="single".',
+          'Accordion.Header renders as <h3> by default. Use asChild to change the heading level.',
+          'aria-expanded and data-state ("open" | "closed") are automatically managed on Accordion.Trigger.',
+          'Use defaultValue for uncontrolled or value + onValueChange for controlled open state.'
+        ]
       },
       antd: {
         additionalChecks: [
           {
-            title: 'Use accordion prop',
-            description: 'Setting accordion={true} allows only one panel to be open at a time. Inform users of this behavior.'
+            title: 'Use accordion prop for single-expand mode',
+            description: 'Setting accordion={true} allows only one panel to be open at a time. Make this behavior visually clear to users.'
+          },
+          {
+            title: 'Use items API (v5.6.0+)',
+            description: 'Use the items prop with key/label/children objects instead of Collapse.Panel, which is deprecated since v5.6.0.'
+          },
+          {
+            title: 'Use collapsible to disable individual panels',
+            description: 'Set collapsible="disabled" on specific items in the items array to prevent users from expanding those panels.'
           }
         ],
-        notes: ['Ant Design Collapse handles accessibility attributes by default.', 'If showArrow={false}, maintain visual state indicators.']
+        notes: [
+          'Ant Design Collapse automatically manages aria-expanded on panel headers.',
+          'The items API (v5.6.0+) replaces Collapse.Panel. Use key/label/children in the items array.',
+          'expandIconPlacement controls icon position; the icon is rendered as aria-hidden.',
+          'Setting accordion={true} applies aria-expanded=false to all inactive panels automatically.'
+        ]
       },
       chakra: {
         additionalChecks: [
           {
             title: 'Multiple mode support',
             description:
-              'Adding the multiple prop to Accordion.Root allows multiple items to be open simultaneously. aria-expanded is still managed correctly.'
+              'Adding the multiple prop to Accordion.Root allows multiple items to be open simultaneously. aria-expanded is still managed correctly in both modes.'
           }
         ],
         notes: [
-          'Chakra Accordion.Root automatically handles keyboard navigation and aria attributes.',
-          'ItemIndicator is rendered as aria-hidden.',
-          'Use the collapsible prop to allow all items to be closed.'
+          'Chakra Accordion.Root automatically handles keyboard navigation, aria-expanded, and focus management.',
+          'ItemIndicator is rendered as aria-hidden and serves as the visual expand/collapse arrow.',
+          'Use the collapsible prop to allow all items to be closed simultaneously.',
+          'Use the multiple prop to allow multiple panels to be open at the same time.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Heading wraps the trigger Button',
+            description:
+              'Each Disclosure trigger must be a Button with slot="trigger" nested inside a Heading element to satisfy the WAI-ARIA Accordion pattern.'
+          }
+        ],
         notes: [
-          'React Aria DisclosureGroup implements the WAI-ARIA Accordion pattern.',
-          'Set initial/controlled state with defaultExpandedKeys/expandedKeys.',
-          'Use allowsMultipleExpanded to permit multiple items to be open.'
+          'React Aria DisclosureGroup implements the WAI-ARIA Accordion pattern using Disclosure, Heading, and DisclosurePanel.',
+          'Set defaultExpandedKeys to pre-expand items; use expandedKeys + onExpandedChange for controlled mode.',
+          'Use allowsMultipleExpanded to allow more than one panel to be open at the same time.',
+          'aria-expanded and aria-controls are managed automatically on the trigger Button.'
         ]
       },
       baseui: {
@@ -117,8 +148,10 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         ],
         notes: [
           'Accordion.Header renders as <h3> by default. Use the render prop to change the heading level.',
-          'Accordion.Trigger manages aria-expanded automatically.',
-          'Add the multiple prop to allow multiple panels to be open simultaneously. Default is false (single-expand).'
+          'Accordion.Trigger manages aria-expanded automatically. The data-panel-open attribute enables CSS-based styling.',
+          'Add the multiple prop to allow multiple panels to be open simultaneously. Default is false (single-expand).',
+          'The loopFocus prop (default true) controls whether arrow key navigation cycles at the first and last items.',
+          'Use the hiddenUntilFound prop to make closed panel content discoverable via browser Ctrl+F search.'
         ]
       }
     }
@@ -199,24 +232,40 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       antd: {
         additionalChecks: [
           {
-            title: 'Accessibility limitations of message/notification',
-            description: 'The message and notification APIs have limited screen reader support; use Alert component for critical messages.'
+            title: 'Always set showIcon',
+            description:
+              'Setting showIcon={true} displays an icon that conveys the severity type (success/warning/error/info). This provides a non-color visual indicator alongside the color change.'
+          },
+          {
+            title: 'closable with aria-* support (v5.15.0+)',
+            description:
+              'When using closable={true}, pass closeIcon or closable={{ aria-label: "Dismiss alert" }} (v5.15.0+) to provide an accessible label for the close button.'
+          },
+          {
+            title: 'Use App.useApp() for notification API',
+            description:
+              'Wrap your app in <App> and use App.useApp() to access the notification API. This ensures the notification is rendered within the correct React context.'
           }
         ],
         notes: [
-          'The showIcon prop automatically displays an icon matching the severity type.',
-          'Setting duration={0} in the notification API keeps it until manually closed.',
-          'The closable prop automatically adds a close button.'
+          'Use the title prop for the main heading and description for body text. Both are exposed to assistive technologies.',
+          'Combining showIcon with the type prop provides both a visual icon and color to convey severity.',
+          'The closable.aria-label prop (v5.15.0+) adds an accessible label to the close button.',
+          'Notification API: set duration={0} to keep open until manually closed. Default is 4.5 seconds.'
         ]
       },
       chakra: {
         additionalChecks: [
-          { title: 'Set role per status', description: 'Use role="alert" for critical statuses and role="status" for informational ones.' }
+          {
+            title: 'Set role per status',
+            description: 'Use role="alert" for urgent alerts (error/warning) and role="status" for informational ones.'
+          }
         ],
         notes: [
-          'The status prop on Chakra Alert.Root determines visual styles and aria attributes.',
-          'For dynamically added alerts, explicitly set role="alert".',
-          'Alert.Indicator is automatically given aria-hidden.'
+          'The status prop on Chakra Alert.Root (info/success/warning/error/neutral) sets visual styles and color automatically.',
+          'For dynamically inserted alerts, explicitly set role="alert" to ensure immediate screen reader announcement.',
+          'Alert.Indicator is automatically given aria-hidden.',
+          'neutral is also a valid status value for low-priority informational alerts.'
         ]
       }
     }
@@ -375,39 +424,55 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       antd: {
         additionalChecks: [
           {
-            title: 'Supplement aria on danger button',
-            description: 'For danger buttons, communicate the destructive nature via aria-label or visible text, not just color.'
+            title: 'danger button needs descriptive aria-label',
+            description:
+              'danger={true} only changes the button color. For destructive actions, add an aria-label that describes the consequence (e.g., aria-label="Delete account permanently").'
           },
           {
-            title: 'Hide loading spinner',
-            description: 'When loading={true}, ensure the spinner is aria-hidden so screen readers do not announce it.'
+            title: 'loading state should set aria-busy',
+            description:
+              'When loading={true} the spinner is shown but screen readers may not be notified. Add aria-busy={loading} to the Button to announce the pending state.'
+          },
+          {
+            title: 'Use htmlType for form submit buttons',
+            description:
+              'Set htmlType="submit" on the form submit Button so it participates in the form submission flow and can be triggered with Enter in inputs.'
           }
         ],
         notes: [
-          'Ant Design Button uses a <button> element internally.',
-          'Use the htmlType prop to specify submit/reset/button type.',
-          'Consider layout context when using the block prop for full-width buttons.'
+          'Ant Design Button renders a semantic <button> element internally.',
+          'htmlType prop controls the type attribute: "button" (default), "submit", or "reset".',
+          'loading={true} adds a spinner — combine with aria-busy={true} for screen reader awareness.',
+          'color + variant props (v5.21.0+) offer more styling options than type alone.'
         ]
       },
       chakra: {
         additionalChecks: [
           {
-            title: 'Provide loadingText when isLoading',
-            description: 'Set loadingText so screen readers announce the loading state instead of staying silent.'
+            title: 'Provide loadingText when loading',
+            description: 'Set loadingText on Chakra Button so screen readers announce the loading state instead of staying silent.'
           }
         ],
         notes: [
-          'Chakra Button uses a <button> element internally.',
-          'When isLoading is true, the button is automatically disabled.',
-          'Setting loadingText displays text alongside the spinner.'
+          'Chakra Button renders a <button> element internally.',
+          'When loading is true, the button is automatically disabled and a spinner is displayed.',
+          'Setting loadingText provides a text label alongside the spinner for screen readers.',
+          'Use colorPalette to apply Chakra brand colors to the button.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Use isPending for pending state',
+            description:
+              'The isPending prop keeps the button focusable while blocking press/hover events, and announces the pending state to screen readers. Render a ProgressBar alongside it.'
+          }
+        ],
         notes: [
-          'React Spectrum Button uses onPress instead of onClick.',
-          'Use variant to specify cta, primary, secondary, or negative.',
-          'Keyboard, mouse, and touch interactions are all handled automatically.'
+          'Use onPress instead of onClick. onPress normalizes mouse, keyboard, and touch interactions.',
+          'isPending keeps focus while disabling interactions and announces the pending state to assistive technologies.',
+          'isDisabled automatically sets aria-disabled and removes focus.',
+          'Pass a function to children to access render props like isHovered, isPressed, and isFocusVisible for styling.'
         ]
       },
       baseui: {
@@ -422,9 +487,10 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'Base UI Button renders a native <button> element by default.',
+          'Base UI Button renders a native <button type="button"> element by default.',
           'Use focusableWhenDisabled to keep the button in the tab sequence even when disabled.',
-          'Use the render prop to change the rendered element (e.g., render={<a />}); set nativeButton={false} when doing so.'
+          'Use the render prop to change the rendered element (e.g., render={<a />}); set nativeButton={false} when doing so.',
+          'The data-disabled attribute is set when disabled — use it for CSS styling instead of the :disabled pseudo-class.'
         ]
       }
     }
@@ -474,13 +540,21 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'Handle Checkbox.Indicator visibility',
-            description: 'Checkbox.Indicator is shown only when checked. Ensure focus styles are visible in both checked and unchecked states.'
+            title: 'Checkbox.Indicator only renders when checked',
+            description:
+              'Checkbox.Indicator mounts only when the checkbox is checked or indeterminate. Always include a visible icon or symbol inside — without it, the checked state will be invisible.'
+          },
+          {
+            title: 'Handle the indeterminate value type in onCheckedChange',
+            description:
+              'The onCheckedChange callback receives boolean | "indeterminate". Use a type guard when handling this value to avoid unexpected behavior.'
           }
         ],
         notes: [
-          'Radix Checkbox automatically handles role="checkbox" and aria-checked.',
-          'The value from onCheckedChange is boolean | "indeterminate" — handle the type accordingly.'
+          'Checkbox.Root automatically manages role="checkbox" and aria-checked. Connect a label via htmlFor/id.',
+          'onCheckedChange receives boolean | "indeterminate". Set checked="indeterminate" on Checkbox.Root to express a partial selection state.',
+          'Checkbox.Indicator renders only when the state is checked or indeterminate. Always provide a visual indicator inside.',
+          'The data-state attribute ("checked" | "unchecked" | "indeterminate") can be used as a CSS selector for state-based styling.'
         ]
       },
       antd: {
@@ -591,11 +665,17 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Control free-form input with allowsCustomValue',
+            description: 'allowsCustomValue={true} allows values not in the list. Default is false, restricting selection to listed items.'
+          }
+        ],
         notes: [
-          'React Aria ComboBox automatically handles autocomplete, keyboard navigation, and ARIA.',
-          'Setting the label prop automatically connects it via aria-label.',
-          'The allowsCustomValue prop controls whether free-form input is allowed.'
+          'ComboBox automatically manages role="combobox", aria-expanded, aria-autocomplete, and aria-controls.',
+          'Compose Label, Group (input wrapper), Input, Button (toggle), Popover, and ListBox as compound components.',
+          'Use allowsCustomValue={true} to permit free-form text input not present in the list.',
+          'Provide a defaultFilter prop for a custom filter function, or manipulate the items prop directly for server-side filtering.'
         ]
       }
     }
@@ -656,25 +736,40 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       },
       antd: {
         additionalChecks: [
-          { title: 'Set locale for language', description: 'Use ConfigProvider locale to display the calendar in the correct language.' }
+          {
+            title: 'Set locale via ConfigProvider',
+            description:
+              'Wrap with ConfigProvider and set locale={enUS} (or your locale) so calendar labels and navigation buttons are rendered in the correct language.'
+          },
+          {
+            title: 'Use status prop for validation state',
+            description:
+              'Set status="error" or status="warning" on DatePicker to visually indicate invalid input. Pair with a Form.Item to connect the error message via aria-describedby.'
+          },
+          {
+            title: 'disabledDate callback for restricted dates',
+            description: 'Use the disabledDate prop to disable specific dates. Ant Design applies aria-disabled to those dates in the calendar grid.'
+          }
         ],
         notes: [
-          'Use ConfigProvider locale={koKR} or locale={enUS} to change the calendar UI language.',
-          'Ant Design DatePicker supports keyboard navigation but screen reader support may be incomplete.',
-          'For important date inputs, also provide a direct text input option.'
+          'Wrapping DatePicker in Form.Item with label + name automatically connects the label via htmlFor.',
+          'Ant Design DatePicker supports keyboard navigation inside the calendar but screen reader support may be incomplete.',
+          'Use ConfigProvider locale={enUS} to localize the calendar UI. For critical date inputs, also provide a plain text input fallback.',
+          'disabledDate receives the candidate date as a Dayjs object — return true to disable it.'
         ]
       },
       chakra: {
         additionalChecks: [
           {
             title: 'Add aria-label to prev/next month buttons',
-            description: 'Ensure the previous and next month navigation buttons have descriptive aria-labels.'
+            description: 'Add aria-label to DatePicker.PrevTrigger and DatePicker.NextTrigger so screen readers can identify the navigation controls.'
           }
         ],
         notes: [
-          'DatePicker.Header automatically renders prev/next month buttons and the current month/year text.',
-          'Include day, month, and year Views to enable full date selection.',
-          'Use the @internationalized/date package for date types. Wrap in Portal to avoid z-index issues.'
+          'Add aria-label to DatePicker.PrevTrigger and DatePicker.NextTrigger.',
+          'DatePicker.TableCellTrigger automatically sets the full date string as aria-label on each day cell.',
+          'Use the @internationalized/date package for date value types.',
+          'Wrap DatePicker.Positioner in Portal to prevent z-index stacking issues.'
         ]
       },
       spectrum: {
@@ -734,9 +829,21 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       },
       radix: {
         additionalChecks: [
-          { title: 'Use Collapsible.Root', description: 'Use Radix Collapsible for a disclosure pattern with built-in accessibility.' }
+          {
+            title: 'Collapsible.Trigger manages aria-expanded automatically',
+            description: 'Collapsible.Trigger automatically sets aria-expanded based on the open/closed state. No manual implementation needed.'
+          },
+          {
+            title: 'Use open/onOpenChange for controlled mode',
+            description: 'Pass open and onOpenChange together for a controlled component. Use defaultOpen for uncontrolled initial state.'
+          }
         ],
-        notes: ['Radix Collapsible.Trigger automatically sets aria-expanded.', 'Collapsible.Content is set to display:none when closed.']
+        notes: [
+          'Collapsible.Trigger automatically manages aria-expanded and aria-controls.',
+          'Use open + onOpenChange (controlled) or defaultOpen (uncontrolled) to manage the open state.',
+          'Collapsible.Content renders display:none when closed. Use the data-state attribute ("open" | "closed") to apply CSS animations.',
+          'Use asChild on Collapsible.Trigger to render it as any HTML element.'
+        ]
       },
       antd: {
         additionalChecks: [
@@ -748,24 +855,36 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Heading > Button slot="trigger" structure required',
+            description: 'The Button inside Heading must have slot="trigger" to automatically manage aria-expanded and aria-controls.'
+          }
+        ],
         notes: [
-          'React Aria Disclosure fully implements the WAI-ARIA Disclosure pattern.',
-          'You must set slot="trigger" on the Button inside DisclosureHeader.',
-          'Set the initial open state with the defaultExpanded prop.'
+          'Set slot="trigger" on the Button inside Heading to automatically manage aria-expanded and aria-controls.',
+          'Use isExpanded/onExpandedChange for controlled mode, or defaultExpanded for uncontrolled.',
+          'The --disclosure-panel-height CSS variable on DisclosurePanel can be used for height animations.',
+          'Use isDisabled to disable individual disclosure items.'
         ]
       },
       baseui: {
         additionalChecks: [
           {
             title: 'Collapsible.Trigger manages aria-expanded automatically',
-            description: 'Base UI Collapsible.Trigger automatically sets aria-expanded based on the open/closed state.'
+            description: 'Base UI Collapsible.Trigger automatically sets aria-expanded and aria-controls based on the open/closed state.'
+          },
+          {
+            title: 'Use hiddenUntilFound for browser-searchable panels',
+            description: 'The hiddenUntilFound prop makes closed panel content discoverable via browser Ctrl+F search without opening the panel.'
           }
         ],
         notes: [
           'Collapsible.Trigger automatically manages aria-expanded and aria-controls.',
-          'Use defaultOpen or open/onOpenChange for uncontrolled/controlled mode.',
-          'Use hiddenUntilFound on Collapsible.Panel to make hidden content findable via browser search (Ctrl+F).'
+          'Use defaultOpen for uncontrolled mode, or open/onOpenChange for controlled mode.',
+          'Collapsible.Panel is removed from the DOM when closed. Use the keepMounted prop to retain it in the DOM.',
+          'Use hiddenUntilFound on Collapsible.Panel to make hidden content findable via browser Ctrl+F search.',
+          'The data-panel-open attribute is set on Collapsible.Trigger; data-open is set on Collapsible.Panel for CSS styling.'
         ]
       }
     }
@@ -825,22 +944,35 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       antd: {
         additionalChecks: [
           {
-            title: 'Verify close button aria-label',
-            description: 'Ensure the default close button has a descriptive aria-label, or customize it via closeIcon.'
+            title: 'title prop auto-connects aria-labelledby',
+            description:
+              'Setting the title prop renders a heading in the drawer header and connects it to the drawer via aria-labelledby automatically.'
+          },
+          {
+            title: 'keyboard prop must remain true',
+            description:
+              'keyboard defaults to true, enabling Escape to close. Setting keyboard={false} breaks WCAG 2.1.2 No Keyboard Trap — do not disable it.'
+          },
+          {
+            title: 'focusable prop for advanced focus control (v6.2.0+)',
+            description:
+              'Use focusable={{ trap: true, focusTriggerAfterClose: true }} to configure focus trapping and automatic return to the trigger after close.'
           }
         ],
         notes: [
-          'Ant Design Drawer automatically closes on Escape key.',
-          'Set the placement prop to left/right/top/bottom.',
-          'Customize the close button via closeIcon to add an aria-label.'
+          'Ant Design Drawer automatically renders role="dialog" and handles Escape to close.',
+          'The title prop connects the drawer heading to the dialog via aria-labelledby automatically.',
+          'keyboard={true} (default) enables Escape to close — do not set it to false.',
+          'Use the footer prop to place primary action buttons at the bottom of the drawer.'
         ]
       },
       chakra: {
         additionalChecks: [{ title: 'CloseTrigger aria-label', description: 'Add aria-label="Close drawer" to the CloseTrigger button.' }],
         notes: [
-          'Chakra Drawer.Root automatically handles focus trapping and aria-modal.',
-          'Specify the direction with the placement prop (bottom, left, right, top).',
-          'Always add an aria-label to the close button.'
+          'Chakra Drawer.Root automatically handles focus trapping, aria-modal, and Escape to close.',
+          'Drawer.Title is automatically connected via aria-labelledby — always include it.',
+          'Use the placement prop to set the slide-in direction: end (default), start, top, or bottom.',
+          'Always add aria-label to the close button.'
         ]
       }
     }
@@ -897,25 +1029,47 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       },
       radix: {
         additionalChecks: [
-          { title: 'Use Form.Message for error linking', description: 'Radix Form.Message automatically connects to the input via aria-describedby.' }
+          {
+            title: 'Match Form.Field name with Form.Message',
+            description:
+              'Form.Message is automatically linked to the input via aria-describedby using the Form.Field name. The name prop must match exactly for the connection to work.'
+          },
+          {
+            title: 'Use the match prop for per-condition error messages',
+            description:
+              'Provide separate Form.Message elements for each validation condition (e.g., match="valueMissing", match="typeMismatch") to give precise, condition-specific error feedback.'
+          }
         ],
         notes: [
-          'Radix Form follows the "inline errors" pattern — error messages and inputs are automatically connected via aria-describedby.',
+          "Form.Message is automatically linked to the corresponding input via aria-describedby based on Form.Field's name.",
           'On submission failure, focus automatically moves to the first invalid field.',
-          'The match prop supports HTML5 built-in validation types.'
+          'The match prop uses HTML5 Constraint Validation API ValidityState properties (valueMissing, typeMismatch, tooShort, etc.). Custom validation functions are also supported.',
+          'Form.Control asChild delegates Radix Form validation to the native input element.'
         ]
       },
       antd: {
         additionalChecks: [
           {
             title: 'Set validateTrigger to onBlur',
-            description: 'Triggering validation on blur reduces interruptions during input compared to onChange.'
+            description:
+              'Use validateTrigger="onBlur" to run validation when the user leaves a field rather than on every keystroke. This reduces interruptions and aligns with WCAG 3.3.1.'
+          },
+          {
+            title: 'scrollToFirstError for large forms',
+            description:
+              'Set scrollToFirstError={true} on Form to automatically scroll to and focus the first invalid field on submit, ensuring keyboard users are not left searching for errors.'
+          },
+          {
+            title: 'Form.Item label + name auto-connects input',
+            description:
+              'Setting both label and name on Form.Item automatically connects the label to the input via htmlFor/id, satisfying WCAG 1.3.1 and 4.1.2.'
           }
         ],
         notes: [
-          'Ant Design Form automatically sets aria-invalid and aria-describedby.',
-          'In onFinishFailed, scroll/focus to the first error field.',
-          'Using layout="vertical" displays labels above inputs for better visual clarity.'
+          'Ant Design Form automatically applies aria-invalid and aria-describedby to inputs with validation errors.',
+          'scrollToFirstError={true} scrolls and focuses the first error field on form submit.',
+          'validateTrigger="onBlur" validates when the user leaves the field, reducing distractions during typing.',
+          'Form.Item label + name automatically creates the label–input association via htmlFor.'
         ]
       },
       chakra: {
@@ -926,9 +1080,10 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'The invalid prop on Chakra Field.Root automatically sets aria-invalid on the Input.',
-          'Add role="alert" to Field.ErrorText to immediately notify screen readers.',
-          'Field.RequiredIndicator sets the visual required indicator along with aria-required.'
+          'The invalid prop on Field.Root automatically propagates aria-invalid to the child Input.',
+          'Add role="alert" to Field.ErrorText to immediately announce errors to screen readers.',
+          'Field.RequiredIndicator handles both the visual asterisk and aria-required.',
+          'Field.HelperText is automatically connected to the Input via aria-describedby.'
         ]
       },
       spectrum: {
@@ -942,6 +1097,25 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'react-aria-components Form integrates HTML5 validation with ARIA.',
           'Combine Label, Input, and FieldError as compound components inside TextField.',
           'Add custom validation with the validate function; FieldError automatically displays error messages.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Use Field.Root for complete accessibility wiring',
+            description:
+              'Field.Root from @base-ui-components/react/field automatically connects Field.Label, Field.Control, Field.Error, and Field.Description via aria-labelledby, aria-describedby, and aria-invalid.'
+          },
+          {
+            title: 'Use Field.Error match prop for HTML5 constraint validation',
+            description:
+              'Field.Error renders conditionally based on the match prop key (e.g., valueMissing, typeMismatch, tooShort). This integrates with the browser constraint validation API without custom logic.'
+          }
+        ],
+        notes: [
+          'Field.Root automatically propagates aria-invalid to the child control when validation fails.',
+          'Field.Error match values correspond to the HTML5 ValidityState keys: valueMissing, typeMismatch, tooShort, rangeUnderflow, etc.',
+          'Field.Description is connected to the input via aria-describedby for persistent helper text.'
         ]
       }
     }
@@ -1085,32 +1259,44 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'Always provide Dialog.Description',
-            description: 'Omitting Dialog.Description triggers a Radix console warning. Provide it even with visually-hidden.'
+            title: 'Always provide Dialog.Title and Dialog.Description',
+            description:
+              'Omitting Dialog.Title triggers a Radix console warning. Use VisuallyHidden to hide it visually if needed. Dialog.Description provides supplementary content to screen readers via aria-describedby.'
           },
           {
-            title: 'Handle outside click explicitly',
-            description: 'Use the onInteractOutside prop to explicitly control behavior when clicking outside the modal.'
+            title: 'Control outside click behavior with onInteractOutside',
+            description: 'Use the onInteractOutside prop on Dialog.Content to explicitly allow or prevent closing when clicking outside.'
           }
         ],
         notes: [
-          'Radix Dialog automatically handles focus trapping, Escape to close, and focus restoration.',
-          'Portal renders the dialog into the body, preventing z-index issues.',
-          'Using Dialog.Trigger automatically manages the trigger reference for focus restoration.'
+          'Dialog.Trigger automatically manages the trigger reference so focus is restored to it when the dialog closes.',
+          'Dialog.Portal renders the dialog at the top of the body, preventing z-index stacking context issues.',
+          'Dialog.Title is automatically connected to Dialog.Content via aria-labelledby; Dialog.Description via aria-describedby.',
+          'Focus trapping, Escape to close, and aria-modal="true" are all handled automatically. Control the open state via onOpenChange.'
         ]
       },
       antd: {
         additionalChecks: [
           {
-            title: 'Review destroyOnClose',
-            description: 'Assistive technologies are sensitive to DOM presence. Use destroyOnClose to remove the modal from the DOM when closed.'
+            title: 'title prop auto-connects aria-labelledby',
+            description:
+              'Setting the title prop renders the modal heading and automatically connects it via aria-labelledby, satisfying WCAG 4.1.2 for dialog labeling.'
           },
-          { title: 'Footer button order', description: 'Ensure the order of OK/Cancel buttons in the footer matches the logical tab order.' }
+          {
+            title: 'Use destroyOnHidden (v5.25.0+)',
+            description:
+              'destroyOnHidden replaces destroyOnClose as of v5.25.0. Setting it to true removes the modal from the DOM when closed, preventing screen readers from accessing hidden content.'
+          },
+          {
+            title: 'keyboard default true must not be disabled',
+            description: 'keyboard={true} enables Escape to close. Disabling it violates WCAG 2.1.2 No Keyboard Trap. Keep the default value.'
+          }
         ],
         notes: [
-          'Ant Design Modal supports focus trapping by default.',
-          'Use focusTriggerAfterClose to control focus restoration behavior after closing.',
-          'Modal.confirm() applies accessibility attributes automatically.'
+          'Ant Design Modal automatically applies focus trapping, Escape to close, and aria-modal="true".',
+          'The title prop connects the heading to the dialog via aria-labelledby automatically.',
+          'Use destroyOnHidden={true} (v5.25.0+) to remove the modal from DOM when closed.',
+          'focusable={{ trap: true, focusTriggerAfterClose: true }} (v6.2.0+) gives fine-grained focus management control.'
         ]
       },
       chakra: {
@@ -1118,9 +1304,10 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           { title: 'Add aria-label to Dialog.CloseTrigger', description: 'If the close button uses only an icon, explicitly add an aria-label.' }
         ],
         notes: [
-          'Chakra Dialog.Root automatically handles focus trapping and aria-modal.',
-          'Use closeOnInteractOutside={false} to prevent closing on background click.',
-          'Dialog.CloseTrigger is automatically wired to the Escape key.'
+          'Chakra Dialog.Root automatically handles focus trapping, aria-modal, and Escape to close.',
+          'Dialog.Title is automatically connected via aria-labelledby — always include it.',
+          'Add aria-label to Dialog.CloseTrigger when using an icon-only close button.',
+          'Use closeOnInteractOutside={false} to prevent closing when clicking outside.'
         ]
       },
       spectrum: {
@@ -1145,12 +1332,19 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           {
             title: 'Provide Dialog.Title and Dialog.Description',
             description: 'Dialog.Title is auto-connected via aria-labelledby; Dialog.Description via aria-describedby. Do not omit either.'
+          },
+          {
+            title: 'Use AlertDialog for confirmation actions',
+            description:
+              'Base UI provides a separate AlertDialog component (@base-ui-components/react/alert-dialog) for destructive or irreversible actions that require user confirmation.'
           }
         ],
         notes: [
           'Dialog.Popup automatically handles focus trapping, Escape key dismissal, and aria-modal="true".',
           'Dialog.Title is auto-connected via aria-labelledby; Dialog.Description via aria-describedby.',
-          'Dialog.Portal renders into the document body to prevent z-index conflicts.'
+          'Dialog.Portal renders into the document body to prevent z-index conflicts.',
+          'Use open/onOpenChange for controlled mode, or defaultOpen for uncontrolled mode.',
+          'Use AlertDialog (@base-ui-components/react/alert-dialog) for dangerous actions that require explicit user confirmation.'
         ]
       }
     }
@@ -1214,24 +1408,45 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'Use NavigationMenu.Indicator',
-            description: 'NavigationMenu.Indicator visually shows the active trigger and enhances orientation for keyboard users.'
+            title: 'Place NavigationMenu.Viewport inside Root but outside List',
+            description:
+              'NavigationMenu.Viewport is the container that renders Trigger-activated Content. It must be placed inside NavigationMenu.Root but outside NavigationMenu.List, or Content will not display.'
+          },
+          {
+            title: 'Mark the current page with aria-current="page"',
+            description: 'Set aria-current="page" on the NavigationMenu.Link corresponding to the current route, or use the active prop.'
           }
         ],
         notes: [
-          'Radix NavigationMenu follows the WAI-ARIA disclosure navigation pattern.',
-          'Space/Enter activates triggers, ArrowDown enters content, Escape closes — all built in.',
-          'NavigationMenu.Viewport handles animations and focus management.'
+          'NavigationMenu.Trigger automatically manages aria-expanded and aria-controls. Space/Enter opens, Escape closes, ArrowDown enters Content — all built in.',
+          'NavigationMenu.Viewport is required for Content to render. Place it inside Root, outside List.',
+          'NavigationMenu.Root renders as role="navigation". Add aria-label to describe its purpose.',
+          'Use aria-current="page" or the active prop on NavigationMenu.Link to indicate the current page to screen readers.'
         ]
       },
       antd: {
         additionalChecks: [
-          { title: 'Add aria-label directly', description: 'Wrap Ant Design Menu in a <nav> element and add aria-label="Main navigation".' }
+          {
+            title: 'Wrap in <nav> landmark with aria-label',
+            description:
+              'Ant Design Menu renders as <ul>. Wrap it in a <nav aria-label="Main navigation"> to provide a navigation landmark that assistive technologies can detect.'
+          },
+          {
+            title: 'selectedKeys provides aria-selected',
+            description:
+              'Use the selectedKeys prop with the current route key. Ant Design Menu applies aria-selected="true" to the matching item, indicating the current page to screen readers.'
+          },
+          {
+            title: 'Use items API (v4.20.0+)',
+            description:
+              'Declare menu items via the items prop with key/label/children objects instead of Menu.Item/Menu.SubMenu, which are deprecated since v4.20.0.'
+          }
         ],
         notes: [
-          'Wrap Ant Design Menu in a <nav> element and add aria-label.',
-          'mode="horizontal" suits top navigation; mode="inline" suits sidebars.',
-          'Use selectedKeys to indicate the currently active item.'
+          'Ant Design Menu renders as a <ul> element. Wrap in <nav aria-label="..."> for a navigation landmark.',
+          'selectedKeys automatically applies aria-selected="true" to the active item.',
+          'SubMenu items automatically receive aria-expanded and aria-haspopup="true" for keyboard users.',
+          'Use <a href> elements as item labels to support native link behavior and keyboard navigation.'
         ]
       },
       chakra: {
@@ -1252,6 +1467,26 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'React Aria Menu/MenuTrigger fully implements the WAI-ARIA Menu pattern.',
           'For navigation use, wrap in <nav aria-label>.',
           'Handle menu item selection with the onAction callback.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'NavigationMenu.Root provides the nav landmark',
+            description:
+              'NavigationMenu.Root renders as role="navigation". Add an aria-label to distinguish it from other navigation landmarks on the page.'
+          },
+          {
+            title: 'Portal + Positioner + Viewport structure is required',
+            description:
+              'Submenus must follow the NavigationMenu.Portal → Positioner → Popup → Viewport chain for correct focus management and positioning.'
+          }
+        ],
+        notes: [
+          'NavigationMenu.Trigger automatically manages aria-expanded and aria-controls. Space/Enter opens, Escape closes, and ArrowDown moves focus into Content — all built in.',
+          'NavigationMenu.Portal → Positioner → Popup → Viewport is the required structure for rendering submenus.',
+          'NavigationMenu.Root renders as role="navigation". Add aria-label to describe its purpose.',
+          'Use aria-current="page" on NavigationMenu.Link to indicate the current page to screen readers.'
         ]
       }
     }
@@ -1312,14 +1547,26 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       antd: {
         additionalChecks: [
           {
-            title: 'Set locale for aria-labels',
-            description: 'Configure the locale in ConfigProvider to get localized aria-labels for pagination controls.'
+            title: 'Add aria-live region to announce page changes',
+            description:
+              'When the page changes and content updates dynamically, add a visually hidden aria-live="polite" region to announce the new page number to screen readers.'
+          },
+          {
+            title: 'Set locale via ConfigProvider',
+            description:
+              'Ant Design Pagination defaults to English aria-labels. Wrap with ConfigProvider locale={enUS} (or your locale) so previous/next button labels match the page language.'
+          },
+          {
+            title: 'showSizeChanger needs accessible label',
+            description:
+              'When showSizeChanger={true} is enabled, add a Form.Item or aria-label to the size selector to communicate its purpose to screen reader users.'
           }
         ],
         notes: [
-          'Setting locale in ConfigProvider updates aria-labels to the selected language.',
-          'Ant Design Pagination automatically uses a <ul> list structure.',
-          'aria-current is automatically applied to the current page.'
+          'Ant Design Pagination renders a <ul> list and automatically applies aria-current="page" to the active page button.',
+          'ConfigProvider locale={enUS} localizes previous/next button aria-labels.',
+          'Add an aria-live="polite" region to announce page changes to screen readers.',
+          'showQuickJumper adds a direct page input — useful for keyboard users navigating large datasets.'
         ]
       },
       chakra: {
@@ -1330,9 +1577,10 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'Chakra Pagination.Root automatically manages page state.',
-          'Calculate total pages using count and pageSize.',
-          'Add aria-label to each page button to improve accessibility.'
+          'Pagination.Root automatically calculates the total number of pages from count and pageSize.',
+          'Use Pagination.Items with a render prop to customize each page button.',
+          'Add aria-label to each page button so screen readers can announce the page number.',
+          'Use an aria-live region to announce the currently displayed result range to screen readers.'
         ]
       }
     }
@@ -1394,43 +1642,88 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'Accessibility handled automatically',
-            description: 'Radix Popover automatically manages aria-expanded, focus trapping, and Escape to close.'
+            title: 'Add aria-label to Popover.Close',
+            description: 'When using only a symbol or icon for the close button, add aria-label to communicate the action to screen reader users.'
+          },
+          {
+            title: 'Adjust positioning with sideOffset',
+            description:
+              'Use the sideOffset prop on Popover.Content to control the gap between the trigger and the popover. Values that are too small may cause visual confusion.'
           }
         ],
         notes: [
-          'Radix Popover automatically handles Space/Enter to open, Escape to close, and focus return to trigger.',
-          'aria-expanded is automatically applied to Popover.Trigger.',
-          'Wrap in Popover.Portal to render at the DOM root without z-index issues.'
+          'Popover.Trigger automatically manages aria-expanded. Space/Enter to open, Escape to close, and outside click to close are all built in.',
+          'Popover.Portal renders at the top of the body, preventing overflow:hidden and z-index issues.',
+          'When Popover.Content opens, focus moves to the first focusable element inside. When it closes, focus returns to the Trigger.',
+          'Control positioning with the side ("top"|"right"|"bottom"|"left"), align ("start"|"center"|"end"), and sideOffset props.'
         ]
       },
       antd: {
         additionalChecks: [
           {
-            title: 'Add aria-expanded directly to trigger',
-            description: 'Ant Design Popover does not automatically manage aria-expanded — add it manually to the trigger.'
+            title: 'Manually add aria-expanded to the trigger',
+            description:
+              'Ant Design Popover does not automatically add aria-expanded to the trigger button. Manage the open state yourself and pass aria-expanded={open} to the trigger.'
+          },
+          {
+            title: 'Include a close button inside the content',
+            description:
+              'Ant Design Popover does not close on Escape by default. Always include an explicit close button within the popover content so keyboard users can dismiss it.'
+          },
+          {
+            title: 'Use trigger="click" for keyboard access',
+            description:
+              'trigger="hover" alone prevents keyboard users from opening the popover. Use trigger="click" or trigger={["hover", "focus"]} to ensure full keyboard accessibility.'
           }
         ],
         notes: [
-          'With trigger="click", the popover can also be opened with Enter/Space.',
-          'Manually add aria-expanded and aria-haspopup to the trigger button.',
-          'Ant Design Popover does not close on Escape — include a close button inside the content.'
+          'trigger="click" allows the popover to be opened with Enter/Space as well as mouse click.',
+          'Add aria-expanded={open} and aria-haspopup="dialog" manually to the trigger button.',
+          'Ant Design Popover does not close on Escape — include a close button inside the content.',
+          'onOpenChange handles closing when the user clicks outside the popover.'
         ]
       },
       chakra: {
         additionalChecks: [{ title: 'CloseTrigger aria-label', description: 'Add aria-label="Close popover" to Popover.CloseTrigger.' }],
         notes: [
-          'Chakra Popover.Root automatically handles focus trapping and aria attributes.',
+          'Chakra Popover.Root automatically handles focus trapping, aria-expanded, and Escape to close.',
           'Add aria-label to Popover.CloseTrigger.',
-          'Control outside click closing with the closeOnInteractOutside prop.'
+          'Use the closeOnInteractOutside prop to control whether clicking outside closes the popover.',
+          'autoFocus defaults to true — focus moves to the first focusable element when the popover opens.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Use placement and shouldFlip for positioning',
+            description:
+              "Set the placement prop (e.g. 'bottom start') to control where the popover appears. shouldFlip (default true) automatically repositions it if there is insufficient space."
+          }
+        ],
         notes: [
-          'React Aria Popover is used with DialogTrigger.',
-          'Setting slot="title" on a Heading inside Dialog automatically connects aria-labelledby.',
-          'Popover automatically handles focus management and aria attributes.'
+          'React Aria Popover is composed with DialogTrigger, Popover, and Dialog.',
+          'Placing Heading with slot="title" inside Dialog automatically connects aria-labelledby.',
+          'Popover handles focus management, Escape to close, and all WAI-ARIA dialog attributes automatically.',
+          'Use the placement prop to control direction; the popover flips automatically when there is not enough space.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Portal + Positioner + Popup structure is required',
+            description: 'Always use Popover.Portal → Popover.Positioner → Popover.Popup to ensure correct focus management and z-index isolation.'
+          },
+          {
+            title: 'Add aria-label to Popover.Close',
+            description:
+              'When the close button contains only an icon or symbol, add aria-label="Close" to communicate its purpose to screen reader users.'
+          }
+        ],
+        notes: [
+          'Popover.Trigger automatically manages aria-expanded and aria-haspopup. Space/Enter opens, Escape closes, and outside click closes — all built in.',
+          'Popover.Portal renders into the document body, preventing z-index and overflow:hidden issues.',
+          'When Popover.Popup opens, focus moves to the first focusable element inside. Focus returns to the Trigger on close.',
+          'Use the side and align props on Popover.Positioner to control placement relative to the trigger.'
         ]
       }
     }
@@ -1575,41 +1868,93 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       },
       radix: {
         additionalChecks: [
-          { title: 'Use with Label component', description: 'Connect a Label component to Select.Trigger via htmlFor and id for proper labeling.' }
+          {
+            title: 'Add aria-label or connect a Label to Select.Trigger',
+            description:
+              'Add aria-label directly to Select.Trigger, or use @radix-ui/react-label Label.Root with htmlFor pointing to the Trigger id. Without a label, screen readers cannot convey the select purpose.'
+          },
+          {
+            title: 'Always use Select.ItemText inside Select.Item',
+            description: 'Select.ItemText provides the accessible option label read by screen readers. Items without it will not announce correctly.'
+          }
         ],
         notes: [
-          'Radix Select follows the W3C ListBox and Select-Only Combobox patterns.',
-          'Adding the disabled prop to Select.Item automatically applies aria-disabled.',
-          'Adjust positioning with position="popper" on Select.Content.'
+          'Select.Trigger automatically manages role="combobox" and aria-expanded. Screen readers announce the selected value via Select.Value.',
+          'Adding disabled to Select.Item automatically sets aria-disabled="true", removing it from keyboard navigation.',
+          'Select.ItemIndicator renders only on the selected item. Mark it aria-hidden.',
+          'Use position="popper" on Select.Content for trigger-relative positioning. Wrap in Select.Portal to avoid z-index issues.'
         ]
       },
       antd: {
-        additionalChecks: [{ title: 'Connect label', description: 'Use Form.Item to automatically connect label and select via htmlFor.' }],
+        additionalChecks: [
+          {
+            title: 'Use Form.Item to auto-connect the label',
+            description:
+              'Placing Select inside a Form.Item with label + name automatically connects the label to the input via htmlFor, satisfying WCAG 1.3.1 and 4.1.2.'
+          },
+          {
+            title: 'Set virtual={false} for screen reader compatibility',
+            description:
+              'Ant Design Select uses virtual scrolling by default. Setting virtual={false} renders all options in the DOM so screen readers can read the full list.'
+          },
+          {
+            title: 'showSearch switches to combobox pattern',
+            description:
+              'Enabling showSearch changes the role to combobox. Provide notFoundContent to give users feedback when no options match the search.'
+          }
+        ],
         notes: [
-          'Using Form.Item automatically connects label and input via htmlFor.',
-          'Adding showSearch switches to the combobox pattern.',
-          'Setting virtual={false} improves screen reader compatibility by disabling virtual scrolling.'
+          'Form.Item label + name automatically connects the label to the Select input via htmlFor — no separate aria-label needed.',
+          'showSearch enables combobox pattern with aria-autocomplete. Use filterOption for custom search logic.',
+          'virtual={false} disables virtual scrolling so all options remain in the DOM for screen reader access.',
+          'Disabled options automatically receive aria-disabled="true".'
         ]
       },
       chakra: {
         additionalChecks: [
           {
             title: 'HiddenSelect for form accessibility',
-            description: 'Chakra Select.HiddenSelect is a native element needed for form submission — do not remove it.'
+            description: 'Chakra Select.HiddenSelect is a native element needed for form submission — set the name prop on it.'
           }
         ],
         notes: [
-          'Chakra Select.Root meets WAI-ARIA requirements with the listbox pattern.',
-          'Select.HiddenSelect is the native element for form submission.',
-          'Manage item collections with useListCollection.'
+          'Chakra Select.Root automatically handles aria-expanded, aria-selected, and the listbox pattern.',
+          'Manage item collections with useListCollection.',
+          'Set the name prop on Select.HiddenSelect to enable native form submission.',
+          'closeOnSelect defaults to true — the listbox closes automatically after selection.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Label must be inside Select root',
+            description: 'Place the Label component inside Select to automatically connect aria-labelledby between the label and the trigger button.'
+          }
+        ],
         notes: [
-          'react-aria-components Select combines Label, Button, SelectValue, Popover, and ListBox as compound components.',
-          'SelectValue automatically displays the currently selected value.',
-          'Use selectedKey/onSelectionChange for controlled usage.'
+          'React Aria Select is a compound component: Label + Button + SelectValue + Popover + ListBox + ListBoxItem.',
+          'SelectValue inside Button automatically displays the selected item label.',
+          'Use selectedKey and onSelectionChange for controlled mode.',
+          'ListBoxItem supports render props (isSelected, isFocused) for dynamic styling without external state.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Select.Label must be inside Select.Root',
+            description: 'Place Select.Label inside Select.Root so the label is automatically associated with the trigger via aria-labelledby.'
+          },
+          {
+            title: 'Always use Select.ItemText inside Select.Item',
+            description:
+              'Select.ItemText provides the accessible label for each option. Items without it will not be announced correctly by screen readers.'
+          }
+        ],
+        notes: [
+          'Select.Trigger automatically manages role="combobox" and aria-expanded. Screen readers announce the selected value via Select.Value.',
+          'Select.Portal → Select.Positioner → Select.Popup → Select.List is the required structure for the dropdown.',
+          'Select.ItemIndicator renders only on the selected item. Mark it aria-hidden to avoid redundant announcements.',
+          'Use defaultValue for uncontrolled mode, or value/onValueChange for controlled mode.'
         ]
       }
     }
@@ -1670,26 +2015,45 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'Set activationMode="manual"',
+            title: 'Add aria-label to Tabs.List',
+            description: 'Add aria-label to Tabs.List to communicate the purpose of the tab group to screen readers.'
+          },
+          {
+            title: 'Separate focus and activation with activationMode="manual"',
             description:
-              'With activationMode="manual", arrow keys only move focus; Enter/Space confirms selection. This is more accessible than automatic activation.'
+              'With activationMode="manual", arrow keys move focus only; Enter/Space activates the tab. Recommended when tab content is slow to load.'
           }
         ],
         notes: [
-          'Radix Tabs automatically handles all ARIA roles and keyboard navigation.',
-          'Add aria-label to Tabs.List to describe the purpose of the tab group.'
+          'Tabs.Root automatically manages role="tablist", aria-selected, aria-controls, and aria-labelledby for all sub-components.',
+          'Add aria-label to Tabs.List to describe the purpose of the tab group.',
+          'activationMode: "automatic" (default, activates on arrow key move) | "manual" (separates focus from activation). Use "manual" when content loads are slow.',
+          'Use defaultValue for uncontrolled or value + onValueChange for controlled active tab state.'
         ]
       },
       antd: {
         additionalChecks: [
           {
-            title: 'Watch for accessKey conflicts',
-            description: 'Verify that keyboard shortcuts used by Ant Design Tabs do not conflict with browser shortcuts.'
+            title: 'Use items API (v4.20.0+)',
+            description:
+              'Declare tabs using the items prop with key/label/children objects. Using TabPane directly is deprecated since v4.20.0 and may be removed in a future version.'
+          },
+          {
+            title: 'Manage active tab with onChange',
+            description:
+              'Use the onChange callback with activeKey to control the active tab in controlled mode. This ensures screen readers receive up-to-date aria-selected state.'
+          },
+          {
+            title: 'destroyInactiveTabPane for hidden content',
+            description:
+              'Set destroyInactiveTabPane={true} to remove inactive tab panels from the DOM. This prevents screen readers from accessing hidden content. The default (false) keeps panels in DOM with aria-hidden.'
           }
         ],
         notes: [
-          'Ant Design Tabs handles accessibility attributes by default.',
-          'If using tabBarExtraContent, verify those elements are also keyboard-accessible.'
+          'Ant Design Tabs automatically applies role="tablist", role="tab", role="tabpanel", aria-selected, and aria-controls.',
+          'Use the items prop (v4.20.0+) with key/label/children. TabPane is deprecated.',
+          'Arrow keys move between tabs; Enter/Space activates the focused tab.',
+          'When tabBarExtraContent is used, verify those elements are keyboard-accessible.'
         ]
       },
       chakra: {
@@ -1700,17 +2064,24 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'Chakra Tabs.Root handles keyboard navigation and aria attributes automatically.',
-          'Use the lazyMount prop to defer rendering of inactive tab content.',
-          'Tabs.Indicator is rendered as aria-hidden.'
+          'Chakra Tabs.Root automatically handles keyboard navigation and all WAI-ARIA Tabs attributes.',
+          'Add aria-label to Tabs.List to describe the purpose of the tab group.',
+          'Tabs.Indicator is rendered as aria-hidden.',
+          'Use the lazyMount prop to defer rendering inactive tab content for performance.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'aria-label on TabList is required',
+            description: 'Add aria-label to TabList to communicate the purpose of the tab group to screen readers.'
+          }
+        ],
         notes: [
-          'React Aria Tabs automatically implements arrow key, Home, and End navigation.',
-          'Each Tab id is automatically linked to the corresponding TabPanel id.',
-          "Use keyboardActivation='manual' to separate focus and activation."
+          'React Aria Tabs automatically implements arrow key, Home, and End navigation and manages aria-selected.',
+          'Each Tab id prop is automatically linked to the corresponding TabPanel via aria-controls.',
+          "Use keyboardActivation='manual' to separate focus movement from tab activation.",
+          'Tab children accept a render prop function with isSelected for dynamic inline styling.'
         ]
       },
       baseui: {
@@ -1727,7 +2098,8 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         notes: [
           'Tabs.Root automatically handles arrow key, Home, and End navigation and manages aria-selected.',
           'Tabs.Indicator uses --active-tab-left and --active-tab-width CSS variables to track the active tab position.',
-          'Add the activateOnFocus prop to immediately activate a tab when it receives focus via arrow keys.'
+          'Add the activateOnFocus prop to immediately activate a tab when it receives focus via arrow keys.',
+          'Use defaultValue for uncontrolled mode, or value/onValueChange for controlled mode.'
         ]
       }
     }
@@ -1801,15 +2173,26 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       antd: {
         additionalChecks: [
           {
-            title: 'Sync Form.Item rules with aria',
-            description: 'Ant Design Form validation messages may not be connected via aria-describedby. Manual verification is required.'
+            title: 'Form.Item label + name auto-connects input',
+            description:
+              'Setting both label and name on Form.Item creates the label–input association via htmlFor/id automatically, satisfying WCAG 1.3.1 and 4.1.2.'
           },
-          { title: 'Add aria-hidden to prefix/suffix icons', description: 'Add aria-hidden to prefix and suffix icons on the Input component.' }
+          {
+            title: 'Add aria-hidden to decorative prefix/suffix',
+            description:
+              'Decorative icons in the prefix or suffix slots (e.g., a search icon) should have aria-hidden="true" so screen readers do not announce them redundantly.'
+          },
+          {
+            title: 'status prop for validation state',
+            description:
+              'Use status="error" or status="warning" on Input to indicate validation state visually. Pair with Form.Item for automatic aria-describedby connection to the error message.'
+          }
         ],
         notes: [
-          'Ant Design Form.Item automatically connects the label and input.',
-          'Use validateTrigger to control when real-time validation fires.',
-          'Use the Form.Item tooltip prop to provide additional descriptions.'
+          'Ant Design Form.Item automatically connects the label and input via htmlFor/id.',
+          'Form validation errors are connected via aria-describedby by Form.Item.',
+          'Input.Password provides a visibility toggle with an accessible button for the show/hide action.',
+          'Add aria-hidden to decorative prefix/suffix icons to avoid redundant screen reader announcements.'
         ]
       },
       chakra: {
@@ -1820,9 +2203,10 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          "Chakra Field.Root's invalid prop automatically sets aria-invalid on the Input.",
-          'Field.ErrorText delivers errors to screen readers via aria-live.',
-          'The required prop handles both Field.RequiredIndicator and aria-required.'
+          "Field.Root's invalid prop automatically propagates aria-invalid to the child Input.",
+          'Field.ErrorText is connected to the Input via aria-describedby; add role="alert" for immediate announcement.',
+          'The required prop handles both Field.RequiredIndicator (visual asterisk) and aria-required.',
+          'Field.HelperText is automatically connected to the Input via aria-describedby.'
         ]
       },
       spectrum: {
@@ -1842,13 +2226,20 @@ export const patternTranslationsEn: Record<string, PatternT> = {
         additionalChecks: [
           {
             title: 'Use the Field component for best accessibility',
-            description: 'Wrapping with Field.Root from @base-ui/react/field provides automatic label-input association and error message wiring.'
+            description:
+              'Wrapping with Field.Root from @base-ui-components/react/field provides automatic label-input association, aria-invalid propagation, and error message wiring via aria-describedby.'
+          },
+          {
+            title: 'Connect a label when using Input standalone',
+            description:
+              'When using Input (@base-ui-components/react/input) without Field, connect a label via <label htmlFor> or add aria-label directly.'
           }
         ],
         notes: [
-          'Base UI Input renders a native <input> element.',
-          'Combining Field.Root + Field.Label + Field.Control strengthens form accessibility.',
-          'Field.Error automatically links validation messages to the input.'
+          'Field.Root automatically connects Field.Label and Field.Control and propagates aria-invalid to the child input.',
+          'Field.Error uses HTML5 constraint validation API keys for the match prop (valueMissing, typeMismatch, tooShort, etc.).',
+          'Field.Control wires aria-invalid and aria-describedby automatically from the Field context.',
+          'Input (@base-ui-components/react/input) can be used standalone, but label association must be handled manually.'
         ]
       }
     }
@@ -1904,29 +2295,43 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       radix: {
         additionalChecks: [
           {
-            title: 'Switch.Thumb visual indicator contrast',
-            description: 'Switch.Thumb is aria-hidden and serves only as a visual indicator. Maintain sufficient color contrast.'
+            title: 'Connect a label to Switch.Root',
+            description: 'Wrap Switch.Root in a <label> or connect via htmlFor/id. Without a label, screen readers cannot convey the purpose.'
           },
           {
-            title: 'Use onCheckedChange with checked in controlled mode',
-            description: 'In controlled mode, use both the checked prop and onCheckedChange together.'
+            title: 'Maintain sufficient color contrast on Switch.Thumb',
+            description: 'Switch.Thumb is aria-hidden. Verify a minimum 3:1 contrast ratio in both on and off states.'
           }
         ],
         notes: [
-          'Radix Switch automatically manages role="switch" and aria-checked.',
-          'Connect a label to Switch.Root using htmlFor/id.',
-          'Thumb is automatically aria-hidden.'
+          'Switch.Root automatically manages role="switch" and aria-checked. Space key toggles by default.',
+          'Connect a label via htmlFor/id or wrap Switch.Root in a <label> for an accessible name.',
+          'Switch.Thumb is automatically aria-hidden.',
+          'Use checked + onCheckedChange (controlled) or defaultChecked (uncontrolled) to manage state.'
         ]
       },
       antd: {
         additionalChecks: [
-          { title: 'Provide checkedChildren text', description: 'Use checkedChildren and unCheckedChildren to display the on/off state as text.' },
-          { title: 'Add aria-label directly', description: 'Add an aria-label directly to the Ant Design Switch to describe its purpose.' }
+          {
+            title: 'Connect a label to the Switch',
+            description:
+              'Add an aria-label directly, or connect via htmlFor/id with a <label> element. Without a label, screen readers cannot convey the switch purpose.'
+          },
+          {
+            title: 'checkedChildren/unCheckedChildren for non-color state indication',
+            description:
+              'Use the checkedChildren and unCheckedChildren props to display text (e.g., "On"/"Off") for the switch state. This helps color-blind users and screen reader users alike.'
+          },
+          {
+            title: 'loading state should set aria-busy',
+            description: 'When loading={true} displays a spinner, add aria-busy="true" to the Switch to announce the pending state to screen readers.'
+          }
         ],
         notes: [
-          'Ant Design Switch uses role="switch" internally.',
-          'checkedChildren/unCheckedChildren are helpful for color-blind users.',
-          'When using the loading prop, also set aria-busy.'
+          'Ant Design Switch automatically applies role="switch" and aria-checked internally.',
+          'Connect a <label htmlFor> or use aria-label to provide an accessible name.',
+          'checkedChildren/unCheckedChildren display text labels for on/off state — useful for color-blind users.',
+          'Add aria-busy="true" when using the loading prop to notify screen readers of the pending state.'
         ]
       },
       chakra: {
@@ -1934,34 +2339,46 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           { title: 'Use Switch.Label', description: 'Switch.Label automatically connects the label to the input — no separate htmlFor needed.' }
         ],
         notes: [
-          "Chakra Switch.Root automatically sets role='switch' and aria-checked.",
+          "Chakra Switch.Root automatically manages role='switch' and aria-checked.",
+          'Switch.Label automatically connects the label to the input — no separate htmlFor is needed.',
           'Switch.HiddenInput is the actual input element required for form submission.',
-          'Update state using the checked value from the onCheckedChange event.'
+          'Update state using the e.checked value from the onCheckedChange callback.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Distinguish Switch from ToggleButton',
+            description:
+              "Use Switch with role='switch' for on/off settings, and ToggleButton with aria-pressed for toggle button interactions. Choose based on context."
+          }
+        ],
         notes: [
-          "React Aria Switch automatically handles role='switch', aria-checked, and keyboard support.",
-          'Provide the label text directly as children.',
-          'Use isSelected/onChange for controlled component mode.'
+          "Switch automatically manages role='switch' and aria-checked. Use isSelected/onChange to control state.",
+          'ToggleButton automatically manages aria-pressed. The isSelected/onChange pattern is identical.',
+          'Pass a function to Switch children to access the isSelected render prop for custom styling.',
+          'Use isReadOnly to create a read-only switch without user interaction.'
         ]
       },
       baseui: {
         additionalChecks: [
           {
-            title: 'Switch.Root requires render={<button />}',
-            description: 'Switch.Root renders as a <span> by default. Pass render={<button />} to use a semantic button element.'
+            title: 'Connect a label to Switch.Root',
+            description:
+              'Wrap Switch.Root in a <label> element or use htmlFor/id to associate an accessible name. Without a label, the switch purpose is not conveyed to screen reader users.'
           },
           {
-            title: 'Thumb position must be implemented with CSS',
-            description: 'Base UI Switch is unstyled; implement the Thumb translateX for checked/unchecked states via CSS.'
+            title: 'Toggle uses aria-pressed; Switch uses role="switch"',
+            description:
+              'Toggle (@base-ui-components/react/toggle) is an aria-pressed toggle button for UI actions. Switch (@base-ui-components/react/switch) uses role="switch" for settings. Choose based on semantics, not appearance.'
           }
         ],
         notes: [
-          'Switch.Root renders as <span> by default. Use render={<button />} to ensure semantic button markup.',
+          'Switch.Root renders as <span> by default. Wrap in a <label> for the wrapping label pattern; role="switch" and aria-checked are managed automatically.',
           'role="switch" and aria-checked are managed automatically.',
-          'Use the Toggle component (@base-ui/react/toggle) for aria-pressed toggle buttons instead.'
+          'Set nativeButton={true} and render={<button />} to render Switch.Root as a semantic button element.',
+          'Use the Toggle component (@base-ui-components/react/toggle) for aria-pressed toggle buttons instead.',
+          'The data-checked and data-unchecked attributes are available for CSS-based styling.'
         ]
       }
     }
@@ -2030,15 +2447,47 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       },
       radix: {
         additionalChecks: [
-          { title: 'Place TooltipProvider at the top level', description: 'Wrap your app with TooltipProvider to manage tooltip behavior globally.' }
+          {
+            title: 'Place Tooltip.Provider to manage delayDuration globally',
+            description: 'Wrap your app or component root with Tooltip.Provider to apply a consistent delay across all tooltips.'
+          },
+          {
+            title: 'Provide an accessible name on the trigger',
+            description:
+              'For icon-only triggers, add aria-label. Tooltip text is linked via aria-describedby and does not replace the accessible name.'
+          }
         ],
-        notes: ['Radix Tooltip automatically handles role="tooltip" and aria-describedby.', 'Rendering via Portal prevents z-index issues.']
+        notes: [
+          "Tooltip.Content renders as role='tooltip' and is automatically linked to Tooltip.Trigger via aria-describedby.",
+          "Tooltip.Provider's delayDuration (default 700ms) sets the show delay. 300ms is recommended.",
+          'Tooltip.Portal renders into the body, preventing overflow:hidden and z-index issues.',
+          'Icon-only triggers must have aria-label. Tooltip text is supplementary description, not the accessible name.'
+        ]
       },
       antd: {
         additionalChecks: [
-          { title: 'Set mouseEnterDelay', description: 'Set mouseEnterDelay to at least 0.3 seconds to prevent accidental tooltip triggers.' }
+          {
+            title: 'Include "focus" in trigger prop',
+            description:
+              'The trigger prop defaults to "hover". Set trigger={["hover", "focus"]} so keyboard users can also see the tooltip when focusing the trigger element, satisfying WCAG 1.4.13.'
+          },
+          {
+            title: 'Set mouseEnterDelay to 0.3 or more',
+            description:
+              'The default mouseEnterDelay is 0.1 seconds, which may be too short. Set it to at least 0.3 seconds (300ms) per WCAG 1.4.13 to prevent accidental tooltip triggers.'
+          },
+          {
+            title: 'aria-label is required on icon-only triggers',
+            description:
+              'Tooltip title is connected via aria-describedby and is supplementary — it does not replace the accessible name. Add aria-label to icon-only trigger buttons.'
+          }
         ],
-        notes: ['Ant Design Tooltip handles accessibility attributes internally.', 'Re-verify text contrast ratio when changing the color prop.']
+        notes: [
+          'Ant Design Tooltip automatically connects the title text to the trigger via aria-describedby.',
+          'trigger={["hover", "focus"]} ensures keyboard users can access the tooltip.',
+          'mouseEnterDelay should be 0.3 seconds or more to comply with WCAG 1.4.13.',
+          'When using the color prop, re-verify text contrast ratio (4.5:1 minimum for normal text).'
+        ]
       },
       chakra: {
         additionalChecks: [
@@ -2048,17 +2497,25 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           }
         ],
         notes: [
-          'Chakra Tooltip automatically handles hover/focus events.',
-          'Adjust display timing with the showDelay/closeDelay props.',
-          'Provide the tooltip text via the content prop.'
+          'Chakra Tooltip.Root automatically handles hover and focus events.',
+          'Use the openDelay (default 400ms) and closeDelay (default 150ms) props to control display timing.',
+          'Always provide aria-label on icon-only triggers. Tooltip text is supplementary via aria-describedby, not the accessible name.',
+          'Tooltip.Content renders as role="tooltip" automatically.'
         ]
       },
       spectrum: {
-        additionalChecks: [],
+        additionalChecks: [
+          {
+            title: 'Tooltip is not shown on touch screens',
+            description:
+              'React Aria Tooltip is intentionally not triggered on touch devices. Do not rely on tooltip text as the sole accessible name for icon-only buttons.'
+          }
+        ],
         notes: [
-          'React Aria TooltipTrigger handles hover, focus, and keyboard interactions.',
-          'Set display delay with the delay prop (default 1200ms).',
-          'Tooltip is automatically connected to the trigger via aria-describedby.'
+          'React Aria TooltipTrigger handles hover, focus, and keyboard interactions automatically.',
+          'Control display timing with the delay prop (default 1200ms) and closeDelay prop (default 500ms).',
+          'Tooltip is automatically connected to the trigger element via aria-describedby.',
+          'Wrap each trigger + tooltip pair in its own TooltipTrigger — do not share one trigger across multiple tooltips.'
         ]
       },
       baseui: {

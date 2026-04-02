@@ -297,47 +297,91 @@ function ToastDemo() {
       additionalChecks: [
         {
           id: 'alert-antd-1',
-          title: 'message/notification 접근성 한계',
+          title: 'showIcon으로 아이콘 반드시 표시',
+          description: 'type prop만으로는 색상만 변경됩니다. showIcon={true}를 함께 사용해 색상 외 아이콘으로도 severity를 전달하세요.',
+          level: 'must'
+        },
+        {
+          id: 'alert-antd-2',
+          title: 'closable에 aria-* 속성 지원',
           description:
-            'Ant Design의 message.success() 등 명령형 API는 aria-live 영역에 삽입되지 않을 수 있습니다. Alert 컴포넌트를 직접 사용하는 방식을 권장합니다.',
+            'antd v5.15.0부터 closable prop에 aria-* 속성을 전달할 수 있습니다. closable={{ "aria-label": "알림 닫기" }}로 닫기 버튼 레이블을 명시하세요.',
+          level: 'should'
+        },
+        {
+          id: 'alert-antd-3',
+          title: 'App.useApp() 훅으로 notification 사용',
+          description: 'antd v5의 App wrapper와 useApp() 훅을 사용하면 ConfigProvider 컨텍스트를 올바르게 상속한 notification을 사용할 수 있습니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Alert',
-        code: `import { Alert, notification, Button, Space } from 'antd'
+        code: `import { useState } from 'react'
+import { Alert, Button, Space, App } from 'antd'
 
-function AntdAlertDemo() {
-  const openNotification = () => {
+function AlertDemo() {
+  const { notification } = App.useApp()
+  const [visible, setVisible] = useState(true)
+
+  const showToast = () => {
     notification.success({
-      message: 'Saved',
-      description: 'File saved successfully.',
-      duration: 5
+      message: 'Saved successfully',
+      description: 'Your changes have been saved.',
+      duration: 5,
+      role: 'status'
     })
   }
 
   return (
     <Space
       direction='vertical'
-      style={{ width: '100%' }}>
+      style={{ width: '100%', padding: '24px' }}>
+      {visible && (
+        <Alert
+          title='File saved'
+          description='Your changes have been saved successfully.'
+          type='success'
+          showIcon
+          closable={{ 'aria-label': 'Close success alert' }}
+          onClose={() => setVisible(false)}
+        />
+      )}
       <Alert
-        message='Saved'
-        description='File saved successfully.'
-        type='success'
+        title='Warning'
+        description='Your session will expire in 5 minutes.'
+        type='warning'
         showIcon
-        closable
-        onClose={() => {}}
       />
-      <Button onClick={openNotification}>Show Toast</Button>
+      <Alert
+        title='Error'
+        description='Failed to connect to the server. Please try again.'
+        type='error'
+        showIcon
+      />
+      <Button
+        type='primary'
+        onClick={showToast}>
+        Show notification toast
+      </Button>
     </Space>
+  )
+}
+
+export default function App() {
+  return (
+    <App>
+      <AlertDemo />
+    </App>
   )
 }`
       },
       notes: [
-        'Alert 컴포넌트의 showIcon prop은 severity 유형을 아이콘으로 자동 표시합니다.',
-        'notification API는 duration을 0으로 설정하면 수동으로 닫기 전까지 유지됩니다.',
-        'closable prop 사용 시 닫기 버튼이 자동으로 추가됩니다.'
+        'Alert의 title prop(구 message)과 description prop으로 제목과 설명을 분리하세요.',
+        'showIcon={true}와 type을 함께 사용하면 색상과 아이콘 모두로 severity를 전달합니다.',
+        'closable prop에 aria-* 속성을 전달해 닫기 버튼 레이블을 명시하세요. (v5.15.0+)',
+        'notification API 사용 시 duration: 5(5초)를 기본으로 설정하고, 중요한 알림은 duration: 0으로 수동 닫기를 요구하세요.'
       ]
     },
     chakra: {
@@ -355,21 +399,68 @@ function AntdAlertDemo() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Alert',
-        code: `import { Alert } from '@chakra-ui/react'
-<Alert.Root
-  status='error'
-  role='alert'>
-  <Alert.Indicator aria-hidden />
-  <Alert.Content>
-    <Alert.Title>Error</Alert.Title>
-    <Alert.Description>Unable to connect to the server. Please try again later.</Alert.Description>
-  </Alert.Content>
-</Alert.Root>`
+        code: `import { useState } from 'react'
+import { Alert, Button, Stack } from '@chakra-ui/react'
+
+export default function App() {
+  const [showError, setShowError] = useState(true)
+
+  return (
+    <Stack
+      gap={3}
+      style={{ padding: '1.5rem', maxWidth: 480 }}>
+      <Alert.Root status='info'>
+        <Alert.Indicator aria-hidden />
+        <Alert.Content>
+          <Alert.Title>Information</Alert.Title>
+          <Alert.Description>Your account settings have been updated.</Alert.Description>
+        </Alert.Content>
+      </Alert.Root>
+
+      <Alert.Root status='success'>
+        <Alert.Indicator aria-hidden />
+        <Alert.Content>
+          <Alert.Title>Success</Alert.Title>
+          <Alert.Description>File uploaded successfully.</Alert.Description>
+        </Alert.Content>
+      </Alert.Root>
+
+      <Alert.Root status='warning'>
+        <Alert.Indicator aria-hidden />
+        <Alert.Content>
+          <Alert.Title>Warning</Alert.Title>
+          <Alert.Description>Your session will expire in 10 minutes.</Alert.Description>
+        </Alert.Content>
+      </Alert.Root>
+
+      {showError && (
+        <Alert.Root
+          status='error'
+          role='alert'>
+          <Alert.Indicator aria-hidden />
+          <Alert.Content>
+            <Alert.Title>Error</Alert.Title>
+            <Alert.Description>Unable to connect to the server. Please try again.</Alert.Description>
+          </Alert.Content>
+          <Button
+            size='sm'
+            variant='ghost'
+            onClick={() => setShowError(false)}
+            aria-label='Dismiss error alert'
+            style={{ marginLeft: 'auto' }}>
+            ✕
+          </Button>
+        </Alert.Root>
+      )}
+    </Stack>
+  )
+}`
       },
       notes: [
-        'Chakra Alert.Root의 status prop이 시각적 스타일과 aria 속성을 결정합니다.',
-        "동적으로 추가되는 알림에는 role='alert'를 명시하세요.",
-        'Alert.Indicator는 자동으로 aria-hidden 처리됩니다.'
+        'Alert.Root의 status prop(info/success/warning/error)이 시각적 스타일과 색상을 자동으로 설정합니다.',
+        '동적으로 추가되는 긴급 알림에는 role="alert"를 명시해 스크린리더에 즉시 전달되게 하세요.',
+        'Alert.Indicator는 자동으로 aria-hidden 처리되는 상태 아이콘입니다.',
+        'neutral variant는 status="neutral"로 설정할 수 있습니다.'
       ]
     }
   }

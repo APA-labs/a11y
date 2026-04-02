@@ -138,28 +138,71 @@ export function MuiDisclosure({ title, children }) {
       additionalChecks: [
         {
           id: 'disclosure-radix-1',
-          title: 'Collapsible.Root 사용',
-          description: 'Radix Collapsible은 aria-expanded와 hidden 속성을 자동으로 관리합니다.',
-          level: 'must'
+          title: 'Collapsible.Trigger의 aria-expanded 자동 관리',
+          description: 'Collapsible.Trigger는 열림/닫힘 상태에 따라 aria-expanded를 자동으로 설정합니다. 별도 구현이 필요 없습니다.',
+          level: 'should'
+        },
+        {
+          id: 'disclosure-radix-2',
+          title: 'open/onOpenChange로 제어 모드 사용',
+          description: 'open prop과 onOpenChange 콜백을 함께 사용하면 제어 컴포넌트로 동작합니다. defaultOpen은 비제어 초기값입니다.',
+          level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Radix Collapsible',
-        code: `import * as Collapsible from '@radix-ui/react-collapsible'
+        code: `import { useState } from 'react'
+import * as Collapsible from '@radix-ui/react-collapsible'
 
-export function RadixDisclosure({ title, children }) {
+export default function App() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Collapsible.Root>
-      <Collapsible.Trigger asChild>
-        <button type='button'>{title}</button>
-      </Collapsible.Trigger>
-      <Collapsible.Content>{children}</Collapsible.Content>
-    </Collapsible.Root>
+    <div style={{ maxWidth: 480, margin: '24px auto', padding: '0 16px' }}>
+      <Collapsible.Root
+        open={open}
+        onOpenChange={setOpen}
+        style={{ border: '1px solid #e2e8f0', borderRadius: 8 }}>
+        <Collapsible.Trigger
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            padding: '14px 16px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: 15,
+            fontWeight: 500,
+            textAlign: 'left'
+          }}>
+          System requirements
+          <span
+            aria-hidden
+            style={{ transform: open ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>
+            ›
+          </span>
+        </Collapsible.Trigger>
+        <Collapsible.Content style={{ padding: '0 16px 16px', fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>
+          <ul style={{ margin: 0, paddingLeft: 20 }}>
+            <li>OS: Windows 10 or later, macOS 10.15 or later</li>
+            <li>Memory: 4 GB RAM minimum</li>
+            <li>Storage: 2 GB available disk space</li>
+          </ul>
+        </Collapsible.Content>
+      </Collapsible.Root>
+    </div>
   )
 }`
       },
-      notes: ['Radix Collapsible.Trigger는 aria-expanded를 자동으로 설정합니다.', 'Collapsible.Content는 닫힐 때 display:none으로 처리됩니다.']
+      notes: [
+        'Collapsible.Trigger는 aria-expanded와 aria-controls를 자동으로 관리합니다.',
+        'open + onOpenChange(제어 모드) 또는 defaultOpen(비제어 모드)으로 열림 상태를 관리하세요.',
+        'Collapsible.Content는 닫힐 때 display:none으로 처리됩니다. 애니메이션은 data-state="open" | "closed" 속성으로 CSS 적용이 가능합니다.',
+        'asChild prop을 Collapsible.Trigger에 사용하면 원하는 HTML 요소로 렌더링할 수 있습니다.'
+      ]
     },
     antd: {
       id: 'antd',
@@ -196,26 +239,68 @@ export function AntDisclosure() {
       id: 'spectrum',
       name: 'React Spectrum',
       color: '#e03',
-      additionalChecks: [],
+      additionalChecks: [
+        {
+          id: 'disclosure-spectrum-1',
+          title: 'Heading > Button slot="trigger" 구조 준수',
+          description: "Heading 내부의 Button에 반드시 slot='trigger'를 지정해야 aria-expanded와 aria-controls가 자동 관리됩니다.",
+          level: 'must'
+        }
+      ],
       codeSample: {
         language: 'tsx',
         label: 'React Aria Disclosure',
-        code: `import { Disclosure, Heading, DisclosurePanel, Button } from 'react-aria-components'
+        code: `import { useState } from 'react'
+import { Disclosure, Heading, DisclosurePanel, Button } from 'react-aria-components'
 
-const triggerStyle = { display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: 'none', border: '1px solid #e5e7eb', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600, width: '100%', textAlign: 'left' as const }
-const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
+const ITEMS = [
+  { id: 'req', title: 'System Requirements', content: 'OS: Windows 10 or later, macOS 10.15 or later. RAM: 4GB minimum.' },
+  { id: 'install', title: 'Installation', content: 'Download the installer and follow the on-screen instructions.' }
+]
 
-<Disclosure>
-  <Heading>
-    <Button slot='trigger' style={triggerStyle}>System Requirements</Button>
-  </Heading>
-  <DisclosurePanel style={panelStyle}>OS: Windows 10 or later, macOS 10.15 or later</DisclosurePanel>
-</Disclosure>`
+export default function App() {
+  const [expanded, setExpanded] = useState<string | null>('req')
+
+  return (
+    <div style={{ padding: '1.5rem', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {ITEMS.map((item) => (
+        <Disclosure
+          key={item.id}
+          isExpanded={expanded === item.id}
+          onExpandedChange={(open) => setExpanded(open ? item.id : null)}
+          style={{ borderBottom: '1px solid #e5e7eb' }}>
+          <Heading>
+            <Button
+              slot='trigger'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '12px 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 14,
+                fontWeight: 600,
+                textAlign: 'left'
+              }}>
+              {item.title}
+              <span aria-hidden>{expanded === item.id ? '▲' : '▼'}</span>
+            </Button>
+          </Heading>
+          <DisclosurePanel style={{ padding: '0 0 12px', fontSize: 14, color: '#4b5563' }}>{item.content}</DisclosurePanel>
+        </Disclosure>
+      ))}
+    </div>
+  )
+}`
       },
       notes: [
-        'React Aria Disclosure는 WAI-ARIA Disclosure 패턴을 완전히 구현합니다.',
-        "DisclosureHeader의 Button에 slot='trigger'를 반드시 지정하세요.",
-        'defaultExpanded prop으로 초기 열림 상태를 설정할 수 있습니다.'
+        "Heading 내부의 Button에 slot='trigger'를 지정하면 aria-expanded와 aria-controls가 자동 관리됩니다.",
+        'isExpanded/onExpandedChange로 제어 컴포넌트, defaultExpanded로 비제어 컴포넌트로 사용하세요.',
+        'DisclosurePanel의 --disclosure-panel-height CSS 변수로 애니메이션을 구현할 수 있습니다.',
+        'isDisabled prop으로 특정 항목을 비활성화할 수 있습니다.'
       ]
     },
     baseui: {
@@ -226,35 +311,58 @@ const panelStyle = { padding: '10px 14px', fontSize: 14, color: '#4b5563' }
         {
           id: 'disclosure-baseui-1',
           title: 'Collapsible.Trigger는 aria-expanded 자동 관리',
-          description: 'Base UI Collapsible.Trigger는 열림/닫힘 상태에 따라 aria-expanded를 자동으로 설정합니다.',
+          description: 'Base UI Collapsible.Trigger는 열림/닫힘 상태에 따라 aria-expanded와 aria-controls를 자동으로 설정합니다.',
+          level: 'should'
+        },
+        {
+          id: 'disclosure-baseui-2',
+          title: 'hiddenUntilFound로 검색 가능한 패널 구현',
+          description: 'hiddenUntilFound prop을 사용하면 브라우저 Ctrl+F 검색이 닫힌 패널 내용도 찾을 수 있습니다.',
           level: 'should'
         }
       ],
       codeSample: {
         language: 'tsx',
         label: 'Base UI Collapsible',
-        code: `import { Collapsible } from '@base-ui/react/collapsible'
+        code: `import { Collapsible } from '@base-ui-components/react/collapsible'
 
 export default function App() {
   return (
-    <Collapsible.Root>
-      <Collapsible.Trigger>
-        <span aria-hidden>▶</span>
-        Recovery keys
-      </Collapsible.Trigger>
-      <Collapsible.Panel>
-        <div>alien-bean-pasta</div>
-        <div>wild-irish-burrito</div>
-        <div>horse-battery-staple</div>
-      </Collapsible.Panel>
-    </Collapsible.Root>
+    <div style={{ maxWidth: 480, margin: '24px auto', padding: '0 16px' }}>
+      <Collapsible.Root style={{ border: '1px solid #e2e8f0', borderRadius: 8 }}>
+        <Collapsible.Trigger
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            padding: '14px 16px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: 15,
+            fontWeight: 500,
+            textAlign: 'left'
+          }}>
+          Recovery keys
+          <span aria-hidden>›</span>
+        </Collapsible.Trigger>
+        <Collapsible.Panel style={{ padding: '0 16px 16px', fontSize: 14, color: '#4a5568', lineHeight: 1.8 }}>
+          <div>alien-bean-pasta</div>
+          <div>wild-irish-burrito</div>
+          <div>horse-battery-staple</div>
+        </Collapsible.Panel>
+      </Collapsible.Root>
+    </div>
   )
 }`
       },
       notes: [
         'Collapsible.Trigger는 aria-expanded와 aria-controls를 자동으로 관리합니다.',
-        'defaultOpen prop으로 초기 열림 상태를 지정하거나 open/onOpenChange로 제어 모드로 사용하세요.',
-        'hiddenUntilFound prop을 사용하면 브라우저 내 검색(Ctrl+F)에서 숨겨진 패널 내용도 찾을 수 있습니다.'
+        'defaultOpen(비제어) 또는 open/onOpenChange(제어 모드)로 열림 상태를 관리하세요.',
+        'Collapsible.Panel은 닫힐 때 DOM에서 제거됩니다. keepMounted prop으로 DOM 유지 여부를 제어할 수 있습니다.',
+        'hiddenUntilFound prop을 사용하면 브라우저 내 검색(Ctrl+F)에서 닫힌 패널 내용도 찾을 수 있습니다.',
+        'data-panel-open 속성이 Collapsible.Trigger에, data-open 속성이 Collapsible.Panel에 자동 설정됩니다.'
       ]
     }
   }
