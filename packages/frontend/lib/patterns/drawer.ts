@@ -144,7 +144,8 @@ export const drawerPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Drawer',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Drawer, Box, Button, Typography, List, ListItem, ListItemButton, ListItemText, Divider, IconButton } from '@mui/material'
 
 const NAV_ITEMS = ['Home', 'About', 'Services', 'Contact']
@@ -153,7 +154,7 @@ export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className='app'>
       <Button
         variant='outlined'
         onClick={() => setOpen(true)}
@@ -238,14 +239,15 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Drawer',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Drawer, Button, Space } from 'antd'
 
 export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div className='app'>
       <Button
         type='primary'
         onClick={() => setOpen(true)}
@@ -269,22 +271,18 @@ export default function App() {
             </Button>
           </Space>
         }>
-        <div>
-          <p>Notification preferences</p>
-          <Space
-            direction='vertical'
-            style={{ width: '100%' }}>
-            <label>
-              <input type='checkbox' /> Email notifications
-            </label>
-            <label>
-              <input
-                type='checkbox'
-                defaultChecked
-              />{' '}
-              Push notifications
-            </label>
-          </Space>
+        <div className='stack'>
+          <p style={{ margin: 0 }}>Notification preferences</p>
+          <label className='row'>
+            <input type='checkbox' /> Email notifications
+          </label>
+          <label className='row'>
+            <input
+              type='checkbox'
+              defaultChecked
+            />{' '}
+            Push notifications
+          </label>
         </div>
       </Drawer>
     </div>
@@ -313,13 +311,14 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Drawer',
-        code: `import { Button, Drawer, Stack } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Button, Drawer, Stack } from '@chakra-ui/react'
 
 const NAV_ITEMS = ['Home', 'About', 'Services', 'Contact']
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <Drawer.Root placement='end'>
         <Drawer.Trigger asChild>
           <Button
@@ -349,7 +348,8 @@ export default function App() {
                     <a
                       key={item}
                       href={'#' + item.toLowerCase()}
-                      style={{ padding: '8px 12px', borderRadius: 6, display: 'block', textDecoration: 'none', color: '#2d3748' }}>
+                      className='menu-item'
+                      style={{ display: 'block', textDecoration: 'none', color: '#2d3748' }}>
                       {item}
                     </a>
                   ))}

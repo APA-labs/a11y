@@ -94,7 +94,8 @@ export const togglePattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Switch & ToggleButtonGroup',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Switch, FormControlLabel, FormGroup, ToggleButton, ToggleButtonGroup, Typography, Box, Divider } from '@mui/material'
 
 export default function App() {
@@ -103,8 +104,10 @@ export default function App() {
   const [alignment, setAlignment] = useState('left')
 
   return (
-    <Box style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24 }}>
-      <Box>
+    <div
+      className='app stack'
+      style={{ gap: 24 }}>
+      <div>
         <Typography
           variant='subtitle1'
           component='h2'
@@ -135,11 +138,11 @@ export default function App() {
             label='Marketing emails'
           />
         </FormGroup>
-      </Box>
+      </div>
 
       <Divider />
 
-      <Box>
+      <div>
         <Typography
           variant='subtitle1'
           component='h2'
@@ -167,8 +170,8 @@ export default function App() {
             R
           </ToggleButton>
         </ToggleButtonGroup>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }`
       },
@@ -202,7 +205,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Switch',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import * as Switch from '@radix-ui/react-switch'
 
 const SETTINGS = [
@@ -217,50 +221,49 @@ export default function App() {
   const toggle = (id: string, val: boolean) => setSettings((prev) => ({ ...prev, [id]: val }))
 
   return (
-    <div style={{ maxWidth: 360, margin: '24px auto', padding: '0 16px' }}>
-      <p style={{ margin: '0 0 16px', fontWeight: 600 }}>Notification preferences</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {SETTINGS.map((s) => (
-          <div
-            key={s.id}
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <label
-              htmlFor={s.id}
-              style={{ fontSize: 14, cursor: 'pointer' }}>
-              {s.label}
-            </label>
-            <Switch.Root
-              id={s.id}
-              checked={settings[s.id]}
-              onCheckedChange={(val) => toggle(s.id, val)}
+    <div className='app stack'>
+      <p style={{ margin: 0, fontWeight: 600 }}>Notification preferences</p>
+      {SETTINGS.map((s) => (
+        <div
+          key={s.id}
+          className='row'
+          style={{ justifyContent: 'space-between' }}>
+          <label
+            htmlFor={s.id}
+            style={{ cursor: 'pointer' }}>
+            {s.label}
+          </label>
+          <Switch.Root
+            id={s.id}
+            checked={settings[s.id]}
+            onCheckedChange={(val) => toggle(s.id, val)}
+            style={{
+              width: 44,
+              height: 24,
+              borderRadius: 9999,
+              border: 'none',
+              padding: 2,
+              backgroundColor: settings[s.id] ? '#6e56cf' : '#d1d5db',
+              transition: 'background-color 0.15s',
+              cursor: 'pointer',
+              flexShrink: 0,
+              position: 'relative'
+            }}>
+            <Switch.Thumb
               style={{
-                width: 44,
-                height: 24,
+                display: 'block',
+                width: 20,
+                height: 20,
                 borderRadius: 9999,
-                border: 'none',
-                padding: 2,
-                backgroundColor: settings[s.id] ? '#6e56cf' : '#d1d5db',
-                transition: 'background-color 0.15s',
-                cursor: 'pointer',
-                flexShrink: 0,
-                position: 'relative'
-              }}>
-              <Switch.Thumb
-                style={{
-                  display: 'block',
-                  width: 20,
-                  height: 20,
-                  borderRadius: 9999,
-                  backgroundColor: 'white',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
-                  transform: settings[s.id] ? 'translateX(20px)' : 'translateX(0)',
-                  transition: 'transform 0.15s'
-                }}
-              />
-            </Switch.Root>
-          </div>
-        ))}
-      </div>
+                backgroundColor: 'white',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+                transform: settings[s.id] ? 'translateX(20px)' : 'translateX(0)',
+                transition: 'transform 0.15s'
+              }}
+            />
+          </Switch.Root>
+        </div>
+      ))}
     </div>
   )
 }`
@@ -301,7 +304,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Switch',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Switch, Typography, Space } from 'antd'
 
 const SETTINGS = [
@@ -316,10 +320,12 @@ export default function App() {
   const toggle = (id: string, checked: boolean) => setValues((prev) => ({ ...prev, [id]: checked }))
 
   return (
-    <div style={{ padding: '24px', maxWidth: 360 }}>
+    <div
+      className='app stack'
+      style={{ maxWidth: 360 }}>
       <Typography.Title
         level={5}
-        style={{ marginBottom: 16 }}>
+        style={{ margin: 0 }}>
         Notification Preferences
       </Typography.Title>
       <Space
@@ -329,10 +335,11 @@ export default function App() {
         {SETTINGS.map((s) => (
           <div
             key={s.id}
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            className='row'
+            style={{ justifyContent: 'space-between' }}>
             <label
               htmlFor={s.id}
-              style={{ fontSize: 14, cursor: 'pointer' }}>
+              style={{ cursor: 'pointer' }}>
               {s.label}
             </label>
             <Switch
@@ -371,7 +378,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Switch',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Switch, Stack } from '@chakra-ui/react'
 
 const SETTINGS = [
@@ -384,9 +392,9 @@ export default function App() {
   const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.default])))
 
   return (
-    <Stack
-      gap={4}
-      style={{ padding: '1.5rem', maxWidth: 360 }}>
+    <div
+      className='app stack'
+      style={{ maxWidth: 360 }}>
       <p style={{ margin: 0, fontWeight: 600 }}>Notification Preferences</p>
       {SETTINGS.map((s) => (
         <Switch.Root
@@ -401,7 +409,7 @@ export default function App() {
           <Switch.Label>{s.label}</Switch.Label>
         </Switch.Root>
       ))}
-    </Stack>
+    </div>
   )
 }`
       },
@@ -428,7 +436,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Switch & ToggleButton',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Switch, ToggleButton } from 'react-aria-components'
 
 const SETTINGS = [
@@ -443,14 +452,17 @@ export default function App() {
   const toggle = (id: string, val: boolean) => setSettings((prev) => ({ ...prev, [id]: val }))
 
   return (
-    <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 320 }}>
-      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Settings</p>
+    <div
+      className='app stack'
+      style={{ maxWidth: 320 }}>
+      <p style={{ margin: 0, fontWeight: 600 }}>Settings</p>
       {SETTINGS.map((s) => (
         <Switch
           key={s.id}
           isSelected={settings[s.id]}
           onChange={(val) => toggle(s.id, val)}
-          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: 14 }}>
+          className='row'
+          style={{ cursor: 'pointer' }}>
           {({ isSelected }) => (
             <>
               <div
@@ -480,21 +492,16 @@ export default function App() {
         </Switch>
       ))}
 
-      <div>
-        <p style={{ margin: '0 0 8px', fontWeight: 600, fontSize: 14 }}>ToggleButton</p>
+      <div
+        className='stack'
+        style={{ gap: 8 }}>
+        <p style={{ margin: 0, fontWeight: 600 }}>ToggleButton</p>
         <ToggleButton
           isSelected={pinned}
           onChange={setPinned}
           aria-label='Pin this item'
-          style={{
-            padding: '6px 14px',
-            borderRadius: 6,
-            border: '1px solid #d1d5db',
-            background: pinned ? '#e03' : '#fff',
-            color: pinned ? '#fff' : '#374151',
-            cursor: 'pointer',
-            fontSize: 13
-          }}>
+          className='btn'
+          style={{ background: pinned ? '#e03' : '#fff', color: pinned ? '#fff' : '#374151', borderColor: '#d1d5db' }}>
           {pinned ? '★ Pinned' : '☆ Pin'}
         </ToggleButton>
       </div>
@@ -531,7 +538,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Switch',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Switch } from '@base-ui-components/react/switch'
 
 const SETTINGS = [
@@ -543,12 +551,15 @@ export default function App() {
   const [values, setValues] = useState<Record<string, boolean>>(Object.fromEntries(SETTINGS.map((s) => [s.id, s.defaultChecked])))
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 320, display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>Notification Preferences</p>
+    <div
+      className='app stack'
+      style={{ maxWidth: 320 }}>
+      <p style={{ margin: 0, fontWeight: 600 }}>Notification Preferences</p>
       {SETTINGS.map((s) => (
         <label
           key={s.id}
-          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontSize: 14 }}>
+          className='row'
+          style={{ justifyContent: 'space-between', cursor: 'pointer' }}>
           {s.label}
           <Switch.Root
             checked={values[s.id]}

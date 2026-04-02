@@ -312,6 +312,101 @@ function RadioDemo() {
         '방향키 탐색과 포커스 관리가 자동으로 처리됩니다.',
         'isDisabled, isRequired prop을 지원합니다.'
       ]
+    },
+    baseui: {
+      id: 'baseui',
+      name: 'Base UI',
+      color: '#18181b',
+      additionalChecks: [
+        {
+          id: 'radio-baseui-1',
+          title: 'RadioGroup에 aria-labelledby 연결',
+          description:
+            '`RadioGroup`에 `aria-labelledby`로 그룹 레이블 요소의 id를 연결하세요. 레이블 없이는 스크린리더가 그룹의 목적을 전달하지 못합니다.',
+          level: 'must'
+        },
+        {
+          id: 'radio-baseui-2',
+          title: 'Radio.Indicator는 CSS로 스타일링',
+          description:
+            'Base UI는 unstyled 라이브러리입니다. `Radio.Indicator`의 선택 상태는 `data-checked` 속성을 활용한 CSS로 직접 구현해야 합니다.',
+          level: 'should'
+        }
+      ],
+      codeSample: {
+        language: 'tsx',
+        label: 'Base UI RadioGroup',
+        code: `import { useState } from 'react'
+import { RadioGroup } from '@base-ui-components/react/radio-group'
+import { Radio } from '@base-ui-components/react/radio'
+
+const options = [
+  { value: 'email', label: '이메일' },
+  { value: 'sms', label: 'SMS' },
+  { value: 'push', label: '푸시 알림' }
+]
+
+export default function App() {
+  const [value, setValue] = useState('email')
+
+  const s = {
+    group: { display: 'flex', flexDirection: 'column' as const, gap: 12, padding: 20 },
+    legend: { fontSize: 14, fontWeight: 600, marginBottom: 8, color: '#111' },
+    item: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' },
+    radio: {
+      width: 20,
+      height: 20,
+      borderRadius: '50%',
+      border: '2px solid #d1d5db',
+      background: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
+      cursor: 'pointer'
+    },
+    indicator: { width: 10, height: 10, borderRadius: '50%', background: '#18181b' },
+    label: { fontSize: 14, color: '#374151', cursor: 'pointer' }
+  }
+
+  return (
+    <div style={s.group}>
+      <p
+        id='notification-label'
+        style={s.legend}>
+        알림 수단
+      </p>
+      <RadioGroup
+        value={value}
+        onValueChange={setValue}
+        aria-labelledby='notification-label'
+        style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {options.map((opt) => (
+          <Radio.Root
+            key={opt.value}
+            value={opt.value}
+            style={s.item}>
+            <div
+              style={{
+                ...s.radio,
+                borderColor: value === opt.value ? '#18181b' : '#d1d5db'
+              }}>
+              {value === opt.value && <span style={s.indicator} />}
+            </div>
+            <Radio.Label style={s.label}>{opt.label}</Radio.Label>
+          </Radio.Root>
+        ))}
+      </RadioGroup>
+    </div>
+  )
+}`
+      },
+      notes: [
+        '`RadioGroup`의 `value` + `onValueChange`로 선택 상태를 제어합니다.',
+        '`aria-labelledby`로 그룹 레이블을 연결하면 스크린리더가 그룹 목적을 읽습니다.',
+        '`Radio.Indicator`는 기본 스타일이 없습니다. `data-checked` 속성으로 선택 상태를 CSS에서 처리하세요.',
+        '방향키로 라디오 간 이동, Space로 선택이 자동 처리됩니다.'
+      ]
     }
   }
 }

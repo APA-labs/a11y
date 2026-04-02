@@ -124,14 +124,15 @@ export const modalDialogPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Dialog',
-        code: `import { useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography } from '@mui/material'
+        code: `import './index.css'
+import { useState } from 'react'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
 
 export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className='app'>
       <Button
         variant='outlined'
         color='error'
@@ -194,100 +195,55 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Dialog',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className='app'>
       <Dialog.Root
         open={open}
         onOpenChange={setOpen}>
         <Dialog.Trigger
-          style={{
-            padding: '8px 16px',
-            borderRadius: 6,
-            border: '1px solid #dc2626',
-            background: 'white',
-            color: '#dc2626',
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 500
-          }}>
+          className='btn'
+          style={{ color: '#dc2626', borderColor: '#dc2626' }}>
           Delete file
         </Dialog.Trigger>
 
         <Dialog.Portal>
-          <Dialog.Overlay
-            style={{
-              position: 'fixed',
-              inset: 0,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              zIndex: 100
-            }}
-          />
+          <Dialog.Overlay className='overlay' />
           <Dialog.Content
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: 'white',
-              padding: 24,
-              borderRadius: 12,
-              minWidth: 360,
-              maxWidth: '90vw',
-              zIndex: 101,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
-            }}>
-            <Dialog.Title style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 600 }}>Delete File</Dialog.Title>
-            <Dialog.Description style={{ margin: '0 0 20px', fontSize: 14, color: '#6b7280' }}>
+            className='dialog'
+            style={{ minWidth: 360, maxWidth: '90vw' }}>
+            <Dialog.Title
+              className='dialog-title'
+              style={{ marginBottom: 8 }}>
+              Delete File
+            </Dialog.Title>
+            <Dialog.Description
+              className='hint'
+              style={{ marginBottom: 20 }}>
               Are you sure you want to permanently delete this file? This action cannot be undone.
             </Dialog.Description>
 
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-              <Dialog.Close
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: 6,
-                  border: '1px solid #d1d5db',
-                  background: 'white',
-                  cursor: 'pointer',
-                  fontSize: 14
-                }}>
-                Cancel
-              </Dialog.Close>
+            <div
+              className='row'
+              style={{ justifyContent: 'flex-end' }}>
+              <Dialog.Close className='btn'>Cancel</Dialog.Close>
               <button
+                className='btn btn-primary'
                 onClick={() => setOpen(false)}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: 6,
-                  border: 'none',
-                  background: '#dc2626',
-                  color: 'white',
-                  cursor: 'pointer',
-                  fontSize: 14,
-                  fontWeight: 500
-                }}>
+                style={{ background: '#dc2626' }}>
                 Delete
               </button>
             </div>
 
             <Dialog.Close
               aria-label='Close dialog'
-              style={{
-                position: 'absolute',
-                top: 12,
-                right: 12,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 18,
-                color: '#9ca3af',
-                lineHeight: 1
-              }}>
+              className='dialog-close btn-ghost'>
               ✕
             </Dialog.Close>
           </Dialog.Content>
@@ -332,14 +288,15 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Modal',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Modal, Button, Space } from 'antd'
 
 export default function App() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div className='app'>
       <Button
         type='primary'
         danger
@@ -393,11 +350,12 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Dialog',
-        code: `import { Button, Dialog } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Button, Dialog } from '@chakra-ui/react'
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <Button
@@ -466,27 +424,19 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Modal',
-        code: `import { Button, DialogTrigger, Modal, ModalOverlay, Dialog, Heading } from 'react-aria-components'
+        code: `import './index.css'
+import { Button, DialogTrigger, Modal, ModalOverlay, Dialog, Heading } from 'react-aria-components'
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <DialogTrigger>
         <Button
-          style={{
-            padding: '8px 16px',
-            borderRadius: 6,
-            border: 'none',
-            background: '#e03',
-            color: '#fff',
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 500
-          }}>
+          className='btn btn-primary'
+          style={{ background: '#e03' }}>
           Delete file
         </Button>
-        <ModalOverlay
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <ModalOverlay className='overlay center'>
           <Modal
             style={{
               background: '#fff',
@@ -502,34 +452,27 @@ export default function App() {
                 <>
                   <Heading
                     slot='title'
-                    style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>
+                    className='dialog-title'
+                    style={{ marginBottom: 8 }}>
                     Delete File
                   </Heading>
-                  <p style={{ margin: '0 0 20px', fontSize: 14, color: '#4b5563' }}>Are you sure? This action cannot be undone.</p>
-                  <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                  <p
+                    className='hint'
+                    style={{ marginBottom: 20 }}>
+                    Are you sure? This action cannot be undone.
+                  </p>
+                  <div
+                    className='row'
+                    style={{ justifyContent: 'flex-end' }}>
                     <Button
                       onPress={close}
-                      style={{
-                        padding: '6px 14px',
-                        borderRadius: 6,
-                        border: '1px solid #d1d5db',
-                        background: '#fff',
-                        cursor: 'pointer',
-                        fontSize: 13
-                      }}>
+                      className='btn btn-sm'>
                       Cancel
                     </Button>
                     <Button
                       onPress={close}
-                      style={{
-                        padding: '6px 14px',
-                        borderRadius: 6,
-                        border: 'none',
-                        background: '#dc2626',
-                        color: '#fff',
-                        cursor: 'pointer',
-                        fontSize: 13
-                      }}>
+                      className='btn btn-primary'
+                      style={{ background: '#dc2626' }}>
                       Delete
                     </Button>
                   </div>
@@ -578,58 +521,33 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Dialog',
-        code: `import { Dialog } from '@base-ui-components/react/dialog'
+        code: `import './index.css'
+import { Dialog } from '@base-ui-components/react/dialog'
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <Dialog.Root>
-        <Dialog.Trigger
-          style={{
-            padding: '8px 20px',
-            borderRadius: 6,
-            border: 'none',
-            background: '#18181b',
-            color: '#fff',
-            cursor: 'pointer',
-            fontSize: 14
-          }}>
-          View notifications
-        </Dialog.Trigger>
+        <Dialog.Trigger className='btn btn-primary'>View notifications</Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Backdrop
-            style={{
-              position: 'fixed',
-              inset: 0,
-              backgroundColor: 'rgba(0,0,0,0.5)'
-            }}
-          />
+          <Dialog.Backdrop className='overlay' />
           <Dialog.Popup
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: '#fff',
-              borderRadius: 12,
-              padding: '24px',
-              minWidth: 320,
-              boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
-            }}>
-            <Dialog.Title style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 600 }}>Notifications</Dialog.Title>
-            <Dialog.Description style={{ margin: '0 0 20px', fontSize: 14, color: '#6b7280' }}>You are all caught up. Good job!</Dialog.Description>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Dialog.Close
-                style={{
-                  padding: '8px 20px',
-                  borderRadius: 6,
-                  border: '1px solid #e5e7eb',
-                  background: '#fff',
-                  cursor: 'pointer',
-                  fontSize: 14
-                }}>
-                Close
-              </Dialog.Close>
+            className='dialog'
+            style={{ minWidth: 320 }}>
+            <Dialog.Title
+              className='dialog-title'
+              style={{ marginBottom: 8 }}>
+              Notifications
+            </Dialog.Title>
+            <Dialog.Description
+              className='hint'
+              style={{ marginBottom: 20 }}>
+              You are all caught up. Good job!
+            </Dialog.Description>
+            <div
+              className='row'
+              style={{ justifyContent: 'flex-end' }}>
+              <Dialog.Close className='btn'>Close</Dialog.Close>
             </div>
           </Dialog.Popup>
         </Dialog.Portal>

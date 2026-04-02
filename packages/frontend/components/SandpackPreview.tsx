@@ -245,18 +245,82 @@ export default function SandpackPreviewBlock({ code, language }: Props) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <div id="root"></div>
   </body>
 </html>`
 
+  const indexCss = `/* Layout */
+.app { padding: 20px; font-family: system-ui, sans-serif; font-size: 14px; color: #111; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.center { display: flex; align-items: center; justify-content: center; }
+
+/* Buttons */
+.btn { padding: 8px 16px; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 14px; background: white; color: #111; transition: background 0.15s; }
+.btn:hover { background: #f9fafb; }
+.btn:focus-visible { outline: 2px solid #18181b; outline-offset: 2px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: #18181b; color: white; border-color: #18181b; }
+.btn-primary:hover { background: #374151; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-ghost { background: transparent; border-color: transparent; }
+.btn-ghost:hover { background: #f3f4f6; }
+.icon-btn { padding: 6px; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; background: white; display: inline-flex; align-items: center; justify-content: center; }
+
+/* Form */
+.field { display: flex; flex-direction: column; gap: 4px; }
+.label { font-size: 13px; font-weight: 500; color: #374151; }
+.input { padding: 8px 12px; border-radius: 6px; border: 1px solid #d1d5db; font-size: 14px; width: 100%; box-sizing: border-box; }
+.input:focus { outline: 2px solid #18181b; outline-offset: 2px; border-color: transparent; }
+.input[aria-invalid="true"] { border-color: #ef4444; }
+.hint { font-size: 12px; color: #6b7280; }
+.error { font-size: 12px; color: #ef4444; }
+
+/* Overlay & Dialog */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; }
+.dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 24px; border-radius: 12px; min-width: 320px; max-width: 90vw; z-index: 101; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+.dialog-title { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+.dialog-close { position: absolute; top: 12px; right: 12px; }
+
+/* Panel / Popover */
+.panel { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+/* Menu / List */
+.menu { list-style: none; padding: 4px; margin: 0; display: flex; flex-direction: column; gap: 2px; min-width: 160px; }
+.menu-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.menu-item:hover, .menu-item:focus { background: #f3f4f6; outline: none; }
+.menu-item[aria-current="page"] { background: #f3f4f6; font-weight: 500; }
+
+/* Tabs */
+.tab-list { display: flex; gap: 2px; border-bottom: 1px solid #e5e7eb; }
+.tab { padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: #111; border-bottom-color: #18181b; font-weight: 500; }
+.tab-panel { padding: 16px 0; }
+
+/* Accordion */
+.accordion-item { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+.accordion-trigger { width: 100%; padding: 12px 16px; background: white; border: none; text-align: left; cursor: pointer; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+.accordion-trigger:hover { background: #f9fafb; }
+.accordion-panel { padding: 12px 16px; font-size: 14px; color: #374151; border-top: 1px solid #e5e7eb; }
+
+/* Breadcrumb */
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; list-style: none; padding: 0; margin: 0; flex-wrap: wrap; }
+.breadcrumb-sep { color: #9ca3af; }
+
+/* Badge */
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 500; background: #f3f4f6; color: #374151; }
+
+/* Utility */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+`
+
   return (
     <SandpackErrorBoundary>
       <SandpackProvider
         template='react-ts'
-        files={{ ...sandpackFiles, '/index.html': indexHtml }}
+        files={{ ...sandpackFiles, '/index.html': indexHtml, '/index.css': indexCss }}
         theme={isDark ? DARK_THEME : LIGHT_THEME}
         customSetup={{ dependencies: extraDeps }}
         options={{ recompileMode: 'delayed', recompileDelay: 600 }}>

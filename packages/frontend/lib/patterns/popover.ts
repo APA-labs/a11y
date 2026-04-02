@@ -128,7 +128,8 @@ export const popoverPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI Popover',
-        code: `import { useState, useRef } from 'react'
+        code: `import './index.css'
+import { useState, useRef } from 'react'
 import { Button, Popover, Typography, Box, Switch, FormControlLabel } from '@mui/material'
 
 export default function App() {
@@ -139,7 +140,7 @@ export default function App() {
   const popoverId = open ? 'settings-popover' : undefined
 
   return (
-    <Box style={{ padding: 24 }}>
+    <div className='app'>
       <Button
         variant='outlined'
         aria-describedby={popoverId}
@@ -195,7 +196,7 @@ export default function App() {
           </Box>
         </Box>
       </Popover>
-    </Box>
+    </div>
   )
 }`
       },
@@ -227,7 +228,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Popover',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import * as Popover from '@radix-ui/react-popover'
 
 export default function App() {
@@ -235,38 +237,24 @@ export default function App() {
   const [emails, setEmails] = useState(false)
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className='app'>
       <Popover.Root>
         <Popover.Trigger
-          style={{
-            padding: '8px 16px',
-            borderRadius: 6,
-            border: '1px solid #6e56cf',
-            background: 'white',
-            color: '#6e56cf',
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 500
-          }}>
+          className='btn'
+          style={{ color: '#6e56cf', borderColor: '#6e56cf' }}>
           Notification settings
         </Popover.Trigger>
 
         <Popover.Portal>
           <Popover.Content
             sideOffset={8}
-            style={{
-              background: 'white',
-              border: '1px solid #e5e7eb',
-              borderRadius: 10,
-              padding: 16,
-              minWidth: 260,
-              boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
-              zIndex: 100
-            }}>
-            <p style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 600 }}>Notification settings</p>
+            className='panel'
+            style={{ minWidth: 260, zIndex: 100 }}>
+            <p style={{ margin: '0 0 12px', fontWeight: 600 }}>Notification settings</p>
 
             <label
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, fontSize: 14, cursor: 'pointer' }}>
+              className='row'
+              style={{ justifyContent: 'space-between', marginBottom: 10, cursor: 'pointer' }}>
               Push notifications
               <input
                 type='checkbox'
@@ -274,7 +262,9 @@ export default function App() {
                 onChange={(e) => setNotifications(e.target.checked)}
               />
             </label>
-            <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14, cursor: 'pointer' }}>
+            <label
+              className='row'
+              style={{ justifyContent: 'space-between', cursor: 'pointer' }}>
               Email notifications
               <input
                 type='checkbox'
@@ -287,17 +277,8 @@ export default function App() {
 
             <Popover.Close
               aria-label='Close notification settings'
-              style={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 16,
-                color: '#9ca3af',
-                lineHeight: 1
-              }}>
+              className='dialog-close btn-ghost'
+              style={{ position: 'absolute', top: 8, right: 8 }}>
               ✕
             </Popover.Close>
           </Popover.Content>
@@ -344,7 +325,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Popover',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Popover, Button, Space, Typography } from 'antd'
 
 export default function App() {
@@ -352,20 +334,22 @@ export default function App() {
 
   const content = (
     <div style={{ width: 240 }}>
-      <Typography.Text style={{ display: 'block', marginBottom: 8, color: '#595959', fontSize: 13 }}>
+      <Typography.Text
+        className='hint'
+        style={{ display: 'block', marginBottom: 8 }}>
         Configure your notification preferences below.
       </Typography.Text>
       <Space
         direction='vertical'
         style={{ width: '100%', marginBottom: 12 }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+        <label className='row'>
           <input
             type='checkbox'
             defaultChecked
           />{' '}
           Email notifications
         </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14 }}>
+        <label className='row'>
           <input type='checkbox' /> Push notifications
         </label>
       </Space>
@@ -379,7 +363,7 @@ export default function App() {
   )
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div className='app'>
       <Popover
         content={content}
         title='Notification Settings'
@@ -420,7 +404,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Popover',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Popover, Button, Stack } from '@chakra-ui/react'
 
 export default function App() {
@@ -428,7 +413,7 @@ export default function App() {
   const [emails, setEmails] = useState(false)
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <Popover.Root>
         <Popover.Trigger asChild>
           <Button
@@ -454,7 +439,9 @@ export default function App() {
             <Popover.Body>
               <Popover.Title style={{ marginBottom: 12 }}>Notification Settings</Popover.Title>
               <Stack gap={3}>
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14 }}>
+                <label
+                  className='row'
+                  style={{ justifyContent: 'space-between' }}>
                   Push notifications
                   <input
                     type='checkbox'
@@ -462,7 +449,9 @@ export default function App() {
                     onChange={(e) => setNotifications(e.target.checked)}
                   />
                 </label>
-                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14 }}>
+                <label
+                  className='row'
+                  style={{ justifyContent: 'space-between' }}>
                   Email notifications
                   <input
                     type='checkbox'
@@ -502,7 +491,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Popover',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { DialogTrigger, Button, Popover, Dialog, Heading, Switch } from 'react-aria-components'
 
 export default function App() {
@@ -510,81 +500,56 @@ export default function App() {
   const [bluetooth, setBluetooth] = useState(false)
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <DialogTrigger>
-        <Button style={{ padding: '8px 16px', borderRadius: 6, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer', fontSize: 14 }}>
-          ⚙ Settings
-        </Button>
+        <Button className='btn'>⚙ Settings</Button>
         <Popover
           placement='bottom start'
           style={{ background: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,.12)', padding: 16, outline: 'none', minWidth: 220 }}>
           <Dialog style={{ outline: 'none' }}>
             <Heading
               slot='title'
-              style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 600 }}>
+              style={{ margin: '0 0 12px', fontWeight: 600 }}>
               Quick Settings
             </Heading>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <Switch
-                isSelected={wifi}
-                onChange={setWifi}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 13 }}>
-                {({ isSelected }) => (
-                  <>
-                    Wi-Fi
-                    <div
-                      style={{
-                        width: 36,
-                        height: 20,
-                        borderRadius: 10,
-                        background: isSelected ? '#e03' : '#d1d5db',
-                        padding: 2,
-                        transition: 'background .2s'
-                      }}>
+            <div className='stack'>
+              {[
+                { label: 'Wi-Fi', isSelected: wifi, onChange: setWifi },
+                { label: 'Bluetooth', isSelected: bluetooth, onChange: setBluetooth }
+              ].map((s) => (
+                <Switch
+                  key={s.label}
+                  isSelected={s.isSelected}
+                  onChange={s.onChange}
+                  className='row'
+                  style={{ justifyContent: 'space-between', cursor: 'pointer' }}>
+                  {({ isSelected }) => (
+                    <>
+                      {s.label}
                       <div
                         style={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: '50%',
-                          background: '#fff',
-                          transform: isSelected ? 'translateX(16px)' : 'translateX(0)',
-                          transition: 'transform .2s'
-                        }}
-                      />
-                    </div>
-                  </>
-                )}
-              </Switch>
-              <Switch
-                isSelected={bluetooth}
-                onChange={setBluetooth}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', fontSize: 13 }}>
-                {({ isSelected }) => (
-                  <>
-                    Bluetooth
-                    <div
-                      style={{
-                        width: 36,
-                        height: 20,
-                        borderRadius: 10,
-                        background: isSelected ? '#e03' : '#d1d5db',
-                        padding: 2,
-                        transition: 'background .2s'
-                      }}>
-                      <div
-                        style={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: '50%',
-                          background: '#fff',
-                          transform: isSelected ? 'translateX(16px)' : 'translateX(0)',
-                          transition: 'transform .2s'
-                        }}
-                      />
-                    </div>
-                  </>
-                )}
-              </Switch>
+                          width: 36,
+                          height: 20,
+                          borderRadius: 10,
+                          background: isSelected ? '#e03' : '#d1d5db',
+                          padding: 2,
+                          transition: 'background .2s'
+                        }}>
+                        <div
+                          style={{
+                            width: 16,
+                            height: 16,
+                            borderRadius: '50%',
+                            background: '#fff',
+                            transform: isSelected ? 'translateX(16px)' : 'translateX(0)',
+                            transition: 'transform .2s'
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+                </Switch>
+              ))}
             </div>
           </Dialog>
         </Popover>
@@ -622,56 +587,27 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Popover',
-        code: `import { Popover } from '@base-ui-components/react/popover'
+        code: `import './index.css'
+import { Popover } from '@base-ui-components/react/popover'
 
 export default function App() {
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <div className='app'>
       <Popover.Root>
-        <Popover.Trigger
-          style={{
-            padding: '8px 20px',
-            borderRadius: 6,
-            border: '1px solid #e5e7eb',
-            background: '#fff',
-            cursor: 'pointer',
-            fontSize: 14
-          }}>
-          Notification settings
-        </Popover.Trigger>
+        <Popover.Trigger className='btn'>Notification settings</Popover.Trigger>
         <Popover.Portal>
           <Popover.Positioner sideOffset={8}>
             <Popover.Popup
-              style={{
-                background: '#fff',
-                border: '1px solid #e5e7eb',
-                borderRadius: 8,
-                padding: '16px',
-                minWidth: 240,
-                boxShadow: '0 4px 16px rgba(0,0,0,.1)'
-              }}>
-              <Popover.Arrow
-                style={{
-                  fill: '#fff',
-                  stroke: '#e5e7eb',
-                  strokeWidth: 1
-                }}
-              />
-              <Popover.Title style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 600 }}>Notifications</Popover.Title>
-              <Popover.Description style={{ margin: '0 0 12px', fontSize: 13, color: '#6b7280' }}>
+              className='panel'
+              style={{ minWidth: 240 }}>
+              <Popover.Arrow style={{ fill: '#fff', stroke: '#e5e7eb', strokeWidth: 1 }} />
+              <Popover.Title style={{ margin: '0 0 4px', fontWeight: 600 }}>Notifications</Popover.Title>
+              <Popover.Description
+                className='hint'
+                style={{ margin: '0 0 12px' }}>
                 You are all caught up. Good job!
               </Popover.Description>
-              <Popover.Close
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: 6,
-                  border: '1px solid #e5e7eb',
-                  background: '#fff',
-                  cursor: 'pointer',
-                  fontSize: 13
-                }}>
-                Dismiss
-              </Popover.Close>
+              <Popover.Close className='btn btn-sm'>Dismiss</Popover.Close>
             </Popover.Popup>
           </Popover.Positioner>
         </Popover.Portal>

@@ -59,24 +59,42 @@ export const breadcrumbPattern: Pattern = {
     },
     codeSample: {
       language: 'tsx',
-      label: 'Baseline (HTML)',
-      code: `<nav aria-label='breadcrumb'>
-  <ol style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, listStyle: 'none', padding: 0, margin: 0 }}>
-    <li>
-      <a href='/'>Home</a>
-    </li>
-    <li aria-hidden='true'>/</li>
-    <li>
-      <a href='/products'>Products</a>
-    </li>
-    <li aria-hidden='true'>/</li>
-    <li>
-      <a href='/products/shoes'>Shoes</a>
-    </li>
-    <li aria-hidden='true'>/</li>
-    <li aria-current='page'>Sneakers</li>
-  </ol>
-</nav>`
+      label: 'Baseline (React)',
+      code: `import './index.css'
+
+export default function App() {
+  return (
+    <nav aria-label='breadcrumb'>
+      <ol className='breadcrumb'>
+        <li>
+          <a href='/'>Home</a>
+        </li>
+        <li
+          aria-hidden='true'
+          className='breadcrumb-sep'>
+          /
+        </li>
+        <li>
+          <a href='/products'>Products</a>
+        </li>
+        <li
+          aria-hidden='true'
+          className='breadcrumb-sep'>
+          /
+        </li>
+        <li>
+          <a href='/products/shoes'>Shoes</a>
+        </li>
+        <li
+          aria-hidden='true'
+          className='breadcrumb-sep'>
+          /
+        </li>
+        <li aria-current='page'>Sneakers</li>
+      </ol>
+    </nav>
+  )
+}`
     }
   },
   designSystems: {
@@ -88,7 +106,8 @@ export const breadcrumbPattern: Pattern = {
         {
           id: 'breadcrumb-mui-1',
           title: 'aria-label 직접 지정',
-          description: 'MUI Breadcrumbs는 <nav> 역할을 하지만 aria-label을 자동으로 추가하지 않습니다. aria-label="breadcrumb"를 직접 추가하세요.',
+          description:
+            'MUI Breadcrumbs는 `<nav>` 역할을 하지만 `aria-label`을 자동으로 추가하지 않습니다. `aria-label="breadcrumb"`를 직접 추가하세요.',
           level: 'must'
         }
       ],
@@ -96,36 +115,41 @@ export const breadcrumbPattern: Pattern = {
         language: 'tsx',
         label: 'MUI Breadcrumbs',
         code: `import { Breadcrumbs, Link, Typography } from '@mui/material'
-<Breadcrumbs aria-label='breadcrumb'>
-  <Link
-    href='/'
-    underline='hover'
-    color='inherit'>
-    Home
-  </Link>
-  <Link
-    href='/products'
-    underline='hover'
-    color='inherit'>
-    Products
-  </Link>
-  <Link
-    href='/products/shoes'
-    underline='hover'
-    color='inherit'>
-    Shoes
-  </Link>
-  <Typography
-    color='text.primary'
-    aria-current='page'>
-    Sneakers
-  </Typography>
-</Breadcrumbs>`
+
+export default function App() {
+  return (
+    <Breadcrumbs aria-label='breadcrumb'>
+      <Link
+        href='/'
+        underline='hover'
+        color='inherit'>
+        Home
+      </Link>
+      <Link
+        href='/products'
+        underline='hover'
+        color='inherit'>
+        Products
+      </Link>
+      <Link
+        href='/products/shoes'
+        underline='hover'
+        color='inherit'>
+        Shoes
+      </Link>
+      <Typography
+        color='text.primary'
+        aria-current='page'>
+        Sneakers
+      </Typography>
+    </Breadcrumbs>
+  )
+}`
       },
       notes: [
-        'MUI Breadcrumbs는 자동으로 구분자를 렌더링하며 aria-hidden이 적용됩니다.',
-        'separator prop으로 구분자를 커스텀할 수 있습니다.',
-        '마지막 항목은 Typography로 처리해 링크가 아닌 텍스트로 표현하세요.'
+        'MUI Breadcrumbs는 자동으로 구분자를 렌더링하며 `aria-hidden`이 적용됩니다.',
+        '`separator` prop으로 구분자를 커스텀할 수 있습니다.',
+        '마지막 항목은 `Typography`로 처리해 링크가 아닌 텍스트로 표현하세요.'
       ]
     },
     antd: {
@@ -136,7 +160,7 @@ export const breadcrumbPattern: Pattern = {
         {
           id: 'breadcrumb-antd-1',
           title: 'itemRender로 aria-current 추가',
-          description: 'Ant Design Breadcrumb는 현재 페이지에 aria-current를 자동으로 추가하지 않습니다. itemRender prop으로 커스텀하세요.',
+          description: 'Ant Design Breadcrumb는 현재 페이지에 `aria-current`를 자동으로 추가하지 않습니다. `itemRender` prop으로 커스텀하세요.',
           level: 'must'
         }
       ],
@@ -144,19 +168,29 @@ export const breadcrumbPattern: Pattern = {
         language: 'tsx',
         label: 'Ant Design Breadcrumb',
         code: `import { Breadcrumb } from 'antd'
-<Breadcrumb
-  aria-label='breadcrumb'
-  items={[{ title: <a href='/'>Home</a> }, { title: <a href='/products'>Products</a> }, { title: <a href='/products/shoes'>Shoes</a> }, { title: 'Sneakers' }]}
-  itemRender={(item, params, items) => {
-    const isLast = items.indexOf(item) === items.length - 1
-    return isLast ? <span aria-current='page'>{item.title}</span> : item.title
-  }}
-/>`
+
+export default function App() {
+  return (
+    <Breadcrumb
+      aria-label='breadcrumb'
+      items={[
+        { title: <a href='/'>Home</a> },
+        { title: <a href='/products'>Products</a> },
+        { title: <a href='/products/shoes'>Shoes</a> },
+        { title: 'Sneakers' }
+      ]}
+      itemRender={(item, _params, items) => {
+        const isLast = items.indexOf(item) === items.length - 1
+        return isLast ? <span aria-current='page'>{item.title}</span> : item.title
+      }}
+    />
+  )
+}`
       },
       notes: [
-        'Ant Design Breadcrumb에 aria-label 속성을 직접 추가해야 합니다.',
-        'itemRender prop으로 마지막 항목에 aria-current="page"를 추가하세요.',
-        'separator prop으로 구분자를 변경할 수 있으며, 기본 구분자는 aria-hidden이 적용됩니다.'
+        'Ant Design Breadcrumb에 `aria-label` 속성을 직접 추가해야 합니다.',
+        '`itemRender` prop으로 마지막 항목에 `aria-current="page"`를 추가하세요.',
+        '`separator` prop으로 구분자를 변경할 수 있으며, 기본 구분자는 `aria-hidden`이 적용됩니다.'
       ]
     },
     chakra: {
@@ -167,7 +201,7 @@ export const breadcrumbPattern: Pattern = {
         {
           id: 'breadcrumb-chakra-1',
           title: 'isCurrentPage로 현재 위치 표시',
-          description: 'Chakra BreadcrumbItem의 isCurrentPage prop이 true이면 aria-current="page"가 자동 설정됩니다.',
+          description: 'Chakra `Breadcrumb.CurrentLink`를 사용하면 `aria-current="page"`가 자동 설정됩니다.',
           level: 'must'
         }
       ],
@@ -176,7 +210,7 @@ export const breadcrumbPattern: Pattern = {
         label: 'Chakra UI Breadcrumb',
         code: `import { Breadcrumb } from '@chakra-ui/react'
 
-function BreadcrumbDemo() {
+export default function App() {
   return (
     <Breadcrumb.Root separator='/'>
       <Breadcrumb.List>
@@ -197,9 +231,9 @@ function BreadcrumbDemo() {
 }`
       },
       notes: [
-        'Chakra Breadcrumb은 자동으로 nav와 ol 마크업을 생성합니다.',
-        'isCurrentPage prop으로 현재 페이지를 표시하면 aria-current="page"가 자동 설정됩니다.',
-        'separator prop으로 구분자를 커스터마이즈하세요.'
+        'Chakra Breadcrumb은 자동으로 `nav`와 `ol` 마크업을 생성합니다.',
+        '`Breadcrumb.CurrentLink`로 현재 페이지를 표시하면 `aria-current="page"`가 자동 설정됩니다.',
+        '`separator` prop으로 구분자를 커스터마이즈하세요.'
       ]
     },
     spectrum: {
@@ -212,7 +246,7 @@ function BreadcrumbDemo() {
         label: 'React Spectrum Breadcrumbs',
         code: `import { Breadcrumbs, Item } from '@adobe/react-spectrum'
 
-function BreadcrumbDemo() {
+export default function App() {
   return (
     <Breadcrumbs>
       <Item
@@ -231,8 +265,8 @@ function BreadcrumbDemo() {
 }`
       },
       notes: [
-        'React Spectrum Breadcrumbs는 마지막 Item을 자동으로 현재 페이지(aria-current="page")로 처리합니다.',
-        'key prop은 각 항목의 고유 식별자로 사용됩니다.',
+        'React Spectrum Breadcrumbs는 마지막 `Item`을 자동으로 현재 페이지(`aria-current="page"`)로 처리합니다.',
+        '`key` prop은 각 항목의 고유 식별자로 사용됩니다.',
         '폴딩(multiline) 동작이 자동으로 지원됩니다.'
       ]
     }

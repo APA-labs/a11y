@@ -1811,6 +1811,25 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Arrow key navigation and focus management are handled automatically.',
           'isDisabled and isRequired props are supported.'
         ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Connect a label via aria-labelledby on RadioGroup',
+            description:
+              'Add `aria-labelledby` to `RadioGroup` pointing to a label element id. Without it, screen readers cannot convey the group purpose.'
+          },
+          {
+            title: 'Style Radio.Indicator with CSS using data-checked',
+            description: 'Base UI is unstyled. Implement the checked visual for `Radio.Indicator` via CSS using the `data-checked` attribute.'
+          }
+        ],
+        notes: [
+          'Control selection with `value` + `onValueChange` on `RadioGroup`.',
+          '`aria-labelledby` on `RadioGroup` connects a visible label for screen readers.',
+          '`Radio.Indicator` has no default styles — use `data-checked` in CSS to show the selected state.',
+          'Arrow key navigation between radios and Space key selection are handled automatically.'
+        ]
       }
     }
   },

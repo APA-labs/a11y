@@ -186,7 +186,8 @@ export const navigationMenuPattern: Pattern = {
       codeSample: {
         language: 'tsx',
         label: 'MUI AppBar Navigation',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { AppBar, Toolbar, Button, Menu, MenuItem, Box, Typography } from '@mui/material'
 
 const currentPath = '/'
@@ -290,90 +291,70 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix NavigationMenu',
-        code: `import * as NavigationMenu from '@radix-ui/react-navigation-menu'
-
-const linkStyle = {
-  display: 'block',
-  padding: '6px 12px',
-  borderRadius: 4,
-  textDecoration: 'none',
-  color: '#374151',
-  fontSize: 14,
-  fontWeight: 500
-}
-const triggerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-  padding: '6px 12px',
-  borderRadius: 4,
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
-  fontSize: 14,
-  fontWeight: 500,
-  color: '#374151'
-}
-const contentStyle = {
-  display: 'grid',
-  gap: 4,
-  padding: 8,
-  minWidth: 180,
-  background: 'white',
-  border: '1px solid #e5e7eb',
-  borderRadius: 8,
-  boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
-}
+        code: `import './index.css'
+import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 
 export default function App() {
   return (
     <NavigationMenu.Root style={{ position: 'relative', padding: '12px 16px' }}>
-      <NavigationMenu.List style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: 4 }}>
+      <NavigationMenu.List
+        className='tab-list'
+        style={{ listStyle: 'none', margin: 0, padding: 0, borderBottom: 'none', gap: 4 }}>
         <NavigationMenu.Item>
           <NavigationMenu.Link
             href='/'
-            style={linkStyle}
+            className='menu-item'
+            style={{ display: 'block', textDecoration: 'none' }}
             aria-current='page'>
             Home
           </NavigationMenu.Link>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger style={triggerStyle}>
+          <NavigationMenu.Trigger className='btn btn-ghost'>
             Products <span aria-hidden>▾</span>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content style={contentStyle}>
+          <NavigationMenu.Content
+            className='panel stack'
+            style={{ minWidth: 180, gap: 4 }}>
             <NavigationMenu.Link
               href='/products/all'
-              style={linkStyle}>
+              className='menu-item'
+              style={{ display: 'block', textDecoration: 'none' }}>
               All Products
             </NavigationMenu.Link>
             <NavigationMenu.Link
               href='/products/new'
-              style={linkStyle}>
+              className='menu-item'
+              style={{ display: 'block', textDecoration: 'none' }}>
               New Arrivals
             </NavigationMenu.Link>
             <NavigationMenu.Link
               href='/products/sale'
-              style={linkStyle}>
+              className='menu-item'
+              style={{ display: 'block', textDecoration: 'none' }}>
               Sale
             </NavigationMenu.Link>
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger style={triggerStyle}>
+          <NavigationMenu.Trigger className='btn btn-ghost'>
             Company <span aria-hidden>▾</span>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content style={contentStyle}>
+          <NavigationMenu.Content
+            className='panel stack'
+            style={{ minWidth: 180, gap: 4 }}>
             <NavigationMenu.Link
               href='/about'
-              style={linkStyle}>
+              className='menu-item'
+              style={{ display: 'block', textDecoration: 'none' }}>
               About us
             </NavigationMenu.Link>
             <NavigationMenu.Link
               href='/careers'
-              style={linkStyle}>
+              className='menu-item'
+              style={{ display: 'block', textDecoration: 'none' }}>
               Careers
             </NavigationMenu.Link>
           </NavigationMenu.Content>
@@ -382,7 +363,8 @@ export default function App() {
         <NavigationMenu.Item>
           <NavigationMenu.Link
             href='/contact'
-            style={linkStyle}>
+            className='menu-item'
+            style={{ display: 'block', textDecoration: 'none' }}>
             Contact
           </NavigationMenu.Link>
         </NavigationMenu.Item>
@@ -428,7 +410,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Menu',
-        code: `import { useState } from 'react'
+        code: `import './index.css'
+import { useState } from 'react'
 import { Menu } from 'antd'
 
 const items = [
@@ -536,48 +519,34 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Menu',
-        code: `import { MenuTrigger, Menu, MenuItem, MenuSection, Separator, Button, Popover, Text, Header } from 'react-aria-components'
+        code: `import './index.css'
+import { MenuTrigger, Menu, MenuItem, MenuSection, Separator, Button, Popover, Text, Header } from 'react-aria-components'
 
 export default function App() {
   return (
     <nav
       aria-label='Main navigation'
-      style={{ padding: '1.5rem' }}>
+      className='app'>
       <MenuTrigger>
-        <Button
-          style={{
-            padding: '8px 16px',
-            borderRadius: 6,
-            border: '1px solid #d1d5db',
-            background: '#fff',
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 500
-          }}>
-          File ▾
-        </Button>
+        <Button className='btn'>File ▾</Button>
         <Popover
-          style={{
-            background: '#fff',
-            border: '1px solid #e5e7eb',
-            borderRadius: 8,
-            boxShadow: '0 4px 16px rgba(0,0,0,.1)',
-            padding: 4,
-            outline: 'none',
-            minWidth: 180
-          }}>
+          className='panel'
+          style={{ padding: 4, outline: 'none', minWidth: 180 }}>
           <Menu
             onAction={(key) => alert(\`Action: \${key}\`)}
             style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             <MenuSection>
-              <Header style={{ padding: '4px 12px', fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase' }}>Actions</Header>
+              <Header
+                className='label'
+                style={{ padding: '4px 12px', textTransform: 'uppercase', fontSize: 11, color: '#6b7280' }}>
+                Actions
+              </Header>
               <MenuItem
                 id='new'
                 style={({ isFocused }) => ({
                   padding: '8px 14px',
                   borderRadius: 4,
                   cursor: 'pointer',
-                  fontSize: 14,
                   outline: 'none',
                   background: isFocused ? '#fef2f2' : 'transparent'
                 })}>
@@ -590,7 +559,6 @@ export default function App() {
                   padding: '8px 14px',
                   borderRadius: 4,
                   cursor: 'pointer',
-                  fontSize: 14,
                   outline: 'none',
                   background: isFocused ? '#fef2f2' : 'transparent'
                 })}>
@@ -604,7 +572,6 @@ export default function App() {
                 padding: '8px 14px',
                 borderRadius: 4,
                 cursor: 'pointer',
-                fontSize: 14,
                 outline: 'none',
                 background: isFocused ? '#fef2f2' : 'transparent',
                 color: '#dc2626'
@@ -647,7 +614,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Navigation Menu',
-        code: `import { NavigationMenu } from '@base-ui-components/react/navigation-menu'
+        code: `import './index.css'
+import { NavigationMenu } from '@base-ui-components/react/navigation-menu'
 
 const ITEMS = [
   { id: 'overview', label: 'Overview', links: ['Quick Start', 'Accessibility', 'Releases'] },
@@ -659,41 +627,29 @@ export default function App() {
     <NavigationMenu.Root
       aria-label='Main navigation'
       style={{ position: 'relative', padding: '1rem' }}>
-      <NavigationMenu.List style={{ display: 'flex', gap: 4, listStyle: 'none', margin: 0, padding: 0 }}>
+      <NavigationMenu.List
+        className='row'
+        style={{ listStyle: 'none', margin: 0, padding: 0, gap: 4 }}>
         {ITEMS.map((item) => (
           <NavigationMenu.Item key={item.id}>
             <NavigationMenu.Trigger
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-                padding: '8px 12px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: 500,
-                borderRadius: 6
-              }}>
+              className='btn btn-ghost row'
+              style={{ gap: 4, fontWeight: 500 }}>
               {item.label}
               <NavigationMenu.Icon>
                 <span aria-hidden>▾</span>
               </NavigationMenu.Icon>
             </NavigationMenu.Trigger>
             <NavigationMenu.Content>
-              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <ul
+                className='menu'
+                style={{ margin: 0 }}>
                 {item.links.map((link) => (
                   <li key={link}>
                     <NavigationMenu.Link
                       render={<a href='#' />}
-                      style={{
-                        display: 'block',
-                        padding: '6px 8px',
-                        borderRadius: 4,
-                        fontSize: 13,
-                        color: '#374151',
-                        textDecoration: 'none'
-                      }}>
+                      className='menu-item'
+                      style={{ display: 'block', textDecoration: 'none', color: '#374151' }}>
                       {link}
                     </NavigationMenu.Link>
                   </li>
@@ -709,14 +665,8 @@ export default function App() {
           sideOffset={10}
           style={{ position: 'absolute', top: '100%', left: 0 }}>
           <NavigationMenu.Popup
-            style={{
-              background: '#fff',
-              border: '1px solid #e5e7eb',
-              borderRadius: 8,
-              padding: 8,
-              minWidth: 180,
-              boxShadow: '0 4px 16px rgba(0,0,0,.1)'
-            }}>
+            className='panel'
+            style={{ minWidth: 180 }}>
             <NavigationMenu.Viewport />
           </NavigationMenu.Popup>
         </NavigationMenu.Positioner>
