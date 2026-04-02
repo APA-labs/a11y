@@ -227,7 +227,15 @@ process.stdin.on('end', () => {
         }
       }
 
-      // 7. import after JSX (broken module structure)
+      // 7. Inline style objects — use className + index.css instead
+      const inlineStyleMatches = code.match(/style=\{\{/g)
+      if (inlineStyleMatches) {
+        issues.push(
+          `${label}: \`style={{}}\` 인라인 스타일이 ${inlineStyleMatches.length}곳에 있습니다. \`import './index.css'\`와 className으로 교체하세요. (CLAUDE.md "Code sample style rules" 참고)`
+        )
+      }
+
+      // 8. import after JSX (broken module structure)
       const lines = code.split('\n')
       let sawNonImport = false
       for (const line of lines) {
