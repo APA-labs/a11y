@@ -21,7 +21,7 @@ const SandpackPreviewBlock = dynamic(() => import('./SandpackPreview'), {
 const T = {
   ko: { code: '코드', preview: '미리보기', copy: '복사', copied: '복사됨' },
   en: { code: 'Code', preview: 'Preview', copy: 'Copy', copied: 'Copied' }
-}
+} as const
 
 const PREVIEWABLE_LANGUAGES = new Set(['tsx', 'jsx', 'ts', 'js', 'html'])
 

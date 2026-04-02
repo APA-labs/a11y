@@ -59,10 +59,13 @@ export const modalDialogPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `function Modal({ isOpen, onClose, title, children }) {
+      code: `import { useId, useRef, useState, useEffect } from 'react'
+
+function Modal() {
   const titleId = useId()
   const descId = useId()
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (!isOpen) return
@@ -75,22 +78,23 @@ export const modalDialogPattern: Pattern = {
     }
   }, [isOpen])
 
-  if (!isOpen) return null
   return (
-    <div
-      role='dialog'
-      aria-modal='true'
-      aria-labelledby={titleId}
-      aria-describedby={descId}
-      onKeyDown={(e) => e.key === 'Escape' && onClose()}>
-      <h2 id={titleId}>{title}</h2>
-      <div id={descId}>{children}</div>
-      <button
-        id='modal-close'
-        onClick={onClose}>
-        Close
-      </button>
-    </div>
+    <>
+      {isOpen ? <div
+        role='dialog'
+        aria-modal='true'
+        aria-labelledby={titleId}
+        aria-describedby={descId}
+        onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}>
+        <h2 id={titleId}>Modal Title</h2>
+        <div id={descId}>Modal Description</div>
+        <button
+          id='modal-close'
+          onClick={() => setIsOpen(false)}>
+          Close
+        </button>
+      </div> : <button onClick={() => setIsOpen(true)}>Open Modal</button>}
+    </>
   )
 }`
     }
