@@ -12,37 +12,26 @@ import { getPatterns } from '../lib/patterns'
 
 import type { Lang } from '../lib/i18n'
 
-// sidebar(240) - px-2(16) - icon(14) - gap-2.5(10) = 200px
-const SIDEBAR_TEXT_WIDTH = 200
-
-async function getTextWidth(text: string, font: string): Promise<number> {
-  const { prepareWithSegments, layoutWithLines } = await import('@chenglou/pretext')
-  const prepared = prepareWithSegments(text, font)
-  const result = layoutWithLines(prepared, 99999, 20)
-  return result.lines[0]?.width ?? 0
-}
-
 function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
-  const spanRef = useRef<HTMLSpanElement>(null)
-  const fontRef = useRef('')
+  const containerRef = useRef<HTMLSpanElement>(null)
+  const textRef = useRef<HTMLSpanElement>(null)
   const [shift, setShift] = useState(0)
   const [active, setActive] = useState(false)
 
   useEffect(() => {
-    if (!spanRef.current) return
-    const font = fontRef.current || getComputedStyle(spanRef.current).font
-    fontRef.current = font
-    getTextWidth(label, font).then((textWidth) => {
-      const overflow = textWidth - SIDEBAR_TEXT_WIDTH
-      setShift(overflow > 0 ? textWidth + 32 : 0)
-    })
-  }, [label])
+    if (hidden) return
+    const container = containerRef.current
+    const text = textRef.current
+    if (!container || !text) return
+    const overflow = text.scrollWidth - container.clientWidth
+    setShift(overflow > 0 ? text.scrollWidth + 32 : 0)
+  }, [label, hidden])
 
   const duration = Math.max(1.5, shift / 50)
 
   return (
     <span
-      ref={spanRef}
+      ref={containerRef}
       aria-hidden={hidden}
       className={`overflow-hidden block transition-opacity duration-150 ${hidden ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}
       onMouseEnter={() => shift > 0 && setActive(true)}
@@ -57,7 +46,7 @@ function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
               } as React.CSSProperties)
             : undefined
         }>
-        <span>{label}</span>
+        <span ref={textRef}>{label}</span>
         {shift > 0 && (
           <span
             className='pl-8'
