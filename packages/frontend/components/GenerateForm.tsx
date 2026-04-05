@@ -1,20 +1,36 @@
 'use client'
 
-import { ChevronDown, ChevronUp, Loader2, Wand2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, Loader2, Wand2 } from 'lucide-react'
+import Link from 'next/link'
 import { useState } from 'react'
 
 import AgentProgress from './AgentProgress'
 import SandpackPreviewBlock from './SandpackPreview'
+import { getTranslations } from '../lib/i18n'
+import { getPatterns } from '../lib/patterns'
 
+import type { Lang } from '../lib/i18n'
 import type { GenerateResponse } from '@a11y/shared'
 
-export default function GenerateForm() {
+interface Props {
+  lang: Lang
+}
+
+export default function GenerateForm({ lang }: Props) {
   const [description, setDescription] = useState('')
   const [existingCode, setExistingCode] = useState('')
   const [showExisting, setShowExisting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<GenerateResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  const t = getTranslations(lang)
+  const patterns = getPatterns(lang)
+
+  const findPatternSlug = (name: string): string | null => {
+    const found = patterns.find((p) => p.name.toLowerCase() === name.toLowerCase() || p.slug === name.toLowerCase().replace(/\s+/g, '-'))
+    return found?.slug ?? null
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,18 +70,18 @@ export default function GenerateForm() {
         <div>
           <label
             htmlFor='generate-desc'
-            className='block text-sm font-medium text-slate-700 mb-1.5'>
-            컴포넌트 설명
+            className='block text-sm font-medium text-body mb-1.5'>
+            {t.generate.descriptionLabel}
           </label>
           <textarea
             id='generate-desc'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder='예: 키보드로 열고 닫을 수 있는 드롭다운 메뉴'
+            placeholder={t.generate.descriptionPlaceholder}
             rows={4}
             required
             aria-required='true'
-            className='w-full px-3 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none placeholder:text-slate-400'
+            className='w-full px-3 py-2.5 text-sm rounded-lg border border-outline bg-surface focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none placeholder:text-faint'
           />
         </div>
 
@@ -75,7 +91,7 @@ export default function GenerateForm() {
             onClick={() => setShowExisting((v) => !v)}
             aria-expanded={showExisting}
             aria-controls='existing-code-panel'
-            className='flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-700 transition-colors'>
+            className='flex items-center gap-1.5 text-xs text-soft hover:text-body transition-colors'>
             {showExisting ? (
               <ChevronUp
                 size={13}
@@ -87,16 +103,16 @@ export default function GenerateForm() {
                 aria-hidden
               />
             )}
-            기존 코드 붙여넣기 (선택사항)
+            {t.generate.existingCodeToggle}
           </button>
           {showExisting && (
             <div id='existing-code-panel'>
               <textarea
                 value={existingCode}
                 onChange={(e) => setExistingCode(e.target.value)}
-                placeholder='접근성을 개선할 기존 HTML/JSX 코드를 붙여넣으세요'
+                placeholder={t.generate.existingCodePlaceholder}
                 rows={5}
-                className='mt-2 w-full px-3 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none placeholder:text-slate-400 font-mono'
+                className='mt-2 w-full px-3 py-2.5 text-sm rounded-lg border border-outline bg-surface focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none placeholder:text-faint font-mono'
               />
             </div>
           )}
@@ -114,7 +130,7 @@ export default function GenerateForm() {
                 className='animate-spin'
                 aria-hidden
               />
-              생성 중...
+              {t.generate.generating}
             </>
           ) : (
             <>
@@ -122,7 +138,7 @@ export default function GenerateForm() {
                 size={15}
                 aria-hidden
               />
-              접근성 컴포넌트 생성
+              {t.generate.submitButton}
             </>
           )}
         </button>
@@ -130,7 +146,7 @@ export default function GenerateForm() {
 
       {(loading || result) && (
         <div className='space-y-1'>
-          <p className='text-xs font-medium text-slate-500'>Agent 진행 상황</p>
+          <p className='text-xs font-medium text-soft'>{t.generate.agentProgress}</p>
           <AgentProgress
             steps={result?.steps ?? []}
             loading={loading}
@@ -141,15 +157,44 @@ export default function GenerateForm() {
       {error && (
         <div
           role='alert'
-          className='p-4 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700'>
+          className='p-4 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700 dark:bg-red-950 dark:border-red-900 dark:text-red-400'>
           {error}
         </div>
       )}
 
       {result && result.jsx && (
         <div className='space-y-4'>
+          {result.patterns.length > 0 && (
+            <div>
+              <p className='text-xs font-medium text-soft mb-2'>{t.generate.detectedPatterns}</p>
+              <div className='flex flex-wrap gap-2'>
+                {result.patterns.map((name) => {
+                  const slug = findPatternSlug(name)
+                  return slug ? (
+                    <Link
+                      key={name}
+                      href={`/${lang}/patterns/${slug}`}
+                      className='inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-violet-100 text-violet-700 hover:bg-violet-200 transition-colors dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60'>
+                      {name}
+                      <ExternalLink
+                        size={10}
+                        aria-hidden
+                      />
+                    </Link>
+                  ) : (
+                    <span
+                      key={name}
+                      className='inline-flex items-center px-2.5 py-1 text-xs rounded-full bg-mist-100 text-soft dark:bg-navy-800'>
+                      {name}
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           <div>
-            <h3 className='text-sm font-semibold text-slate-700 mb-2'>생성된 컴포넌트</h3>
+            <h3 className='text-sm font-semibold text-body mb-2'>{t.generate.generatedComponent}</h3>
             <SandpackPreviewBlock
               code={result.jsx}
               language='react'
@@ -158,14 +203,14 @@ export default function GenerateForm() {
 
           {result.appliedRules.length > 0 && (
             <div>
-              <h3 className='text-sm font-semibold text-slate-700 mb-2'>적용된 접근성 규칙</h3>
+              <h3 className='text-sm font-semibold text-body mb-2'>{t.generate.appliedRules}</h3>
               <ul className='space-y-1'>
                 {result.appliedRules.map((rule, i) => (
                   <li
                     key={i}
-                    className='flex items-start gap-2 text-sm text-slate-600'>
+                    className='flex items-start gap-2 text-sm text-body'>
                     <span
-                      className='text-emerald-500 mt-0.5'
+                      className='text-emerald-500 mt-0.5 shrink-0'
                       aria-hidden>
                       ✓
                     </span>
@@ -178,14 +223,14 @@ export default function GenerateForm() {
 
           {result.violations.length > 0 && (
             <div>
-              <h3 className='text-sm font-semibold text-amber-700 mb-2'>남은 접근성 이슈</h3>
+              <h3 className='text-sm font-semibold text-amber-700 dark:text-amber-400 mb-2'>{t.generate.remainingViolations}</h3>
               <ul className='space-y-1'>
                 {result.violations.map((v, i) => (
                   <li
                     key={i}
-                    className='flex items-start gap-2 text-sm text-amber-700'>
+                    className='flex items-start gap-2 text-sm text-amber-700 dark:text-amber-400'>
                     <span
-                      className='mt-0.5'
+                      className='mt-0.5 shrink-0'
                       aria-hidden>
                       ⚠
                     </span>

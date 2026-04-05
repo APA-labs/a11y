@@ -271,8 +271,24 @@ export const ko = {
     ]
   },
   analyze: {
-    title: 'AI 접근성 분석',
-    subtitle: '컴포넌트를 설명하면 Claude가 WCAG 2.1 AA 기준에 따라 체크리스트, 코드 샘플, 테스트 절차를 생성합니다.'
+    title: 'AI 접근성 도구',
+    subtitle: 'Claude가 WCAG 2.1 AA 기준에 따라 접근성 체크리스트를 생성하거나, 접근성이 반영된 React 컴포넌트를 직접 만들어줍니다.',
+    tabAnalyze: '접근성 분석',
+    tabGenerate: '컴포넌트 생성'
+  },
+  generate: {
+    descriptionLabel: '컴포넌트 설명',
+    descriptionPlaceholder: '예: 키보드로 열고 닫을 수 있는 드롭다운 메뉴',
+    existingCodeToggle: '기존 코드 붙여넣기 (선택사항)',
+    existingCodePlaceholder: '접근성을 개선할 기존 HTML/JSX 코드를 붙여넣으세요',
+    submitButton: '접근성 컴포넌트 생성',
+    generating: '생성 중...',
+    agentProgress: 'Agent 진행 상황',
+    generatedComponent: '생성된 컴포넌트',
+    appliedRules: '적용된 접근성 규칙',
+    remainingViolations: '남은 접근성 이슈',
+    detectedPatterns: '감지된 패턴',
+    viewPattern: '패턴 보기'
   },
   cmd: {
     title: '패턴 검색',

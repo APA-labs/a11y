@@ -314,8 +314,24 @@ export const en: Translations = {
     ]
   },
   analyze: {
-    title: 'AI Accessibility Analysis',
-    subtitle: 'Describe a component and Claude will generate a checklist, code samples, and test procedures based on WCAG 2.1 AA.'
+    title: 'AI Accessibility Tools',
+    subtitle: 'Claude can generate an accessibility checklist or build an accessible React component directly, based on WCAG 2.1 AA.',
+    tabAnalyze: 'Accessibility Analysis',
+    tabGenerate: 'Component Generator'
+  },
+  generate: {
+    descriptionLabel: 'Component description',
+    descriptionPlaceholder: 'e.g. A dropdown menu that opens and closes with keyboard',
+    existingCodeToggle: 'Paste existing code (optional)',
+    existingCodePlaceholder: 'Paste existing HTML/JSX code to improve accessibility',
+    submitButton: 'Generate accessible component',
+    generating: 'Generating...',
+    agentProgress: 'Agent progress',
+    generatedComponent: 'Generated component',
+    appliedRules: 'Applied accessibility rules',
+    remainingViolations: 'Remaining issues',
+    detectedPatterns: 'Detected patterns',
+    viewPattern: 'View pattern'
   },
   cmd: {
     title: 'Search patterns',
