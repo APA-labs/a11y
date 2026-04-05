@@ -1,47 +1,47 @@
 # A11y Pattern Agent
 
-WCAG 2.1 AA 접근성 패턴을 한곳에서 찾아볼 수 있는 **레퍼런스 사이트**이자, 필요할 때 **AI로 컴포넌트 설명을 분석**해 체크리스트·코드 샘플·테스트 가이드를 받을 수 있는 도구입니다.
+A **reference site** for WCAG 2.1 AA accessibility patterns, with an **AI-powered analyzer** that takes a component description and returns checklists, code samples, and test guides.
 
-- **패턴 허브**: 패턴별 체크리스트, 여러 디자인 시스템 예시 코드, Sandpack **라이브 미리보기**
-- **WCAG**: 기준별 요약·외부 링크 (`/wcag`)
-- **AI 분석** (선택): `ANTHROPIC_API_KEY`가 있을 때만 `/analyze` 및 사이드바 Tools 노출
+- **Pattern hub** — per-pattern checklists, multi design-system code examples, live Sandpack preview
+- **WCAG reference** — criterion summaries and external links (`/wcag`)
+- **AI analysis** (optional) — `/analyze` and the Tools sidebar appear only when `ANTHROPIC_API_KEY` is set
 
-## 시작하기
+## Getting Started
 
 ```bash
 pnpm install
-pnpm dev          # 프론트엔드 :3000 + 백엔드 :3001
+pnpm dev          # frontend :3000 + backend :3001
 ```
 
-환경 변수 (`packages/backend/.env.local`, `packages/frontend/.env.local`):
+Environment variables (`packages/backend/.env.local`, `packages/frontend/.env.local`):
 
-| 변수                   | 용도                                                                      |
-| ---------------------- | ------------------------------------------------------------------------- |
-| `ANTHROPIC_API_KEY`    | 백엔드 `/api/analyze` 필요. 없으면 프론트에서 AI 메뉴 비활성              |
-| `NEXT_PUBLIC_SITE_URL` | 프로덕션 빌드 시 `next-sitemap`이 절대 URL 생성에 사용 (로컬은 생략 가능) |
-| `NEXT_PUBLIC_GA_ID`    | Google Analytics 4 측정 ID (`G-XXXXXXXXXX`). 없으면 GA 스크립트 미로드    |
+| Variable               | Purpose                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| `ANTHROPIC_API_KEY`    | Required for `POST /api/analyze`. AI menu is hidden in frontend without it.        |
+| `NEXT_PUBLIC_SITE_URL` | Used by `next-sitemap` to generate absolute URLs in production builds.             |
+| `NEXT_PUBLIC_GA_ID`    | Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). GA script is skipped if unset. |
 
 ---
 
-## 패키지 구조
+## Package Structure
 
 ```
 a11y/
 ├── packages/
-│   ├── shared/          # 공유 타입 + Zod 스키마
-│   ├── backend/         # Fastify API 서버 (:3001)
-│   └── frontend/        # Next.js 15 앱 (:3000), React 19
+│   ├── shared/          # Shared types + Zod schemas (single source of truth)
+│   ├── backend/         # Fastify API server (:3001)
+│   └── frontend/        # Next.js 15 app (:3000), React 19
 └── tools/
-    ├── spec-transformer/    # 크롤 MD → rule JSON / 프론트 패턴 소스 변환 및 검증
-    ├── eslint-config/       # @a11y/eslint-config (공유 린트 설정)
-    └── typescript-config/   # @a11y/typescript-config (공유 tsconfig)
+    ├── spec-transformer/    # Crawled MD → rule JSON / frontend pattern source
+    ├── eslint-config/       # @a11y/eslint-config (shared lint config)
+    └── typescript-config/   # @a11y/typescript-config (shared tsconfig)
 ```
 
-### 패키지 간 의존 관계
+### Dependency Graph
 
 ```
 packages/shared
-    ↑               ← 공유 타입(AnalysisRequest, AnalysisResponse 등)
+    ↑               ← shared types (AnalysisRequest, AnalysisResponse, …)
     ├── packages/backend
     └── packages/frontend
 
@@ -51,95 +51,95 @@ tools/spec-transformer
     └── packages/frontend/lib/patterns/*.ts
 ```
 
-### 각 패키지 역할
+### Package Roles
 
-| 패키지             | 역할                                                                                                      |
-| ------------------ | --------------------------------------------------------------------------------------------------------- |
-| `shared`           | TypeScript 타입과 Zod 스키마의 단일 출처                                                                  |
-| `backend`          | 분석 요청을 받아 패턴 분류 → rule JSON 로드 → Claude API 호출 → 응답 반환                                 |
-| `frontend`         | 패턴 목록·상세(`/patterns/[slug]`), WCAG 레퍼런스(`/wcag`), 조건부 AI 분석(`/analyze`), Sandpack 미리보기 |
-| `spec-transformer` | 크롤 결과를 처리해 rule JSON과 프론트 패턴 모듈을 생성·검증                                               |
+| Package            | Role                                                                                                                    |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `shared`           | Single source of truth for TypeScript types and Zod schemas                                                             |
+| `backend`          | Receives analysis requests → classifies patterns → loads rule JSON → calls Claude API → returns response                |
+| `frontend`         | Pattern list/detail (`/patterns/[slug]`), WCAG reference (`/wcag`), optional AI analysis (`/analyze`), Sandpack preview |
+| `spec-transformer` | Processes crawl output to generate and validate rule JSON and frontend pattern modules                                  |
 
-### 프론트엔드 페이지
+### Frontend Pages
 
-| 경로               | 설명                                       |
-| ------------------ | ------------------------------------------ |
-| `/`                | 패턴 카드 그리드                           |
-| `/patterns/[slug]` | 패턴별 체크리스트, DS 탭, 코드·미리보기 탭 |
-| `/wcag`            | WCAG 기준 요약 및 외부 문서 링크           |
-| `/analyze`         | AI 분석 (API 키 설정 시 활성화)            |
+| Route              | Description                                         |
+| ------------------ | --------------------------------------------------- |
+| `/`                | Pattern card grid                                   |
+| `/patterns/[slug]` | Per-pattern checklist, DS tabs, code + preview tabs |
+| `/wcag`            | WCAG criterion summaries and external doc links     |
+| `/analyze`         | AI analysis (activated when API key is configured)  |
 
 ---
 
-## 콘텐츠 파이프라인
+## Content Pipeline
 
 ```
 ┌──────────────────────┐
-│    spec-harvester    │  W3C·디자인시스템 문서 크롤 (분기 1회)
-│   (별도 Python 레포) │  → storage/raw/YYYY-MM-DD/{ds}.com/{hash}.md
+│    spec-harvester    │  Crawls W3C & design system docs (quarterly)
+│   (separate repo)    │  → storage/raw/YYYY-MM-DD/{ds}.com/{hash}.md
 └──────────┬───────────┘
-           │ 크롤 결과 디렉토리 경로
+           │ crawl output directory path
            ▼
 ┌──────────────────────┐
-│   spec-transformer   │  MD에서 rule 추출 및 프론트 패턴 생성
+│   spec-transformer   │  Extracts rules from MD, generates frontend patterns
 │   (tools/)           │  --target rules    → packages/backend/src/rules/*.json
 │                      │  --target patterns → packages/frontend/lib/patterns/*.ts
 └──────────┬───────────┘
       ┌────┴────┐
       ▼         ▼
   backend    frontend
- (런타임에   (UI에서
-  rule 로드)  패턴 렌더링)
+ (loads      (renders
+  rules at    patterns
+  runtime)    in UI)
 ```
 
-### 크롤 → 변환 실행 방법
+### Running the Pipeline
 
 ```bash
-# 1. spec-harvester로 크롤 (별도 Python 환경)
+# 1. Crawl with spec-harvester (separate Python environment)
 cd ~/spec-harvester
 python -m spec_harvester crawl --policy apg    # W3C ARIA APG
-python -m spec_harvester crawl --policy mui    # MUI 문서
-# ... (지원 policy 목록은 아래 참고)
+python -m spec_harvester crawl --policy mui    # MUI docs
 
-# 2. 백엔드 rule JSON 생성
+# 2. Generate backend rule JSON
 pnpm transform:rules -- \
   --input ~/spec-harvester/storage/raw/2026-06-01 \
   --output packages/backend/src/rules
 
-# 3. 프론트엔드 패턴 생성
+# 3. Generate frontend patterns
 pnpm transform:pattern -- \
   --input ~/spec-harvester/storage/raw/2026-06-01 \
   --output packages/frontend/lib/patterns \
   --pattern tabs
 
-# 4. 검증
-pnpm verify:rules      # rule JSON 스키마 검증
-pnpm verify:patterns   # rule JSON + 프론트 패턴 구조 검증
+# 4. Validate
+pnpm verify:rules      # validate rule JSON schema
+pnpm verify:patterns   # validate rule JSON + frontend pattern structure
 ```
 
-### 지원 크롤 소스
+### Supported Crawl Sources
 
-| Policy     | 도메인                   | 수집 내용                              |
-| ---------- | ------------------------ | -------------------------------------- |
-| `apg`      | www.w3.org               | ARIA APG 패턴 페이지 (체크리스트 기반) |
-| `mui`      | mui.com                  | MUI 컴포넌트 접근성 문서               |
-| `radix`    | radix-ui.com             | Radix UI 프리미티브 문서               |
-| `antd`     | ant.design               | Ant Design 컴포넌트 문서               |
-| `baseui`   | base-ui.com              | Base UI 컴포넌트 문서                  |
-| `chakra`   | chakra-ui.com            | Chakra UI 컴포넌트 문서                |
-| `spectrum` | react-spectrum.adobe.com | React Spectrum 문서                    |
+| Policy     | Domain                   | Content                                  |
+| ---------- | ------------------------ | ---------------------------------------- |
+| `apg`      | www.w3.org               | ARIA APG pattern pages (checklist-based) |
+| `mui`      | mui.com                  | MUI component accessibility docs         |
+| `radix`    | radix-ui.com             | Radix UI primitive docs                  |
+| `antd`     | ant.design               | Ant Design component docs                |
+| `baseui`   | base-ui.com              | Base UI component docs                   |
+| `chakra`   | chakra-ui.com            | Chakra UI component docs                 |
+| `spectrum` | react-spectrum.adobe.com | React Spectrum docs                      |
 
 ---
 
-## 백엔드 요청 흐름
+## Backend Request Flow
 
 ```
 POST /api/analyze
-  → ValidationService   (Zod 스키마 검증)
-  → PatternClassifier   (정규식 등으로 패턴 이름 추출)
-  → RuleEngine          (rules/*.json 로드)
-  → LLMOrchestrator     (Claude API + 규칙을 컨텍스트로 호출)
-  → ResponseComposer    (응답 후처리·검증)
+  → ValidationService   (Zod schema validation)
+  → PatternClassifier   (extracts pattern name via regex)
+  → RuleEngine          (loads rules/*.json)
+  → LLMOrchestrator     (calls Claude API with rules as context)
+  → ResponseComposer    (post-processes and validates response)
   → AnalysisResponse
 ```
 
@@ -147,7 +147,7 @@ POST /api/analyze
 
 ```json
 // Request
-{ "description": "드롭다운 메뉴 컴포넌트", "context": "모바일 네비게이션용" }
+{ "description": "dropdown menu component", "context": "mobile navigation" }
 
 // Response
 {
@@ -166,44 +166,45 @@ POST /api/analyze
 
 ---
 
-## 패턴 추가하기
+## Adding Patterns
 
-### Claude Code 스킬 (권장)
+### Via Claude Code skill (recommended)
 
-Claude Code 세션에서 `/add-a11y-rule` 실행. W3C URL·HTML·JSON 중 하나를 입력하면 백엔드 rule JSON 저장, `patterns.json` 등록, 프론트 패턴 파일 생성을 자동으로 처리합니다.
-신규로 추가하고 싶은 디자인시스템 데이터가 있으면 `/register-design-system`에 위임해 디자인 시스템 코드 샘플·번역·QA까지 일괄 처리합니다.
+Run `/add-a11y-rule` in a Claude Code session. Provide a W3C URL, HTML snippet, or JSON — it automatically creates the backend rule JSON, registers it in `patterns.json`, and generates the frontend pattern file.
 
-### 수동 추가
+To add a new design system, use `/register-design-system` to handle code samples, translations, and QA in one pass.
 
-1. `packages/backend/src/rules/<pattern-id>.json` 생성
-2. `packages/backend/src/rules/patterns.json` 레지스트리에 항목 추가
-3. `packages/frontend/lib/patterns/<slug>.ts` 패턴 정의 추가
-4. `packages/frontend/lib/patterns/index.ts`의 `patterns` 배열에 등록
-5. `packages/frontend/lib/pattern-icons.tsx` ICON_MAP에 아이콘 추가
+### Manual
 
-### 등록된 패턴 (21개)
+1. Create `packages/backend/src/rules/<pattern-id>.json`
+2. Register in `packages/backend/src/rules/patterns.json`
+3. Add pattern definition at `packages/frontend/lib/patterns/<slug>.ts`
+4. Export from `packages/frontend/lib/patterns/index.ts` and add to the `patterns` array
+5. Add icon to `ICON_MAP` in `packages/frontend/lib/pattern-icons.tsx`
+
+### Registered Patterns (21)
 
 `accordion`, `alert`, `breadcrumb`, `button`, `checkbox`, `combobox`, `date-picker`, `disclosure`, `drawer`, `form-validation`, `link`, `modal-dialog`, `navigation-menu`, `pagination`, `popover`, `radio-group`, `select`, `tabs`, `text-input`, `toggle`, `tooltip`
 
 ---
 
-## 디자인 시스템 추가
+## Adding a Design System
 
-새 DS를 전체 스택에 추가하려면 `/register-design-system` 스킬을 사용합니다.
+Use the `/register-design-system` skill to add a new DS across the full stack.
 
 ```bash
-# Claude Code 세션에서
+# In a Claude Code session
 /register-design-system [ds-id] [spec-harvester-path]
 
-# 예시
+# Example
 /register-design-system baseui /Users/.../storage/raw/2026-03-26/base-ui.com
 ```
 
-스킬이 `ds-code-writer` → `i18n-translator` → `frontend-qa` 에이전트를 순서대로 호출해 types.ts, SandpackPreview.tsx, 각 패턴 파일, translations.en.ts를 자동으로 업데이트합니다.
+The skill chains `ds-code-writer` → `i18n-translator` → `frontend-qa` agents to automatically update `types.ts`, `SandpackPreview.tsx`, pattern files, and `translations.en.ts`.
 
-### 등록된 디자인 시스템 (6개)
+### Registered Design Systems (6)
 
-| ID         | 이름                  | 색상      |
+| ID         | Name                  | Color     |
 | ---------- | --------------------- | --------- |
 | `material` | Material Design (MUI) | `#1976d2` |
 | `radix`    | Radix UI              | `#6e56cf` |
@@ -214,33 +215,21 @@ Claude Code 세션에서 `/add-a11y-rule` 실행. W3C URL·HTML·JSON 중 하나
 
 ---
 
-## 스크립트 전체 목록
+## Scripts
 
 ```bash
-# 개발
-pnpm dev               # 전체 개발 서버 (backend :3001 + frontend :3000)
-pnpm build             # 전체 빌드
-pnpm lint              # ESLint 검사
-pnpm format            # Prettier 포맷팅
-pnpm type-check        # TypeScript 타입 검사
+# Development
+pnpm dev               # all dev servers (backend :3001 + frontend :3000)
+pnpm build             # full build
+pnpm lint              # ESLint
+pnpm format            # Prettier
+pnpm type-check        # TypeScript type check
 
-# 콘텐츠 파이프라인
-pnpm transform:rules   # 크롤 MD → backend rule JSON
-pnpm transform:pattern # 크롤 MD → 프론트 패턴
+# Content pipeline
+pnpm transform:rules   # crawled MD → backend rule JSON
+pnpm transform:pattern # crawled MD → frontend pattern
 
-# 검증
-pnpm verify:rules      # rule JSON 스키마 검증
-pnpm verify:patterns   # rule JSON + 프론트 패턴 구조 검증
+# Validation
+pnpm verify:rules      # validate rule JSON schema
+pnpm verify:patterns   # validate rule JSON + frontend pattern structure
 ```
-
----
-
-## Tooling
-
-| 도구             | 역할                                                          |
-| ---------------- | ------------------------------------------------------------- |
-| **mise** (권장)  | Node 22.x / pnpm 9.x 버전 고정                                |
-| **lefthook**     | pre-commit: lint·format·type-check / pre-push: +build         |
-| **Turborepo**    | 빌드 캐싱, 패키지 간 task 의존성 관리                         |
-| **ESLint 9**     | flat config, `@a11y/eslint-config`로 공유                     |
-| **next-sitemap** | 프론트 `postbuild`에서 정적 `sitemap.xml` / `robots.txt` 생성 |
