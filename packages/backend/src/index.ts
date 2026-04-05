@@ -2,6 +2,7 @@ import cors from '@fastify/cors'
 import Fastify from 'fastify'
 
 import { analyzeRoutes } from './routes/analyze.js'
+import { generateRoutes } from './routes/generate.js'
 import { healthRoutes } from './routes/health.js'
 
 const fastify = Fastify({
@@ -13,6 +14,7 @@ const fastify = Fastify({
 await fastify.register(cors, { origin: true })
 await fastify.register(healthRoutes)
 await fastify.register(analyzeRoutes)
+await fastify.register(generateRoutes)
 
 const port = parseInt(process.env.PORT ?? '3001', 10)
 const host = process.env.HOST ?? '0.0.0.0'
