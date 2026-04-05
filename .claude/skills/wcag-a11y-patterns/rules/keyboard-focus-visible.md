@@ -1,15 +1,19 @@
-# keyboard-focus-visible — 포커스 표시 항상 노출
+# keyboard-focus-visible — Always show focus indicator
 
 **Priority:** CRITICAL | **WCAG:** 2.4.7 Focus Visible (Level AA)
 
 ## Rule
 
-키보드 포커스 시 시각적 인디케이터를 절대 제거하지 않는다. `outline: none` / `outline: 0` 단독 사용 금지.
+Never remove the visual focus indicator on keyboard focus. Do not use `outline: none` / `outline: 0` alone.
+
+> **Why is `outline: none` such a problem?**
+> Users who can't use a mouse rely on the Tab key to navigate, using the outline to know which element has focus. Removing it with `outline: none` makes it impossible for keyboard users to know where they are on the page. If the browser default outline doesn't match your design, replace it with a custom style — don't remove it.
 
 ## Examples
 
 ```css
-/* ❌ 포커스 완전 제거 */
+/* ❌ Removes focus entirely */
+/* Keyboard users have no way to determine their current location */
 :focus {
   outline: none;
 }
@@ -17,14 +21,14 @@
   outline: 0;
 }
 
-/* ✅ 커스텀 포커스 스타일로 대체 */
+/* ✅ Replace with custom focus style */
 :focus-visible {
   outline: 2px solid #0066cc;
   outline-offset: 2px;
   border-radius: 2px;
 }
 
-/* ✅ 마우스 클릭 시에는 숨기고, 키보드만 표시 */
+/* ✅ Hide on mouse click, show on keyboard only */
 :focus:not(:focus-visible) {
   outline: none;
 }
@@ -35,11 +39,11 @@
 
 ```tsx
 // ✅ Tailwind
-<button className='focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'>클릭</button>
+<button className='focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'>Click</button>
 ```
 
 ## Notes
 
-- `:focus-visible` — 키보드 포커스에만 적용, 마우스 클릭에는 미적용 (모던 브라우저 지원)
-- 대비율 기준: 포커스 인디케이터도 배경 대비 3:1 이상 권장 (WCAG 2.2)
-- `outline-offset`으로 요소와 간격 확보 — 가독성 향상
+- `:focus-visible` — applies only to keyboard focus, not mouse clicks (supported in modern browsers)
+- Contrast requirement: focus indicator should have 3:1 contrast against background (WCAG 2.2)
+- Use `outline-offset` for spacing between element and indicator

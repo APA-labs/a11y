@@ -1,15 +1,15 @@
-# visual-motion — 애니메이션 접근성
+# visual-motion — Animation accessibility
 
 **Priority:** MEDIUM | **WCAG:** 2.3.3 Animation from Interactions (Level AAA), 2.2.2 (Level A)
 
 ## Rule
 
-자동 재생 애니메이션은 3초 이내 멈추거나 제어 수단을 제공한다. `prefers-reduced-motion`으로 모션 감소 설정을 존중한다.
+Auto-playing animations must stop within 3 seconds or provide user controls. Respect the `prefers-reduced-motion` setting.
 
 ## Examples
 
 ```css
-/* ✅ prefers-reduced-motion 미디어 쿼리 */
+/* ✅ prefers-reduced-motion media query */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -23,7 +23,7 @@
 ```
 
 ```tsx
-// ✅ React에서 모션 감소 감지
+// ✅ Detect reduced motion in React
 function useReducedMotion() {
   const [reduced, setReduced] = useState(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   useEffect(() => {
@@ -54,7 +54,7 @@ const shouldReduceMotion = useReducedMotion()
 
 ## Notes
 
-- 전정 장애(vestibular disorder) 사용자에게 과도한 모션은 어지러움 유발
-- 자동 재생 슬라이더, 카루셀 — 정지 버튼 필수
-- 깜빡임: 1초에 3회 이상 금지 (발작 위험)
-- 필수 피드백 애니메이션(로딩 스피너)은 `prefers-reduced-motion`에서도 유지 가능
+- Excessive motion can cause dizziness for users with vestibular disorders
+- Auto-playing sliders and carousels must have a pause button
+- Flashing: no more than 3 flashes per second (seizure risk)
+- Essential feedback animations (loading spinners) may be kept even under `prefers-reduced-motion`

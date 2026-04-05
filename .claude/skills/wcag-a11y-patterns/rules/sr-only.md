@@ -1,10 +1,13 @@
-# sr-only — 시각적으로 숨긴 텍스트 올바른 사용
+# sr-only — Correct use of visually hidden text
 
 **Priority:** HIGH | **WCAG:** 1.1.1, 2.4.6
 
 ## Rule
 
-스크린리더에만 전달하는 텍스트는 `sr-only` 클래스로 숨긴다. `display:none` / `visibility:hidden` 사용 금지 (스크린리더도 읽지 못함).
+Use the `sr-only` class to hide text that should only be read by screen readers. Never use `display:none` or `visibility:hidden`.
+
+> **Why not `display:none`?**
+> Both `display:none` and `visibility:hidden` remove the element from the accessibility tree, meaning screen readers can't read it either. `sr-only` shrinks the element to 1px and moves it off-screen, so it's visually invisible but still present in the accessibility tree for screen readers to read.
 
 ## sr-only CSS
 
@@ -25,30 +28,30 @@
 ## Examples
 
 ```tsx
-// ✅ 아이콘 버튼의 숨긴 레이블
+// ✅ Hidden label for icon button
 <button onClick={onDelete}>
   <TrashIcon aria-hidden="true" />
-  <span className="sr-only">항목 삭제</span>
+  <span className="sr-only">Delete item</span>
 </button>
 
-// ✅ 테이블 컨텍스트 추가
+// ✅ Add table context
 <td>
-  <button>편집</button>
-  <span className="sr-only">홍길동 편집</span>
+  <button>Edit</button>
+  <span className="sr-only">John Doe</span>
 </td>
 
-// ✅ 스킵 네비게이션 (포커스 시 노출)
+// ✅ Skip navigation (revealed on focus)
 <a
   href="#main-content"
   className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4"
 >
-  본문으로 바로가기
+  Skip to main content
 </a>
 ```
 
 ## Notes
 
-- `display:none` — 스크린리더도 읽지 못함 (완전 숨김)
-- `visibility:hidden` — 스크린리더도 읽지 못함
-- `sr-only` — 시각적으로만 숨김, 스크린리더는 읽음
-- Tailwind: `className="sr-only"` 기본 제공
+- `display:none` — hidden from screen readers too (completely hidden)
+- `visibility:hidden` — hidden from screen readers too
+- `sr-only` — visually hidden, still read by screen readers
+- Tailwind: `className="sr-only"` built in

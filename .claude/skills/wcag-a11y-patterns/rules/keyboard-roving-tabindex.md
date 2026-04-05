@@ -1,10 +1,13 @@
-# keyboard-roving-tabindex — 복합 위젯의 roving tabindex
+# keyboard-roving-tabindex — Roving tabindex for composite widgets
 
 **Priority:** CRITICAL | **WCAG:** 2.1.1 Keyboard (Level A)
 
 ## Rule
 
-탭, 라디오 그룹, 메뉴, 툴바 같은 복합 위젯은 그룹 자체는 탭 한 번으로 진입하고, 내부는 화살표 키로 이동한다. (roving tabindex 패턴)
+Composite widgets like tabs, radio groups, menus, and toolbars should be entered with a single Tab press, with arrow keys handling internal navigation. (roving tabindex pattern)
+
+> **Why do this?**
+> If all 5 tabs have `tabIndex={0}`, a keyboard user must press Tab 5 times to move past the component. With multiple such widgets, the tab stops multiply and navigation becomes tedious. Roving tabindex makes the entire group occupy only one tab stop, with arrow keys handling movement inside — creating an efficient keyboard UX.
 
 ## Examples
 
@@ -50,7 +53,8 @@ function TabList({ tabs }: { tabs: Tab[] }) {
 
 ## Notes
 
-- 활성 항목만 `tabIndex={0}`, 나머지는 `tabIndex={-1}`
-- 화살표 키: 좌우(탭/메뉴) 또는 상하(트리/리스트박스)
-- Home/End 키 지원 권장
-- 적용 대상: Tab, Radio Group, Menu, Toolbar, Listbox, Tree
+- Only the active item has `tabIndex={0}`, others get `tabIndex={-1}` — one tab stop per group
+- Items with `tabIndex={-1}` can't be reached with Tab, but can receive focus via `focus()` directly — used in arrow key handlers
+- Arrow direction: left/right (tabs/menus) or up/down (trees/listboxes)
+- Home/End key support recommended
+- Applies to: Tab, Radio Group, Menu, Toolbar, Listbox, Tree

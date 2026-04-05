@@ -1,19 +1,19 @@
-# interactive-tabs — 탭 컴포넌트 패턴
+# interactive-tabs — Tab component pattern
 
 **Priority:** HIGH | **WCAG:** 4.1.2, 2.1.1 | **ARIA:** Tabs Pattern
 
 ## Rule
 
-탭은 `role="tablist"`, `role="tab"`, `role="tabpanel"` 트리오로 구현하고 roving tabindex로 키보드 네비게이션을 제공한다.
+Tabs must be implemented with the `role="tablist"`, `role="tab"`, `role="tabpanel"` trio, with roving tabindex for keyboard navigation.
 
 ## Checklist
 
-- [ ] `role="tablist"` 컨테이너
-- [ ] 각 탭: `role="tab"`, `aria-selected`, `aria-controls`
-- [ ] 각 패널: `role="tabpanel"`, `id`, `aria-labelledby`
-- [ ] 활성 탭: `tabIndex={0}`, 비활성: `tabIndex={-1}` (roving tabindex)
-- [ ] 화살표 키 좌/우로 탭 전환
-- [ ] Home/End 키 지원
+- [ ] `role="tablist"` container
+- [ ] Each tab: `role="tab"`, `aria-selected`, `aria-controls`
+- [ ] Each panel: `role="tabpanel"`, `id`, `aria-labelledby`
+- [ ] Active tab: `tabIndex={0}`, inactive: `tabIndex={-1}` (roving tabindex)
+- [ ] Left/right arrow keys switch tabs
+- [ ] Home/End key support
 
 ## Examples
 
@@ -73,6 +73,6 @@ function Tabs({ tabs }: { tabs: { id: string; label: string; content: ReactNode 
 
 ## Notes
 
-- `aria-selected="true/false"` — 체크박스의 `aria-checked`와 다름, 탭에는 `selected` 사용
-- 자동 활성화(포커스 시 즉시 전환) vs 수동 활성화(Enter/Space로 전환) — UX에 따라 선택
-- 라이브러리: `@radix-ui/react-tabs` 권장
+- `aria-selected="true/false"` — different from checkbox's `aria-checked`; use `selected` for tabs
+- Automatic activation (switch on focus) vs. manual activation (switch on Enter/Space) — choose based on UX needs
+- Recommended library: `@radix-ui/react-tabs`

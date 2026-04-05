@@ -1,20 +1,20 @@
-# wcag-a11y-patterns
-
-**Name:** `wcag-a11y-patterns`
-**Description:** WCAG 2.1 AA 기준의 접근성 패턴 가이드. React/Next.js 컴포넌트 구현 시 ARIA, 키보드, 스크린리더, 폼 접근성을 올바르게 적용하기 위한 규칙 모음.
-
 ---
+name: wcag-a11y-patterns
+description: Use when building React/Next.js components from scratch and need rule-by-rule WCAG 2.1 AA implementation patterns — not for auditing existing code, but for writing accessible code correctly the first time. 26 rules across ARIA, keyboard, form, screen reader, interactive patterns, and visual categories, each in a dedicated file.
+---
+
+# wcag-a11y-patterns
 
 ## Rule Categories
 
-| Prefix         | Category                 | Priority |
-| -------------- | ------------------------ | -------- |
-| `aria-`        | ARIA 속성 올바른 사용    | CRITICAL |
-| `keyboard-`    | 키보드 네비게이션        | CRITICAL |
-| `form-`        | 폼 접근성                | HIGH     |
-| `sr-`          | 스크린리더 호환성        | HIGH     |
-| `interactive-` | 인터랙티브 컴포넌트 패턴 | HIGH     |
-| `visual-`      | 시각적 접근성            | MEDIUM   |
+| Prefix         | Category                       | Priority |
+| -------------- | ------------------------------ | -------- |
+| `aria-`        | Correct use of ARIA            | CRITICAL |
+| `keyboard-`    | Keyboard navigation            | CRITICAL |
+| `form-`        | Form accessibility             | HIGH     |
+| `sr-`          | Screen reader compatibility    | HIGH     |
+| `interactive-` | Interactive component patterns | HIGH     |
+| `visual-`      | Visual accessibility           | MEDIUM   |
 
 ---
 
@@ -22,44 +22,44 @@
 
 ### ARIA (CRITICAL)
 
-- [`aria-label`](./rules/aria-label.md) — 모든 인터랙티브 요소에 접근 가능한 이름 제공
-- [`aria-live`](./rules/aria-live.md) — 동적 콘텐츠 변경 알림
-- [`aria-expanded`](./rules/aria-expanded.md) — 열림/닫힘 상태 전달
-- [`aria-required`](./rules/aria-required.md) — 필수 입력 필드 표시
-- [`aria-invalid`](./rules/aria-invalid.md) — 유효성 오류 상태 전달
-- [`aria-describedby`](./rules/aria-describedby.md) — 추가 설명 연결
+- [`aria-label`](./rules/aria-label.md) — Provide accessible names for all interactive elements
+- [`aria-live`](./rules/aria-live.md) — Announce dynamic content changes
+- [`aria-expanded`](./rules/aria-expanded.md) — Communicate open/closed state
+- [`aria-required`](./rules/aria-required.md) — Mark required form fields
+- [`aria-invalid`](./rules/aria-invalid.md) — Communicate validation error state
+- [`aria-describedby`](./rules/aria-describedby.md) — Link additional descriptions
 
 ### Keyboard (CRITICAL)
 
-- [`keyboard-focus-trap`](./rules/keyboard-focus-trap.md) — 모달/다이얼로그 포커스 가두기
-- [`keyboard-focus-visible`](./rules/keyboard-focus-visible.md) — 포커스 표시 항상 노출
-- [`keyboard-escape`](./rules/keyboard-escape.md) — Escape로 오버레이 닫기
-- [`keyboard-roving-tabindex`](./rules/keyboard-roving-tabindex.md) — 복합 위젯의 roving tabindex
-- [`keyboard-tab-order`](./rules/keyboard-tab-order.md) — 논리적 탭 순서 유지
+- [`keyboard-focus-trap`](./rules/keyboard-focus-trap.md) — Trap focus inside modal/dialog
+- [`keyboard-focus-visible`](./rules/keyboard-focus-visible.md) — Always show focus indicator
+- [`keyboard-escape`](./rules/keyboard-escape.md) — Close overlays with Escape key
+- [`keyboard-roving-tabindex`](./rules/keyboard-roving-tabindex.md) — Roving tabindex for composite widgets
+- [`keyboard-tab-order`](./rules/keyboard-tab-order.md) — Maintain logical tab order
 
 ### Form (HIGH)
 
-- [`form-label`](./rules/form-label.md) — 모든 입력 필드에 레이블 연결
-- [`form-error`](./rules/form-error.md) — 오류 메시지 접근 가능하게 전달
-- [`form-fieldset`](./rules/form-fieldset.md) — 관련 필드 그룹화
+- [`form-label`](./rules/form-label.md) — Link labels to all input fields
+- [`form-error`](./rules/form-error.md) — Communicate error messages accessibly
+- [`form-fieldset`](./rules/form-fieldset.md) — Group related fields
 
 ### Screen Reader (HIGH)
 
-- [`sr-only`](./rules/sr-only.md) — 시각적으로 숨긴 텍스트 올바른 사용
-- [`sr-heading`](./rules/sr-heading.md) — 헤딩 계층 구조 유지
-- [`sr-link-text`](./rules/sr-link-text.md) — 의미 있는 링크 텍스트
-- [`sr-image-alt`](./rules/sr-image-alt.md) — 이미지 대체 텍스트
+- [`sr-only`](./rules/sr-only.md) — Correct use of visually hidden text
+- [`sr-heading`](./rules/sr-heading.md) — Maintain heading hierarchy
+- [`sr-link-text`](./rules/sr-link-text.md) — Use meaningful link text
+- [`sr-image-alt`](./rules/sr-image-alt.md) — Provide image alternative text
 
 ### Interactive Patterns (HIGH)
 
-- [`interactive-button-link`](./rules/interactive-button-link.md) — button vs link 올바른 선택
-- [`interactive-dialog`](./rules/interactive-dialog.md) — 다이얼로그 패턴
-- [`interactive-tooltip`](./rules/interactive-tooltip.md) — 툴팁 패턴
-- [`interactive-disclosure`](./rules/interactive-disclosure.md) — 열고 닫는 콘텐츠 패턴
-- [`interactive-tabs`](./rules/interactive-tabs.md) — 탭 컴포넌트 패턴
+- [`interactive-button-link`](./rules/interactive-button-link.md) — Choosing between button and link
+- [`interactive-dialog`](./rules/interactive-dialog.md) — Dialog pattern
+- [`interactive-tooltip`](./rules/interactive-tooltip.md) — Tooltip pattern
+- [`interactive-disclosure`](./rules/interactive-disclosure.md) — Expandable content pattern
+- [`interactive-tabs`](./rules/interactive-tabs.md) — Tab component pattern
 
 ### Visual (MEDIUM)
 
-- [`visual-color-contrast`](./rules/visual-color-contrast.md) — 색상 대비율 기준
-- [`visual-not-color-only`](./rules/visual-not-color-only.md) — 색상만으로 정보 전달 금지
-- [`visual-motion`](./rules/visual-motion.md) — 애니메이션 접근성
+- [`visual-color-contrast`](./rules/visual-color-contrast.md) — Color contrast requirements
+- [`visual-not-color-only`](./rules/visual-not-color-only.md) — Don't convey information by color alone
+- [`visual-motion`](./rules/visual-motion.md) — Animation accessibility
