@@ -236,7 +236,11 @@ export const en: Translations = {
         desc: 'Skipping heading levels can cause screen reader users to misunderstand structure. h3 after h1 is prohibited.'
       },
       { id: 'h1', title: 'One h1 per page', desc: 'Only one h1 to represent the page topic. Use h2 for sections, h3 for subsections.' },
-      { id: 'Skip', title: 'Do not skip heading levels', desc: 'Adjust visual emphasis with CSS font-size. Never skip heading levels.' }
+      {
+        id: 'Skip',
+        title: 'Do not skip heading levels',
+        desc: 'Screen reader users navigate by scanning the heading list to jump directly to a section. Skipping levels makes the page hierarchy feel broken. To change visual size, use CSS — not the heading level.'
+      }
     ],
     nesting: [
       {
@@ -272,12 +276,12 @@ export const en: Translations = {
       {
         id: 'DOMOrder',
         title: 'DOM order = focus order',
-        desc: 'Tab key focus follows DOM order. Even if CSS changes the visual order, focus order is still based on the DOM.'
+        desc: 'Tab key focus follows DOM order. Even if CSS (e.g. flex-direction: row-reverse) changes the visual order, focus order is still based on the DOM. When visual and tab order diverge, keyboard users become confused.'
       },
       {
         id: 'tabindex',
-        title: 'Avoid overusing tabindex',
-        desc: 'tabindex="0" allows focus, tabindex="-1" is for programmatic focus. Positive tabindex values should almost never be used.'
+        title: 'Never use positive tabindex',
+        desc: 'tabindex="0" includes the element in the natural tab order; tabindex="-1" makes it focusable only via JavaScript. Positive tabindex values re-sort the entire page\'s tab order by number, causing focus to jump unpredictably. As components are added or changed, all the numbers need to be managed again — making it practically unmaintainable.'
       },
       {
         id: 'FocusTrap',
