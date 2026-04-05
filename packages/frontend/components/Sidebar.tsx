@@ -1,7 +1,7 @@
 'use client'
 
 import * as Tooltip from '@radix-ui/react-tooltip'
-import { MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles } from 'lucide-react'
+import { Heart, Layers, MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles, Tag } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -120,6 +120,9 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
             <SectionLabel>{t.nav.docs}</SectionLabel>
             <ul className='space-y-0.5'>
               <li>{navItem(`/${lang}/wcag`, <ShieldCheck size={14} />, t.nav.wcag)}</li>
+              <li>{navItem(`/${lang}/wcag/why`, <Heart size={14} />, t.nav.wcagWhy)}</li>
+              <li>{navItem(`/${lang}/wcag/aria`, <Tag size={14} />, t.nav.wcagAria)}</li>
+              <li>{navItem(`/${lang}/wcag/dom`, <Layers size={14} />, t.nav.wcagDom)}</li>
             </ul>
           </div>
 

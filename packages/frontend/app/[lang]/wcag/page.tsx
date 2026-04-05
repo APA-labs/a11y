@@ -2,6 +2,10 @@ export const dynamic = 'force-static'
 
 import { CheckCircle, Info, AlertTriangle } from 'lucide-react'
 
+import { WcagInfoCard } from './_components/WcagInfoCard'
+import { WcagLevelCard } from './_components/WcagLevelCard'
+import { WcagPageShell } from './_components/WcagPageShell'
+import { WcagSection } from './_components/WcagSection'
 import { getTranslations, SUPPORTED_LANGS } from '../../../lib/i18n'
 
 import type { Lang } from '../../../lib/i18n'
@@ -60,7 +64,6 @@ const LEVELS = {
       level: 'A',
       label: 'Level A',
       ...LEVEL_STYLES.A,
-      icon: CheckCircle,
       description: '최소 기준. 이 기준을 충족하지 못하면 일부 사용자가 콘텐츠에 전혀 접근할 수 없다.',
       principles: [
         { id: '1.1.1', title: '텍스트 대체', desc: '모든 비텍스트 콘텐츠(이미지, 아이콘)에 alt 속성 제공' },
@@ -175,73 +178,44 @@ export default async function WcagPage({ params }: { params: Promise<{ lang: Lan
   const levels = LEVELS[lang]
 
   return (
-    <div className='max-w-4xl mx-auto px-6 sm:px-10 py-10 sm:py-14'>
-      <div className='mb-8'>
-        <h1 className='text-2xl font-bold text-body mb-2'>{t.wcag.title}</h1>
-        <p className='text-soft text-sm leading-relaxed'>{t.wcag.subtitle}</p>
-      </div>
-
-      <section className='mb-10'>
-        <h2 className='text-sm font-semibold text-soft uppercase tracking-wider mb-3'>{t.wcag.principles}</h2>
+    <WcagPageShell
+      title={t.wcag.title}
+      subtitle={t.wcag.subtitle}>
+      <WcagSection
+        label={t.wcag.principles}
+        className='mb-10'>
         <div className='grid grid-cols-2 gap-3'>
           {principles.map((p) => (
-            <div
-              key={p.id}
-              className='bg-surface border border-outline rounded-xl p-4'>
+            <WcagInfoCard key={p.id}>
               <div className='flex items-center gap-2 mb-1'>
                 <span className='text-xs font-mono text-faint'>{p.id}</span>
                 <span className='font-semibold text-body text-sm'>{p.name}</span>
                 {p.local && <span className='text-faint text-sm'>· {p.local}</span>}
               </div>
               <p className='text-xs text-soft leading-relaxed'>{p.desc}</p>
-            </div>
+            </WcagInfoCard>
           ))}
         </div>
-      </section>
+      </WcagSection>
 
-      <section className='space-y-6'>
-        <h2 className='text-sm font-semibold text-soft uppercase tracking-wider'>{t.wcag.levels}</h2>
-        {levels.map(({ level, label, color, bg, border, badge, icon: Icon, description, principles: criterions }) => (
-          <div
+      <WcagSection
+        label={t.wcag.levels}
+        className='space-y-6'>
+        {levels.map(({ level, label, color, bg, border, badge, icon, description, principles: criterions }) => (
+          <WcagLevelCard
             key={level}
-            className={`rounded-xl border ${border} ${bg} overflow-hidden`}>
-            <div className='px-5 py-4 flex items-start gap-3'>
-              <Icon
-                size={18}
-                className={`${color} mt-0.5 shrink-0`}
-              />
-              <div>
-                <div className='flex items-center gap-2 mb-1'>
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badge}`}>{label}</span>
-                </div>
-                <p className='text-sm text-soft leading-relaxed'>{description}</p>
-              </div>
-            </div>
-            <div className='bg-surface/70 border-t border-outline/60'>
-              <table className='w-full text-sm'>
-                <thead>
-                  <tr className='border-b border-outline/60'>
-                    <th className='text-left px-5 py-2.5 text-xs font-semibold text-faint w-24'>{t.wcag.colCriterion}</th>
-                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-faint w-36'>{t.wcag.colTitle}</th>
-                    <th className='text-left px-4 py-2.5 text-xs font-semibold text-faint'>{t.wcag.colRequirement}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {criterions.map((item, i) => (
-                    <tr
-                      key={item.id}
-                      className={i < criterions.length - 1 ? 'border-b border-divider' : ''}>
-                      <td className='px-5 py-2.5 font-mono text-xs text-faint'>{item.id}</td>
-                      <td className='px-4 py-2.5 text-xs font-medium text-body'>{item.title}</td>
-                      <td className='px-4 py-2.5 text-xs text-soft leading-relaxed'>{item.desc}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+            color={color}
+            bg={bg}
+            border={border}
+            badge={badge}
+            icon={icon}
+            label={label}
+            description={description}
+            rows={criterions}
+            colHeaders={[t.wcag.colCriterion, t.wcag.colTitle, t.wcag.colRequirement]}
+          />
         ))}
-      </section>
+      </WcagSection>
 
       <p className='mt-8 text-xs text-faint'>
         {t.wcag.fullSpec}:{' '}
@@ -253,6 +227,6 @@ export default async function WcagPage({ params }: { params: Promise<{ lang: Lan
           W3C WCAG 2.1
         </a>
       </p>
-    </div>
+    </WcagPageShell>
   )
 }
