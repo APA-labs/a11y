@@ -1,4 +1,4 @@
-import { claudeClient, CLAUDE_MODEL } from '../claude.js'
+import { claudeClient, CLAUDE_MODEL_FAST } from '../claude.js'
 
 import type { RuleSet } from '../internal.js'
 
@@ -15,7 +15,7 @@ export class ComponentValidator {
       .join('\n')
 
     const response = await claudeClient.messages.create({
-      model: CLAUDE_MODEL,
+      model: CLAUDE_MODEL_FAST,
       max_tokens: 512,
       system:
         'You are an accessibility expert. Analyze the JSX code and return ONLY a JSON array of violation strings. Return [] if no violations found.',

@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 
-import { claudeClient, CLAUDE_MODEL, SYSTEM_PROMPT } from '../claude.js'
+import { claudeClient, CLAUDE_MODEL_FAST, SYSTEM_PROMPT } from '../claude.js'
 import { logger } from '../logger.js'
 
 import type { PatternRegistry } from '../internal.js'
@@ -32,7 +32,7 @@ Return ONLY a JSON object:
 
     try {
       const response = await claudeClient.messages.create({
-        model: CLAUDE_MODEL,
+        model: CLAUDE_MODEL_FAST,
         max_tokens: 512,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: prompt }]

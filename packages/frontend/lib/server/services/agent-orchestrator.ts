@@ -1,7 +1,8 @@
 import { ComponentValidator } from './component-validator.js'
 import { PatternClassifier } from './pattern-classifier.js'
 import { RuleEngine } from './rule-engine.js'
-import { claudeClient, CLAUDE_MODEL } from '../claude.js'
+// CLAUDE_MODEL_FAST = tool dispatch loop (Haiku), CLAUDE_MODEL = code generation (Sonnet)
+import { claudeClient, CLAUDE_MODEL, CLAUDE_MODEL_FAST } from '../claude.js'
 import { logger } from '../logger.js'
 
 import type { RuleSet } from '../internal.js'
@@ -92,7 +93,7 @@ export class AgentOrchestrator {
 
     while (toolCallCount < MAX_TOOL_CALLS) {
       const response = await claudeClient.messages.create({
-        model: CLAUDE_MODEL,
+        model: CLAUDE_MODEL_FAST,
         max_tokens: 4096,
         system: AGENT_SYSTEM_PROMPT,
         tools: TOOLS,
