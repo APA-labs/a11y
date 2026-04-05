@@ -1,9 +1,9 @@
 import fs from 'fs/promises'
 import path from 'path'
 
-import { logger } from '../logger.js'
+import { logger } from '../logger'
 
-import type { RuleSet } from '../internal.js'
+import type { RuleSet } from '../internal'
 
 export class RuleEngine {
   private readonly rulesDir: string

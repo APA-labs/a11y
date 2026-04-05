@@ -1,10 +1,10 @@
 import fs from 'fs/promises'
 import path from 'path'
 
-import { claudeClient, CLAUDE_MODEL_FAST, SYSTEM_PROMPT } from '../claude.js'
-import { logger } from '../logger.js'
+import { claudeClient, CLAUDE_MODEL_FAST, SYSTEM_PROMPT } from '../claude'
+import { logger } from '../logger'
 
-import type { PatternRegistry } from '../internal.js'
+import type { PatternRegistry } from '../internal'
 
 export class PatternClassifier {
   private registry: PatternRegistry | null = null

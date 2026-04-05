@@ -1,11 +1,11 @@
-import { ComponentValidator } from './component-validator.js'
-import { PatternClassifier } from './pattern-classifier.js'
-import { RuleEngine } from './rule-engine.js'
+import { ComponentValidator } from './component-validator'
+import { PatternClassifier } from './pattern-classifier'
+import { RuleEngine } from './rule-engine'
 // CLAUDE_MODEL_FAST = tool dispatch loop (Haiku), CLAUDE_MODEL = code generation (Sonnet)
-import { claudeClient, CLAUDE_MODEL, CLAUDE_MODEL_FAST } from '../claude.js'
-import { logger } from '../logger.js'
+import { claudeClient, CLAUDE_MODEL, CLAUDE_MODEL_FAST } from '../claude'
+import { logger } from '../logger'
 
-import type { RuleSet } from '../internal.js'
+import type { RuleSet } from '../internal'
 import type { GenerateRequest, GenerateResponse, AgentStep } from '@a11y/shared'
 import type Anthropic from '@anthropic-ai/sdk'
 

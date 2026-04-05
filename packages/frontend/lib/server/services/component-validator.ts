@@ -1,6 +1,6 @@
-import { claudeClient, CLAUDE_MODEL_FAST } from '../claude.js'
+import { claudeClient, CLAUDE_MODEL_FAST } from '../claude'
 
-import type { RuleSet } from '../internal.js'
+import type { RuleSet } from '../internal'
 
 interface ValidationResult {
   passed: boolean
