@@ -28,7 +28,7 @@ export default function AnalyzeForm({ lang }: Props) {
     setResult(null)
 
     try {
-      const res = await fetch('http://localhost:3001/analyze', {
+      const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description })
