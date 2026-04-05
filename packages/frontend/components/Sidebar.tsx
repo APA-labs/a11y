@@ -169,6 +169,13 @@ export default function Sidebar({ lang }: { lang: Lang }) {
 
         <nav className='flex-1 px-2 py-1 space-y-5'>
           <div>
+            <SectionLabel>{t.nav.tools}</SectionLabel>
+            <ul className='space-y-0.5'>
+              <li>{navItem(`/${lang}/analyze`, <Sparkles size={14} />, t.nav.aiAnalyze)}</li>
+            </ul>
+          </div>
+
+          <div>
             <SectionLabel>{t.nav.docs}</SectionLabel>
             <ul className='space-y-0.5'>
               <li>{navItem(`/${lang}/wcag`, <ShieldCheck size={14} />, t.nav.wcag)}</li>
@@ -186,13 +193,6 @@ export default function Sidebar({ lang }: { lang: Lang }) {
                   {navItem(`/${lang}/patterns/${pattern.slug}`, ICON_MAP[pattern.slug] ?? <MousePointer2 size={14} />, pattern.name)}
                 </li>
               ))}
-            </ul>
-          </div>
-
-          <div>
-            <SectionLabel>{t.nav.tools}</SectionLabel>
-            <ul className='space-y-0.5'>
-              <li>{navItem(`/${lang}/analyze`, <Sparkles size={14} />, t.nav.aiAnalyze)}</li>
             </ul>
           </div>
         </nav>
