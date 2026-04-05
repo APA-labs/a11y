@@ -1,20 +1,20 @@
-# form-fieldset — 관련 필드 그룹화
+# form-fieldset — Group related fields
 
 **Priority:** HIGH | **WCAG:** 1.3.1 Info and Relationships (Level A)
 
 ## Rule
 
-관련된 폼 컨트롤(라디오, 체크박스 그룹)은 `<fieldset>`과 `<legend>`로 그룹화한다.
+Group related form controls (radio buttons, checkboxes) with `<fieldset>` and `<legend>`.
 
 ## Examples
 
 ```tsx
-// ✅ 라디오 그룹
+// ✅ Radio group
 <fieldset>
-  <legend>알림 수신 방법</legend>
+  <legend>Notification method</legend>
   <label>
     <input type="radio" name="notify" value="email" />
-    이메일
+    Email
   </label>
   <label>
     <input type="radio" name="notify" value="sms" />
@@ -22,9 +22,9 @@
   </label>
 </fieldset>
 
-// ✅ 체크박스 그룹
+// ✅ Checkbox group
 <fieldset>
-  <legend>관심 분야 (복수 선택)</legend>
+  <legend>Areas of interest (select all that apply)</legend>
   <label>
     <input type="checkbox" name="interest" value="wcag" />
     WCAG
@@ -35,15 +35,15 @@
   </label>
 </fieldset>
 
-// ✅ 커스텀 컴포넌트에서 role="group" 대안
+// ✅ role="group" alternative for custom components
 <div role="group" aria-labelledby="group-label">
-  <p id="group-label">알림 수신 방법</p>
-  {/* 라디오 버튼들 */}
+  <p id="group-label">Notification method</p>
+  {/* radio buttons */}
 </div>
 ```
 
 ## Notes
 
-- 단일 입력 필드는 fieldset 불필요 — 라디오/체크박스 그룹에만 사용
-- `legend`는 fieldset의 첫 번째 자식이어야 함
-- 스타일링이 어려우면 `role="group"` + `aria-labelledby` 대안 사용 가능
+- Single input fields don't need fieldset — use only for radio/checkbox groups
+- `legend` must be the first child of `fieldset`
+- If styling fieldset is difficult, use `role="group"` + `aria-labelledby` as an alternative

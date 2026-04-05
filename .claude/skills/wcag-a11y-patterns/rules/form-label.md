@@ -1,41 +1,45 @@
-# form-label — 모든 입력 필드에 레이블 연결
+# form-label — Link labels to all input fields
 
 **Priority:** HIGH | **WCAG:** 1.3.1 Info and Relationships (Level A)
 
 ## Rule
 
-모든 폼 컨트롤(input, select, textarea)은 레이블과 프로그래매틱하게 연결되어야 한다.
+All form controls (input, select, textarea) must be programmatically associated with a label.
 
 ## Examples
 
 ```tsx
-// ✅ htmlFor + id 연결 (권장)
-<label htmlFor="email">이메일</label>
+// ✅ htmlFor + id (preferred)
+<label htmlFor="email">Email</label>
 <input id="email" type="email" />
 
-// ✅ 래핑 (암시적 연결)
+// ✅ Wrapping (implicit association)
 <label>
-  이메일
+  Email
   <input type="email" />
 </label>
 
-// ❌ placeholder만 사용 — 입력 후 레이블 사라짐
-<input type="email" placeholder="이메일 입력" />
+// ❌ placeholder only
+// Placeholder disappears on input — users must clear the field to check what it asks for.
+// Screen readers often don't recognize placeholder as a label either.
+<input type="email" placeholder="Enter email" />
 
-// ❌ 시각적으로만 연결 — 스크린리더는 연결 모름
-<p>이메일</p>
+// ❌ Visually associated only
+// Looks connected visually, but there's no HTML association —
+// screen readers won't announce "Email" when the input receives focus.
+<p>Email</p>
 <input type="email" />
 
-// ✅ 시각적 레이블 없을 때 — aria-label 사용
+// ✅ No visible label — use aria-label
 <input
   type="search"
-  aria-label="검색"
-  placeholder="검색어 입력..."
+  aria-label="Search"
+  placeholder="Search..."
 />
 ```
 
 ## Notes
 
-- `placeholder`는 힌트 용도, 레이블 대체 불가
-- 검색 필드처럼 시각적 레이블이 없는 경우만 `aria-label` 사용
-- 커스텀 컴포넌트도 내부적으로 `<label>` 연결 유지
+- `placeholder` is for hints only — cannot substitute a label
+- Use `aria-label` only when there is no visible label (e.g., search field)
+- Custom components must maintain an internal `<label>` association

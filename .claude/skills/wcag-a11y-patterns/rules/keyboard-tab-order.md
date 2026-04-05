@@ -1,39 +1,45 @@
-# keyboard-tab-order — 논리적 탭 순서 유지
+# keyboard-tab-order — Maintain logical tab order
 
 **Priority:** CRITICAL | **WCAG:** 2.4.3 Focus Order (Level A)
 
 ## Rule
 
-탭 순서는 시각적 레이아웃과 콘텐츠 논리 순서를 따른다. `tabIndex` 양수값 사용 금지.
+Tab order must follow the visual layout and logical content sequence. Never use positive `tabIndex` values.
 
 ## Examples
 
 ```tsx
-// ❌ tabIndex 양수 — 탭 순서 예측 불가
-<button tabIndex={3}>세 번째</button>
-<button tabIndex={1}>첫 번째</button>
-<button tabIndex={2}>두 번째</button>
+// ❌ Positive tabIndex — unpredictable tab order
+// Positive tabIndex values bring those elements before all tabIndex=0 elements.
+// Mixed positive values scramble the entire page tab flow,
+// leaving keyboard users with focus jumping unpredictably.
+<button tabIndex={3}>Third</button>
+<button tabIndex={1}>First</button>
+<button tabIndex={2}>Second</button>
 
-// ✅ DOM 순서 = 탭 순서
-<button>첫 번째</button>
-<button>두 번째</button>
-<button>세 번째</button>
+// ✅ DOM order = tab order
+// HTML source order is tab order. No extra handling needed.
+<button>First</button>
+<button>Second</button>
+<button>Third</button>
 
-// ✅ 모달 열릴 때 포커스 명시적 이동 (DOM 순서 우선)
+// ✅ Move focus explicitly when modal opens (DOM order takes priority)
 useEffect(() => {
   if (isOpen) firstFocusableRef.current?.focus()
 }, [isOpen])
 
-// ❌ CSS로 시각 순서 바꾸면 탭 순서와 불일치
+// ❌ CSS visual order differs from DOM order
+// The right button appears first visually, but tabs first per DOM order.
+// Mismatch between visible and tab order confuses keyboard users.
 <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-  <button>시각적으로 오른쪽</button> {/* 탭은 먼저 */}
-  <button>시각적으로 왼쪽</button>
+  <button>Visually on the right</button> {/* tabs first */}
+  <button>Visually on the left</button>
 </div>
 ```
 
 ## Notes
 
-- `tabIndex={0}` — 기본 탭 순서에 포함 (tabIndex 없는 것과 동일)
-- `tabIndex={-1}` — 탭 순서 제외, JS로만 포커스 가능
-- `tabIndex` 양수 — 전역 탭 순서 변경, 유지보수 악몽 → 절대 사용 금지
-- CSS `order`, `flex-direction: row-reverse` 사용 시 DOM 순서와 시각 순서 일치 여부 검토
+- `tabIndex={0}` — included in default tab order (same as omitting tabIndex)
+- `tabIndex={-1}` — excluded from tab order. Not reachable via Tab, but focusable via JS (`element.focus()`) — useful for moving focus programmatically on modal open
+- Positive `tabIndex` — reorders the entire page tab sequence by number, causing unintended reversals. Nearly impossible to maintain as components are added/removed → never use
+- Review DOM vs. visual order when using CSS `order` or `flex-direction: row-reverse`

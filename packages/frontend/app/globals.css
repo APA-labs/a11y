@@ -33,27 +33,27 @@
     --color-border: var(--color-mist-light);
 
     /* Semantic tokens — Light */
-    --canvas: #F6F7F7;
-    --surface: #FFFFFF;
-    --float: #FFFFFF;
-    --inset: #EAECEC;
-    --outline: #C8C7D2;
-    --divider: #E2E2E8;
-    --body: #2C435D;
-    --soft: #7E7D8E;
-    --faint: #9A99A7;
+    --canvas: #f6f7f7;
+    --surface: #ffffff;
+    --float: #ffffff;
+    --inset: #eaecec;
+    --outline: #c8c7d2;
+    --divider: #e2e2e8;
+    --body: #2c435d;
+    --soft: #7e7d8e;
+    --faint: #9a99a7;
   }
 
   .dark {
-    --canvas: #111A24;
-    --surface: #1E2E40;
-    --float: #2C435D;
-    --inset: #111A24;
-    --outline: #2C435D;
-    --divider: #1E2E40;
-    --body: #F6F7F7;
-    --soft: #A29FB0;
-    --faint: #9A99A7;
+    --canvas: #111a24;
+    --surface: #1e2e40;
+    --float: #2c435d;
+    --inset: #111a24;
+    --outline: #2c435d;
+    --divider: #1e2e40;
+    --body: #f6f7f7;
+    --soft: #a29fb0;
+    --faint: #9a99a7;
   }
 
   * {
@@ -73,7 +73,7 @@
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #C8C7D2 transparent;
+    scrollbar-color: #c8c7d2 transparent;
   }
 }
 
@@ -107,5 +107,11 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes sidebar-marquee {
+  to {
+    transform: translateX(var(--marquee-shift));
   }
 }

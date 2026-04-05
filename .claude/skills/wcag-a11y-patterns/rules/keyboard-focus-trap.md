@@ -1,10 +1,10 @@
-# keyboard-focus-trap — 모달/다이얼로그 포커스 가두기
+# keyboard-focus-trap — Trap focus inside modal/dialog
 
 **Priority:** CRITICAL | **WCAG:** 2.1.2 No Keyboard Trap (Level A)
 
 ## Rule
 
-모달, 다이얼로그가 열려 있을 때 포커스가 그 안에서만 순환해야 한다. 닫히면 트리거 버튼으로 포커스 복귀.
+While a modal or dialog is open, focus must cycle only within it. On close, return focus to the trigger button.
 
 ## Examples
 
@@ -15,7 +15,7 @@ function Dialog({ isOpen, onClose, triggerRef, children }: Props) {
   useEffect(() => {
     if (!isOpen) return
 
-    // 다이얼로그 열리면 첫 번째 포커스 가능 요소로 이동
+    // Move focus to first focusable element when dialog opens
     const focusable = dialogRef.current?.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
     focusable?.[0]?.focus()
 
@@ -38,7 +38,7 @@ function Dialog({ isOpen, onClose, triggerRef, children }: Props) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen])
 
-  // 닫힐 때 트리거로 포커스 복귀
+  // Return focus to trigger on close
   useEffect(() => {
     if (!isOpen) triggerRef.current?.focus()
   }, [isOpen])
@@ -59,6 +59,6 @@ function Dialog({ isOpen, onClose, triggerRef, children }: Props) {
 
 ## Notes
 
-- `aria-modal="true"` 설정 시 일부 스크린리더는 포커스 트랩을 자동으로 인식
-- 라이브러리 사용 권장: `@radix-ui/react-dialog`, `@headlessui/react`
-- 모달 뒤 콘텐츠에 `aria-hidden="true"` 추가해서 스크린리더가 읽지 않도록
+- With `aria-modal="true"`, some screen readers automatically recognize the focus trap
+- Recommended libraries: `@radix-ui/react-dialog`, `@headlessui/react`
+- Add `aria-hidden="true"` to background content so screen readers don't read it

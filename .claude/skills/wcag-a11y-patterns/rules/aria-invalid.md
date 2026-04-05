@@ -1,10 +1,10 @@
-# aria-invalid — 유효성 오류 상태 전달
+# aria-invalid — Communicate validation error state
 
 **Priority:** CRITICAL | **WCAG:** 3.3.1 Error Identification (Level A)
 
 ## Rule
 
-폼 유효성 검사 실패 시 `aria-invalid`로 오류 상태를 전달하고, `aria-describedby`로 오류 메시지와 연결한다.
+On form validation failure, use `aria-invalid` to signal the error state and link the error message with `aria-describedby`.
 
 ## Examples
 
@@ -35,6 +35,6 @@ function FormField({ id, label, error, ...props }: Props) {
 
 ## Notes
 
-- `aria-invalid="true"` — 오류 있음 / `aria-invalid="false"` 또는 속성 제거 — 정상
-- 오류 메시지는 시각적으로도 표시해야 함 (색상만으로 전달 금지)
-- 제출 실패 시 첫 번째 오류 필드로 포커스 이동 권장
+- `aria-invalid="true"` — has error / `aria-invalid="false"` or omit attribute — valid
+- Error messages must also be visually displayed (never convey errors by color alone)
+- On submit failure, move focus to the first error field

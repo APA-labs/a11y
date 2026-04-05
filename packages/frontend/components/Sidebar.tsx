@@ -1,16 +1,63 @@
 'use client'
 
 import * as Tooltip from '@radix-ui/react-tooltip'
-import { MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles } from 'lucide-react'
+import { Heart, Layers, MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles, Tag } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { getTranslations } from '../lib/i18n'
 import { ICON_MAP } from '../lib/pattern-icons'
 import { getPatterns } from '../lib/patterns'
 
 import type { Lang } from '../lib/i18n'
+
+function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
+  const containerRef = useRef<HTMLSpanElement>(null)
+  const textRef = useRef<HTMLSpanElement>(null)
+  const [shift, setShift] = useState(0)
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    if (hidden) return
+    const container = containerRef.current
+    const text = textRef.current
+    if (!container || !text) return
+    const overflow = text.scrollWidth - container.clientWidth
+    setShift(overflow > 0 ? text.scrollWidth + 32 : 0)
+  }, [label, hidden])
+
+  const duration = Math.max(1.5, shift / 50)
+
+  return (
+    <span
+      ref={containerRef}
+      aria-hidden={hidden}
+      className={`overflow-hidden block transition-opacity duration-150 ${hidden ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}
+      onMouseEnter={() => shift > 0 && setActive(true)}
+      onMouseLeave={() => setActive(false)}>
+      <span
+        className='inline-flex whitespace-nowrap'
+        style={
+          active
+            ? ({
+                '--marquee-shift': `-${shift}px`,
+                animation: `sidebar-marquee ${duration}s linear infinite`
+              } as React.CSSProperties)
+            : undefined
+        }>
+        <span ref={textRef}>{label}</span>
+        {shift > 0 && (
+          <span
+            className='pl-8'
+            aria-hidden='true'>
+            {label}
+          </span>
+        )}
+      </span>
+    </span>
+  )
+}
 
 export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const pathname = usePathname()
@@ -51,11 +98,10 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
         aria-label={collapsed ? label : undefined}
         className={linkClass}>
         <span className={`shrink-0 ${isActive ? 'text-violet-600 dark:text-violet-300' : 'text-faint'}`}>{icon}</span>
-        <span
-          aria-hidden={collapsed}
-          className={`whitespace-nowrap overflow-hidden transition-opacity duration-150 ${collapsed ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}>
-          {label}
-        </span>
+        <MarqueeText
+          label={label}
+          hidden={collapsed}
+        />
       </Link>
     )
 
@@ -120,6 +166,9 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
             <SectionLabel>{t.nav.docs}</SectionLabel>
             <ul className='space-y-0.5'>
               <li>{navItem(`/${lang}/wcag`, <ShieldCheck size={14} />, t.nav.wcag)}</li>
+              <li>{navItem(`/${lang}/wcag/why`, <Heart size={14} />, t.nav.wcagWhy)}</li>
+              <li>{navItem(`/${lang}/wcag/aria`, <Tag size={14} />, t.nav.wcagAria)}</li>
+              <li>{navItem(`/${lang}/wcag/dom`, <Layers size={14} />, t.nav.wcagDom)}</li>
             </ul>
           </div>
 
