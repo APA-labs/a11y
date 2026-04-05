@@ -284,6 +284,29 @@ export const en: Translations = {
         title: 'Focus trap required inside modals',
         desc: 'When a modal opens, focus must be trapped inside. On close, return focus to the trigger element.'
       }
+    ],
+    glossaryLabel: 'Glossary',
+    glossary: [
+      {
+        term: 'Programmatic focus',
+        desc: 'Moving focus to a specific element by calling .focus() directly in JavaScript code, without user input. Used when opening or closing modals, and when navigating to an error field after form validation.'
+      },
+      {
+        term: 'Accessibility Tree',
+        desc: 'A separate tree structure built by the browser from the DOM. Assistive technologies like screen readers read this tree, not the DOM directly. It includes role, aria-* attributes, and text content. Elements hidden with aria-hidden or display:none are excluded.'
+      },
+      {
+        term: 'Focus Trap',
+        desc: 'A pattern that keeps Tab key navigation cycling within a specific container (e.g., a modal), preventing focus from reaching background content while the modal is open. Libraries like @radix-ui and react-focus-lock implement this.'
+      },
+      {
+        term: 'Landmark',
+        desc: 'Semantic HTML elements or ARIA roles (header, nav, main, aside, footer) that divide the page structure. Screen reader users can jump between landmarks using keyboard shortcuts, allowing fast navigation to desired sections in long pages.'
+      },
+      {
+        term: 'Virtualization',
+        desc: 'A technique that renders only the visible items in the DOM, removing the rest. Even with 1000 items, only the ~20 visible ones exist in the DOM. Reduces DOM node count and accessibility tree size, improving performance and assistive technology response time.'
+      }
     ]
   },
   analyze: {

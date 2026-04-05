@@ -87,6 +87,20 @@ export default async function DomPage({ params }: { params: Promise<{ lang: Lang
             ))}
           </div>
         </WcagSection>
+
+        <section>
+          <h2 className='text-sm font-semibold text-soft uppercase tracking-wider mb-3'>{d.glossaryLabel}</h2>
+          <div className='bg-inset rounded-xl border border-outline divide-y divide-outline'>
+            {d.glossary.map((item) => (
+              <div
+                key={item.term}
+                className='px-5 py-4'>
+                <p className='text-sm font-semibold text-body mb-1'>{item.term}</p>
+                <p className='text-xs text-soft leading-relaxed'>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </WcagPageShell>
   )

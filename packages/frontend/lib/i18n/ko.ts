@@ -221,6 +221,29 @@ export const ko = {
         title: '모달 내 포커스 트랩 필수',
         desc: '모달이 열리면 포커스가 모달 내부에 갇혀야 한다. 닫을 때는 열었던 트리거 요소로 복귀.'
       }
+    ],
+    glossaryLabel: '용어 참고',
+    glossary: [
+      {
+        term: '프로그래매틱 포커스',
+        desc: 'JavaScript 코드로 .focus()를 직접 호출해 특정 요소로 포커스를 이동하는 것. 사용자 입력 없이 코드가 포커스를 제어한다. 모달을 열거나 닫을 때, 오류 발생 시 해당 필드로 이동할 때 사용.'
+      },
+      {
+        term: '접근성 트리 (Accessibility Tree)',
+        desc: '브라우저가 DOM을 기반으로 생성하는 별도의 트리 구조. 스크린 리더 등 보조 기술은 DOM 직접이 아닌 이 트리를 읽는다. role, aria-* 속성, 텍스트 내용 등이 포함되며 aria-hidden이나 display:none 요소는 제외된다.'
+      },
+      {
+        term: '포커스 트랩 (Focus Trap)',
+        desc: 'Tab 키가 특정 컨테이너(예: 모달) 안에서만 순환하도록 막는 패턴. 모달이 열린 동안 배경 콘텐츠로 포커스가 이동하지 않게 한다. @radix-ui, react-focus-lock 같은 라이브러리가 이를 구현해준다.'
+      },
+      {
+        term: '랜드마크 (Landmark)',
+        desc: 'header, nav, main, aside, footer 같이 페이지 구조를 구분하는 시맨틱 HTML 요소 또는 ARIA role. 스크린 리더 사용자는 단축키로 랜드마크 간 점프 탐색을 할 수 있어, 긴 페이지에서 원하는 섹션으로 빠르게 이동할 수 있다.'
+      },
+      {
+        term: '가상화 (Virtualization)',
+        desc: '화면에 보이는 항목만 실제 DOM에 렌더링하고 나머지는 제거하는 기법. 1000개 목록이 있어도 화면에 보이는 20개만 DOM에 존재한다. DOM 노드 수와 접근성 트리 크기를 줄여 성능과 보조 기술 응답 속도를 개선한다.'
+      }
     ]
   },
   analyze: {
