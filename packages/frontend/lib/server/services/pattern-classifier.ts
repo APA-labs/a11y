@@ -1,20 +1,17 @@
 import fs from 'fs/promises'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
-import { claudeClient, CLAUDE_MODEL, SYSTEM_PROMPT } from '../config/claude.js'
-import { logger } from '../utils/logger.js'
+import { claudeClient, CLAUDE_MODEL_FAST, SYSTEM_PROMPT } from '../claude'
+import { logger } from '../logger'
 
-import type { PatternRegistry } from '../types/internal.js'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+import type { PatternRegistry } from '../internal'
 
 export class PatternClassifier {
   private registry: PatternRegistry | null = null
 
   private async getRegistry(): Promise<PatternRegistry> {
     if (this.registry) return this.registry
-    const filePath = path.join(__dirname, '..', 'rules', 'patterns.json')
+    const filePath = path.join(process.cwd(), 'lib/server/rules', 'patterns.json')
     const content = await fs.readFile(filePath, 'utf-8')
     this.registry = JSON.parse(content) as PatternRegistry
     return this.registry
@@ -35,7 +32,7 @@ Return ONLY a JSON object:
 
     try {
       const response = await claudeClient.messages.create({
-        model: CLAUDE_MODEL,
+        model: CLAUDE_MODEL_FAST,
         max_tokens: 512,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: prompt }]

@@ -3,11 +3,21 @@
 import { Loader2, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 
-export default function AnalyzeForm() {
+import { getTranslations } from '../lib/i18n'
+
+import type { Lang } from '../lib/i18n'
+
+interface Props {
+  lang: Lang
+}
+
+export default function AnalyzeForm({ lang }: Props) {
   const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  const t = getTranslations(lang)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,7 +28,7 @@ export default function AnalyzeForm() {
     setResult(null)
 
     try {
-      const res = await fetch('http://localhost:3001/analyze', {
+      const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description })
@@ -42,13 +52,13 @@ export default function AnalyzeForm() {
           <label
             htmlFor='component-desc'
             className='block text-sm font-medium text-slate-700 mb-1.5'>
-            컴포넌트 설명
+            {t.analyze.descriptionLabel}
           </label>
           <textarea
             id='component-desc'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder='예: 사용자가 알림을 켜고 끄는 토글 스위치. 설정 페이지 내에 위치하며 모바일 환경에서도 사용됩니다.'
+            placeholder={t.analyze.descriptionPlaceholder}
             rows={5}
             required
             aria-required='true'
@@ -58,7 +68,7 @@ export default function AnalyzeForm() {
           <p
             id='desc-hint'
             className='mt-1.5 text-xs text-slate-500'>
-            컴포넌트의 목적, 위치, 사용 맥락을 자세히 설명할수록 정확한 분석이 가능합니다.
+            {t.analyze.descriptionHint}
           </p>
         </div>
 
@@ -74,7 +84,7 @@ export default function AnalyzeForm() {
                 className='animate-spin'
                 aria-hidden
               />
-              분석 중...
+              {t.analyze.analyzing}
             </>
           ) : (
             <>
@@ -82,7 +92,7 @@ export default function AnalyzeForm() {
                 size={15}
                 aria-hidden
               />
-              AI 분석 시작
+              {t.analyze.submitButton}
             </>
           )}
         </button>
@@ -98,7 +108,7 @@ export default function AnalyzeForm() {
 
       {result && (
         <div>
-          <h3 className='text-sm font-semibold text-slate-700 mb-2'>분석 결과</h3>
+          <h3 className='text-sm font-semibold text-slate-700 mb-2'>{t.analyze.resultTitle}</h3>
           <pre className='overflow-x-auto p-4 bg-[#1e293b] rounded-xl text-xs text-slate-200 font-mono leading-relaxed'>{result}</pre>
         </div>
       )}
