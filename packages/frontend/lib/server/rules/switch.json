@@ -1,0 +1,74 @@
+{
+  "pattern": "Switch",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "switch-m1",
+        "title": "role=\"switch\" 사용",
+        "description": "스위치 컴포넌트에 role=\"switch\"를 적용해야 합니다. 체크박스나 토글 버튼과 달리 on/off 의미론을 명확히 전달합니다."
+      },
+      {
+        "id": "switch-m2",
+        "title": "aria-checked로 상태 전달",
+        "description": "스위치가 켜진 상태일 때 aria-checked=\"true\", 꺼진 상태일 때 aria-checked=\"false\"를 설정해야 합니다. input[type=checkbox] 기반이면 checked 속성을 사용합니다."
+      },
+      {
+        "id": "switch-m3",
+        "title": "접근 가능한 레이블 제공",
+        "description": "스위치에 aria-label, aria-labelledby, 또는 내부 텍스트로 레이블을 제공해야 합니다. 레이블은 상태가 바뀌어도 변경되지 않아야 합니다."
+      },
+      {
+        "id": "switch-m4",
+        "title": "Space 키로 상태 전환",
+        "description": "포커스가 스위치에 있을 때 Space 키로 상태를 전환할 수 있어야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "switch-s1",
+        "title": "시각적 상태와 ARIA 상태 동기화",
+        "description": "시각적으로 보이는 on/off 표시와 aria-checked 값이 항상 일치해야 합니다."
+      },
+      {
+        "id": "switch-s2",
+        "title": "그룹 내 스위치에 fieldset/legend 제공",
+        "description": "여러 스위치가 그룹을 이룰 때 fieldset과 legend로 그룹 레이블을 제공하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "switch-a1",
+        "title": "레이블에 상태 텍스트 포함",
+        "description": "레이블에 '알림 켜기', '알림 끄기'처럼 상태를 텍스트로 포함하면 aria-checked와 충돌합니다. 레이블은 '알림'처럼 고정되어야 합니다."
+      },
+      {
+        "id": "switch-a2",
+        "title": "div/span으로만 구현",
+        "description": "키보드 접근성 없이 div나 span만으로 스위치를 만들지 마세요. role=\"switch\"와 tabindex=\"0\", 키보드 이벤트를 반드시 추가하세요."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function SwitchDemo() {\n  const [isOn, setIsOn] = useState(false);\n\n  return (\n    <div>\n      <label htmlFor=\"notif-switch\">알림</label>\n      <button\n        id=\"notif-switch\"\n        role=\"switch\"\n        aria-checked={isOn}\n        onClick={() => setIsOn(!isOn)}\n        style={{ background: isOn ? '#1976d2' : '#ccc' }}\n      >\n        <span aria-hidden=\"true\">{isOn ? 'ON' : 'OFF'}</span>\n      </button>\n    </div>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "스크린리더 상태 전달 확인",
+      "steps": [
+        "Tab으로 스위치에 포커스",
+        "스크린리더가 레이블과 switch 역할, 현재 상태(on/off)를 읽는지 확인",
+        "Space 키로 상태 전환",
+        "스크린리더가 변경된 상태를 알리는지 확인"
+      ],
+      "tools": ["VoiceOver", "NVDA", "Keyboard only"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/ARIA/apg/patterns/switch",
+    "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/switch_role"
+  ]
+}

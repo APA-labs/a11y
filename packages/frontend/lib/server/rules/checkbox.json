@@ -1,0 +1,88 @@
+{
+  "pattern": "Checkbox",
+  "wcagLevel": "A",
+  "checklist": {
+    "must": [
+      {
+        "id": "checkbox-role",
+        "title": "Element has checkbox role",
+        "description": "Use a native <input type=\"checkbox\"> or an element with role=\"checkbox\""
+      },
+      {
+        "id": "checkbox-aria-checked",
+        "title": "aria-checked reflects state",
+        "description": "When checked: aria-checked=\"true\". When unchecked: aria-checked=\"false\". For tri-state: aria-checked=\"mixed\""
+      },
+      {
+        "id": "checkbox-label",
+        "title": "Accessible label is required",
+        "description": "Provide a visible label via <label>, aria-labelledby, or aria-label"
+      },
+      {
+        "id": "checkbox-space-toggles",
+        "title": "Space key toggles state",
+        "description": "When the checkbox has focus, pressing Space must toggle its checked state"
+      }
+    ],
+    "should": [
+      {
+        "id": "checkbox-group-role",
+        "title": "Group checkboxes with group role",
+        "description": "When presenting multiple related checkboxes, wrap them in an element with role=\"group\" and aria-labelledby pointing to a visible group label"
+      },
+      {
+        "id": "checkbox-focus-indicator",
+        "title": "Visible focus indicator",
+        "description": "The checkbox should have a clear focus ring, especially for custom styled checkboxes"
+      },
+      {
+        "id": "checkbox-error-linked",
+        "title": "Validation error linked to checkbox",
+        "description": "If the checkbox has a validation error, use aria-describedby to link the error message to the checkbox"
+      }
+    ],
+    "avoid": [
+      {
+        "id": "checkbox-div-only",
+        "title": "Using div/span without role",
+        "description": "Don't build checkboxes from non-semantic elements without role=\"checkbox\" and proper keyboard handling"
+      },
+      {
+        "id": "checkbox-hidden-native",
+        "title": "Hiding the native checkbox without replacement",
+        "description": "Don't use display:none or visibility:hidden on a native checkbox without providing a fully accessible custom replacement"
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React Checkbox",
+      "code": "export function Checkbox({\n  id,\n  label,\n  checked,\n  onChange,\n  indeterminate = false,\n}: {\n  id: string\n  label: string\n  checked: boolean\n  onChange: (v: boolean) => void\n  indeterminate?: boolean\n}) {\n  return (\n    <label htmlFor={id}>\n      <input\n        id={id}\n        type=\"checkbox\"\n        checked={checked}\n        ref={(el) => { if (el) el.indeterminate = indeterminate }}\n        onChange={(e) => onChange(e.target.checked)}\n      />\n      {label}\n    </label>\n  )\n}"
+    },
+    "html": {
+      "label": "HTML Checkbox Group",
+      "code": "<fieldset>\n  <legend>Preferred contact methods</legend>\n  <label><input type=\"checkbox\" name=\"contact\" value=\"email\" /> Email</label>\n  <label><input type=\"checkbox\" name=\"contact\" value=\"sms\" /> SMS</label>\n</fieldset>"
+    }
+  },
+  "tests": [
+    {
+      "title": "Keyboard Toggle",
+      "steps": [
+        "Tab to the checkbox",
+        "Press Space — checkbox should toggle",
+        "Verify checked/unchecked state changes visually and programmatically"
+      ],
+      "tools": ["Keyboard only"]
+    },
+    {
+      "title": "Screen Reader State Announcement",
+      "steps": [
+        "Navigate to the checkbox",
+        "Verify label, role (checkbox), and state (checked/unchecked) are read aloud",
+        "Toggle and verify the new state is announced"
+      ],
+      "tools": ["NVDA", "VoiceOver"]
+    }
+  ],
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/", "https://www.w3.org/TR/wai-aria-1.2/#checkbox"]
+}

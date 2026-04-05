@@ -30,7 +30,7 @@ export default async function AnalyzePage({ params }: { params: Promise<{ lang: 
 
       <AnalyzeTabs
         lang={lang}
-        analyzeForm={<AnalyzeForm />}
+        analyzeForm={<AnalyzeForm lang={lang} />}
         generateForm={<GenerateForm lang={lang} />}
       />
     </div>

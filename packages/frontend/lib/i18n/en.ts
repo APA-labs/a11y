@@ -317,7 +317,13 @@ export const en: Translations = {
     title: 'AI Accessibility Tools',
     subtitle: 'Claude can generate an accessibility checklist or build an accessible React component directly, based on WCAG 2.1 AA.',
     tabAnalyze: 'Accessibility Analysis',
-    tabGenerate: 'Component Generator'
+    tabGenerate: 'Component Generator',
+    descriptionLabel: 'Component description',
+    descriptionPlaceholder: 'e.g. A toggle switch that turns notifications on and off. Located in the settings page, also used on mobile.',
+    descriptionHint: "The more detail you provide about the component's purpose, location, and usage context, the more accurate the analysis.",
+    submitButton: 'Start AI Analysis',
+    analyzing: 'Analyzing...',
+    resultTitle: 'Analysis result'
   },
   generate: {
     descriptionLabel: 'Component description',

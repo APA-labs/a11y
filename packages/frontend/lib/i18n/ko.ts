@@ -274,7 +274,13 @@ export const ko = {
     title: 'AI 접근성 도구',
     subtitle: 'Claude가 WCAG 2.1 AA 기준에 따라 접근성 체크리스트를 생성하거나, 접근성이 반영된 React 컴포넌트를 직접 만들어줍니다.',
     tabAnalyze: '접근성 분석',
-    tabGenerate: '컴포넌트 생성'
+    tabGenerate: '컴포넌트 생성',
+    descriptionLabel: '컴포넌트 설명',
+    descriptionPlaceholder: '예: 사용자가 알림을 켜고 끄는 토글 스위치. 설정 페이지 내에 위치하며 모바일 환경에서도 사용됩니다.',
+    descriptionHint: '컴포넌트의 목적, 위치, 사용 맥락을 자세히 설명할수록 정확한 분석이 가능합니다.',
+    submitButton: 'AI 분석 시작',
+    analyzing: '분석 중...',
+    resultTitle: '분석 결과'
   },
   generate: {
     descriptionLabel: '컴포넌트 설명',

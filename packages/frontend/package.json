@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@a11y/shared": "workspace:*",
+    "@anthropic-ai/sdk": "^0.80.0",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@next/third-parties": "^16.2.1",
     "@radix-ui/react-popover": "^1.1.15",
@@ -24,7 +25,8 @@
     "next": "^15.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@a11y/eslint-config": "workspace:*",
