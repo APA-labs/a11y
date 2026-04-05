@@ -19,12 +19,18 @@ function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
   const [active, setActive] = useState(false)
 
   useEffect(() => {
-    if (hidden) return
-    const container = containerRef.current
-    const text = textRef.current
-    if (!container || !text) return
-    const overflow = text.scrollWidth - container.clientWidth
-    setShift(overflow > 0 ? text.scrollWidth + 32 : 0)
+    if (hidden) {
+      setShift(0)
+      return
+    }
+    const timer = setTimeout(() => {
+      const container = containerRef.current
+      const text = textRef.current
+      if (!container || !text) return
+      const overflow = text.scrollWidth - container.clientWidth
+      setShift(overflow > 0 ? text.scrollWidth + 32 : 0)
+    }, 210)
+    return () => clearTimeout(timer)
   }, [label, hidden])
 
   const duration = Math.max(1.5, shift / 50)
