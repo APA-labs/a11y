@@ -1,6 +1,8 @@
 import { Sparkles } from 'lucide-react'
 
 import AnalyzeForm from '../../components/AnalyzeForm'
+import AnalyzeTabs from '../../components/AnalyzeTabs'
+import GenerateForm from '../../components/GenerateForm'
 
 export const metadata = {
   title: 'AI 분석 — A11y Patterns'
@@ -15,14 +17,17 @@ export default function AnalyzePage() {
             size={18}
             className='text-indigo-500'
           />
-          <h1 className='text-2xl font-bold text-slate-900'>AI 접근성 분석</h1>
+          <h1 className='text-2xl font-bold text-slate-900'>AI 접근성 도구</h1>
         </div>
         <p className='text-slate-500 text-sm leading-relaxed max-w-xl'>
-          컴포넌트를 설명하면 Claude가 WCAG 2.1 AA 기준에 따라 체크리스트, 코드 샘플, 테스트 절차를 생성합니다.
+          Claude가 WCAG 2.1 AA 기준에 따라 접근성 체크리스트를 생성하거나, 접근성이 반영된 React 컴포넌트를 직접 만들어줍니다.
         </p>
       </div>
 
-      <AnalyzeForm />
+      <AnalyzeTabs
+        analyzeForm={<AnalyzeForm />}
+        generateForm={<GenerateForm />}
+      />
     </div>
   )
 }
