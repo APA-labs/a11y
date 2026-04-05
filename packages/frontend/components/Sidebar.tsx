@@ -4,13 +4,42 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 import { Heart, Layers, MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles, Tag } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { getTranslations } from '../lib/i18n'
 import { ICON_MAP } from '../lib/pattern-icons'
 import { getPatterns } from '../lib/patterns'
 
 import type { Lang } from '../lib/i18n'
+
+function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
+  const containerRef = useRef<HTMLSpanElement>(null)
+  const [overflow, setOverflow] = useState(0)
+  const [scrolling, setScrolling] = useState(false)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (el) setOverflow(Math.max(0, el.scrollWidth - el.clientWidth))
+  }, [label])
+
+  return (
+    <span
+      ref={containerRef}
+      aria-hidden={hidden}
+      className={`whitespace-nowrap overflow-hidden transition-opacity duration-150 ${hidden ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}
+      onMouseEnter={() => overflow > 0 && setScrolling(true)}
+      onMouseLeave={() => setScrolling(false)}>
+      <span
+        className='inline-block'
+        style={{
+          transform: scrolling ? `translateX(-${overflow}px)` : 'translateX(0)',
+          transition: scrolling ? `transform ${Math.max(800, overflow * 20)}ms linear 400ms` : 'transform 300ms ease-out'
+        }}>
+        {label}
+      </span>
+    </span>
+  )
+}
 
 export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const pathname = usePathname()
@@ -51,11 +80,10 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
         aria-label={collapsed ? label : undefined}
         className={linkClass}>
         <span className={`shrink-0 ${isActive ? 'text-violet-600 dark:text-violet-300' : 'text-faint'}`}>{icon}</span>
-        <span
-          aria-hidden={collapsed}
-          className={`whitespace-nowrap overflow-hidden transition-opacity duration-150 ${collapsed ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}>
-          {label}
-        </span>
+        <MarqueeText
+          label={label}
+          hidden={collapsed}
+        />
       </Link>
     )
 
