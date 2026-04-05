@@ -14,28 +14,46 @@ import type { Lang } from '../lib/i18n'
 
 function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
   const containerRef = useRef<HTMLSpanElement>(null)
-  const [overflow, setOverflow] = useState(0)
-  const [scrolling, setScrolling] = useState(false)
+  const textRef = useRef<HTMLSpanElement>(null)
+  const [shift, setShift] = useState(0)
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
-    const el = containerRef.current
-    if (el) setOverflow(Math.max(0, el.scrollWidth - el.clientWidth))
-  }, [label])
+    if (hidden) return
+    const container = containerRef.current
+    const text = textRef.current
+    if (!container || !text) return
+    const overflow = text.scrollWidth - container.clientWidth
+    setShift(overflow > 0 ? text.scrollWidth + 32 : 0)
+  }, [label, hidden])
+
+  const duration = Math.max(1.5, shift / 50)
 
   return (
     <span
       ref={containerRef}
       aria-hidden={hidden}
-      className={`whitespace-nowrap overflow-hidden transition-opacity duration-150 ${hidden ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}
-      onMouseEnter={() => overflow > 0 && setScrolling(true)}
-      onMouseLeave={() => setScrolling(false)}>
+      className={`overflow-hidden block transition-opacity duration-150 ${hidden ? 'w-0 opacity-0' : 'opacity-100 delay-100'}`}
+      onMouseEnter={() => shift > 0 && setActive(true)}
+      onMouseLeave={() => setActive(false)}>
       <span
-        className='inline-block'
-        style={{
-          transform: scrolling ? `translateX(-${overflow}px)` : 'translateX(0)',
-          transition: scrolling ? `transform ${Math.max(800, overflow * 20)}ms linear 400ms` : 'transform 300ms ease-out'
-        }}>
-        {label}
+        className='inline-flex whitespace-nowrap'
+        style={
+          active
+            ? ({
+                '--marquee-shift': `-${shift}px`,
+                animation: `sidebar-marquee ${duration}s linear infinite`
+              } as React.CSSProperties)
+            : undefined
+        }>
+        <span ref={textRef}>{label}</span>
+        {shift > 0 && (
+          <span
+            className='pl-8'
+            aria-hidden='true'>
+            {label}
+          </span>
+        )}
       </span>
     </span>
   )
