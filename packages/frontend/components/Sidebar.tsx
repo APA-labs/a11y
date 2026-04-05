@@ -65,7 +65,7 @@ function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
   )
 }
 
-export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
+export default function Sidebar({ lang }: { lang: Lang }) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const t = getTranslations(lang)
@@ -189,14 +189,12 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
             </ul>
           </div>
 
-          {aiEnabled && (
-            <div>
-              <SectionLabel>{t.nav.tools}</SectionLabel>
-              <ul className='space-y-0.5'>
-                <li>{navItem(`/${lang}/analyze`, <Sparkles size={14} />, t.nav.aiAnalyze)}</li>
-              </ul>
-            </div>
-          )}
+          <div>
+            <SectionLabel>{t.nav.tools}</SectionLabel>
+            <ul className='space-y-0.5'>
+              <li>{navItem(`/${lang}/analyze`, <Sparkles size={14} />, t.nav.aiAnalyze)}</li>
+            </ul>
+          </div>
         </nav>
 
         <div className='h-4 shrink-0' />

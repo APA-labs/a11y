@@ -14,7 +14,7 @@ import { getPatterns } from '../lib/patterns'
 
 import type { Lang } from '../lib/i18n'
 
-export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
+export default function Header({ lang }: { lang: Lang }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [cmdOpen, setCmdOpen] = useState(false)
   const pathname = usePathname()
@@ -170,27 +170,25 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
             </ul>
           </section>
 
-          {aiEnabled && (
-            <section>
-              <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-faint'>{t.nav.tools}</p>
-              <ul className='space-y-0.5'>
-                <li>
-                  <Link
-                    href={`/${lang}/analyze`}
-                    className={`
-                      flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
-                      ${isActive('/analyze') ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-300' : 'text-soft hover:bg-inset hover:text-body'}
-                    `}>
-                    <Sparkles
-                      size={14}
-                      className={isActive('/analyze') ? 'text-violet-600 dark:text-violet-300' : 'text-faint'}
-                    />
-                    {t.nav.aiAnalyze}
-                  </Link>
-                </li>
-              </ul>
-            </section>
-          )}
+          <section>
+            <p className='px-2 mb-1.5 text-xs font-semibold uppercase tracking-wider text-faint'>{t.nav.tools}</p>
+            <ul className='space-y-0.5'>
+              <li>
+                <Link
+                  href={`/${lang}/analyze`}
+                  className={`
+                    flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm transition-colors
+                    ${isActive('/analyze') ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-300' : 'text-soft hover:bg-inset hover:text-body'}
+                  `}>
+                  <Sparkles
+                    size={14}
+                    className={isActive('/analyze') ? 'text-violet-600 dark:text-violet-300' : 'text-faint'}
+                  />
+                  {t.nav.aiAnalyze}
+                </Link>
+              </li>
+            </ul>
+          </section>
         </div>
       </nav>
 
