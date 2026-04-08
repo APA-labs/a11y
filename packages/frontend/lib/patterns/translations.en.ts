@@ -271,6 +271,120 @@ export const patternTranslationsEn: Record<string, PatternT> = {
     }
   },
 
+  badge: {
+    description: 'A non-interactive indicator attached to another element to show status or a count',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'Accessible name on the host element',
+            description:
+              'Provide an aria-label on the element that owns the badge (icon button, avatar). The numeric badge alone does not convey meaning.'
+          },
+          {
+            title: 'Include units in the count',
+            description: 'Use phrases like "3 unread notifications" instead of bare numbers so the label has meaningful context.'
+          },
+          {
+            title: 'Do not rely on color alone',
+            description:
+              'Never use color alone to distinguish success / error / warning states. Always pair color with text or an accessible name (WCAG 1.4.1).'
+          }
+        ],
+        should: [
+          {
+            title: 'Mark decorative badges aria-hidden',
+            description: 'Dot badges that are purely visual should use aria-hidden="true" while the meaning is carried by the parent element.'
+          },
+          {
+            title: 'Use a live region for dynamic badges',
+            description: 'When the count updates in real time, announce changes with role="status" or aria-live="polite".'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Avoid duplicate announcements',
+            description: 'Do not expose the badge text to assistive tech when the parent label already contains the same information.'
+          },
+          {
+            title: 'Do not convey status with color only',
+            description: 'Colored dots without a visible text label are unreadable for color-blind users.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Add aria-label on the parent element',
+            description: 'MUI does not reliably announce badgeContent. Put the full meaning on the wrapping IconButton or button via aria-label.'
+          },
+          {
+            title: 'variant="dot" needs non-color cues',
+            description: 'Dot badges carry no text, so repeat the state in the parent aria-label.'
+          },
+          {
+            title: 'Decide whether to show zero',
+            description: 'badgeContent={0} is hidden by default. Opt in with showZero when 0 should still be visible.'
+          }
+        ],
+        notes: [
+          'MUI Badge badgeContent is visual-only; always provide the full context via aria-label on the parent IconButton / button.',
+          'The max prop automatically renders overflow indicators like "99+".',
+          'For variant="dot", color alone carries the state. Provide an aria-label with the meaning so screen reader users are not left guessing.',
+          'badgeContent={0} is hidden by default. Use showZero if zero must still be displayed.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Use the title prop to strengthen the name',
+            description: "Ant Badge's title prop forwards to the native title attribute and helps assistive tech and hover users."
+          },
+          {
+            title: 'Pair status/color badges with a text label',
+            description: 'Prefer <Badge status="success" text="Ready" />. Status color alone is not enough for color-blind users.'
+          },
+          {
+            title: 'Include Ribbon content in accessible names',
+            description: 'If Badge.Ribbon is decorative, duplicate its text in the parent card or button aria-label.'
+          }
+        ],
+        notes: [
+          'Always pass a descriptive title prop to Ant Badge when using the count variant.',
+          'The status + text combination is mandatory for color-blind accessibility — never use status on its own.',
+          'overflowCount defaults to 99 and renders "99+" automatically for larger values.',
+          'Dot badges (boolean dot prop) require a parent aria-label that describes the state.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Chakra Badge is a text component',
+            description:
+              'Chakra v3 Badge renders its children as the visible label. When used standalone, the text itself is the accessible name — use meaningful words.'
+          },
+          {
+            title: 'colorPalette alone is not enough',
+            description: "Don't rely on colorPalette='red' to mean error. Always include a text label like 'Error' or 'Draft' (WCAG 1.4.1)."
+          },
+          {
+            title: 'Wrap count badges with an accessible name',
+            description:
+              'If you use Chakra Badge as a floating count over an IconButton, add aria-label to the wrapping button that contains the full meaning.'
+          }
+        ],
+        notes: [
+          'Chakra v3 Badge is a simple label component. Its children text becomes the accessible name — use clear words like "Ready" or "Failed".',
+          'colorPalette only changes visual style. Screen readers cannot perceive color, so always encode meaning in the text.',
+          'variant can be solid / subtle / outline / surface / plain.',
+          'When composing a count badge (number + icon), add aria-label on the wrapping button that conveys the full context.'
+        ]
+      }
+    }
+  },
+
   breadcrumb: {
     description: 'A navigation component showing the hierarchical location of the current page',
     baseline: {
@@ -599,6 +713,152 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Checkbox.Root renders a <button role="checkbox"> by default, with aria-checked managed automatically.',
           'Checkbox.Indicator only renders when the checkbox is checked.',
           'Use CheckboxGroup to manage multiple checkboxes as a group.'
+        ]
+      }
+    }
+  },
+
+  chip: {
+    description: 'An interactive tag or chip component for selection, filtering, or removal',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'Interactive chips must be buttons',
+            description: 'Clickable / removable chips must render as <button> or role="button" and participate in the Tab sequence.'
+          },
+          {
+            title: 'Label the remove button',
+            description: 'Icon-only remove buttons must expose an accessible name like aria-label="Remove <tag name>".'
+          },
+          {
+            title: 'Group chips with a role and label',
+            description:
+              'When multiple chips are grouped together, use role="group" or role="listbox" with an aria-label that states the group purpose.'
+          },
+          {
+            title: 'Keyboard interaction',
+            description: 'Enter/Space must activate the chip, and removable chips must support Backspace/Delete while focused.'
+          }
+        ],
+        should: [
+          {
+            title: 'Move focus after deletion',
+            description: 'After removing a chip, shift focus to an adjacent chip or the parent container so focus is never lost.'
+          },
+          {
+            title: 'Expose selection state',
+            description: 'Selectable chips must announce state via aria-pressed or aria-selected.'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Do not conflate click and delete',
+            description:
+              'A single chip should not both toggle selection and trigger deletion on the same click. Delete actions belong in a dedicated button.'
+          },
+          {
+            title: 'Icon-only buttons need an accessible name',
+            description: 'A × glyph with no aria-label leaves screen reader users without any indication of the action.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'onDelete / onClick enable button semantics automatically',
+            description:
+              'MUI Chip participates in the Tab order and handles Backspace/Delete when onDelete is provided. These behaviors are built in, so rely on them rather than reimplementing.'
+          },
+          {
+            title: 'Verify custom deleteIcon labels',
+            description:
+              'A custom deleteIcon may drop the default accessible name. Provide an aria-label on the Chip itself so the removal target is still clear.'
+          },
+          {
+            title: 'Never rely on color alone',
+            description: 'Do not use the color prop (primary/success/error) as the sole way to communicate state; pair it with a text label or icon.'
+          }
+        ],
+        notes: [
+          "Adding onClick or onDelete to a MUI Chip automatically includes it in the Tab order and gives it role='button' semantics.",
+          'While focused, Backspace and Delete invoke onDelete, and Escape blurs the chip (built-in MUI behavior).',
+          'Default delete icon labels vary by language. Add an aria-label on the Chip or embed the meaning in the label itself for clarity.',
+          'Give the Stack role="group" and an aria-label so assistive tech announces the chip group as a single named region.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Closable Tag requires an accessible name',
+            description:
+              "Ant Tag's default close icon may lack an accessible name. Customize closeIcon and provide an aria-label that references the tag content."
+          },
+          {
+            title: 'Verify CheckableTag semantics',
+            description:
+              "Tag.CheckableTag toggles its checked state on click and internally sets role='checkbox' with aria-checked. Provide an aria-label on the group container for context."
+          },
+          {
+            title: 'Do not communicate state with color alone',
+            description: 'Always include a text label — color cannot carry status meaning on its own.'
+          }
+        ],
+        notes: [
+          "Ant Tag's closable prop renders a default close button. Replace it with a custom closeIcon that includes an explicit aria-label when needed.",
+          'Call e.preventDefault() inside onClose to block the default close behavior and drive state manually.',
+          'Use Tag.CheckableTag for selection-style chips; control state with checked / onChange.',
+          'Wrap tags in Space (role="group") with an aria-label to communicate the purpose of the group.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Label Tag.CloseTrigger',
+            description:
+              'Chakra v3 Tag.CloseTrigger renders as a button. Because only an icon is visible, provide an explicit aria-label that names the chip being removed.'
+          },
+          {
+            title: 'Use meaningful Tag.Label text',
+            description: 'Tag.Label is the visible text of the chip. Encode the meaning in the label rather than relying on color or icons alone.'
+          },
+          {
+            title: 'Group containers need a role and label',
+            description: 'Add role="group" and aria-label to the Wrap / HStack wrapping multiple tags so the purpose of the group is announced.'
+          }
+        ],
+        notes: [
+          'Chakra v3 Tag uses the Tag.Root / Tag.Label / Tag.StartElement / Tag.EndElement / Tag.CloseTrigger namespace.',
+          'Tag.CloseTrigger renders a button internally; an aria-label is mandatory because only an icon is visible.',
+          'colorPalette and variant (subtle / solid / outline / surface) affect appearance only. The meaning must live in Tag.Label.',
+          'Give the HStack/Wrap role="group" and aria-label so the chip collection reads as a single named region.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          {
+            title: 'TagGroup requires an aria-label',
+            description:
+              'React Aria TagGroup is a focusable list. Always set <TagGroup aria-label="..."> (or use a <Label>) so screen readers announce the group.'
+          },
+          {
+            title: 'onRemove enables keyboard deletion',
+            description:
+              'Without an onRemove prop, Backspace / Delete will not remove tags — the key handlers are wired up when the callback is present.'
+          },
+          {
+            title: 'Declare selection semantics explicitly',
+            description: "Use selectionMode='single' or 'multiple' to wire aria-selected. Stick with 'none' for plain lists."
+          }
+        ],
+        notes: [
+          'TagGroup is a focusable list that automatically provides arrow-key navigation.',
+          'Backspace / Delete only trigger removal when onRemove is provided; without it, keyboard deletion does not work.',
+          'A Button with slot="remove" is auto-recognized as the delete trigger. Still provide an aria-label so the target is explicit.',
+          "selectionMode='single' or 'multiple' wires aria-selected automatically.",
+          'The Label component connects aria-labelledby automatically. You can also pass aria-label directly on TagGroup.'
         ]
       }
     }

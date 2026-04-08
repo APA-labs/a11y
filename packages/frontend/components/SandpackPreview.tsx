@@ -439,6 +439,30 @@ const PATTERN_CSS: Record<string, string> = {
 [data-selected] .switch-thumb-sm { transform: translateX(18px); }
 .btn-toggle[data-selected] { background: #e03; color: white; border-color: #e03; }
 `,
+  badge: `
+/* Badge */
+.badge-wrap { position: relative; display: inline-flex; }
+.badge-icon { width: 40px; height: 40px; border-radius: 8px; border: 1px solid #d1d5db; background: white; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
+.badge-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9999px; background: #dc2626; color: #fff; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.badge-dot { position: absolute; top: 2px; right: 2px; width: 8px; height: 8px; border-radius: 50%; background: #dc2626; }
+.badge-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.badge-status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.badge-status-dot.success { background: #16a34a; }
+.badge-status-dot.error { background: #dc2626; }
+.badge-status-dot.warning { background: #d97706; }
+`,
+  chip: `
+/* Chip / Tag */
+.chip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; border: 1px solid #d1d5db; background: #f3f4f6; color: #111; font-size: 13px; }
+.chip-btn { cursor: pointer; font: inherit; }
+.chip-btn:hover { background: #e5e7eb; }
+.chip-btn:focus-visible { outline: 2px solid #18181b; outline-offset: 2px; }
+.chip[data-selected="true"] { background: #18181b; color: #fff; border-color: #18181b; }
+.chip-remove { border: none; background: transparent; cursor: pointer; padding: 0; width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: inherit; font-size: 14px; line-height: 1; }
+.chip-remove:hover { background: rgba(0,0,0,0.12); }
+.chip-remove:focus-visible { outline: 2px solid #18181b; outline-offset: 1px; }
+`,
   tooltip: `
 /* Tooltip */
 .tooltip-wrapper { position: relative; display: inline-block; }

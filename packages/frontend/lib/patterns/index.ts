@@ -1,8 +1,10 @@
 import { accordionPattern } from './accordion'
 import { alertPattern } from './alert'
+import { badgePattern } from './badge'
 import { breadcrumbPattern } from './breadcrumb'
 import { buttonPattern } from './button'
 import { checkboxPattern } from './checkbox'
+import { chipPattern } from './chip'
 import { comboboxPattern } from './combobox'
 import { datePickerPattern } from './date-picker'
 import { disclosurePattern } from './disclosure'
@@ -27,9 +29,11 @@ import type { Pattern } from '../types'
 export const patterns: Pattern[] = [
   accordionPattern,
   alertPattern,
+  badgePattern,
   breadcrumbPattern,
   buttonPattern,
   checkboxPattern,
+  chipPattern,
   comboboxPattern,
   datePickerPattern,
   disclosurePattern,
