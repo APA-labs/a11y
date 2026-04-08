@@ -178,6 +178,18 @@
       "name": "Toolbar",
       "description": "Container grouping related action controls with arrow key navigation",
       "keywords": ["toolbar", "action bar", "button group", "formatting", "editor toolbar", "controls", "tool group"]
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "description": "Status indicator or count badge attached to another element",
+      "keywords": ["badge", "notification count", "indicator", "dot", "unread", "status badge", "ribbon", "counter"]
+    },
+    {
+      "id": "chip",
+      "name": "Chip / Tag",
+      "description": "Interactive tag/chip for selection, filtering, or removal",
+      "keywords": ["chip", "tag", "taggroup", "token", "pill", "filter tag", "removable", "closable", "keyword"]
     }
   ]
 }

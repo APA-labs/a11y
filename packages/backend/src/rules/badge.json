@@ -1,0 +1,74 @@
+{
+  "pattern": "Badge",
+  "wcagLevel": "A",
+  "checklist": {
+    "must": [
+      {
+        "id": "badge-aria-label",
+        "title": "스크린리더 접근명 제공",
+        "description": "배지의 숫자/점만으로는 의미가 전달되지 않습니다. 배지를 감싸는 요소에 aria-label로 전체 의미를 제공하세요. (예: aria-label=\"3 unread notifications\")"
+      },
+      {
+        "id": "badge-not-color-only",
+        "title": "색상만으로 의미 전달 금지",
+        "description": "상태(success/error/warning)를 색상만으로 구분하지 말고 텍스트/아이콘/접근명을 함께 제공하세요. (WCAG 1.4.1)"
+      },
+      {
+        "id": "badge-meaningful-count",
+        "title": "카운트에 단위 포함",
+        "description": "숫자 배지는 접근명에 단위를 포함해야 합니다. '3' 대신 '3 unread messages'처럼 의미 있는 문자열로 제공하세요."
+      }
+    ],
+    "should": [
+      {
+        "id": "badge-dot-aria-hidden",
+        "title": "점(dot) 배지는 aria-hidden",
+        "description": "시각 장식용 dot 배지는 aria-hidden=\"true\"로 처리하고, 상위 요소에서 의미를 전달하세요."
+      },
+      {
+        "id": "badge-live-region",
+        "title": "동적 배지 live region 고려",
+        "description": "배지 카운트가 실시간으로 변하는 경우 role=\"status\" 또는 aria-live=\"polite\"로 변경을 알리세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "badge-decorative-announce",
+        "title": "장식용 배지 중복 안내 금지",
+        "description": "순수 장식 배지(예: new 표시)를 스크린리더에 중복으로 읽게 하지 마세요. aria-hidden을 활용하세요."
+      },
+      {
+        "id": "badge-color-only-status",
+        "title": "색만으로 상태 구분 금지",
+        "description": "green/red 배지로만 success/error를 구분하지 말고 텍스트 라벨을 함께 제공하세요."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React Badge",
+      "code": "interface InboxBadgeProps {\n  count: number\n}\n\nexport const InboxBadge = ({ count }: InboxBadgeProps) => (\n  <button\n    type=\"button\"\n    aria-label={`Inbox, ${count} unread messages`}\n  >\n    <span aria-hidden=\"true\">📥</span>\n    {count > 0 && (\n      <span aria-hidden=\"true\" className=\"badge\">\n        {count > 99 ? '99+' : count}\n      </span>\n    )}\n  </button>\n)"
+    },
+    "html": {
+      "label": "HTML Badge",
+      "code": "<button type=\"button\" aria-label=\"Inbox, 3 unread messages\">\n  <span aria-hidden=\"true\">📥</span>\n  <span aria-hidden=\"true\" class=\"badge\">3</span>\n</button>"
+    }
+  },
+  "tests": [
+    {
+      "title": "배지 접근명 검증",
+      "steps": [
+        "스크린리더(NVDA/VoiceOver) 실행",
+        "배지가 포함된 요소로 포커스 이동",
+        "숫자/상태가 의미 있는 문장으로 읽히는지 확인",
+        "색상을 회색조로 변환한 뒤에도 상태를 식별할 수 있는지 확인"
+      ],
+      "tools": ["NVDA", "VoiceOver"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html",
+    "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label",
+    "https://mui.com/material-ui/react-badge/#accessibility"
+  ]
+}
