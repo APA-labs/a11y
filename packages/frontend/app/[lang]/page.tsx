@@ -48,7 +48,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
           <p className='text-3xl font-bold text-amber-500 dark:text-amber-400'>{totalShould}</p>
           <p className='text-xs text-soft mt-1 uppercase tracking-wider'>Should Rules</p>
         </div>
-        {process.env.ANTHROPIC_API_KEY && (
+        {process.env.NEXT_PUBLIC_AI_ENABLED === 'true' && (
           <div className='ml-auto'>
             <Link
               href={`/${lang}/analyze`}
