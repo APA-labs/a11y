@@ -65,7 +65,7 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@radix-ui/react-slot': '1.0.2',
     '@radix-ui/react-label': '2.0.2'
   },
-  antd: { antd: '5.16.4', dayjs: '1.11.10', '@ant-design/icons': '5.3.6' },
+  antd: { antd: '5.23.4', dayjs: '1.11.10', '@ant-design/icons': '5.6.1', 'rc-util': '5.44.3' },
   '@chakra-ui': {
     '@chakra-ui/react': '3.34.0',
     '@emotion/react': '11.14.0',
