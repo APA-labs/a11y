@@ -72,16 +72,16 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@emotion/styled': '11.14.0'
   },
   '@adobe/react-spectrum': {
-    '@adobe/react-spectrum': '3.39.1',
-    'react-aria-components': '1.7.1',
-    '@react-aria/utils': '3.27.0',
-    '@react-stately/data': '3.12.1'
+    '@adobe/react-spectrum': '3.46.2',
+    'react-aria-components': '1.16.0',
+    '@react-aria/utils': '3.33.1',
+    '@react-stately/data': '3.15.2'
   },
   'react-aria-components': {
-    'react-aria-components': '1.7.1',
-    '@adobe/react-spectrum': '3.39.1',
-    '@react-aria/utils': '3.27.0',
-    '@react-stately/data': '3.12.1'
+    'react-aria-components': '1.16.0',
+    '@adobe/react-spectrum': '3.46.2',
+    '@react-aria/utils': '3.33.1',
+    '@react-stately/data': '3.15.2'
   },
   'react-hook-form': {
     'react-hook-form': '7.51.0',
