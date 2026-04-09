@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const togglePattern: Pattern = {
   slug: 'toggle',
   name: 'Toggle / Switch',
-  description: '두 가지 상태(on/off) 사이를 전환하는 컨트롤',
+  description: '두 가지 상태(on/off) 사이를 전환하는 컴포넌트',
   wcagCriteria: ['1.3.1 Info and Relationships', '2.1.1 Keyboard', '4.1.2 Name, Role, Value'],
   tags: ['form', 'interactive', 'state'],
   baseline: {

@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const radioGroupPattern: Pattern = {
   slug: 'radio-group',
   name: 'Radio Group',
-  description: '여러 옵션 중 하나를 선택하는 라디오 버튼 그룹',
+  description: '여러 옵션 중 하나를 선택하는 라디오 버튼 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value', '1.3.1 Info and Relationships'],
   tags: ['form', 'interactive', 'selection'],
   baseline: {
@@ -127,24 +127,32 @@ export function RadioGroup({ legend }: { legend: string }) {
       codeSample: {
         language: 'tsx',
         label: 'MUI Radio Group',
-        code: `import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
-<FormControl>
-  <FormLabel id='shipping-label'>Shipping Speed</FormLabel>
-  <RadioGroup
-    aria-labelledby='shipping-label'
-    defaultValue='standard'>
-    <FormControlLabel
-      value='standard'
-      control={<Radio />}
-      label='Standard shipping (3–5 days)'
-    />
-    <FormControlLabel
-      value='express'
-      control={<Radio />}
-      label='Express shipping (1–2 days)'
-    />
-  </RadioGroup>
-</FormControl>`
+        code: `import './index.css'
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
+
+export default function App() {
+  return (
+    <div className='app'>
+      <FormControl>
+        <FormLabel id='shipping-label'>Shipping Speed</FormLabel>
+        <RadioGroup
+          aria-labelledby='shipping-label'
+          defaultValue='standard'>
+          <FormControlLabel
+            value='standard'
+            control={<Radio />}
+            label='Standard shipping (3–5 days)'
+          />
+          <FormControlLabel
+            value='express'
+            control={<Radio />}
+            label='Express shipping (1–2 days)'
+          />
+        </RadioGroup>
+      </FormControl>
+    </div>
+  )
+}`
       },
       notes: [
         'MUI RadioGroup은 roving tabindex와 화살표 키 탐색을 자동으로 처리합니다.',
@@ -166,28 +174,34 @@ export function RadioGroup({ legend }: { legend: string }) {
       codeSample: {
         language: 'tsx',
         label: 'Radix Radio Group',
-        code: `import * as RadioGroup from '@radix-ui/react-radio-group'
+        code: `import './index.css'
+import * as RadioGroup from '@radix-ui/react-radio-group'
 
-export function RadixRadioGroup() {
+export default function App() {
   return (
-    <RadioGroup.Root
-      defaultValue='standard'
-      aria-label='Shipping speed'>
-      <div className='stack gap-8'>
-        <label>
-          <RadioGroup.Item value='standard'>
-            <RadioGroup.Indicator />
+    <div className='app'>
+      <RadioGroup.Root
+        defaultValue='standard'
+        aria-label='Shipping speed'
+        className='stack gap-8'>
+        <label className='row'>
+          <RadioGroup.Item
+            value='standard'
+            className='radio-btn'>
+            <RadioGroup.Indicator className='radio-indicator' />
           </RadioGroup.Item>
           Standard shipping
         </label>
-        <label>
-          <RadioGroup.Item value='express'>
-            <RadioGroup.Indicator />
+        <label className='row'>
+          <RadioGroup.Item
+            value='express'
+            className='radio-btn'>
+            <RadioGroup.Indicator className='radio-indicator' />
           </RadioGroup.Item>
           Express shipping
         </label>
-      </div>
-    </RadioGroup.Root>
+      </RadioGroup.Root>
+    </div>
   )
 }`
       },
@@ -211,21 +225,30 @@ export function RadixRadioGroup() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Radio Group',
-        code: `import { Radio } from 'antd'
+        code: `import './index.css'
+import { Radio } from 'antd'
 
-const OPTIONS = [
-{ label: 'Standard shipping', value: 'standard' },
-{ label: 'Express shipping', value: 'express' },
-]
+export default function App() {
+  const OPTIONS = [
+    { label: 'Standard shipping', value: 'standard' },
+    { label: 'Express shipping', value: 'express' }
+  ]
 
-<div>
-<p id="shipping-label">Shipping speed</p>
-<Radio.Group
-  options={OPTIONS}
-  defaultValue="standard"
-  aria-labelledby="shipping-label"
-/>
-</div>`
+  return (
+    <div className='app'>
+      <p
+        id='shipping-label'
+        className='label mb-8'>
+        Shipping speed
+      </p>
+      <Radio.Group
+        options={OPTIONS}
+        defaultValue='standard'
+        aria-labelledby='shipping-label'
+      />
+    </div>
+  )
+}`
       },
       notes: [
         'Ant Design Radio.Group은 네이티브 input을 사용해 기본 접근성을 유지합니다.',
@@ -247,33 +270,38 @@ const OPTIONS = [
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI RadioGroup',
-        code: `import { RadioGroup, HStack } from '@chakra-ui/react'
+        code: `import './index.css'
+import { useState } from 'react'
+import { RadioGroup, HStack } from '@chakra-ui/react'
 
-function RadioDemo() {
+export default function App() {
   const [value, setValue] = useState('option-1')
+
   return (
-    <RadioGroup.Root
-      value={value}
-      onValueChange={(e) => setValue(e.value)}
-      aria-label='Select option'>
-      <HStack gap={4}>
-        <RadioGroup.Item value='option-1'>
-          <RadioGroup.ItemHiddenInput />
-          <RadioGroup.ItemIndicator />
-          <RadioGroup.ItemText>Option 1</RadioGroup.ItemText>
-        </RadioGroup.Item>
-        <RadioGroup.Item value='option-2'>
-          <RadioGroup.ItemHiddenInput />
-          <RadioGroup.ItemIndicator />
-          <RadioGroup.ItemText>Option 2</RadioGroup.ItemText>
-        </RadioGroup.Item>
-        <RadioGroup.Item value='option-3'>
-          <RadioGroup.ItemHiddenInput />
-          <RadioGroup.ItemIndicator />
-          <RadioGroup.ItemText>Option 3</RadioGroup.ItemText>
-        </RadioGroup.Item>
-      </HStack>
-    </RadioGroup.Root>
+    <div className='app'>
+      <RadioGroup.Root
+        value={value}
+        onValueChange={(e) => setValue(e.value)}
+        aria-label='Select option'>
+        <HStack gap={4}>
+          <RadioGroup.Item value='option-1'>
+            <RadioGroup.ItemHiddenInput />
+            <RadioGroup.ItemIndicator />
+            <RadioGroup.ItemText>Option 1</RadioGroup.ItemText>
+          </RadioGroup.Item>
+          <RadioGroup.Item value='option-2'>
+            <RadioGroup.ItemHiddenInput />
+            <RadioGroup.ItemIndicator />
+            <RadioGroup.ItemText>Option 2</RadioGroup.ItemText>
+          </RadioGroup.Item>
+          <RadioGroup.Item value='option-3'>
+            <RadioGroup.ItemHiddenInput />
+            <RadioGroup.ItemIndicator />
+            <RadioGroup.ItemText>Option 3</RadioGroup.ItemText>
+          </RadioGroup.Item>
+        </HStack>
+      </RadioGroup.Root>
+    </div>
   )
 }`
       },
@@ -291,19 +319,24 @@ function RadioDemo() {
       codeSample: {
         language: 'tsx',
         label: 'React Spectrum RadioGroup',
-        code: `import { RadioGroup, Radio } from '@adobe/react-spectrum'
+        code: `import './index.css'
+import { useState } from 'react'
+import { RadioGroup, Radio } from '@adobe/react-spectrum'
 
-function RadioDemo() {
+export default function App() {
   const [value, setValue] = useState('option-1')
+
   return (
-    <RadioGroup
-      label='Select option'
-      value={value}
-      onChange={setValue}>
-      <Radio value='option-1'>Option 1</Radio>
-      <Radio value='option-2'>Option 2</Radio>
-      <Radio value='option-3'>Option 3</Radio>
-    </RadioGroup>
+    <div className='app'>
+      <RadioGroup
+        label='Select option'
+        value={value}
+        onChange={setValue}>
+        <Radio value='option-1'>Option 1</Radio>
+        <Radio value='option-2'>Option 2</Radio>
+        <Radio value='option-3'>Option 3</Radio>
+      </RadioGroup>
+    </div>
   )
 }`
       },
@@ -338,8 +371,8 @@ function RadioDemo() {
         label: 'Base UI RadioGroup',
         code: `import './index.css'
 import { useState } from 'react'
-import { RadioGroup } from '@base-ui-components/react/radio-group'
-import { Radio } from '@base-ui-components/react/radio'
+import { RadioGroup } from '@base-ui/react/radio-group'
+import { Radio } from '@base-ui/react/radio'
 
 const options = [
   { value: 'email', label: '이메일' },

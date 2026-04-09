@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const badgePattern: Pattern = {
   slug: 'badge',
   name: 'Badge',
-  description: '다른 요소에 부착되어 상태/카운트를 시각적으로 나타내는 비인터랙티브 인디케이터',
+  description: '다른 요소에 부착되어 상태/카운트를 시각적으로 나타내는 컴포넌트',
   wcagCriteria: ['1.1.1 Non-text Content', '1.4.1 Use of Color', '4.1.2 Name, Role, Value'],
   tags: ['status', 'indicator', 'notification'],
   baseline: {

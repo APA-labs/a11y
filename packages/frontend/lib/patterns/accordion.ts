@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const accordionPattern: Pattern = {
   slug: 'accordion',
   name: 'Accordion',
-  description: '섹션별로 콘텐츠를 접고 펼칠 수 있는 패턴',
+  description: '섹션별로 콘텐츠를 접고 펼칠 수 있는 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value', '1.3.1 Info and Relationships'],
   tags: ['content', 'interactive', 'collapsible'],
   baseline: {

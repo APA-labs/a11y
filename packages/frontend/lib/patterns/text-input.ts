@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const textInputPattern: Pattern = {
   slug: 'text-input',
   name: 'Text Input',
-  description: '사용자가 텍스트를 입력하는 폼 컨트롤',
+  description: '사용자가 텍스트를 입력하는 폼 입력 컴포넌트',
   wcagCriteria: ['1.3.1 Info and Relationships', '1.4.3 Contrast', '2.1.1 Keyboard', '3.3.1 Error Identification', '3.3.2 Labels or Instructions'],
   tags: ['form', 'input', 'interactive'],
   baseline: {

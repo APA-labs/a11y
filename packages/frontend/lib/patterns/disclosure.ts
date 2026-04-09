@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const disclosurePattern: Pattern = {
   slug: 'disclosure',
   name: 'Disclosure',
-  description: '버튼 클릭으로 콘텐츠를 표시하거나 숨기는 패턴',
+  description: '버튼 클릭으로 콘텐츠를 표시하거나 숨기는 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value'],
   tags: ['interactive', 'content', 'toggle'],
   baseline: {

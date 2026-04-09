@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const tooltipPattern: Pattern = {
   slug: 'tooltip',
   name: 'Tooltip',
-  description: '요소에 추가 설명을 제공하는 팝업 텍스트 패턴',
+  description: '요소에 추가 설명을 제공하는 팝업 텍스트 컴포넌트',
   wcagCriteria: ['1.4.13 Content on Hover or Focus', '4.1.2 Name, Role, Value'],
   tags: ['overlay', 'informational', 'hover'],
   baseline: {

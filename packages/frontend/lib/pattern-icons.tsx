@@ -1,5 +1,6 @@
 import {
   Bell,
+  BellRing,
   BookOpen,
   Calendar,
   ChevronDown,
@@ -17,6 +18,7 @@ import {
   PanelRight,
   PanelTop,
   Search,
+  ShieldAlert,
   ShieldCheck,
   Slash,
   Sliders,
@@ -40,6 +42,8 @@ export const ICON_MAP: Record<string, React.ReactNode> = {
   'radio-group': <CircleDot size={14} />,
   link: <Link2 size={14} />,
   alert: <Bell size={14} />,
+  toast: <BellRing size={14} />,
+  'alert-dialog': <ShieldAlert size={14} />,
   select: <ChevronsUpDown size={14} />,
   breadcrumb: <Slash size={14} />,
   pagination: <GalleryHorizontal size={14} />,

@@ -114,7 +114,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'MUI Breadcrumbs',
-        code: `import { Breadcrumbs, Link, Typography } from '@mui/material'
+        code: `import './index.css'
+import { Breadcrumbs, Link, Typography } from '@mui/material'
 
 export default function App() {
   return (
@@ -167,7 +168,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Breadcrumb',
-        code: `import { Breadcrumb } from 'antd'
+        code: `import './index.css'
+import { Breadcrumb } from 'antd'
 
 export default function App() {
   return (
@@ -208,7 +210,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Breadcrumb',
-        code: `import { Breadcrumb } from '@chakra-ui/react'
+        code: `import './index.css'
+import { Breadcrumb } from '@chakra-ui/react'
 
 export default function App() {
   return (
@@ -244,7 +247,8 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Spectrum Breadcrumbs',
-        code: `import { Breadcrumbs, Item } from '@adobe/react-spectrum'
+        code: `import './index.css'
+import { Breadcrumbs, Item } from '@adobe/react-spectrum'
 
 export default function App() {
   return (
