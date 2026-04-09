@@ -35,6 +35,7 @@ const KNOWN_DEPS = new Set([
   // antd
   'antd',
   'dayjs',
+  '@ant-design/icons',
   // Chakra UI
   '@chakra-ui/react',
   'framer-motion',

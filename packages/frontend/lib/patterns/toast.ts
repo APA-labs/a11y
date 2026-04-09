@@ -311,15 +311,15 @@ export default function App() {
         language: 'tsx',
         label: 'Chakra UI Toaster',
         code: `import './index.css'
-import { Button, Toaster, toaster } from '@chakra-ui/react'
+import { Button, createToaster } from '@chakra-ui/react'
+
+const toaster = createToaster({ placement: 'top-end', duration: 5000 })
 
 export default function App() {
   const showToast = () => {
-    toaster.create({
+    toaster.success({
       title: 'Saved',
-      description: 'Your changes have been saved successfully.',
-      type: 'success',
-      duration: 5000
+      description: 'Your changes have been saved successfully.'
     })
   }
 
@@ -330,7 +330,7 @@ export default function App() {
         onClick={showToast}>
         Save
       </Button>
-      <Toaster />
+      <toaster.Toaster />
     </div>
   )
 }`
@@ -421,7 +421,7 @@ export default function App() {
         language: 'tsx',
         label: 'React Aria Toast',
         code: `import './index.css'
-import { UNSTABLE_ToastRegion as ToastRegion, UNSTABLE_ToastQueue as ToastQueue, UNSTABLE_Toast as Toast, Button } from 'react-aria-components'
+import { ToastRegion, ToastQueue, Toast, Button } from 'react-aria-components'
 
 const queue = new ToastQueue({ maxVisibleToasts: 3 })
 

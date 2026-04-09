@@ -480,7 +480,7 @@ export default function App() {
         open={open}
         onCancel={() => setOpen(false)}
         keyboard
-        destroyOnHidden
+        destroyOnClose
         okText='Delete'
         cancelText='Cancel'
         okButtonProps={{ danger: true }}
@@ -506,7 +506,7 @@ export default function App() {
         'Ant Design Modal은 포커스 트랩, ESC 닫기, 포커스 복원을 자동으로 처리합니다.',
         'title prop은 내부적으로 aria-labelledby로 자동 연결됩니다.',
         'Modal.confirm()을 사용하면 간단한 확인 dialog를 명령형으로 생성할 수 있습니다.',
-        'destroyOnHidden으로 닫힌 dialog를 DOM에서 제거하여 보조 기기 접근을 방지하세요.'
+        'destroyOnClose로 닫힌 dialog를 DOM에서 제거하여 보조 기기 접근을 방지하세요.'
       ]
     }
   }

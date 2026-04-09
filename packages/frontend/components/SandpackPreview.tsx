@@ -65,23 +65,23 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@radix-ui/react-slot': '1.0.2',
     '@radix-ui/react-label': '2.0.2'
   },
-  antd: { antd: '5.16.4', dayjs: '1.11.10' },
+  antd: { antd: '5.16.4', dayjs: '1.11.10', '@ant-design/icons': '5.3.6' },
   '@chakra-ui': {
     '@chakra-ui/react': '3.34.0',
     '@emotion/react': '11.14.0',
     '@emotion/styled': '11.14.0'
   },
   '@adobe/react-spectrum': {
-    '@adobe/react-spectrum': '3.33.1',
-    'react-aria-components': '1.3.3',
-    '@react-aria/utils': '3.24.1',
-    '@react-stately/data': '3.11.5'
+    '@adobe/react-spectrum': '3.39.1',
+    'react-aria-components': '1.7.1',
+    '@react-aria/utils': '3.27.0',
+    '@react-stately/data': '3.12.1'
   },
   'react-aria-components': {
-    'react-aria-components': '1.3.3',
-    '@adobe/react-spectrum': '3.33.1',
-    '@react-aria/utils': '3.24.1',
-    '@react-stately/data': '3.11.5'
+    'react-aria-components': '1.7.1',
+    '@adobe/react-spectrum': '3.39.1',
+    '@react-aria/utils': '3.27.0',
+    '@react-stately/data': '3.12.1'
   },
   'react-hook-form': {
     'react-hook-form': '7.51.0',
@@ -462,6 +462,15 @@ const PATTERN_CSS: Record<string, string> = {
 .chip-remove { border: none; background: transparent; cursor: pointer; padding: 0; width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: inherit; font-size: 14px; line-height: 1; }
 .chip-remove:hover { background: rgba(0,0,0,0.12); }
 .chip-remove:focus-visible { outline: 2px solid #18181b; outline-offset: 1px; }
+`,
+  toast: `
+/* Toast */
+.toast-viewport { position: fixed; bottom: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 50; max-width: 360px; }
+.toast-root { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.toast-container-tr { position: fixed; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; }
+.toast-item { padding: 12px 16px; border-radius: 8px; border: 1px solid; display: flex; align-items: center; gap: 8px; }
+.toast-success { background-color: #dcfce7; border-color: #86efac; }
+.toast-error { background-color: #fee2e2; border-color: #fca5a5; }
 `,
   tooltip: `
 /* Tooltip */
