@@ -1,4 +1,5 @@
 import {
+  Badge,
   Bell,
   BellRing,
   Calendar,
@@ -24,12 +25,15 @@ import {
   SquareCheck,
   SquareDashedMousePointer,
   Table,
+  Tag,
   ToggleLeft,
   Type
 } from 'lucide-react'
 
 export const ICON_MAP: Record<string, React.ReactNode> = {
+  badge: <Badge size={14} />,
   button: <MousePointer2 size={14} />,
+  chip: <Tag size={14} />,
   'text-input': <Type size={14} />,
   'modal-dialog': <Proportions size={14} />,
   toggle: <ToggleLeft size={14} />,
