@@ -72,7 +72,8 @@ export const radioGroupPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (React)',
-      code: `import { useState } from 'react'
+      code: `import './index.css'
+import { useState } from 'react'
 
 const OPTIONS = ['Option A', 'Option B', 'Option C']
 
