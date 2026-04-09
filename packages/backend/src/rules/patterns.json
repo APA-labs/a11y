@@ -73,10 +73,10 @@
       "keywords": ["checkbox", "check", "checked", "tick", "multi-select", "options"]
     },
     {
-      "id": "radio",
+      "id": "radio-group",
       "name": "Radio Group",
       "description": "Group of mutually exclusive radio buttons",
-      "keywords": ["radio", "radiogroup", "option", "single-select", "choice", "gender", "rating"]
+      "keywords": ["radio", "radiogroup", "radio group", "radio button", "option", "single-select", "choice", "gender", "rating"]
     },
     {
       "id": "link",
@@ -86,9 +86,30 @@
     },
     {
       "id": "alert",
-      "name": "Alert / Toast",
-      "description": "Non-interactive notification message for users",
-      "keywords": ["alert", "toast", "notification", "snackbar", "banner", "message", "status", "feedback", "announce", "live region"]
+      "name": "Alert",
+      "description": "Live region that announces status or error messages to assistive tech",
+      "keywords": ["alert", "live region", "aria-live", "status message", "announce", "screen reader announcement"]
+    },
+    {
+      "id": "toast",
+      "name": "Toast",
+      "description": "Ephemeral auto-dismiss notification with optional close button",
+      "keywords": ["toast", "toaster", "snackbar", "notification", "banner", "auto dismiss", "ephemeral notification", "popup notification"]
+    },
+    {
+      "id": "alert-dialog",
+      "name": "Alert Dialog",
+      "description": "Modal dialog that interrupts the user to require a confirmation or response",
+      "keywords": [
+        "alert dialog",
+        "alertdialog",
+        "confirm dialog",
+        "confirmation dialog",
+        "confirm",
+        "destructive action",
+        "warning dialog",
+        "discard changes"
+      ]
     },
     {
       "id": "select",

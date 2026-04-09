@@ -1,68 +1,68 @@
 {
-  "pattern": "Alert / Toast",
+  "pattern": "Alert",
   "wcagLevel": "AA",
   "checklist": {
     "must": [
       {
         "id": "alert-m1",
-        "title": "role 명시",
-        "description": "긴급 알림은 role=\"alert\"(aria-live=\"assertive\"), 비긴급은 role=\"status\"(aria-live=\"polite\")를 사용해야 합니다."
+        "title": "role과 aria-live 설정",
+        "description": "긴급 알림은 role=\"alert\"(aria-live=\"assertive\"), 비긴급 상태 메시지는 role=\"status\"(aria-live=\"polite\")를 사용해야 합니다."
       },
       {
         "id": "alert-m2",
-        "title": "키보드 포커스 이동 금지",
-        "description": "Alert/Toast는 사용자 작업을 방해하지 않아야 합니다. 표시될 때 자동으로 키보드 포커스를 이동시키지 마세요."
+        "title": "동적으로 내용 삽입",
+        "description": "live region은 요소가 DOM에 이미 존재하는 상태에서 내용이 변경되어야 스크린리더가 감지합니다. 빈 컨테이너를 미리 렌더링하고 메시지를 삽입하세요."
       },
       {
         "id": "alert-m3",
-        "title": "닫기 버튼 키보드 접근 가능",
-        "description": "닫기(dismiss) 버튼이 있는 경우 키보드로 접근하고 활성화할 수 있어야 합니다."
+        "title": "키보드 포커스 이동 금지",
+        "description": "Alert live region은 사용자 작업을 방해하지 않아야 합니다. 알림을 표시할 때 자동으로 포커스를 이동시키지 마세요."
       },
       {
         "id": "alert-m4",
-        "title": "충분한 표시 시간",
-        "description": "자동으로 사라지는 토스트는 사용자가 읽기에 충분한 시간(최소 5초)을 제공해야 합니다. WCAG 2.2.3 요구사항입니다."
+        "title": "색상 외 수단으로 유형 전달",
+        "description": "success/error/warning/info를 색상만이 아닌 텍스트나 아이콘으로도 구분해야 합니다. 색만 사용하면 WCAG 1.4.1 실패입니다."
       }
     ],
     "should": [
       {
         "id": "alert-s1",
-        "title": "색상 외 아이콘으로 유형 구분",
-        "description": "success/error/warning/info를 색상만으로 구분하지 말고 아이콘을 함께 사용하세요."
+        "title": "aria-atomic 활용",
+        "description": "메시지 일부만 변경되는 경우 aria-atomic=\"true\"로 전체 내용을 다시 읽도록 하여 문맥이 끊기지 않게 하세요."
       },
       {
         "id": "alert-s2",
-        "title": "자동 닫힘 일시정지",
-        "description": "사용자가 호버하거나 포커스를 두면 자동 닫힘 타이머를 일시정지하세요."
+        "title": "assertive 남용 금지",
+        "description": "role=\"alert\"/aria-live=\"assertive\"는 사용자의 현재 읽기를 중단시킵니다. 실제 긴급한 상황(오류, 경고)에만 사용하세요."
       },
       {
         "id": "alert-s3",
-        "title": "알림 쌓임 관리",
-        "description": "동시에 여러 토스트가 표시되면 스크린리더 사용자에게 과부하가 됩니다. 최대 개수를 제한하세요."
+        "title": "sr-only 시각 숨김 처리",
+        "description": "시각적으로 다른 위치에 UI가 있는 경우, live region 자체는 sr-only 클래스로 숨기고 메시지만 복제하여 스크린리더가 읽도록 하세요."
       }
     ],
     "avoid": [
       {
         "id": "alert-a1",
-        "title": "너무 빠른 자동 닫힘",
-        "description": "3초 미만으로 자동 닫히면 WCAG 2.2.3(타이밍 조정 가능) 실패입니다. 충분한 시간을 주거나 수동 닫기만 허용하세요."
+        "title": "페이지 로드 시 이미 존재하는 alert",
+        "description": "페이지 로드 시 이미 DOM에 있는 role=\"alert\" 요소는 스크린리더가 자동으로 읽지 않습니다. 반드시 동적으로 삽입하세요."
       },
       {
         "id": "alert-a2",
-        "title": "색상만으로 심각도 전달",
-        "description": "빨간색=오류처럼 색상만으로 의미를 전달하면 색맹 사용자가 인식할 수 없습니다."
+        "title": "live region에 상호작용 요소 배치",
+        "description": "live region 내부에 버튼/링크 등 포커스 가능 요소를 두면 스크린리더 동작이 예측 불가해집니다. 버튼이 필요하면 toast 패턴을 사용하세요."
       },
       {
         "id": "alert-a3",
-        "title": "페이지 로드 시 미리 존재하는 alert",
-        "description": "페이지 로드 시 이미 DOM에 있는 role=\"alert\" 요소는 스크린리더가 자동으로 읽지 않습니다. 동적으로 삽입하세요."
+        "title": "자동 닫힘 alert",
+        "description": "자동으로 사라지는 알림은 alert live region이 아니라 toast 패턴입니다. 이 패턴은 영속적인 상태 메시지만 다룹니다."
       }
     ]
   },
   "codeSamples": {
     "react": {
       "label": "React 예제",
-      "code": "function AlertDemo() {\n  const [alerts, setAlerts] = useState([]);\n\n  const addAlert = (message, type = 'info') => {\n    const id = Date.now();\n    setAlerts(prev => [...prev, { id, message, type }]);\n    setTimeout(() => removeAlert(id), 5000);\n  };\n\n  const removeAlert = (id) => {\n    setAlerts(prev => prev.filter(a => a.id !== id));\n  };\n\n  return (\n    <div>\n      <button onClick={() => addAlert('저장되었습니다.', 'success')}>\n        저장\n      </button>\n\n      {/* 스크린리더 라이브 영역 */}\n      <div\n        role=\"status\"\n        aria-live=\"polite\"\n        aria-atomic=\"true\"\n        className=\"sr-only\"\n      >\n        {alerts.map(a => a.message).join('. ')}\n      </div>\n\n      {/* 시각적 토스트 */}\n      <div className=\"toast-container\" aria-label=\"알림\">\n        {alerts.map(alert => (\n          <div\n            key={alert.id}\n            role=\"alert\"\n            className={`toast toast-${alert.type}`}\n          >\n            <span aria-hidden>{/* 아이콘 */}</span>\n            <span>{alert.message}</span>\n            <button\n              onClick={() => removeAlert(alert.id)}\n              aria-label=\"알림 닫기\"\n            >\n              ×\n            </button>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+      "code": "function StatusAnnouncer() {\n  const [message, setMessage] = useState('');\n\n  const save = () => {\n    setMessage('저장되었습니다.');\n  };\n\n  return (\n    <div>\n      <button onClick={save}>저장</button>\n\n      {/* 비긴급 상태 메시지 */}\n      <div\n        role=\"status\"\n        aria-live=\"polite\"\n        aria-atomic=\"true\"\n        className=\"sr-only\"\n      >\n        {message}\n      </div>\n    </div>\n  );\n}"
     }
   },
   "tests": [
@@ -71,20 +71,11 @@
       "steps": [
         "VoiceOver(macOS) 또는 NVDA(Windows) 활성화",
         "알림을 트리거하는 버튼 클릭",
-        "스크린리더가 알림 내용을 자동으로 읽는지 확인",
+        "스크린리더가 메시지 내용을 자동으로 읽는지 확인",
         "포커스가 이동하지 않는지 확인"
       ],
       "tools": ["VoiceOver", "NVDA", "axe DevTools"]
-    },
-    {
-      "title": "키보드 접근성 확인",
-      "steps": ["Tab 키로 닫기 버튼에 도달할 수 있는지 확인", "Enter/Space로 닫기 버튼 활성화 확인", "호버 시 타이머 일시정지 확인"],
-      "tools": ["Keyboard only"]
     }
   ],
-  "references": [
-    "https://www.w3.org/WAI/ARIA/apg/patterns/alert/",
-    "https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/",
-    "https://www.w3.org/WAI/WCAG21/Understanding/timing-adjustable.html"
-  ]
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/alert/", "https://www.w3.org/WAI/WCAG21/Understanding/status-messages.html"]
 }
