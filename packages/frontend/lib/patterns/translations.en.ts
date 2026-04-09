@@ -8,7 +8,7 @@ type PatternT = {
 
 export const patternTranslationsEn: Record<string, PatternT> = {
   accordion: {
-    description: 'A pattern for collapsing and expanding content by section',
+    description: 'A component for collapsing and expanding content by section',
     baseline: {
       checklist: {
         must: [
@@ -158,7 +158,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   alert: {
-    description: 'Announces status or error messages to assistive technology via a live region (role="alert" or role="status")',
+    description: 'A live region component that announces status messages to screen readers',
     baseline: {
       checklist: {
         must: [
@@ -273,7 +273,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'alert-dialog': {
-    description: 'A modal dialog component that requires user confirmation',
+    description: 'A modal dialog component requiring user confirmation',
     baseline: {
       checklist: {
         must: [
@@ -439,7 +439,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   toast: {
-    description: 'A lightweight, auto-dismissing notification component',
+    description: 'A lightweight auto-dismissing notification component',
     baseline: {
       checklist: {
         must: [
@@ -601,7 +601,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   table: {
-    description: 'A data table component with semantic headers, captions, and sort state',
+    description: 'A data table component with semantic headers and sort state',
     baseline: {
       checklist: {
         must: [
@@ -746,7 +746,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   badge: {
-    description: 'A non-interactive indicator attached to another element to show status or a count',
+    description: 'A non-interactive status or count indicator component',
     baseline: {
       checklist: {
         must: [
@@ -860,7 +860,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   breadcrumb: {
-    description: 'A navigation component showing the hierarchical location of the current page',
+    description: 'A hierarchical navigation trail component',
     baseline: {
       checklist: {
         must: [
@@ -948,7 +948,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   button: {
-    description: 'The basic interactive element that triggers an action',
+    description: 'The basic interactive component that triggers an action',
     baseline: {
       checklist: {
         must: [
@@ -1085,7 +1085,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   checkbox: {
-    description: 'A checkbox pattern for selecting or deselecting items',
+    description: 'A checkbox component for selecting or deselecting items',
     baseline: {
       checklist: {
         must: [
@@ -1193,7 +1193,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   chip: {
-    description: 'An interactive tag or chip component for selection, filtering, or removal',
+    description: 'An interactive tag or chip component',
     baseline: {
       checklist: {
         must: [
@@ -1339,7 +1339,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   combobox: {
-    description: 'An autocomplete pattern combining text input with a selection list',
+    description: 'An autocomplete component combining text input with a selection list',
     baseline: {
       checklist: {
         must: [
@@ -1416,7 +1416,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'date-picker': {
-    description: 'An input component for selecting dates with a calendar UI',
+    description: 'A calendar-based date selection component',
     baseline: {
       checklist: {
         must: [
@@ -1520,7 +1520,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   disclosure: {
-    description: 'A pattern that shows or hides content when a button is clicked',
+    description: 'A show/hide toggle component',
     baseline: {
       checklist: {
         must: [
@@ -1625,7 +1625,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   drawer: {
-    description: 'A side panel component that slides in from the edge of the screen',
+    description: 'A sliding side panel component',
     baseline: {
       checklist: {
         must: [
@@ -1713,7 +1713,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'form-validation': {
-    description: 'A form component with inline error messages and accessible validation',
+    description: 'A form validation component with inline error messages',
     baseline: {
       checklist: {
         must: [
@@ -1856,7 +1856,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   link: {
-    description: 'A hyperlink pattern for navigating to other pages or resources',
+    description: 'A hyperlink component for navigating to other pages or resources',
     baseline: {
       checklist: {
         must: [
@@ -1938,7 +1938,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'modal-dialog': {
-    description: 'An overlay component that demands user attention and interrupts the current task',
+    description: 'A modal overlay component that demands user attention',
     baseline: {
       checklist: {
         must: [
@@ -2227,7 +2227,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   pagination: {
-    description: 'A page number component for navigating multi-page content',
+    description: 'A pagination component for navigating multi-page content',
     baseline: {
       checklist: {
         must: [
@@ -2321,7 +2321,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   popover: {
-    description: 'An interactive floating panel triggered by a button',
+    description: 'An interactive floating panel component',
     baseline: {
       checklist: {
         must: [
@@ -2464,7 +2464,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'radio-group': {
-    description: 'A group of radio buttons for selecting one option from several',
+    description: 'A radio button component for selecting one option from several',
     baseline: {
       checklist: {
         must: [
@@ -2569,7 +2569,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   select: {
-    description: 'A custom dropdown component for selecting one option from a list',
+    description: 'A custom dropdown select component',
     baseline: {
       checklist: {
         must: [
@@ -2714,7 +2714,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   tabs: {
-    description: 'A pattern for dividing content into tabbed sections and switching between them',
+    description: 'A tabbed content switching component',
     baseline: {
       checklist: {
         must: [
@@ -2859,7 +2859,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'text-input': {
-    description: 'A form control for accepting text input from users',
+    description: 'A text input form component',
     baseline: {
       checklist: {
         must: [
@@ -2999,7 +2999,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   toggle: {
-    description: 'A control for switching between two states (on/off)',
+    description: 'A toggle component for switching between two states (on/off)',
     baseline: {
       checklist: {
         must: [
@@ -3138,7 +3138,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   tooltip: {
-    description: 'A popup text pattern that provides additional information about an element',
+    description: 'A popup text component that provides additional information',
     baseline: {
       checklist: {
         must: [
