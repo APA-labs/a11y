@@ -1,19 +1,16 @@
 import fs from 'fs/promises'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
-import { logger } from '../utils/logger.js'
+import { logger } from '../logger'
 
-import type { RuleSet } from '../types/internal.js'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+import type { RuleSet } from '../internal'
 
 export class RuleEngine {
   private readonly rulesDir: string
   private readonly cache = new Map<string, RuleSet>()
 
   constructor() {
-    this.rulesDir = path.join(__dirname, '..', 'rules')
+    this.rulesDir = path.join(process.cwd(), 'lib/server/rules')
   }
 
   async loadRule(patternName: string): Promise<RuleSet | null> {

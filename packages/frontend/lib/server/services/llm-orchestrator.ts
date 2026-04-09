@@ -1,7 +1,7 @@
-import { claudeClient, CLAUDE_MODEL, SYSTEM_PROMPT } from '../config/claude.js'
-import { logger } from '../utils/logger.js'
+import { claudeClient, CLAUDE_MODEL, SYSTEM_PROMPT } from '../claude'
+import { logger } from '../logger'
 
-import type { RuleSet } from '../types/internal.js'
+import type { RuleSet } from '../internal'
 import type { AnalysisResponse } from '@a11y/shared'
 
 export class LLMOrchestrator {

@@ -20,7 +20,7 @@ function hasChanges(scopePath) {
   return !!(staged || unstaged || untracked)
 }
 
-function getChangedDirs(scopePath, srcRelative) {
+function getChangedDirs(scopePath) {
   const allFiles = [
     ...run(`git diff --cached --name-only -- "${scopePath}"`).split('\n'),
     ...run(`git diff --name-only -- "${scopePath}"`).split('\n'),
@@ -29,17 +29,18 @@ function getChangedDirs(scopePath, srcRelative) {
 
   const dirs = new Set()
   for (const f of allFiles) {
-    const rel = f.replace(`${srcRelative}/`, '')
-    const dir = rel.split('/')[0]
+    const rel = f.replace(`${scopePath}/`, '')
+    const parts = rel.split('/')
+    const dir = parts.length > 1 ? parts.slice(0, 2).join('/') : parts[0]
     if (dir && !dir.includes('.')) dirs.add(dir)
   }
   return [...dirs].slice(0, 3)
 }
 
-function commitScope(scope, scopePath, srcRelative) {
+function commitScope(scope, scopePath) {
   if (!hasChanges(scopePath)) return false
 
-  const dirs = getChangedDirs(scopePath, srcRelative)
+  const dirs = getChangedDirs(scopePath)
   const desc = dirs.length > 0 ? dirs.join(', ') : 'misc'
   const message = `chore(${scope}): update ${desc}`
 
@@ -54,14 +55,14 @@ function commitScope(scope, scopePath, srcRelative) {
 }
 
 function commitOther() {
-  const excludes = [':(exclude)packages/backend', ':(exclude)packages/frontend']
+  const excludes = [':(exclude)packages/frontend']
   const staged = run(`git diff --cached --name-only -- ${excludes.join(' ')}`)
   const unstaged = run(`git diff --name-only -- ${excludes.join(' ')}`)
   const untracked = run(`git ls-files --others --exclude-standard -- ${excludes.join(' ')}`)
 
   if (!staged && !unstaged && !untracked) return false
 
-  run(`git add -- . ':!packages/backend' ':!packages/frontend'`)
+  run(`git add -- . ':!packages/frontend'`)
 
   const result = run(`git commit -m "chore: update config and tooling"`)
   if (result) {
@@ -83,8 +84,8 @@ async function main() {
 
   console.log('\n📦 Auto-committing by scope...')
 
-  const backendCommitted = commitScope('backend', 'packages/backend', 'packages/backend/src')
-  const frontendCommitted = commitScope('frontend', 'packages/frontend', 'packages/frontend/src')
+  const backendCommitted = commitScope('backend', 'packages/backend')
+  const frontendCommitted = commitScope('frontend', 'packages/frontend')
   const otherCommitted = commitOther()
 
   if (!backendCommitted && !frontendCommitted && !otherCommitted) {
