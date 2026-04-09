@@ -1,0 +1,96 @@
+{
+  "pattern": "Alert Dialog",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "alert-dialog-m1",
+        "title": "role과 modal 속성",
+        "description": "role=\"alertdialog\"와 aria-modal=\"true\"를 사용해 사용자 확인이 필요한 모달임을 명시해야 합니다."
+      },
+      {
+        "id": "alert-dialog-m2",
+        "title": "라벨과 설명 연결",
+        "description": "aria-labelledby로 제목을, aria-describedby로 본문 설명을 연결해야 합니다. 설명은 단순 장식이 아니라 사용자의 결정을 돕는 문장이어야 합니다."
+      },
+      {
+        "id": "alert-dialog-m3",
+        "title": "포커스 트랩",
+        "description": "dialog가 열리면 Tab/Shift+Tab 포커스가 dialog 내부를 순환해야 하며, 외부 요소로 이동되지 않아야 합니다."
+      },
+      {
+        "id": "alert-dialog-m4",
+        "title": "초기 포커스와 복귀",
+        "description": "열릴 때 가장 덜 파괴적인 버튼(대개 취소)에 초기 포커스를 두고, 닫힐 때는 dialog를 트리거한 요소로 포커스를 복귀해야 합니다."
+      },
+      {
+        "id": "alert-dialog-m5",
+        "title": "ESC로 닫기",
+        "description": "ESC 키를 누르면 dialog가 닫혀야 하며, 이는 취소 동작과 동일하게 처리되어야 합니다."
+      },
+      {
+        "id": "alert-dialog-m6",
+        "title": "배경 비활성화",
+        "description": "dialog 외부 요소는 inert 또는 aria-hidden으로 스크린리더와 포커스에서 제외해야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "alert-dialog-s1",
+        "title": "버튼 라벨 명확화",
+        "description": "\"확인\"/\"취소\" 대신 \"삭제\"/\"삭제 안 함\"처럼 동작을 설명하는 라벨을 사용하세요."
+      },
+      {
+        "id": "alert-dialog-s2",
+        "title": "파괴적 동작은 오른쪽/강조 색상",
+        "description": "파괴적 동작(삭제, 제거) 버튼은 색상과 위치로 주의를 환기시키고, 기본 포커스는 취소에 두세요."
+      },
+      {
+        "id": "alert-dialog-s3",
+        "title": "배경 클릭으로 닫기 주의",
+        "description": "중요한 확인 dialog는 overlay 클릭만으로 닫히지 않도록 해야 합니다. 사용자가 실수로 결정을 건너뛸 수 있습니다."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "alert-dialog-a1",
+        "title": "role=\"dialog\"만 사용",
+        "description": "사용자 확인이 반드시 필요한 경우 role=\"dialog\"가 아니라 role=\"alertdialog\"를 사용해야 스크린리더가 긴급성을 전달합니다."
+      },
+      {
+        "id": "alert-dialog-a2",
+        "title": "설명 없이 버튼만",
+        "description": "\"정말 삭제하시겠습니까?\"만 있고 무엇이 삭제되는지 설명이 없으면 사용자가 결정할 수 없습니다. 항목 이름과 결과를 명시하세요."
+      },
+      {
+        "id": "alert-dialog-a3",
+        "title": "페이지 로드 시 자동 열림",
+        "description": "사용자 액션 없이 페이지 로드 시 alert-dialog가 열리면 맥락을 잃어 당황스럽습니다. 반드시 사용자 동작에 대한 응답으로 열리게 하세요."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function ConfirmDelete() {\n  const [open, setOpen] = useState(false);\n  const triggerRef = useRef(null);\n  const cancelRef = useRef(null);\n\n  useEffect(() => {\n    if (open) cancelRef.current?.focus();\n    else triggerRef.current?.focus();\n  }, [open]);\n\n  useEffect(() => {\n    if (!open) return;\n    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };\n    document.addEventListener('keydown', onKey);\n    return () => document.removeEventListener('keydown', onKey);\n  }, [open]);\n\n  return (\n    <div>\n      <button ref={triggerRef} onClick={() => setOpen(true)}>파일 삭제</button>\n\n      {open && (\n        <div className=\"overlay\" onClick={() => setOpen(false)}>\n          <div\n            role=\"alertdialog\"\n            aria-modal=\"true\"\n            aria-labelledby=\"confirm-title\"\n            aria-describedby=\"confirm-desc\"\n            className=\"dialog\"\n            onClick={(e) => e.stopPropagation()}\n          >\n            <h2 id=\"confirm-title\">파일을 삭제하시겠습니까?</h2>\n            <p id=\"confirm-desc\">report.pdf 파일이 영구적으로 삭제되며 복구할 수 없습니다.</p>\n            <div className=\"dialog-actions\">\n              <button ref={cancelRef} onClick={() => setOpen(false)}>취소</button>\n              <button className=\"danger\" onClick={() => setOpen(false)}>삭제</button>\n            </div>\n          </div>\n        </div>\n      )}\n    </div>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "키보드 전용 테스트",
+      "steps": [
+        "트리거 버튼으로 dialog 열기",
+        "Tab/Shift+Tab이 dialog 내부만 순환하는지 확인",
+        "ESC로 닫히는지 확인",
+        "닫힌 후 포커스가 트리거 버튼으로 돌아가는지 확인"
+      ],
+      "tools": ["Keyboard only"]
+    },
+    {
+      "title": "스크린리더 테스트",
+      "steps": ["VoiceOver/NVDA 활성화", "dialog 열기", "제목과 설명이 연속으로 읽히는지 확인", "버튼 라벨이 동작을 명확히 전달하는지 확인"],
+      "tools": ["VoiceOver", "NVDA"]
+    }
+  ],
+  "references": ["https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/", "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"]
+}

@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const checkboxPattern: Pattern = {
   slug: 'checkbox',
   name: 'Checkbox',
-  description: '항목을 선택하거나 해제할 수 있는 체크박스 패턴',
+  description: '항목을 선택하거나 해제할 수 있는 체크박스 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value', '1.3.1 Info and Relationships'],
   tags: ['form', 'interactive', 'selection'],
   baseline: {

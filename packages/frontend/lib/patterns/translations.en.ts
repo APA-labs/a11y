@@ -8,7 +8,7 @@ type PatternT = {
 
 export const patternTranslationsEn: Record<string, PatternT> = {
   accordion: {
-    description: 'A pattern for collapsing and expanding content by section',
+    description: 'A component for collapsing and expanding content by section',
     baseline: {
       checklist: {
         must: [
@@ -158,38 +158,57 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   alert: {
-    description: 'A notification component that delivers important messages without interrupting user tasks',
+    description: 'A live region component that announces status messages to screen readers',
     baseline: {
       checklist: {
         must: [
           {
-            title: 'Specify role="alert" or role="status"',
-            description: 'Use role="alert" for urgent notifications (aria-live="assertive") and role="status" for non-urgent ones.'
+            title: 'Set role and aria-live',
+            description:
+              'Use role="alert" with aria-live="assertive" for urgent messages, or role="status" with aria-live="polite" for non-urgent status updates.'
           },
-          { title: 'Do not move keyboard focus to alert', description: "Alerts should never steal keyboard focus from the user's current position." },
-          { title: 'Provide a dismiss button', description: 'Users must be able to dismiss persistent alerts using a keyboard-accessible button.' },
           {
-            title: 'Sufficient display time',
-            description: 'Auto-hiding alerts must remain visible long enough to be read (minimum 5 seconds recommended).'
+            title: 'Insert content dynamically',
+            description:
+              'The live region container must exist in the DOM before content changes. Render an empty container and update its text to trigger announcements.'
+          },
+          {
+            title: 'Do not move keyboard focus',
+            description: "An alert live region must not steal focus from the user's current position. Keep focus where it is."
+          },
+          {
+            title: 'Do not rely on color alone',
+            description: 'Communicate severity (success/error/warning/info) with text or an icon, not color alone.'
           }
         ],
         should: [
           {
-            title: 'Use icons and color for severity',
-            description: 'Distinguish alert severity (info/warning/error/success) with both icons and color, not color alone.'
+            title: 'Use aria-atomic',
+            description: 'Set aria-atomic="true" so screen readers announce the whole message together when only part of it changes.'
           },
-          { title: 'Pause auto-hide on focus/hover', description: 'Pause the auto-hide timer when the alert is focused or hovered.' },
-          { title: 'Manage stacked alerts', description: 'When multiple alerts are queued, manage them to avoid overwhelming users.' }
+          {
+            title: 'Avoid overusing assertive',
+            description: 'role="alert" / aria-live="assertive" interrupts the user. Reserve it for genuinely urgent messages like errors.'
+          },
+          {
+            title: 'Hide the live region visually',
+            description:
+              'When the visual UI lives elsewhere, keep the live region in the DOM with an sr-only class so screen readers still announce the message.'
+          }
         ],
         avoid: [
-          { title: 'Do not auto-hide too quickly', description: 'An alert that disappears in under 3–4 seconds may not be noticed by all users.' },
           {
-            title: 'Do not use color alone to convey severity',
-            description: 'Color alone is not sufficient; always include a text label or icon for severity.'
+            title: 'Pre-rendered alerts on page load',
+            description: 'A role="alert" element already in the DOM on page load will not be announced by most screen readers. Insert it dynamically.'
           },
           {
-            title: 'Do not pre-render alerts on page load',
-            description: 'Alerts already in the DOM on load will not be announced by screen readers via aria-live.'
+            title: 'Interactive elements inside the live region',
+            description:
+              'Placing buttons or links inside a live region makes screen reader behavior unpredictable. Use the toast pattern when interaction is required.'
+          },
+          {
+            title: 'Auto-dismiss behavior',
+            description: 'Auto-dismissing notifications belong to the toast pattern. This pattern covers persistent status messages only.'
           }
         ]
       }
@@ -198,81 +217,650 @@ export const patternTranslationsEn: Record<string, PatternT> = {
       material: {
         additionalChecks: [
           {
-            title: 'Use Snackbar + Alert for toast notifications',
+            title: 'Convey type with severity',
             description:
-              'Combine Snackbar for positioning and timing with Alert for role="alert" and severity. Set autoHideDuration to at least 5000ms.'
+              'The severity prop (success, error, warning, info) on MUI Alert automatically applies matching icons and colors, conveying the type through non-color means.'
           },
           {
-            title: 'Set minimum autoHideDuration of 5000ms',
-            description: 'Values below 5000ms may violate WCAG 2.2.3 (No Timing). Set to null to require manual dismissal.'
-          },
-          {
-            title: 'Distinguish inline alerts from toast alerts',
-            description: 'Use standalone Alert for persistent status messages on the page, and Snackbar + Alert for transient toast notifications.'
+            title: 'Verify role="alert" default behavior',
+            description: 'MUI Alert uses role="alert" by default. For non-urgent messages, change it to role="status".'
           }
         ],
         notes: [
-          'MUI Alert used standalone automatically receives role="alert" and announces to screen readers.',
-          'Snackbar onClose with reason check (reason !== "clickaway") prevents unintentional dismissal.',
-          'The severity prop (success/info/warning/error) automatically applies matching icons, colors, and accessible meaning.',
-          'Set autoHideDuration={null} to require explicit user action to dismiss.'
-        ]
-      },
-      radix: {
-        additionalChecks: [
-          { title: 'Hotkey hint in Toast.Viewport', description: 'Inform users of the keyboard shortcut (F8) to move focus to the toast viewport.' },
-          { title: 'Set urgency with type prop', description: 'Use type="foreground" for urgent alerts and type="background" for non-critical ones.' }
-        ],
-        notes: [
-          'Radix Toast supports moving focus to the viewport with the F8 shortcut.',
-          'swipeDirection controls the swipe gesture direction.',
-          'aria-live requirements are handled internally.'
-        ]
-      },
-      antd: {
-        additionalChecks: [
-          {
-            title: 'Always set showIcon',
-            description:
-              'Setting showIcon={true} displays an icon that conveys the severity type (success/warning/error/info). This provides a non-color visual indicator alongside the color change.'
-          },
-          {
-            title: 'closable with aria-* support (v5.15.0+)',
-            description:
-              'When using closable={true}, pass closeIcon or closable={{ aria-label: "Dismiss alert" }} (v5.15.0+) to provide an accessible label for the close button.'
-          },
-          {
-            title: 'Use App.useApp() for notification API',
-            description:
-              'Wrap your app in <App> and use App.useApp() to access the notification API. This ensures the notification is rendered within the correct React context.'
-          }
-        ],
-        notes: [
-          'Use the title prop for the main heading and description for body text. Both are exposed to assistive technologies.',
-          'Combining showIcon with the type prop provides both a visual icon and color to convey severity.',
-          'The closable.aria-label prop (v5.15.0+) adds an accessible label to the close button.',
-          'Notification API: set duration={0} to keep open until manually closed. Default is 4.5 seconds.'
+          'MUI Alert uses role="alert" by default, immediately announcing to screen readers.',
+          'The severity prop automatically displays an appropriate icon, conveying type through non-color means.',
+          'AlertTitle adds a heading for better message structure.',
+          'The variant prop supports filled, outlined, and standard styles.'
         ]
       },
       chakra: {
         additionalChecks: [
           {
-            title: 'Set role per status',
-            description: 'Use role="alert" for urgent alerts (error/warning) and role="status" for informational ones.'
+            title: 'Convey type with status prop',
+            description: 'The status prop (success, error, warning, info) on Chakra Alert automatically applies matching icons and colors.'
+          },
+          {
+            title: 'Verify role attribute',
+            description: 'Chakra Alert uses role="alert" by default. For non-urgent messages, change it to role="status".'
           }
         ],
         notes: [
-          'The status prop on Chakra Alert.Root (info/success/warning/error/neutral) sets visual styles and color automatically.',
-          'For dynamically inserted alerts, explicitly set role="alert" to ensure immediate screen reader announcement.',
-          'Alert.Indicator is automatically given aria-hidden.',
-          'neutral is also a valid status value for low-priority informational alerts.'
+          'Chakra Alert.Root uses role="alert" by default.',
+          'The status prop (success, error, warning, info) automatically displays an appropriate icon via Alert.Indicator.',
+          'Use Alert.Title and Alert.Description for structured messages.',
+          'The variant prop supports subtle, solid, and outline styles.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Convey type with type prop',
+            description: 'The type prop (success, error, warning, info) on Ant Design Alert automatically applies matching icons and colors.'
+          },
+          {
+            title: 'Add role="alert" manually',
+            description: 'Ant Design Alert does not set role automatically. Add role="alert" or role="status" directly.'
+          }
+        ],
+        notes: [
+          'Ant Design Alert does not set role automatically, so you must add role="alert" or role="status" directly.',
+          'The showIcon prop displays a type-appropriate icon, conveying meaning through non-color means.',
+          'The closable prop adds a close button; use onClose to handle dismissal.',
+          'The banner prop displays the alert as a full-width banner at the top of the page.'
+        ]
+      }
+    }
+  },
+
+  'alert-dialog': {
+    description: 'A modal dialog component requiring user confirmation',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'role and modal attribute',
+            description: 'Use role="alertdialog" and aria-modal="true" to indicate that the dialog requires user confirmation.'
+          },
+          {
+            title: 'Connect label and description',
+            description:
+              'Use aria-labelledby for the title and aria-describedby for the body description. The description should help the user make a decision.'
+          },
+          {
+            title: 'Focus trap',
+            description: 'When the dialog opens, Tab/Shift+Tab focus must cycle only within the dialog and must not escape to outside elements.'
+          },
+          {
+            title: 'Initial focus and focus restoration',
+            description:
+              'On open, place initial focus on the least destructive button (usually Cancel). On close, restore focus to the element that triggered the dialog.'
+          },
+          {
+            title: 'Close with ESC',
+            description: 'Pressing ESC must close the dialog, treated the same as a cancel action.'
+          },
+          {
+            title: 'Deactivate background',
+            description: 'Elements outside the dialog must be excluded from screen readers and focus using inert or aria-hidden.'
+          }
+        ],
+        should: [
+          {
+            title: 'Use descriptive button labels',
+            description: 'Instead of "OK"/"Cancel", use action-describing labels like "Delete"/"Don\'t delete".'
+          },
+          {
+            title: 'Highlight destructive actions',
+            description: 'Use color and position to draw attention to destructive action buttons (delete, remove), and place default focus on Cancel.'
+          },
+          {
+            title: 'Be careful with background click to close',
+            description: 'Important confirmation dialogs should not close on overlay click alone, as users may accidentally skip the decision.'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Using only role="dialog"',
+            description: 'When user confirmation is required, use role="alertdialog" instead of role="dialog" so screen readers convey the urgency.'
+          },
+          {
+            title: 'Buttons without description',
+            description:
+              'Having only "Are you sure?" without explaining what will be deleted leaves users unable to make an informed decision. Specify the item name and consequences.'
+          },
+          {
+            title: 'Auto-open on page load',
+            description:
+              'Opening an alert dialog on page load without user action causes confusion due to lost context. Always open in response to a user action.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Distinguish AlertDialog.Cancel and AlertDialog.Action',
+            description:
+              'Radix AlertDialog provides separate Cancel and Action components. Use Cancel for safe dismissal and Action for destructive operations.'
+          },
+          {
+            title: 'AlertDialog.Title and Description are required',
+            description:
+              'AlertDialog.Title is auto-connected via aria-labelledby and AlertDialog.Description via aria-describedby to Content. Omitting them removes the accessible name.'
+          }
+        ],
+        notes: [
+          'Radix AlertDialog automatically sets role="alertdialog" on Content.',
+          'Cancel acts as ESC key close, while Action is the confirm-and-close action.',
+          'AlertDialog.Title and Description are auto-connected via aria-labelledby and aria-describedby respectively.',
+          'Focus trapping, ESC to close, and focus management on open/close are handled automatically.'
+        ]
+      },
+      baseui: {
+        additionalChecks: [
+          {
+            title: 'Use the dedicated AlertDialog component',
+            description:
+              'Base UI provides separate Dialog and AlertDialog components. For dangerous actions requiring user confirmation, use @base-ui/react/alert-dialog.'
+          },
+          {
+            title: 'Title and Description are required',
+            description: 'AlertDialog.Title is auto-connected via aria-labelledby and AlertDialog.Description via aria-describedby. Do not omit them.'
+          },
+          {
+            title: 'Backdrop + Portal structure is required',
+            description: 'Use AlertDialog.Portal and AlertDialog.Backdrop to ensure background deactivation and focus trapping.'
+          }
+        ],
+        notes: [
+          'Base UI AlertDialog automatically sets role="alertdialog" and aria-modal="true".',
+          'AlertDialog.Title and Description are auto-connected via aria-labelledby and aria-describedby respectively.',
+          'Unlike Dialog, AlertDialog does not close on overlay click, preventing users from accidentally skipping the decision.',
+          'ESC to close and focus trapping are handled automatically.'
+        ]
+      },
+      material: {
+        additionalChecks: [
+          {
+            title: 'Explicitly add role="alertdialog"',
+            description: 'MUI Dialog defaults to role="dialog". For user confirmation, explicitly add role="alertdialog" via slotProps.paper.'
+          },
+          {
+            title: 'Set aria-labelledby and aria-describedby',
+            description: 'Connect aria-labelledby to the DialogTitle id and aria-describedby to the DialogContentText id on the Dialog.'
+          }
+        ],
+        notes: [
+          'MUI Dialog defaults to role="dialog", so use slotProps.paper.role to change it to alertdialog.',
+          'Placing autoFocus on the Cancel button prevents accidental execution of destructive actions.',
+          'MUI Dialog automatically handles focus trapping, ESC to close, and focus restoration.',
+          'aria-labelledby and aria-describedby must be set manually.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Set role="alertdialog" on Dialog.Root',
+            description: 'Chakra Dialog defaults to role="dialog". For user confirmation, explicitly add role="alertdialog".'
+          },
+          {
+            title: 'Set initial focus on Cancel button',
+            description: 'For destructive action alert dialogs, use initialFocusEl to place initial focus on the Cancel button.'
+          }
+        ],
+        notes: [
+          'Adding role="alertdialog" to Chakra Dialog lets screen readers convey the urgency.',
+          'initialFocusEl places initial focus on the Cancel button to prevent accidental destructive actions.',
+          'Dialog.Title is auto-connected via aria-labelledby, and Dialog.Description via aria-describedby.',
+          'Use closeOnInteractOutside={false} to disable closing on overlay click.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Use Modal.confirm for alert dialogs',
+            description:
+              'Ant Design provides Modal.confirm() for confirmation dialogs. Use the title and content props to provide an accessible name and description.'
+          },
+          {
+            title: 'Highlight destructive actions with okButtonProps.danger',
+            description: 'Set danger={true} in okButtonProps to visually highlight the destructive action button.'
+          }
+        ],
+        notes: [
+          'Ant Design Modal automatically handles focus trapping, ESC to close, and focus restoration.',
+          'The title prop is internally connected via aria-labelledby.',
+          'Modal.confirm() creates a simple confirmation dialog imperatively.',
+          'Use destroyOnHidden to remove closed dialogs from the DOM, preventing assistive technology from accessing hidden content.'
+        ]
+      }
+    }
+  },
+
+  toast: {
+    description: 'A lightweight auto-dismissing notification component',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'Set appropriate role',
+            description:
+              'Use role="status" (aria-live="polite") for non-urgent notifications and role="alert" (aria-live="assertive") for urgent errors or warnings.'
+          },
+          {
+            title: 'Do not steal keyboard focus',
+            description: "Toast must not interrupt the current task. Do not move the user's focus when the toast appears."
+          },
+          {
+            title: 'Sufficient display time',
+            description:
+              'Auto-dismissing toasts must be visible for at least 5 seconds, and users must be able to extend or make them persistent. This is a WCAG 2.2.3 requirement.'
+          },
+          {
+            title: 'Keyboard-accessible close button',
+            description: 'If a close button is present, it must be keyboard accessible and activatable, with aria-label to describe the close action.'
+          },
+          {
+            title: 'Pause timer on hover/focus',
+            description: 'The auto-dismiss timer must pause when the user hovers over or focuses on the toast.'
+          }
+        ],
+        should: [
+          {
+            title: 'Use icons in addition to color for type distinction',
+            description: 'Do not distinguish success/error/warning/info by color alone. Provide icons and text labels alongside color.'
+          },
+          {
+            title: 'Limit simultaneous toast count',
+            description: 'Multiple stacked toasts can overload screen readers. Limit the maximum count and auto-remove the oldest first.'
+          },
+          {
+            title: 'Do not use toast as the sole channel for important information',
+            description: 'Users may miss toasts. Deliver important errors or confirmations via alert-dialog or inline messages instead.'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Auto-dismiss under 3 seconds',
+            description: 'This is a WCAG 2.2.3 failure. Low-vision and screen reader users do not have enough time to read the message.'
+          },
+          {
+            title: 'Complex forms/buttons inside toast',
+            description: 'Toast is for simple notifications and undo actions. Use a dialog or inline message for complex interactions.'
+          },
+          {
+            title: 'Conveying severity by color alone',
+            description: 'Relying on red=error by color alone makes the meaning unrecognizable to users with color vision deficiencies.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      radix: {
+        additionalChecks: [
+          {
+            title: 'Toast.Provider label prop is required',
+            description:
+              'Setting the label prop on Toast.Provider helps screen readers recognize the purpose of the toast region. The default is "Notification".'
+          },
+          {
+            title: 'Toast.Action requires altText',
+            description:
+              'Setting altText on Toast.Action guides screen reader users to an alternative way to perform the same action after the toast disappears.'
+          },
+          {
+            title: 'Control display time with duration',
+            description: 'The Provider default duration is 5000ms. Increase it for longer messages, and set it to Infinity for critical errors.'
+          }
+        ],
+        notes: [
+          'Radix Toast automatically handles auto-dismiss and timer pause on hover/focus.',
+          'Toast.Viewport is accessible via the F8 hotkey, customizable with the hotkey prop.',
+          'Toast.Action altText guides users to an alternative path after the toast disappears.',
+          'type="foreground" maps to aria-live="assertive", type="background" maps to aria-live="polite".'
+        ]
+      },
+      material: {
+        additionalChecks: [
+          {
+            title: 'autoHideDuration must be 5000ms or more',
+            description: 'Set autoHideDuration to at least 5000ms for WCAG 2.2.3 compliance.'
+          },
+          {
+            title: 'Provide a close button via the action prop',
+            description: 'Add a close button to the Snackbar action prop so keyboard users can dismiss it directly.'
+          },
+          {
+            title: 'Set severity when combining with Alert',
+            description: 'Using Alert inside Snackbar automatically applies type-appropriate icons and colors based on the severity prop.'
+          }
+        ],
+        notes: [
+          'MUI Snackbar uses role="presentation", while the inner Alert provides role="alert".',
+          'autoHideDuration controls the auto-dismiss time. WCAG 2.2.3 recommends 5000ms or more.',
+          'The Alert severity prop (success, error, warning, info) automatically applies type-appropriate icons and colors.',
+          'Excluding "clickaway" from onClose reason prevents unintentional dismissal.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Place Toaster component in layout',
+            description: 'In Chakra v3, create a toaster instance with createToaster() and render the Toaster component at the layout root.'
+          },
+          {
+            title: 'Set duration to 5000ms or more',
+            description: 'Set the createToaster duration option to at least 5000ms for WCAG 2.2.3 compliance.'
+          }
+        ],
+        notes: [
+          'Chakra v3 creates toasts imperatively with toaster.create().',
+          'Rendering the Toaster component once at the root automatically displays toasts.',
+          'The type prop (success, error, warning, info) automatically applies type-appropriate icons and colors.',
+          'pauseOnHover is enabled by default, pausing the timer on hover.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Verify the notification API role',
+            description: 'Ant Design notification uses role="alert" by default. For non-urgent notifications, consider the message API instead.'
+          },
+          {
+            title: 'Set duration to 5 seconds or more',
+            description: 'The notification default duration is 4.5 seconds. Set it to 5 or more for WCAG 2.2.3 compliance.'
+          }
+        ],
+        notes: [
+          'Ant Design notification.useNotification() requires rendering contextHolder.',
+          'Duration is in seconds with a default of 4.5. Setting it to 0 disables auto-dismiss.',
+          'The placement prop sets the display position: topLeft, topRight, bottomLeft, bottomRight.',
+          'api.success(), api.error(), api.warning(), api.info() automatically apply type-appropriate icons.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          {
+            title: 'Place ToastRegion at the app root',
+            description: 'The ToastRegion component must be rendered at the app root for toasts to display correctly.'
+          },
+          {
+            title: 'Create toasts imperatively with ToastQueue',
+            description: 'Use ToastQueue.positive(), ToastQueue.negative(), etc. to create type-specific toasts.'
+          }
+        ],
+        notes: [
+          'React Aria Toast is currently an experimental API with the UNSTABLE_ prefix.',
+          'ToastQueue adds toasts imperatively, with the timeout option controlling auto-dismiss time.',
+          'ToastRegion automatically sets aria-label="Notifications".',
+          'maxVisibleToasts limits the number of simultaneously displayed toasts.'
+        ]
+      }
+    }
+  },
+
+  table: {
+    description: 'A data table component with semantic headers and sort state',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'Provide a label for the table',
+            description:
+              'Provide a label via aria-label or aria-labelledby on the table. Screen reader users must be able to identify what data the table contains.'
+          },
+          {
+            title: 'scope attribute on th elements',
+            description: 'Use scope="col" or scope="row" on th elements to indicate which direction the header represents.'
+          },
+          {
+            title: 'id/headers connection for complex tables',
+            description: 'For complex tables with nested row/column headers, assign id to th and connect via the headers attribute on td.'
+          },
+          {
+            title: 'Maintain th/td semantics',
+            description: 'Header cells must use th and data cells must use td so screen readers can correctly convey row/column relationships.'
+          }
+        ],
+        should: [
+          {
+            title: 'Provide description with caption element',
+            description:
+              'Add a caption element directly below the table element to describe the table purpose. It can be visually hidden but still conveys information to screen readers.'
+          },
+          {
+            title: 'aria-sort on sortable columns',
+            description: 'Set aria-sort="ascending" or aria-sort="descending" on sortable column headers, and place the sort button inside the th.'
+          },
+          {
+            title: 'Provide description for empty cells',
+            description: 'Empty td cells should have screen reader text (e.g., "Not applicable") via sr-only text, even if visually empty.'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Using table for layout',
+            description:
+              'Do not use table for layout purposes. If it is a layout table, add role="presentation" so screen readers do not interpret it as a data table.'
+          },
+          {
+            title: 'Using only td without th',
+            description:
+              'Using only td cells without th makes it impossible for screen readers to determine row/column relationships. Always use th for header rows and columns.'
+          },
+          {
+            title: 'Recreating table with nested divs',
+            description: 'Unless you need complex interaction requiring role="grid", do not recreate a semantic table using divs.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'TableCell in TableHead auto-renders as th',
+            description: 'MUI TableCell inside TableHead automatically renders as <th>. The scope attribute must be added manually.'
+          },
+          {
+            title: 'Convey table purpose with aria-label',
+            description: 'Add aria-label to the Table component to convey the table purpose to screen reader users.'
+          },
+          {
+            title: 'Use TableSortLabel for sort state',
+            description: 'Using TableSortLabel automatically sets aria-sort, conveying the sort state to screen readers.'
+          }
+        ],
+        notes: [
+          'MUI TableCell inside TableHead automatically renders as <th>.',
+          'TableContainer provides horizontal scrolling for wide tables.',
+          'TableSortLabel creates sortable column headers with automatic aria-sort.',
+          'Use component="th" scope="row" to explicitly set row headers.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'key or dataIndex required on columns',
+            description: 'Each column must have a key or dataIndex for correct React rendering and accessibility mapping.'
+          },
+          {
+            title: 'Convey table purpose with aria-label',
+            description: 'Ant Table renders a <table> internally but does not add aria-label automatically. Set it directly.'
+          },
+          {
+            title: 'aria-sort auto-managed when using sorter',
+            description: 'Setting a sorter function on columns automatically manages aria-sort when sorting is applied.'
+          }
+        ],
+        notes: [
+          'Ant Design Table internally renders semantic <table>, <th>, and <td> elements.',
+          'The sorter prop on columns activates sorting and auto-generates sort buttons on headers.',
+          'rowSelection prop auto-manages aria-checked when row selection is added.',
+          'Use pagination={false} for simple tables.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Use Table.ColumnHeader',
+            description: 'Chakra Table.ColumnHeader renders as <th>. Use Table.Cell for data cells.'
+          },
+          {
+            title: 'Provide description with Table.Caption',
+            description: 'Table.Caption renders a <caption> element, allowing screen readers to convey the table purpose.'
+          }
+        ],
+        notes: [
+          'Chakra Table automatically renders semantic <table>, <thead>, <tbody>, <th>, and <td> elements.',
+          'Table.Caption renders as <caption>, providing the table description to screen readers.',
+          'Table.ColumnHeader renders as <th>, recognized as a column header without a separate scope attribute.',
+          'The size prop supports sm, md, and lg sizes.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          {
+            title: 'Set isRowHeader on Column',
+            description:
+              'Setting isRowHeader on the column that identifies each row provides context to screen readers when reading other cells in that row.'
+          },
+          {
+            title: 'Convey table purpose with aria-label',
+            description: 'Add aria-label to the Table to convey the table purpose to screen reader users.'
+          },
+          {
+            title: 'allowsSorting for sort accessibility',
+            description: 'Setting allowsSorting on a Column auto-manages aria-sort and enables keyboard-triggered sorting.'
+          }
+        ],
+        notes: [
+          'React Aria Table automatically provides semantic <table> markup and keyboard navigation.',
+          'Setting isRowHeader on a Column renders that column as a row header (th scope="row").',
+          'allowsSorting and sortDescriptor props auto-manage aria-sort for sort functionality.',
+          'selectionMode="multiple" auto-applies checkboxes and aria-selected for row selection.'
+        ]
+      }
+    }
+  },
+
+  badge: {
+    description: 'A non-interactive status or count indicator component',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'Accessible name on the host element',
+            description:
+              'Provide an aria-label on the element that owns the badge (icon button, avatar). The numeric badge alone does not convey meaning.'
+          },
+          {
+            title: 'Include units in the count',
+            description: 'Use phrases like "3 unread notifications" instead of bare numbers so the label has meaningful context.'
+          },
+          {
+            title: 'Do not rely on color alone',
+            description:
+              'Never use color alone to distinguish success / error / warning states. Always pair color with text or an accessible name (WCAG 1.4.1).'
+          }
+        ],
+        should: [
+          {
+            title: 'Mark decorative badges aria-hidden',
+            description: 'Dot badges that are purely visual should use aria-hidden="true" while the meaning is carried by the parent element.'
+          },
+          {
+            title: 'Use a live region for dynamic badges',
+            description: 'When the count updates in real time, announce changes with role="status" or aria-live="polite".'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Avoid duplicate announcements',
+            description: 'Do not expose the badge text to assistive tech when the parent label already contains the same information.'
+          },
+          {
+            title: 'Do not convey status with color only',
+            description: 'Colored dots without a visible text label are unreadable for color-blind users.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'Add aria-label on the parent element',
+            description: 'MUI does not reliably announce badgeContent. Put the full meaning on the wrapping IconButton or button via aria-label.'
+          },
+          {
+            title: 'variant="dot" needs non-color cues',
+            description: 'Dot badges carry no text, so repeat the state in the parent aria-label.'
+          },
+          {
+            title: 'Decide whether to show zero',
+            description: 'badgeContent={0} is hidden by default. Opt in with showZero when 0 should still be visible.'
+          }
+        ],
+        notes: [
+          'MUI Badge badgeContent is visual-only; always provide the full context via aria-label on the parent IconButton / button.',
+          'The max prop automatically renders overflow indicators like "99+".',
+          'For variant="dot", color alone carries the state. Provide an aria-label with the meaning so screen reader users are not left guessing.',
+          'badgeContent={0} is hidden by default. Use showZero if zero must still be displayed.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Use the title prop to strengthen the name',
+            description: "Ant Badge's title prop forwards to the native title attribute and helps assistive tech and hover users."
+          },
+          {
+            title: 'Pair status/color badges with a text label',
+            description: 'Prefer <Badge status="success" text="Ready" />. Status color alone is not enough for color-blind users.'
+          },
+          {
+            title: 'Include Ribbon content in accessible names',
+            description: 'If Badge.Ribbon is decorative, duplicate its text in the parent card or button aria-label.'
+          }
+        ],
+        notes: [
+          'Always pass a descriptive title prop to Ant Badge when using the count variant.',
+          'The status + text combination is mandatory for color-blind accessibility — never use status on its own.',
+          'overflowCount defaults to 99 and renders "99+" automatically for larger values.',
+          'Dot badges (boolean dot prop) require a parent aria-label that describes the state.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Chakra Badge is a text component',
+            description:
+              'Chakra v3 Badge renders its children as the visible label. When used standalone, the text itself is the accessible name — use meaningful words.'
+          },
+          {
+            title: 'colorPalette alone is not enough',
+            description: "Don't rely on colorPalette='red' to mean error. Always include a text label like 'Error' or 'Draft' (WCAG 1.4.1)."
+          },
+          {
+            title: 'Wrap count badges with an accessible name',
+            description:
+              'If you use Chakra Badge as a floating count over an IconButton, add aria-label to the wrapping button that contains the full meaning.'
+          }
+        ],
+        notes: [
+          'Chakra v3 Badge is a simple label component. Its children text becomes the accessible name — use clear words like "Ready" or "Failed".',
+          'colorPalette only changes visual style. Screen readers cannot perceive color, so always encode meaning in the text.',
+          'variant can be solid / subtle / outline / surface / plain.',
+          'When composing a count badge (number + icon), add aria-label on the wrapping button that conveys the full context.'
         ]
       }
     }
   },
 
   breadcrumb: {
-    description: 'A navigation component showing the hierarchical location of the current page',
+    description: 'A hierarchical navigation trail component',
     baseline: {
       checklist: {
         must: [
@@ -360,7 +948,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   button: {
-    description: 'The basic interactive element that triggers an action',
+    description: 'The basic interactive component that triggers an action',
     baseline: {
       checklist: {
         must: [
@@ -497,7 +1085,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   checkbox: {
-    description: 'A checkbox pattern for selecting or deselecting items',
+    description: 'A checkbox component for selecting or deselecting items',
     baseline: {
       checklist: {
         must: [
@@ -604,8 +1192,154 @@ export const patternTranslationsEn: Record<string, PatternT> = {
     }
   },
 
+  chip: {
+    description: 'An interactive tag or chip component',
+    baseline: {
+      checklist: {
+        must: [
+          {
+            title: 'Interactive chips must be buttons',
+            description: 'Clickable / removable chips must render as <button> or role="button" and participate in the Tab sequence.'
+          },
+          {
+            title: 'Label the remove button',
+            description: 'Icon-only remove buttons must expose an accessible name like aria-label="Remove <tag name>".'
+          },
+          {
+            title: 'Group chips with a role and label',
+            description:
+              'When multiple chips are grouped together, use role="group" or role="listbox" with an aria-label that states the group purpose.'
+          },
+          {
+            title: 'Keyboard interaction',
+            description: 'Enter/Space must activate the chip, and removable chips must support Backspace/Delete while focused.'
+          }
+        ],
+        should: [
+          {
+            title: 'Move focus after deletion',
+            description: 'After removing a chip, shift focus to an adjacent chip or the parent container so focus is never lost.'
+          },
+          {
+            title: 'Expose selection state',
+            description: 'Selectable chips must announce state via aria-pressed or aria-selected.'
+          }
+        ],
+        avoid: [
+          {
+            title: 'Do not conflate click and delete',
+            description:
+              'A single chip should not both toggle selection and trigger deletion on the same click. Delete actions belong in a dedicated button.'
+          },
+          {
+            title: 'Icon-only buttons need an accessible name',
+            description: 'A × glyph with no aria-label leaves screen reader users without any indication of the action.'
+          }
+        ]
+      }
+    },
+    designSystems: {
+      material: {
+        additionalChecks: [
+          {
+            title: 'onDelete / onClick enable button semantics automatically',
+            description:
+              'MUI Chip participates in the Tab order and handles Backspace/Delete when onDelete is provided. These behaviors are built in, so rely on them rather than reimplementing.'
+          },
+          {
+            title: 'Verify custom deleteIcon labels',
+            description:
+              'A custom deleteIcon may drop the default accessible name. Provide an aria-label on the Chip itself so the removal target is still clear.'
+          },
+          {
+            title: 'Never rely on color alone',
+            description: 'Do not use the color prop (primary/success/error) as the sole way to communicate state; pair it with a text label or icon.'
+          }
+        ],
+        notes: [
+          "Adding onClick or onDelete to a MUI Chip automatically includes it in the Tab order and gives it role='button' semantics.",
+          'While focused, Backspace and Delete invoke onDelete, and Escape blurs the chip (built-in MUI behavior).',
+          'Default delete icon labels vary by language. Add an aria-label on the Chip or embed the meaning in the label itself for clarity.',
+          'Give the Stack role="group" and an aria-label so assistive tech announces the chip group as a single named region.'
+        ]
+      },
+      antd: {
+        additionalChecks: [
+          {
+            title: 'Closable Tag requires an accessible name',
+            description:
+              "Ant Tag's default close icon may lack an accessible name. Customize closeIcon and provide an aria-label that references the tag content."
+          },
+          {
+            title: 'Verify CheckableTag semantics',
+            description:
+              "Tag.CheckableTag toggles its checked state on click and internally sets role='checkbox' with aria-checked. Provide an aria-label on the group container for context."
+          },
+          {
+            title: 'Do not communicate state with color alone',
+            description: 'Always include a text label — color cannot carry status meaning on its own.'
+          }
+        ],
+        notes: [
+          "Ant Tag's closable prop renders a default close button. Replace it with a custom closeIcon that includes an explicit aria-label when needed.",
+          'Call e.preventDefault() inside onClose to block the default close behavior and drive state manually.',
+          'Use Tag.CheckableTag for selection-style chips; control state with checked / onChange.',
+          'Wrap tags in Space (role="group") with an aria-label to communicate the purpose of the group.'
+        ]
+      },
+      chakra: {
+        additionalChecks: [
+          {
+            title: 'Label Tag.CloseTrigger',
+            description:
+              'Chakra v3 Tag.CloseTrigger renders as a button. Because only an icon is visible, provide an explicit aria-label that names the chip being removed.'
+          },
+          {
+            title: 'Use meaningful Tag.Label text',
+            description: 'Tag.Label is the visible text of the chip. Encode the meaning in the label rather than relying on color or icons alone.'
+          },
+          {
+            title: 'Group containers need a role and label',
+            description: 'Add role="group" and aria-label to the Wrap / HStack wrapping multiple tags so the purpose of the group is announced.'
+          }
+        ],
+        notes: [
+          'Chakra v3 Tag uses the Tag.Root / Tag.Label / Tag.StartElement / Tag.EndElement / Tag.CloseTrigger namespace.',
+          'Tag.CloseTrigger renders a button internally; an aria-label is mandatory because only an icon is visible.',
+          'colorPalette and variant (subtle / solid / outline / surface) affect appearance only. The meaning must live in Tag.Label.',
+          'Give the HStack/Wrap role="group" and aria-label so the chip collection reads as a single named region.'
+        ]
+      },
+      spectrum: {
+        additionalChecks: [
+          {
+            title: 'TagGroup requires an aria-label',
+            description:
+              'React Aria TagGroup is a focusable list. Always set <TagGroup aria-label="..."> (or use a <Label>) so screen readers announce the group.'
+          },
+          {
+            title: 'onRemove enables keyboard deletion',
+            description:
+              'Without an onRemove prop, Backspace / Delete will not remove tags — the key handlers are wired up when the callback is present.'
+          },
+          {
+            title: 'Declare selection semantics explicitly',
+            description: "Use selectionMode='single' or 'multiple' to wire aria-selected. Stick with 'none' for plain lists."
+          }
+        ],
+        notes: [
+          'TagGroup is a focusable list that automatically provides arrow-key navigation.',
+          'Backspace / Delete only trigger removal when onRemove is provided; without it, keyboard deletion does not work.',
+          'A Button with slot="remove" is auto-recognized as the delete trigger. Still provide an aria-label so the target is explicit.',
+          "selectionMode='single' or 'multiple' wires aria-selected automatically.",
+          'The Label component connects aria-labelledby automatically. You can also pass aria-label directly on TagGroup.'
+        ]
+      }
+    }
+  },
+
   combobox: {
-    description: 'An autocomplete pattern combining text input with a selection list',
+    description: 'An autocomplete component combining text input with a selection list',
     baseline: {
       checklist: {
         must: [
@@ -682,7 +1416,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'date-picker': {
-    description: 'An input component for selecting dates with a calendar UI',
+    description: 'A calendar-based date selection component',
     baseline: {
       checklist: {
         must: [
@@ -786,7 +1520,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   disclosure: {
-    description: 'A pattern that shows or hides content when a button is clicked',
+    description: 'A show/hide toggle component',
     baseline: {
       checklist: {
         must: [
@@ -891,7 +1625,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   drawer: {
-    description: 'A side panel component that slides in from the edge of the screen',
+    description: 'A sliding side panel component',
     baseline: {
       checklist: {
         must: [
@@ -979,7 +1713,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'form-validation': {
-    description: 'A form component with inline error messages and accessible validation',
+    description: 'A form validation component with inline error messages',
     baseline: {
       checklist: {
         must: [
@@ -1122,7 +1856,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   link: {
-    description: 'A hyperlink pattern for navigating to other pages or resources',
+    description: 'A hyperlink component for navigating to other pages or resources',
     baseline: {
       checklist: {
         must: [
@@ -1204,7 +1938,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'modal-dialog': {
-    description: 'An overlay component that demands user attention and interrupts the current task',
+    description: 'A modal overlay component that demands user attention',
     baseline: {
       checklist: {
         must: [
@@ -1493,7 +2227,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   pagination: {
-    description: 'A page number component for navigating multi-page content',
+    description: 'A pagination component for navigating multi-page content',
     baseline: {
       checklist: {
         must: [
@@ -1587,7 +2321,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   popover: {
-    description: 'An interactive floating panel triggered by a button',
+    description: 'An interactive floating panel component',
     baseline: {
       checklist: {
         must: [
@@ -1730,7 +2464,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'radio-group': {
-    description: 'A group of radio buttons for selecting one option from several',
+    description: 'A radio button component for selecting one option from several',
     baseline: {
       checklist: {
         must: [
@@ -1835,7 +2569,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   select: {
-    description: 'A custom dropdown component for selecting one option from a list',
+    description: 'A custom dropdown select component',
     baseline: {
       checklist: {
         must: [
@@ -1980,7 +2714,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   tabs: {
-    description: 'A pattern for dividing content into tabbed sections and switching between them',
+    description: 'A tabbed content switching component',
     baseline: {
       checklist: {
         must: [
@@ -2125,7 +2859,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   'text-input': {
-    description: 'A form control for accepting text input from users',
+    description: 'A text input form component',
     baseline: {
       checklist: {
         must: [
@@ -2265,7 +2999,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   toggle: {
-    description: 'A control for switching between two states (on/off)',
+    description: 'A toggle component for switching between two states (on/off)',
     baseline: {
       checklist: {
         must: [
@@ -2404,7 +3138,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
   },
 
   tooltip: {
-    description: 'A popup text pattern that provides additional information about an element',
+    description: 'A popup text component that provides additional information',
     baseline: {
       checklist: {
         must: [

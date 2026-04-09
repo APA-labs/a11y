@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const tabsPattern: Pattern = {
   slug: 'tabs',
   name: 'Tabs',
-  description: '콘텐츠 영역을 탭으로 구분하여 전환하는 패턴',
+  description: '콘텐츠 영역을 탭으로 구분하여 전환하는 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value'],
   tags: ['navigation', 'interactive', 'layout'],
   baseline: {

@@ -65,23 +65,23 @@ const DS_DEPS: Record<string, Record<string, string>> = {
     '@radix-ui/react-slot': '1.0.2',
     '@radix-ui/react-label': '2.0.2'
   },
-  antd: { antd: '5.16.4', dayjs: '1.11.10' },
+  antd: { antd: '5.23.4', dayjs: '1.11.10', '@ant-design/icons': '5.6.1', 'rc-util': '5.44.3' },
   '@chakra-ui': {
     '@chakra-ui/react': '3.34.0',
     '@emotion/react': '11.14.0',
     '@emotion/styled': '11.14.0'
   },
   '@adobe/react-spectrum': {
-    '@adobe/react-spectrum': '3.33.1',
-    'react-aria-components': '1.3.3',
-    '@react-aria/utils': '3.24.1',
-    '@react-stately/data': '3.11.5'
+    '@adobe/react-spectrum': '3.46.2',
+    'react-aria-components': '1.16.0',
+    '@react-aria/utils': '3.33.1',
+    '@react-stately/data': '3.15.2'
   },
   'react-aria-components': {
-    'react-aria-components': '1.3.3',
-    '@adobe/react-spectrum': '3.33.1',
-    '@react-aria/utils': '3.24.1',
-    '@react-stately/data': '3.11.5'
+    'react-aria-components': '1.16.0',
+    '@adobe/react-spectrum': '3.46.2',
+    '@react-aria/utils': '3.33.1',
+    '@react-stately/data': '3.15.2'
   },
   'react-hook-form': {
     'react-hook-form': '7.51.0',
@@ -438,6 +438,39 @@ const PATTERN_CSS: Record<string, string> = {
 [data-selected] .switch-sm { background-color: #e03; }
 [data-selected] .switch-thumb-sm { transform: translateX(18px); }
 .btn-toggle[data-selected] { background: #e03; color: white; border-color: #e03; }
+`,
+  badge: `
+/* Badge */
+.badge-wrap { position: relative; display: inline-flex; }
+.badge-icon { width: 40px; height: 40px; border-radius: 8px; border: 1px solid #d1d5db; background: white; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
+.badge-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9999px; background: #dc2626; color: #fff; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.badge-dot { position: absolute; top: 2px; right: 2px; width: 8px; height: 8px; border-radius: 50%; background: #dc2626; }
+.badge-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.badge-status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.badge-status-dot.success { background: #16a34a; }
+.badge-status-dot.error { background: #dc2626; }
+.badge-status-dot.warning { background: #d97706; }
+`,
+  chip: `
+/* Chip / Tag */
+.chip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; border: 1px solid #d1d5db; background: #f3f4f6; color: #111; font-size: 13px; }
+.chip-btn { cursor: pointer; font: inherit; }
+.chip-btn:hover { background: #e5e7eb; }
+.chip-btn:focus-visible { outline: 2px solid #18181b; outline-offset: 2px; }
+.chip[data-selected="true"] { background: #18181b; color: #fff; border-color: #18181b; }
+.chip-remove { border: none; background: transparent; cursor: pointer; padding: 0; width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: inherit; font-size: 14px; line-height: 1; }
+.chip-remove:hover { background: rgba(0,0,0,0.12); }
+.chip-remove:focus-visible { outline: 2px solid #18181b; outline-offset: 1px; }
+`,
+  toast: `
+/* Toast */
+.toast-viewport { position: fixed; bottom: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 50; max-width: 360px; }
+.toast-root { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.toast-container-tr { position: fixed; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; }
+.toast-item { padding: 12px 16px; border-radius: 8px; border: 1px solid; display: flex; align-items: center; gap: 8px; }
+.toast-success { background-color: #dcfce7; border-color: #86efac; }
+.toast-error { background-color: #fee2e2; border-color: #fca5a5; }
 `,
   tooltip: `
 /* Tooltip */

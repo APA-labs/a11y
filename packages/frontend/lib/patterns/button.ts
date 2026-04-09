@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const buttonPattern: Pattern = {
   slug: 'button',
   name: 'Button',
-  description: '사용자가 액션을 트리거하는 기본 인터랙티브 요소',
+  description: '사용자가 액션을 트리거하는 기본 인터랙티브 컴포넌트',
   wcagCriteria: ['1.4.3 Contrast', '2.1.1 Keyboard', '2.4.7 Focus Visible', '4.1.2 Name, Role, Value'],
   tags: ['interactive', 'form', 'action'],
   baseline: {

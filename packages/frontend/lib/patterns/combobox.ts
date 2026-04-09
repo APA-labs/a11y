@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const comboboxPattern: Pattern = {
   slug: 'combobox',
   name: 'Combobox',
-  description: '텍스트 입력과 선택 목록이 결합된 자동완성 패턴',
+  description: '텍스트 입력과 선택 목록이 결합된 자동완성 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '4.1.2 Name, Role, Value', '1.3.1 Info and Relationships'],
   tags: ['form', 'interactive', 'input', 'autocomplete'],
   baseline: {

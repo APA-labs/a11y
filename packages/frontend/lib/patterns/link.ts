@@ -3,7 +3,7 @@ import type { Pattern } from '../types'
 export const linkPattern: Pattern = {
   slug: 'link',
   name: 'Link',
-  description: '다른 페이지나 리소스로 이동하는 하이퍼링크 패턴',
+  description: '다른 페이지나 리소스로 이동하는 하이퍼링크 컴포넌트',
   wcagCriteria: ['2.1.1 Keyboard', '2.4.4 Link Purpose', '4.1.2 Name, Role, Value'],
   tags: ['navigation', 'interactive'],
   baseline: {

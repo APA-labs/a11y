@@ -1,0 +1,79 @@
+{
+  "pattern": "Chip / Tag",
+  "wcagLevel": "A",
+  "checklist": {
+    "must": [
+      {
+        "id": "chip-interactive-button",
+        "title": "인터랙티브 칩은 button",
+        "description": "클릭 가능한 chip은 <button> 또는 role=\"button\"으로 구현하고 Tab 순서에 포함되어야 합니다."
+      },
+      {
+        "id": "chip-keyboard",
+        "title": "키보드 작동 지원",
+        "description": "Enter/Space로 활성화하고, 삭제 가능한 chip은 Backspace/Delete로 삭제가 호출되어야 합니다. (React Aria TagGroup, MUI Chip 패턴)"
+      },
+      {
+        "id": "chip-delete-label",
+        "title": "삭제 버튼 접근명",
+        "description": "삭제 아이콘만 있는 버튼에는 aria-label=\"Remove <tag name>\"처럼 대상 chip을 명시하는 접근명을 제공하세요."
+      },
+      {
+        "id": "chip-group-label",
+        "title": "chip 그룹에 role과 label",
+        "description": "여러 chip을 묶을 때는 role=\"group\" 또는 role=\"listbox\"와 aria-label로 그룹 목적을 명시하세요."
+      }
+    ],
+    "should": [
+      {
+        "id": "chip-focus-shift",
+        "title": "삭제 후 포커스 이동",
+        "description": "chip을 삭제한 후 포커스가 사라지지 않도록 인접 chip 또는 부모 컨테이너로 이동시키세요."
+      },
+      {
+        "id": "chip-selection-state",
+        "title": "선택 상태 전달",
+        "description": "선택 가능한 chip은 aria-pressed 또는 aria-selected로 현재 상태를 스크린리더에 전달하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "chip-dual-action",
+        "title": "단일 chip을 이중 트리거로 사용 금지",
+        "description": "chip 본체를 클릭하면 선택되고 동시에 삭제도 되는 구조를 피하세요. 삭제는 항상 별도 버튼에 위임하세요."
+      },
+      {
+        "id": "chip-icon-only-no-name",
+        "title": "접근명 없는 아이콘 버튼 금지",
+        "description": "× 아이콘만 있는 삭제 버튼에 접근명이 없으면 스크린리더 사용자가 기능을 이해할 수 없습니다."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React Chip Group",
+      "code": "import { useState } from 'react'\n\ninterface ChipListProps {\n  initial: string[]\n}\n\nexport const ChipList = ({ initial }: ChipListProps) => {\n  const [tags, setTags] = useState(initial)\n\n  const remove = (t: string) => setTags((prev) => prev.filter((x) => x !== t))\n\n  return (\n    <ul role=\"group\" aria-label=\"Selected filters\">\n      {tags.map((t) => (\n        <li key={t}>\n          <span>{t}</span>\n          <button\n            type=\"button\"\n            aria-label={`Remove ${t}`}\n            onClick={() => remove(t)}\n          >\n            ×\n          </button>\n        </li>\n      ))}\n    </ul>\n  )\n}"
+    },
+    "html": {
+      "label": "HTML Chip Group",
+      "code": "<ul role=\"group\" aria-label=\"Selected filters\">\n  <li>\n    <span>Design</span>\n    <button type=\"button\" aria-label=\"Remove Design\">×</button>\n  </li>\n  <li>\n    <span>Engineering</span>\n    <button type=\"button\" aria-label=\"Remove Engineering\">×</button>\n  </li>\n</ul>"
+    }
+  },
+  "tests": [
+    {
+      "title": "chip 키보드 조작 테스트",
+      "steps": [
+        "chip 그룹에 Tab으로 진입",
+        "화살표 키 또는 Tab으로 chip 사이 이동 확인",
+        "포커스된 chip에서 Backspace/Delete 입력 시 삭제 호출 확인",
+        "삭제 후 인접 chip으로 포커스가 이동하는지 확인"
+      ],
+      "tools": ["Keyboard", "NVDA", "VoiceOver"]
+    }
+  ],
+  "references": [
+    "https://react-spectrum.adobe.com/react-aria/TagGroup.html",
+    "https://mui.com/material-ui/react-chip/#accessibility",
+    "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/"
+  ]
+}

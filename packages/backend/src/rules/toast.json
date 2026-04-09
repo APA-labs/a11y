@@ -1,0 +1,95 @@
+{
+  "pattern": "Toast",
+  "wcagLevel": "AA",
+  "checklist": {
+    "must": [
+      {
+        "id": "toast-m1",
+        "title": "role 설정",
+        "description": "비긴급 알림은 role=\"status\"(aria-live=\"polite\"), 오류/경고 등 긴급 알림은 role=\"alert\"(aria-live=\"assertive\")를 사용해야 합니다."
+      },
+      {
+        "id": "toast-m2",
+        "title": "키보드 포커스 이동 금지",
+        "description": "Toast는 현재 작업을 방해하지 않아야 합니다. 표시될 때 사용자의 포커스를 가로채지 마세요."
+      },
+      {
+        "id": "toast-m3",
+        "title": "충분한 표시 시간",
+        "description": "자동 소멸되는 toast는 최소 5초 이상 노출해야 하며, 사용자가 시간을 늘리거나 영구 표시로 전환할 수 있어야 합니다. WCAG 2.2.3 요구사항입니다."
+      },
+      {
+        "id": "toast-m4",
+        "title": "닫기 버튼 키보드 접근",
+        "description": "닫기 버튼이 있는 경우 키보드로 접근하고 활성화할 수 있어야 하며, aria-label로 닫기 동작을 명시해야 합니다."
+      },
+      {
+        "id": "toast-m5",
+        "title": "hover/focus 시 타이머 일시정지",
+        "description": "사용자가 toast 위에 포커스를 두거나 마우스를 올리면 자동 닫힘 타이머를 일시정지해야 합니다."
+      }
+    ],
+    "should": [
+      {
+        "id": "toast-s1",
+        "title": "색상 외 아이콘으로 유형 구분",
+        "description": "success/error/warning/info를 색상만으로 구분하지 말고 아이콘과 텍스트 라벨을 함께 제공하세요."
+      },
+      {
+        "id": "toast-s2",
+        "title": "동시 표시 개수 제한",
+        "description": "동시에 여러 toast가 쌓이면 스크린리더가 과부하됩니다. 최대 개수를 제한하고 오래된 순서로 자동 제거하세요."
+      },
+      {
+        "id": "toast-s3",
+        "title": "중요한 정보는 toast로만 전달하지 말 것",
+        "description": "사용자가 놓칠 수 있으므로 중요한 오류나 확인이 필요한 내용은 toast가 아니라 alert-dialog나 인라인 메시지로 전달하세요."
+      }
+    ],
+    "avoid": [
+      {
+        "id": "toast-a1",
+        "title": "3초 미만 자동 닫힘",
+        "description": "WCAG 2.2.3 실패 항목입니다. 저시력 사용자와 스크린리더 사용자가 메시지를 읽을 시간이 부족합니다."
+      },
+      {
+        "id": "toast-a2",
+        "title": "toast 내부에 복잡한 폼/버튼",
+        "description": "toast는 간단한 안내/실행 취소 용도로 사용하고, 복잡한 상호작용이 필요하면 dialog 또는 inline 메시지를 사용하세요."
+      },
+      {
+        "id": "toast-a3",
+        "title": "색상만으로 심각도 전달",
+        "description": "빨간색=오류처럼 색상만으로 의미를 전달하면 색각이상 사용자가 인식할 수 없습니다."
+      }
+    ]
+  },
+  "codeSamples": {
+    "react": {
+      "label": "React 예제",
+      "code": "function ToastDemo() {\n  const [toasts, setToasts] = useState([]);\n  const timers = useRef({});\n\n  const addToast = (message, type = 'info') => {\n    const id = Date.now();\n    setToasts(prev => [...prev, { id, message, type }]);\n    timers.current[id] = setTimeout(() => removeToast(id), 5000);\n  };\n\n  const removeToast = (id) => {\n    clearTimeout(timers.current[id]);\n    delete timers.current[id];\n    setToasts(prev => prev.filter(t => t.id !== id));\n  };\n\n  const pause = (id) => clearTimeout(timers.current[id]);\n  const resume = (id) => {\n    timers.current[id] = setTimeout(() => removeToast(id), 5000);\n  };\n\n  return (\n    <div>\n      <button onClick={() => addToast('저장되었습니다.', 'success')}>저장</button>\n\n      <div className=\"toast-region\" aria-label=\"알림\">\n        {toasts.map(t => (\n          <div\n            key={t.id}\n            role={t.type === 'error' ? 'alert' : 'status'}\n            aria-live={t.type === 'error' ? 'assertive' : 'polite'}\n            onMouseEnter={() => pause(t.id)}\n            onMouseLeave={() => resume(t.id)}\n            onFocus={() => pause(t.id)}\n            onBlur={() => resume(t.id)}\n            className={`toast toast-${t.type}`}\n          >\n            <span aria-hidden>{/* icon */}</span>\n            <span>{t.message}</span>\n            <button onClick={() => removeToast(t.id)} aria-label=\"알림 닫기\">×</button>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+    }
+  },
+  "tests": [
+    {
+      "title": "자동 닫힘 타이밍 테스트",
+      "steps": [
+        "toast를 트리거",
+        "최소 5초 이상 표시되는지 확인",
+        "toast 위에 마우스를 올려 타이머가 일시정지되는지 확인",
+        "포커스를 옮겼을 때도 일시정지되는지 확인"
+      ],
+      "tools": ["Keyboard only", "Stopwatch"]
+    },
+    {
+      "title": "스크린리더 읽기 확인",
+      "steps": ["VoiceOver 또는 NVDA 활성화", "toast 트리거", "메시지가 자동으로 읽히는지 확인", "포커스가 가로채지지 않는지 확인"],
+      "tools": ["VoiceOver", "NVDA"]
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/ARIA/apg/patterns/alert/",
+    "https://www.w3.org/WAI/WCAG21/Understanding/timing-adjustable.html",
+    "https://www.w3.org/WAI/WCAG21/Understanding/status-messages.html"
+  ]
+}

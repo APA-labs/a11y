@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 import AnalyzeForm from '../../../components/AnalyzeForm'
 import { getTranslations, SUPPORTED_LANGS } from '../../../lib/i18n'
@@ -10,6 +11,11 @@ export function generateStaticParams() {
 }
 
 export default async function AnalyzePage({ params }: { params: Promise<{ lang: Lang }> }) {
+  if (process.env.NEXT_PUBLIC_AI_ENABLED !== 'true') {
+    const { lang } = await params
+    redirect(`/${lang}`)
+  }
+
   const { lang } = await params
   const t = getTranslations(lang)
 

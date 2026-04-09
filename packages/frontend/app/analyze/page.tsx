@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 import AnalyzeForm from '../../components/AnalyzeForm'
 
@@ -7,6 +8,10 @@ export const metadata = {
 }
 
 export default function AnalyzePage() {
+  if (process.env.NEXT_PUBLIC_AI_ENABLED !== 'true') {
+    redirect('/')
+  }
+
   return (
     <div className='max-w-4xl mx-auto px-8 py-10'>
       <div className='mb-8'>

@@ -1,8 +1,11 @@
 import { accordionPattern } from './accordion'
 import { alertPattern } from './alert'
+import { alertDialogPattern } from './alert-dialog'
+import { badgePattern } from './badge'
 import { breadcrumbPattern } from './breadcrumb'
 import { buttonPattern } from './button'
 import { checkboxPattern } from './checkbox'
+import { chipPattern } from './chip'
 import { comboboxPattern } from './combobox'
 import { datePickerPattern } from './date-picker'
 import { disclosurePattern } from './disclosure'
@@ -15,8 +18,10 @@ import { paginationPattern } from './pagination'
 import { popoverPattern } from './popover'
 import { radioGroupPattern } from './radio-group'
 import { selectPattern } from './select'
+import { tablePattern } from './table'
 import { tabsPattern } from './tabs'
 import { textInputPattern } from './text-input'
+import { toastPattern } from './toast'
 import { togglePattern } from './toggle'
 import { tooltipPattern } from './tooltip'
 import { patternTranslationsEn } from './translations.en'
@@ -27,9 +32,12 @@ import type { Pattern } from '../types'
 export const patterns: Pattern[] = [
   accordionPattern,
   alertPattern,
+  alertDialogPattern,
+  badgePattern,
   breadcrumbPattern,
   buttonPattern,
   checkboxPattern,
+  chipPattern,
   comboboxPattern,
   datePickerPattern,
   disclosurePattern,
@@ -42,8 +50,10 @@ export const patterns: Pattern[] = [
   popoverPattern,
   radioGroupPattern,
   selectPattern,
+  tablePattern,
   tabsPattern,
   textInputPattern,
+  toastPattern,
   togglePattern,
   tooltipPattern
 ]
