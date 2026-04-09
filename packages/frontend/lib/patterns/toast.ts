@@ -421,7 +421,7 @@ export default function App() {
         language: 'tsx',
         label: 'React Aria Toast',
         code: `import './index.css'
-import { ToastRegion, ToastQueue, Toast, Button } from 'react-aria-components'
+import { UNSTABLE_ToastRegion as ToastRegion, UNSTABLE_ToastQueue as ToastQueue, UNSTABLE_Toast as Toast, Button } from 'react-aria-components'
 
 const queue = new ToastQueue({ maxVisibleToasts: 3 })
 
