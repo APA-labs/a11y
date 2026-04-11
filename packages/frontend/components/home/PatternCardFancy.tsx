@@ -8,6 +8,7 @@ import { useState } from 'react'
 
 import { getDsSwatchColor } from '../../lib/ds-swatch'
 import { DS_META, DS_ORDER } from '../../lib/types'
+import { getPreview } from '../previews'
 
 import type { Lang } from '../../lib/i18n'
 import type { Pattern } from '../../lib/types'
@@ -22,6 +23,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
   const shouldCount = pattern.baseline.checklist.should.length
   const previewSrc = `/previews/${pattern.slug}.png`
   const [hasImage, setHasImage] = useState(true)
+  const SvgPreview = getPreview(pattern.slug)
 
   const activeDS = DS_ORDER.filter((id) => pattern.designSystems[id] != null)
 
@@ -57,7 +59,11 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
               background: 'radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(139,92,246,0.12), transparent 40%)'
             }}
           />
-          {hasImage ? (
+          {SvgPreview ? (
+            <div className='absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]'>
+              <SvgPreview />
+            </div>
+          ) : hasImage ? (
             <Image
               src={previewSrc}
               alt={`${pattern.name} preview`}
