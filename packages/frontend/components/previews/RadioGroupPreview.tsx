@@ -1,26 +1,23 @@
 const VIEW_W = 320
 const VIEW_H = 180
-const ACTIVE = '#8b5cf6'
+const ACCENT = '#8b5cf6'
 
-type Row = { selected: boolean; labelW: number }
+type Row = { label: string; selected: boolean }
 
 const ROWS: Row[] = [
-  { selected: false, labelW: 120 },
-  { selected: true, labelW: 150 },
-  { selected: false, labelW: 130 },
-  { selected: false, labelW: 100 }
+  { label: 'Standard shipping', selected: false },
+  { label: 'Express delivery', selected: true },
+  { label: 'Pick up in store', selected: false },
+  { label: 'Same-day', selected: false }
 ]
 
-const RADIUS = 10
-const INNER_R = 4.5
-const ROW_GAP = 18
-const ROW_H = RADIUS * 2
-const LABEL_H = 5
-const CIRCLE_TO_LABEL = 14
-
-const GROUP_X = 70
-const totalH = ROWS.length * ROW_H + (ROWS.length - 1) * ROW_GAP
-const startY = (VIEW_H - totalH) / 2
+const RADIUS = 9
+const ROW_H = 26
+const LABEL_GAP = 12
+const GROUP_W = 210
+const START_X = (VIEW_W - GROUP_W) / 2
+const TOTAL_H = ROWS.length * ROW_H
+const START_Y = (VIEW_H - TOTAL_H) / 2 + RADIUS
 
 export default function RadioGroupPreview() {
   return (
@@ -30,39 +27,36 @@ export default function RadioGroupPreview() {
       className='w-full h-full'
       aria-hidden='true'>
       {ROWS.map((row, i) => {
-        const cy = startY + RADIUS + i * (ROW_H + ROW_GAP)
-        const cx = GROUP_X + RADIUS
-        const labelX = cx + RADIUS + CIRCLE_TO_LABEL
+        const cy = START_Y + i * ROW_H
         return (
-          <g key={i}>
+          <g key={row.label}>
             <circle
-              cx={cx}
+              cx={START_X + RADIUS}
               cy={cy}
               r={RADIUS}
               style={{
                 fill: 'var(--surface)',
-                stroke: row.selected ? ACTIVE : 'var(--outline)',
+                stroke: row.selected ? ACCENT : 'var(--outline)',
                 strokeWidth: row.selected ? 2 : 1.5
               }}
             />
             {row.selected ? (
               <circle
-                cx={cx}
+                cx={START_X + RADIUS}
                 cy={cy}
-                r={INNER_R}
-                style={{ fill: ACTIVE }}
+                r={4.5}
+                style={{ fill: ACCENT }}
               />
             ) : null}
-            <rect
-              x={labelX}
-              y={cy - LABEL_H / 2}
-              width={row.labelW}
-              height={LABEL_H}
-              rx={LABEL_H / 2}
-              style={{
-                fill: row.selected ? 'var(--body)' : 'var(--soft)'
-              }}
-            />
+            <text
+              x={START_X + RADIUS * 2 + LABEL_GAP}
+              y={cy + 4}
+              fontSize={12}
+              fontWeight={row.selected ? 600 : 500}
+              fontFamily='system-ui, -apple-system, sans-serif'
+              style={{ fill: row.selected ? 'var(--body)' : 'var(--soft)' }}>
+              {row.label}
+            </text>
           </g>
         )
       })}

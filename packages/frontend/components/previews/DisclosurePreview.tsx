@@ -1,37 +1,15 @@
 const VIEW_W = 320
 const VIEW_H = 180
 
-const TRIGGER_W = 240
-const TRIGGER_H = 36
-const RADIUS = 8
-const GAP = 10
+const TRIGGER_W = 248
+const TRIGGER_H = 40
+const TRIGGER_X = (VIEW_W - TRIGGER_W) / 2
+const TRIGGER_Y = 34
 
-const BAR_H = 5
-const BARS = [
-  { w: 220, fill: 'var(--body)', opacity: 0.8 },
-  { w: 200, fill: 'var(--soft)', opacity: 1 },
-  { w: 180, fill: 'var(--soft)', opacity: 0.7 }
-]
-const BAR_GAP = 8
+const CONTENT_X = TRIGGER_X + 16
+const CONTENT_Y = TRIGGER_Y + TRIGGER_H + 18
 
 export default function DisclosurePreview() {
-  const contentH = BARS.length * BAR_H + (BARS.length - 1) * BAR_GAP
-  const totalH = TRIGGER_H + GAP + contentH
-  const startY = (VIEW_H - totalH) / 2
-  const triggerX = (VIEW_W - TRIGGER_W) / 2
-  const triggerY = startY
-
-  const labelX = triggerX + 16
-  const labelY = triggerY + TRIGGER_H / 2 - 3
-  const labelW = 130
-
-  const chevronCx = triggerX + TRIGGER_W - 20
-  const chevronCy = triggerY + TRIGGER_H / 2
-  const chevronSize = 5
-  const chevronPath = `M ${chevronCx - chevronSize} ${chevronCy - chevronSize / 2} L ${chevronCx} ${chevronCy + chevronSize / 2} L ${chevronCx + chevronSize} ${chevronCy - chevronSize / 2}`
-
-  const contentStartY = triggerY + TRIGGER_H + GAP
-
   return (
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -39,49 +17,51 @@ export default function DisclosurePreview() {
       className='w-full h-full'
       aria-hidden='true'>
       <rect
-        x={triggerX}
-        y={triggerY}
+        x={TRIGGER_X}
+        y={TRIGGER_Y}
         width={TRIGGER_W}
         height={TRIGGER_H}
-        rx={RADIUS}
-        style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1 }}
+        rx={10}
+        style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1.5 }}
       />
-
-      <rect
-        x={labelX}
-        y={labelY}
-        width={labelW}
-        height={6}
-        rx={3}
-        style={{ fill: 'var(--body)' }}
-      />
-
+      <text
+        x={TRIGGER_X + 18}
+        y={TRIGGER_Y + TRIGGER_H / 2 + 4}
+        fontSize={13}
+        fontWeight={600}
+        fontFamily='system-ui, -apple-system, sans-serif'
+        style={{ fill: 'var(--body)' }}>
+        Show shipping details
+      </text>
       <path
-        d={chevronPath}
+        d={`M${TRIGGER_X + TRIGGER_W - 22} ${TRIGGER_Y + TRIGGER_H / 2 - 3} l5 5 l5 -5`}
         style={{
-          fill: 'none',
-          stroke: 'var(--soft)',
+          stroke: 'var(--body)',
           strokeWidth: 1.8,
           strokeLinecap: 'round',
-          strokeLinejoin: 'round'
+          strokeLinejoin: 'round',
+          fill: 'none'
         }}
       />
 
-      {BARS.map((bar, i) => {
-        const by = contentStartY + i * (BAR_H + BAR_GAP)
-        const bx = (VIEW_W - bar.w) / 2
-        return (
-          <rect
-            key={i}
-            x={bx}
-            y={by}
-            width={bar.w}
-            height={BAR_H}
-            rx={2.5}
-            style={{ fill: bar.fill, opacity: bar.opacity }}
-          />
-        )
-      })}
+      <text
+        x={CONTENT_X}
+        y={CONTENT_Y}
+        fontSize={11.5}
+        fontWeight={500}
+        fontFamily='system-ui, -apple-system, sans-serif'
+        style={{ fill: 'var(--soft)' }}>
+        Free delivery on orders over $50.
+      </text>
+      <text
+        x={CONTENT_X}
+        y={CONTENT_Y + 18}
+        fontSize={11.5}
+        fontWeight={500}
+        fontFamily='system-ui, -apple-system, sans-serif'
+        style={{ fill: 'var(--soft)' }}>
+        Standard arrives in 3–5 business days.
+      </text>
     </svg>
   )
 }

@@ -7,7 +7,7 @@ const PANEL_W = VIEW_W - PANEL_X
 const PANEL_RADIUS = 12
 
 export default function DrawerPreview() {
-  const rowYs = [72, 102, 132]
+  const rowYs = [64, 94, 124, 154]
 
   return (
     <svg
@@ -73,7 +73,7 @@ export default function DrawerPreview() {
 
       <rect
         x={20}
-        y={32}
+        y={28}
         width={140}
         height={5}
         rx={2.5}
@@ -81,7 +81,7 @@ export default function DrawerPreview() {
       />
       <rect
         x={20}
-        y={52}
+        y={48}
         width={110}
         height={4}
         rx={2}
@@ -89,7 +89,7 @@ export default function DrawerPreview() {
       />
       <rect
         x={20}
-        y={70}
+        y={66}
         width={150}
         height={4}
         rx={2}
@@ -97,8 +97,32 @@ export default function DrawerPreview() {
       />
       <rect
         x={20}
-        y={88}
+        y={84}
         width={120}
+        height={4}
+        rx={2}
+        style={{ fill: 'var(--soft)', opacity: 0.18 }}
+      />
+      <rect
+        x={20}
+        y={110}
+        width={135}
+        height={4}
+        rx={2}
+        style={{ fill: 'var(--soft)', opacity: 0.18 }}
+      />
+      <rect
+        x={20}
+        y={128}
+        width={100}
+        height={4}
+        rx={2}
+        style={{ fill: 'var(--soft)', opacity: 0.18 }}
+      />
+      <rect
+        x={20}
+        y={146}
+        width={145}
         height={4}
         rx={2}
         style={{ fill: 'var(--soft)', opacity: 0.18 }}
@@ -117,7 +141,7 @@ export default function DrawerPreview() {
 
         <rect
           x={PANEL_X + 14}
-          y={22}
+          y={18}
           width={70}
           height={6}
           rx={3}
@@ -126,17 +150,17 @@ export default function DrawerPreview() {
 
         <circle
           cx={VIEW_W - 18}
-          cy={25}
+          cy={21}
           r={7}
           style={{ fill: 'var(--divider)' }}
         />
         <path
-          d={`M${VIEW_W - 21} 22 L${VIEW_W - 15} 28 M${VIEW_W - 21} 28 L${VIEW_W - 15} 22`}
+          d={`M${VIEW_W - 21} 18 L${VIEW_W - 15} 24 M${VIEW_W - 21} 24 L${VIEW_W - 15} 18`}
           style={{ stroke: 'var(--body)', strokeWidth: 1.2, strokeLinecap: 'round' }}
         />
 
         <path
-          d={`M${PANEL_X + 14} 44 L${VIEW_W - 14} 44`}
+          d={`M${PANEL_X + 14} 40 L${VIEW_W - 14} 40`}
           style={{ stroke: 'var(--divider)', strokeWidth: 1 }}
         />
 

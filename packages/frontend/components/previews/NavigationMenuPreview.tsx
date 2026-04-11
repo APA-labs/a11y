@@ -1,31 +1,42 @@
 const VIEW_W = 320
 const VIEW_H = 180
 
-const ITEM_W = 50
-const ITEM_H = 26
-const ITEM_GAP = 8
-const ITEM_RX = 6
-const ITEM_COUNT = 4
-const ACTIVE_INDEX = 1
+const ACCENT = '#8b5cf6'
 
-const PANEL_W = 140
-const PANEL_H = 80
-const PANEL_RX = 8
-const PANEL_GAP = 8
+type MenuItem = { label: string; w: number; active?: boolean }
+
+const ITEMS: MenuItem[] = [
+  { label: 'Home', w: 58 },
+  { label: 'Products', w: 96, active: true },
+  { label: 'Docs', w: 58 },
+  { label: 'Blog', w: 54 }
+]
+
+const SUB_ITEMS = ['Overview', 'Features', 'Pricing']
+
+const ITEM_H = 28
+const ITEM_GAP = 6
+const NAV_Y = 28
+
+const PANEL_W = 116
+const PANEL_ITEM_H = 22
+const PANEL_PAD_Y = 8
 
 export default function NavigationMenuPreview() {
-  const navTotalW = ITEM_COUNT * ITEM_W + (ITEM_COUNT - 1) * ITEM_GAP
-  const navStartX = (VIEW_W - navTotalW) / 2
-  const navY = 28
+  const totalW = ITEMS.reduce((s, it) => s + it.w, 0) + (ITEMS.length - 1) * ITEM_GAP
+  const startX = (VIEW_W - totalW) / 2
 
-  const activeX = navStartX + ACTIVE_INDEX * (ITEM_W + ITEM_GAP)
-  const panelX = activeX + ITEM_W / 2 - PANEL_W / 2
-  const panelY = navY + ITEM_H + PANEL_GAP
+  let cursor = startX
+  const itemPositions = ITEMS.map((it) => {
+    const x = cursor
+    cursor += it.w + ITEM_GAP
+    return { ...it, x }
+  })
 
-  const rowCount = 3
-  const rowGap = 14
-  const rowH = 5
-  const rowStartY = panelY + 18
+  const activeItem = itemPositions.find((it) => it.active) ?? itemPositions[0]!
+  const panelX = activeItem.x + activeItem.w / 2 - PANEL_W / 2
+  const panelY = NAV_Y + ITEM_H + 8
+  const panelH = SUB_ITEMS.length * PANEL_ITEM_H + PANEL_PAD_Y * 2
 
   return (
     <svg
@@ -35,11 +46,11 @@ export default function NavigationMenuPreview() {
       aria-hidden='true'>
       <defs>
         <filter
-          id='nav-menu-shadow'
+          id='nav-shadow'
           x='-20%'
           y='-20%'
           width='140%'
-          height='160%'>
+          height='140%'>
           <feGaussianBlur
             in='SourceAlpha'
             stdDeviation='2.5'
@@ -61,38 +72,33 @@ export default function NavigationMenuPreview() {
         </filter>
       </defs>
 
-      {Array.from({ length: ITEM_COUNT }).map((_, i) => {
-        const x = navStartX + i * (ITEM_W + ITEM_GAP)
-        const isActive = i === ACTIVE_INDEX
+      {itemPositions.map((it) => {
+        const x = it.x
         return (
-          <g key={`item-${i}`}>
-            <rect
-              x={x}
-              y={navY}
-              width={ITEM_W}
-              height={ITEM_H}
-              rx={ITEM_RX}
-              style={{
-                fill: isActive ? 'var(--divider)' : 'var(--surface)',
-                stroke: 'var(--outline)',
-                strokeWidth: isActive ? 1 : 0.75,
-                opacity: isActive ? 1 : 0.9
-              }}
-            />
-            <rect
-              x={x + 10}
-              y={navY + ITEM_H / 2 - 2.5}
-              width={isActive ? 20 : 26}
-              height={5}
-              rx={2.5}
-              style={{
-                fill: 'var(--body)',
-                opacity: isActive ? 0.9 : 0.6
-              }}
-            />
-            {isActive ? (
+          <g key={it.label}>
+            {it.active ? (
+              <rect
+                x={x}
+                y={NAV_Y}
+                width={it.w}
+                height={ITEM_H}
+                rx={6}
+                style={{ fill: 'var(--divider)' }}
+              />
+            ) : null}
+            <text
+              x={x + it.w / 2 - (it.active ? 10 : 0)}
+              y={NAV_Y + ITEM_H / 2 + 4}
+              textAnchor='middle'
+              fontSize={13}
+              fontWeight={it.active ? 600 : 500}
+              fontFamily='system-ui, -apple-system, sans-serif'
+              style={{ fill: it.active ? 'var(--body)' : 'var(--soft)' }}>
+              {it.label}
+            </text>
+            {it.active ? (
               <path
-                d={`M${x + ITEM_W - 12} ${navY + ITEM_H / 2 - 2} l3 3 l3 -3`}
+                d={`M${x + it.w - 18} ${NAV_Y + ITEM_H / 2 - 2} l4 4 l4 -4`}
                 style={{
                   stroke: 'var(--body)',
                   strokeWidth: 1.5,
@@ -106,39 +112,42 @@ export default function NavigationMenuPreview() {
         )
       })}
 
-      <g filter='url(#nav-menu-shadow)'>
+      <g filter='url(#nav-shadow)'>
         <rect
           x={panelX}
           y={panelY}
           width={PANEL_W}
-          height={PANEL_H}
-          rx={PANEL_RX}
-          style={{
-            fill: 'var(--surface)',
-            stroke: 'var(--outline)',
-            strokeWidth: 1
-          }}
+          height={panelH}
+          rx={8}
+          style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1 }}
         />
+        {SUB_ITEMS.map((label, i) => {
+          const isFirst = i === 0
+          return (
+            <g key={label}>
+              {isFirst ? (
+                <rect
+                  x={panelX + 4}
+                  y={panelY + PANEL_PAD_Y + i * PANEL_ITEM_H}
+                  width={PANEL_W - 8}
+                  height={PANEL_ITEM_H}
+                  rx={4}
+                  style={{ fill: ACCENT, opacity: 0.1 }}
+                />
+              ) : null}
+              <text
+                x={panelX + 14}
+                y={panelY + PANEL_PAD_Y + i * PANEL_ITEM_H + PANEL_ITEM_H / 2 + 4}
+                fontSize={12}
+                fontWeight={isFirst ? 600 : 500}
+                fontFamily='system-ui, -apple-system, sans-serif'
+                style={{ fill: isFirst ? ACCENT : 'var(--body)' }}>
+                {label}
+              </text>
+            </g>
+          )
+        })}
       </g>
-
-      {Array.from({ length: rowCount }).map((_, i) => {
-        const y = rowStartY + i * rowGap
-        const w = i === 0 ? 100 : i === 1 ? 86 : 72
-        return (
-          <rect
-            key={`row-${i}`}
-            x={panelX + 16}
-            y={y}
-            width={w}
-            height={rowH}
-            rx={2.5}
-            style={{
-              fill: 'var(--body)',
-              opacity: 0.7 - i * 0.12
-            }}
-          />
-        )
-      })}
     </svg>
   )
 }

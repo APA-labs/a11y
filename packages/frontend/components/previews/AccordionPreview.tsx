@@ -2,35 +2,26 @@ const VIEW_W = 320
 const VIEW_H = 180
 
 const CONTAINER_X = 30
-const CONTAINER_Y = 18
-const CONTAINER_W = 260
-const CONTAINER_H = 144
+const CONTAINER_Y = 14
+const CONTAINER_W = VIEW_W - CONTAINER_X * 2
+const CONTAINER_H = VIEW_H - CONTAINER_Y * 2
 const RADIUS = 10
 
-const HEADER_H = 32
-const EXPANDED_H = 80
+type Section = { label: string; expanded?: boolean }
 
-const LABEL_X = 20
-const LABEL_W = 96
-const LABEL_H = 6
+const SECTIONS: Section[] = [{ label: 'Getting started' }, { label: 'How it works', expanded: true }, { label: 'Pricing & plans' }]
 
-const CHEVRON_CX = CONTAINER_W - 22
-
-type Section = { y: number; h: number; expanded: boolean }
-
-const SECTIONS: Section[] = [
-  { y: CONTAINER_Y, h: HEADER_H, expanded: false },
-  { y: CONTAINER_Y + HEADER_H, h: EXPANDED_H, expanded: true },
-  { y: CONTAINER_Y + HEADER_H + EXPANDED_H, h: HEADER_H, expanded: false }
-]
-
-const BODY_BARS = [
-  { x: 20, w: 200 },
-  { x: 20, w: 168 },
-  { x: 20, w: 140 }
-]
+const COLLAPSED_H = 34
+const EXPANDED_EXTRA = 56
+const totalExpanded = SECTIONS.length * COLLAPSED_H + EXPANDED_EXTRA
 
 export default function AccordionPreview() {
+  const scale = Math.min(1, CONTAINER_H / totalExpanded)
+  const rowH = COLLAPSED_H * scale
+  const expandedExtra = EXPANDED_EXTRA * scale
+
+  let cursorY = CONTAINER_Y
+
   return (
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -59,75 +50,86 @@ export default function AccordionPreview() {
       />
 
       <g clipPath='url(#accordion-clip)'>
-        {SECTIONS[1] ? (
-          <rect
-            x={CONTAINER_X}
-            y={SECTIONS[1].y}
-            width={CONTAINER_W}
-            height={HEADER_H}
-            style={{ fill: 'var(--divider)' }}
-          />
-        ) : null}
-
-        <path
-          d={`M${CONTAINER_X} ${SECTIONS[1]!.y} L${CONTAINER_X + CONTAINER_W} ${SECTIONS[1]!.y}`}
-          style={{ stroke: 'var(--outline)', strokeWidth: 1 }}
-        />
-        <path
-          d={`M${CONTAINER_X} ${SECTIONS[1]!.y + HEADER_H} L${CONTAINER_X + CONTAINER_W} ${SECTIONS[1]!.y + HEADER_H}`}
-          style={{ stroke: 'var(--outline)', strokeWidth: 1 }}
-        />
-        <path
-          d={`M${CONTAINER_X} ${SECTIONS[2]!.y} L${CONTAINER_X + CONTAINER_W} ${SECTIONS[2]!.y}`}
-          style={{ stroke: 'var(--outline)', strokeWidth: 1 }}
-        />
-
         {SECTIONS.map((section, i) => {
-          const headerMidY = section.y + HEADER_H / 2
-          const chevronCx = CONTAINER_X + CHEVRON_CX
+          const y = cursorY
+          const isExpanded = section.expanded === true
+          const thisRowH = rowH
+          cursorY += thisRowH + (isExpanded ? expandedExtra : 0)
           return (
-            <g key={`header-${i}`}>
-              <rect
-                x={CONTAINER_X + LABEL_X}
-                y={headerMidY - LABEL_H / 2}
-                width={LABEL_W - (i === 1 ? 0 : 12 * i)}
-                height={LABEL_H}
-                rx={3}
-                style={{
-                  fill: section.expanded ? 'var(--body)' : 'var(--body)',
-                  opacity: section.expanded ? 0.9 : 0.7
-                }}
-              />
-              {section.expanded ? (
+            <g key={section.label}>
+              {isExpanded ? (
+                <rect
+                  x={CONTAINER_X}
+                  y={y}
+                  width={CONTAINER_W}
+                  height={thisRowH}
+                  style={{ fill: 'var(--divider)' }}
+                />
+              ) : null}
+              {i > 0 ? (
+                <line
+                  x1={CONTAINER_X + 12}
+                  x2={CONTAINER_X + CONTAINER_W - 12}
+                  y1={y}
+                  y2={y}
+                  style={{ stroke: 'var(--divider)', strokeWidth: 1 }}
+                />
+              ) : null}
+              <text
+                x={CONTAINER_X + 16}
+                y={y + thisRowH / 2 + 4}
+                fontSize={12.5}
+                fontWeight={isExpanded ? 600 : 500}
+                fontFamily='system-ui, -apple-system, sans-serif'
+                style={{ fill: isExpanded ? 'var(--body)' : 'var(--soft)' }}>
+                {section.label}
+              </text>
+              {isExpanded ? (
                 <path
-                  d={`M${chevronCx - 5} ${headerMidY - 2} L${chevronCx} ${headerMidY + 3} L${chevronCx + 5} ${headerMidY - 2}`}
-                  style={{ fill: 'none', stroke: 'var(--body)', strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round' }}
+                  d={`M${CONTAINER_X + CONTAINER_W - 24} ${y + thisRowH / 2 - 2} l4 4 l4 -4`}
+                  style={{
+                    stroke: 'var(--body)',
+                    strokeWidth: 1.5,
+                    strokeLinecap: 'round',
+                    strokeLinejoin: 'round',
+                    fill: 'none'
+                  }}
                 />
               ) : (
                 <path
-                  d={`M${chevronCx - 2} ${headerMidY - 5} L${chevronCx + 3} ${headerMidY} L${chevronCx - 2} ${headerMidY + 5}`}
-                  style={{ fill: 'none', stroke: 'var(--soft)', strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round' }}
+                  d={`M${CONTAINER_X + CONTAINER_W - 22} ${y + thisRowH / 2 - 4} l4 4 l-4 4`}
+                  style={{
+                    stroke: 'var(--faint)',
+                    strokeWidth: 1.5,
+                    strokeLinecap: 'round',
+                    strokeLinejoin: 'round',
+                    fill: 'none'
+                  }}
                 />
               )}
+              {isExpanded ? (
+                <g>
+                  <text
+                    x={CONTAINER_X + 16}
+                    y={y + thisRowH + 18}
+                    fontSize={11}
+                    fontWeight={500}
+                    fontFamily='system-ui, -apple-system, sans-serif'
+                    style={{ fill: 'var(--soft)' }}>
+                    Pick a plan, add your team,
+                  </text>
+                  <text
+                    x={CONTAINER_X + 16}
+                    y={y + thisRowH + 34}
+                    fontSize={11}
+                    fontWeight={500}
+                    fontFamily='system-ui, -apple-system, sans-serif'
+                    style={{ fill: 'var(--soft)' }}>
+                    and ship your first release.
+                  </text>
+                </g>
+              ) : null}
             </g>
-          )
-        })}
-
-        {BODY_BARS.map((bar, i) => {
-          const by = SECTIONS[1]!.y + HEADER_H + 16 + i * 14
-          return (
-            <rect
-              key={`body-${i}`}
-              x={CONTAINER_X + bar.x}
-              y={by}
-              width={bar.w}
-              height={5}
-              rx={2.5}
-              style={{
-                fill: i === 0 ? 'var(--body)' : 'var(--soft)',
-                opacity: i === 0 ? 0.7 : 0.5
-              }}
-            />
           )
         })}
       </g>

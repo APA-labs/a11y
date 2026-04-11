@@ -1,31 +1,30 @@
 const VIEW_W = 320
 const VIEW_H = 180
 
-type BadgeVariant = {
+type Badge = {
+  label: string
+  w: number
   fill: string
   stroke?: string
-  bar: string
-  dot?: boolean
-  neutral?: boolean
+  textColor: string
 }
 
-const BADGES: BadgeVariant[] = [
-  { fill: '#8b5cf6', bar: '#ffffff', dot: true },
-  { fill: '#10b981', bar: '#ffffff', dot: true },
-  { fill: '#f59e0b', bar: '#ffffff' },
-  { fill: '#ef4444', bar: '#ffffff', dot: true },
-  { fill: 'var(--surface)', bar: 'var(--body)', neutral: true }
+const BADGES: Badge[] = [
+  { label: 'New', w: 54, fill: '#8b5cf6', textColor: '#ffffff' },
+  { label: 'Success', w: 76, fill: '#10b981', textColor: '#ffffff' },
+  { label: '99+', w: 48, fill: '#ef4444', textColor: '#ffffff' },
+  { label: 'Beta', w: 58, fill: 'var(--surface)', stroke: 'var(--outline)', textColor: 'var(--body)' }
 ]
 
-const BADGE_W = 48
-const BADGE_H = 24
-const GAP = 12
-const RADIUS = 12
+const BADGE_H = 28
+const GAP = 14
 
 export default function BadgePreview() {
-  const totalW = BADGES.length * BADGE_W + (BADGES.length - 1) * GAP
+  const totalW = BADGES.reduce((s, b) => s + b.w, 0) + (BADGES.length - 1) * GAP
   const startX = (VIEW_W - totalW) / 2
   const y = (VIEW_H - BADGE_H) / 2
+
+  let cursor = startX
 
   return (
     <svg
@@ -33,49 +32,33 @@ export default function BadgePreview() {
       xmlns='http://www.w3.org/2000/svg'
       className='w-full h-full'
       aria-hidden='true'>
-      {BADGES.map((badge, i) => {
-        const x = startX + i * (BADGE_W + GAP)
-        const cy = y + BADGE_H / 2
-        const hasDot = badge.dot === true
-        const barW = 24
-        const barH = 4
-        const dotR = 2.5
-        const dotGap = 5
-        const contentW = hasDot ? dotR * 2 + dotGap + barW : barW
-        const contentStartX = x + (BADGE_W - contentW) / 2
-        const dotCx = hasDot ? contentStartX + dotR : 0
-        const barX = hasDot ? contentStartX + dotR * 2 + dotGap : contentStartX
-
+      {BADGES.map((b, i) => {
+        const x = cursor
+        cursor += b.w + GAP
         return (
           <g key={i}>
             <rect
               x={x}
               y={y}
-              width={BADGE_W}
+              width={b.w}
               height={BADGE_H}
-              rx={RADIUS}
+              rx={14}
               style={{
-                fill: badge.fill,
-                stroke: badge.neutral ? 'var(--outline)' : badge.fill,
-                strokeWidth: 1.5
+                fill: b.fill,
+                stroke: b.stroke ?? 'none',
+                strokeWidth: b.stroke ? 1.5 : 0
               }}
             />
-            {hasDot ? (
-              <circle
-                cx={dotCx}
-                cy={cy}
-                r={dotR}
-                style={{ fill: badge.bar, opacity: badge.neutral ? 0.7 : 0.9 }}
-              />
-            ) : null}
-            <rect
-              x={barX}
-              y={cy - barH / 2}
-              width={barW}
-              height={barH}
-              rx={2}
-              style={{ fill: badge.bar, opacity: badge.neutral ? 0.75 : 1 }}
-            />
+            <text
+              x={x + b.w / 2}
+              y={y + BADGE_H / 2 + 4}
+              textAnchor='middle'
+              fontSize={12}
+              fontWeight={600}
+              fontFamily='system-ui, -apple-system, sans-serif'
+              style={{ fill: b.textColor }}>
+              {b.label}
+            </text>
           </g>
         )
       })}

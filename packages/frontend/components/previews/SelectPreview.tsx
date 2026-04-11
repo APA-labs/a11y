@@ -1,19 +1,20 @@
 const VIEW_W = 320
 const VIEW_H = 180
-
 const ACCENT = '#8b5cf6'
 
-const TRIGGER_W = 220
+const FIELD_W = 220
 const TRIGGER_H = 34
-const TRIGGER_X = (VIEW_W - TRIGGER_W) / 2
-const TRIGGER_Y = 18
-const RADIUS = 8
+const FIELD_X = (VIEW_W - FIELD_W) / 2
+const TRIGGER_Y = 22
 
-const PANEL_X = TRIGGER_X
-const PANEL_Y = TRIGGER_Y + TRIGGER_H + 6
-const PANEL_W = TRIGGER_W
-const OPTION_H = 25
-const PANEL_H = OPTION_H * 4
+const OPTION_H = 24
+const PANEL_PAD_Y = 6
+const OPTIONS = ['English', 'Korean', 'Japanese', 'Chinese']
+const ACTIVE_INDEX = 1
+
+const PANEL_Y = TRIGGER_Y + TRIGGER_H + 8
+const PANEL_H = OPTIONS.length * OPTION_H + PANEL_PAD_Y * 2
+const RADIUS = 8
 
 export default function SelectPreview() {
   return (
@@ -25,9 +26,9 @@ export default function SelectPreview() {
       <defs>
         <clipPath id='select-clip'>
           <rect
-            x={PANEL_X}
+            x={FIELD_X}
             y={PANEL_Y}
-            width={PANEL_W}
+            width={FIELD_W}
             height={PANEL_H}
             rx={RADIUS}
           />
@@ -43,13 +44,13 @@ export default function SelectPreview() {
             stdDeviation='2'
           />
           <feOffset
-            dy='1.5'
+            dy='2'
             result='offsetblur'
           />
           <feComponentTransfer>
             <feFuncA
               type='linear'
-              slope='0.15'
+              slope='0.18'
             />
           </feComponentTransfer>
           <feMerge>
@@ -59,72 +60,69 @@ export default function SelectPreview() {
         </filter>
       </defs>
 
-      <g filter='url(#select-shadow)'>
-        <rect
-          x={TRIGGER_X}
-          y={TRIGGER_Y}
-          width={TRIGGER_W}
-          height={TRIGGER_H}
-          rx={RADIUS}
-          style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1 }}
-        />
-        <rect
-          x={TRIGGER_X + 14}
-          y={TRIGGER_Y + TRIGGER_H / 2 - 3}
-          width={90}
-          height={6}
-          rx={3}
-          style={{ fill: 'var(--body)', opacity: 0.75 }}
-        />
-        <path
-          d={`M${TRIGGER_X + TRIGGER_W - 20} ${TRIGGER_Y + TRIGGER_H / 2 - 3} l6 6 l6 -6`}
-          style={{ fill: 'none', stroke: 'var(--soft)', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }}
-        />
-      </g>
+      <rect
+        x={FIELD_X}
+        y={TRIGGER_Y}
+        width={FIELD_W}
+        height={TRIGGER_H}
+        rx={RADIUS}
+        style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1.5 }}
+      />
+      <text
+        x={FIELD_X + 14}
+        y={TRIGGER_Y + TRIGGER_H / 2 + 4}
+        fontSize={12}
+        fontWeight={500}
+        fontFamily='system-ui, -apple-system, sans-serif'
+        style={{ fill: 'var(--body)' }}>
+        Korean
+      </text>
+      <path
+        d={`M${FIELD_X + FIELD_W - 18} ${TRIGGER_Y + TRIGGER_H / 2 - 2} l4 4 l4 -4`}
+        style={{
+          stroke: 'var(--soft)',
+          strokeWidth: 1.5,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          fill: 'none'
+        }}
+      />
 
       <g filter='url(#select-shadow)'>
         <rect
-          x={PANEL_X}
+          x={FIELD_X}
           y={PANEL_Y}
-          width={PANEL_W}
+          width={FIELD_W}
           height={PANEL_H}
           rx={RADIUS}
           style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1 }}
         />
-
         <g clipPath='url(#select-clip)'>
-          <rect
-            x={PANEL_X}
-            y={PANEL_Y + OPTION_H}
-            width={PANEL_W}
-            height={OPTION_H}
-            style={{ fill: ACCENT }}
-          />
-
-          {[1, 2, 3].map((i) => (
-            <path
-              key={i}
-              d={`M${PANEL_X + 12} ${PANEL_Y + i * OPTION_H} L${PANEL_X + PANEL_W - 12} ${PANEL_Y + i * OPTION_H}`}
-              style={{ stroke: 'var(--divider)', strokeWidth: 1 }}
-            />
-          ))}
-
-          {[0, 1, 2, 3].map((i) => {
-            const isSelected = i === 1
-            const widths = [110, 96, 120, 84]
+          {OPTIONS.map((label, i) => {
+            const rowY = PANEL_Y + PANEL_PAD_Y + i * OPTION_H
+            const isActive = i === ACTIVE_INDEX
             return (
-              <rect
-                key={`opt-${i}`}
-                x={PANEL_X + 14}
-                y={PANEL_Y + i * OPTION_H + OPTION_H / 2 - 3}
-                width={widths[i]}
-                height={6}
-                rx={3}
-                style={{
-                  fill: isSelected ? '#ffffff' : 'var(--body)',
-                  opacity: isSelected ? 1 : 0.75
-                }}
-              />
+              <g key={label}>
+                {isActive ? (
+                  <rect
+                    x={FIELD_X + 4}
+                    y={rowY}
+                    width={FIELD_W - 8}
+                    height={OPTION_H}
+                    rx={4}
+                    style={{ fill: ACCENT }}
+                  />
+                ) : null}
+                <text
+                  x={FIELD_X + 14}
+                  y={rowY + OPTION_H / 2 + 4}
+                  fontSize={12}
+                  fontWeight={isActive ? 600 : 500}
+                  fontFamily='system-ui, -apple-system, sans-serif'
+                  style={{ fill: isActive ? '#ffffff' : 'var(--body)' }}>
+                  {label}
+                </text>
+              </g>
             )
           })}
         </g>

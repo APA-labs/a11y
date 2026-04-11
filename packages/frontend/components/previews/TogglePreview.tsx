@@ -1,27 +1,24 @@
 const VIEW_W = 320
 const VIEW_H = 180
+const ACCENT = '#8b5cf6'
 
-const ACTIVE = '#8b5cf6'
-
-const LABEL_X = 50
-const SWITCH_X = 220
-const SWITCH_W = 48
-const SWITCH_H = 28
-const HANDLE_R = 10
-const PADDING = 4
-
-type Row = {
-  cy: number
-  labelW: number
-  labelFill: string
-  on: boolean
-}
+type Row = { label: string; on: boolean }
 
 const ROWS: Row[] = [
-  { cy: 40, labelW: 130, labelFill: 'var(--body)', on: true },
-  { cy: 90, labelW: 150, labelFill: 'var(--body)', on: true },
-  { cy: 140, labelW: 100, labelFill: 'var(--soft)', on: false }
+  { label: 'Dark mode', on: true },
+  { label: 'Auto-save', on: true },
+  { label: 'Share analytics', on: false }
 ]
+
+const ROW_H = 38
+const SWITCH_W = 44
+const SWITCH_H = 24
+const HANDLE_R = 9
+
+const GROUP_W = 230
+const START_X = (VIEW_W - GROUP_W) / 2
+const TOTAL_H = ROWS.length * ROW_H
+const START_Y = (VIEW_H - TOTAL_H) / 2 + ROW_H / 2
 
 export default function TogglePreview() {
   return (
@@ -31,40 +28,39 @@ export default function TogglePreview() {
       className='w-full h-full'
       aria-hidden='true'>
       {ROWS.map((row, i) => {
-        const switchY = row.cy - SWITCH_H / 2
-        const handleCx = row.on ? SWITCH_X + SWITCH_W - PADDING - HANDLE_R : SWITCH_X + PADDING + HANDLE_R
-        const handleCy = row.cy
-
+        const cy = START_Y + i * ROW_H
+        const switchX = START_X + GROUP_W - SWITCH_W
+        const switchY = cy - SWITCH_H / 2
+        const handleCx = row.on ? switchX + SWITCH_W - HANDLE_R - 3 : switchX + HANDLE_R + 3
         return (
-          <g key={i}>
+          <g key={row.label}>
+            <text
+              x={START_X}
+              y={cy + 4}
+              fontSize={12.5}
+              fontWeight={row.on ? 600 : 500}
+              fontFamily='system-ui, -apple-system, sans-serif'
+              style={{ fill: row.on ? 'var(--body)' : 'var(--soft)' }}>
+              {row.label}
+            </text>
             <rect
-              x={LABEL_X}
-              y={row.cy - 2.5}
-              width={row.labelW}
-              height={5}
-              rx={2.5}
-              style={{ fill: row.labelFill, opacity: row.on ? 0.85 : 0.7 }}
-            />
-            <rect
-              x={SWITCH_X}
+              x={switchX}
               y={switchY}
               width={SWITCH_W}
               height={SWITCH_H}
-              rx={14}
+              rx={12}
               style={{
-                fill: row.on ? ACTIVE : 'var(--divider)',
-                stroke: row.on ? ACTIVE : 'var(--outline)',
-                strokeWidth: 1
+                fill: row.on ? ACCENT : 'var(--divider)',
+                stroke: row.on ? 'none' : 'var(--outline)',
+                strokeWidth: row.on ? 0 : 1
               }}
             />
             <circle
               cx={handleCx}
-              cy={handleCy}
+              cy={cy}
               r={HANDLE_R}
               style={{
-                fill: row.on ? '#ffffff' : 'var(--surface)',
-                stroke: row.on ? 'transparent' : 'var(--outline)',
-                strokeWidth: 1
+                fill: '#ffffff'
               }}
             />
           </g>

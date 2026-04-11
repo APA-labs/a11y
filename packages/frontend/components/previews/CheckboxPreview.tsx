@@ -2,25 +2,24 @@ const VIEW_W = 320
 const VIEW_H = 180
 const ACCENT = '#8b5cf6'
 
-const BOX_SIZE = 20
-const BOX_RADIUS = 4
-const ROW_GAP = 14
-const LABEL_GAP = 12
-const GROUP_X = 78
-
-type Row = { checked: boolean; labelW: number }
+type Row = { label: string; checked: boolean }
 
 const ROWS: Row[] = [
-  { checked: true, labelW: 156 },
-  { checked: true, labelW: 128 },
-  { checked: false, labelW: 144 },
-  { checked: false, labelW: 120 }
+  { label: 'Enable notifications', checked: true },
+  { label: 'Subscribe to newsletter', checked: true },
+  { label: 'Remember this device', checked: false },
+  { label: 'Make profile public', checked: false }
 ]
 
-export default function CheckboxPreview() {
-  const totalH = ROWS.length * BOX_SIZE + (ROWS.length - 1) * ROW_GAP
-  const startY = (VIEW_H - totalH) / 2
+const BOX_SIZE = 18
+const ROW_H = 26
+const LABEL_GAP = 12
+const GROUP_W = 210
+const START_X = (VIEW_W - GROUP_W) / 2
+const TOTAL_H = ROWS.length * ROW_H
+const START_Y = (VIEW_H - TOTAL_H) / 2 + BOX_SIZE / 2
 
+export default function CheckboxPreview() {
   return (
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -28,17 +27,16 @@ export default function CheckboxPreview() {
       className='w-full h-full'
       aria-hidden='true'>
       {ROWS.map((row, i) => {
-        const y = startY + i * (BOX_SIZE + ROW_GAP)
-        const cx = GROUP_X
-        const cy = y
+        const cy = START_Y + i * ROW_H
+        const boxY = cy - BOX_SIZE / 2
         return (
-          <g key={i}>
+          <g key={row.label}>
             <rect
-              x={cx}
-              y={cy}
+              x={START_X}
+              y={boxY}
               width={BOX_SIZE}
               height={BOX_SIZE}
-              rx={BOX_RADIUS}
+              rx={4}
               style={{
                 fill: row.checked ? ACCENT : 'var(--surface)',
                 stroke: row.checked ? ACCENT : 'var(--outline)',
@@ -46,28 +44,26 @@ export default function CheckboxPreview() {
               }}
             />
             {row.checked ? (
-              <polyline
-                points={`${cx + 4.5},${cy + 10.5} ${cx + 8.5},${cy + 14.5} ${cx + 15.5},${cy + 6.5}`}
+              <path
+                d={`M${START_X + 4} ${cy + 1} L${START_X + 8} ${cy + 4.5} L${START_X + 14} ${cy - 3}`}
                 style={{
-                  fill: 'none',
                   stroke: '#ffffff',
                   strokeWidth: 2,
                   strokeLinecap: 'round',
-                  strokeLinejoin: 'round'
+                  strokeLinejoin: 'round',
+                  fill: 'none'
                 }}
               />
             ) : null}
-            <rect
-              x={cx + BOX_SIZE + LABEL_GAP}
-              y={cy + BOX_SIZE / 2 - 2.5}
-              width={row.labelW}
-              height={5}
-              rx={2.5}
-              style={{
-                fill: row.checked ? 'var(--body)' : 'var(--soft)',
-                opacity: row.checked ? 0.82 : 0.6
-              }}
-            />
+            <text
+              x={START_X + BOX_SIZE + LABEL_GAP}
+              y={cy + 4}
+              fontSize={12}
+              fontWeight={500}
+              fontFamily='system-ui, -apple-system, sans-serif'
+              style={{ fill: row.checked ? 'var(--body)' : 'var(--soft)' }}>
+              {row.label}
+            </text>
           </g>
         )
       })}

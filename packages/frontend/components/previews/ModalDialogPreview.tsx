@@ -15,10 +15,10 @@ const CONTENT_BARS = [
 ]
 
 const PAGE_BARS = [
-  { y: 22, w: 220 },
-  { y: 46, w: 260 },
-  { y: 140, w: 200 },
-  { y: 162, w: 240 }
+  { y: 6, w: 220 },
+  { y: 18, w: 260 },
+  { y: 154, w: 200 },
+  { y: 166, w: 240 }
 ]
 
 const BTN_W = 48
@@ -74,6 +74,14 @@ export default function ModalDialogPreview() {
         </filter>
       </defs>
 
+      <rect
+        x={0}
+        y={0}
+        width={VIEW_W}
+        height={VIEW_H}
+        style={{ fill: 'var(--inset)' }}
+      />
+
       {PAGE_BARS.map((bar, i) => (
         <rect
           key={`page-${i}`}
@@ -82,7 +90,7 @@ export default function ModalDialogPreview() {
           width={bar.w}
           height={6}
           rx={3}
-          style={{ fill: 'var(--soft)', opacity: 0.3 }}
+          style={{ fill: 'var(--soft)', opacity: 0.35 }}
         />
       ))}
 

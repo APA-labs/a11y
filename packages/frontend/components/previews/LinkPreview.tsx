@@ -2,127 +2,65 @@ const VIEW_W = 320
 const VIEW_H = 180
 const ACCENT = '#8b5cf6'
 
-type Bar = { w: number; link?: boolean }
+type LinkItem = { label: string; link?: boolean }
 
-const ROW1: Bar[] = [{ w: 22 }, { w: 34 }, { w: 28, link: true }, { w: 40 }, { w: 18 }, { w: 30 }]
+const ITEMS: LinkItem[] = [{ label: 'About us' }, { label: 'View documentation', link: true }, { label: 'Contact support' }]
 
-const ROW2: Bar[] = [{ w: 26 }, { w: 42 }, { w: 20 }, { w: 36 }, { w: 30 }]
-
-const ROW3: Bar[] = [{ w: 24 }, { w: 30 }, { w: 20 }, { w: 26 }, { w: 22, link: true }, { w: 32, link: true }]
-
-const BAR_H = 6
-const BAR_RX = 3
-const GAP = 7
-const ROW_GAP = 22
-const START_X = 28
+const LINE_GAP = 30
+const TOTAL_H = (ITEMS.length - 1) * LINE_GAP
+const START_Y = (VIEW_H - TOTAL_H) / 2 + 4
 
 export default function LinkPreview() {
-  const totalHeight = BAR_H * 3 + ROW_GAP * 2
-  const firstRowY = (VIEW_H - totalHeight) / 2
-
-  const rows = [ROW1, ROW2, ROW3]
-
   return (
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       xmlns='http://www.w3.org/2000/svg'
       className='w-full h-full'
       aria-hidden='true'>
-      {rows.map((bars, rowIdx) => {
-        const y = firstRowY + rowIdx * (BAR_H + ROW_GAP)
-        const isSoftRow = rowIdx === 1
-        let cursorX = START_X
-
+      {ITEMS.map((item, i) => {
+        const y = START_Y + i * LINE_GAP
+        const color = item.link ? ACCENT : 'var(--soft)'
+        const weight = item.link ? 600 : 500
         return (
-          <g key={rowIdx}>
-            {bars.map((bar, i) => {
-              const x = cursorX
-              cursorX += bar.w + GAP
-              const isLink = !!bar.link && !isSoftRow
-              const fill = isLink ? ACCENT : isSoftRow ? 'var(--soft)' : 'var(--body)'
-
-              return (
-                <g key={i}>
-                  <rect
-                    x={x}
-                    y={y}
-                    width={bar.w}
-                    height={BAR_H}
-                    rx={BAR_RX}
-                    style={{ fill }}
-                  />
-                  {isLink ? (
-                    <rect
-                      x={x}
-                      y={y + BAR_H + 2}
-                      width={bar.w}
-                      height={1}
-                      style={{ fill: ACCENT }}
-                    />
-                  ) : null}
-                  {rowIdx === 0 && isLink ? (
-                    <rect
-                      x={x - 3}
-                      y={y - 3}
-                      width={bar.w + 6}
-                      height={BAR_H + 6}
-                      rx={4}
-                      style={{
-                        fill: 'none',
-                        stroke: ACCENT,
-                        strokeWidth: 1.5,
-                        opacity: 0.4
-                      }}
-                    />
-                  ) : null}
-                </g>
-              )
-            })}
-            {rowIdx === 2
-              ? (() => {
-                  const iconX = cursorX - GAP + 4
-                  const iconY = y - 2
-                  const iconSize = 8
-                  return (
-                    <g>
-                      <rect
-                        x={iconX}
-                        y={iconY}
-                        width={iconSize}
-                        height={iconSize}
-                        rx={1}
-                        style={{
-                          fill: 'none',
-                          stroke: ACCENT,
-                          strokeWidth: 1.2
-                        }}
-                      />
-                      <path
-                        d={`M${iconX + 3} ${iconY + 5} L${iconX + 5.5} ${iconY + 2.5}`}
-                        style={{
-                          stroke: ACCENT,
-                          strokeWidth: 1.2,
-                          fill: 'none',
-                          strokeLinecap: 'round'
-                        }}
-                      />
-                      <path
-                        d={`M${iconX + 3.5} ${iconY + 2.5} L${iconX + 5.5} ${iconY + 2.5} L${iconX + 5.5} ${iconY + 4.5}`}
-                        style={{
-                          stroke: ACCENT,
-                          strokeWidth: 1.2,
-                          fill: 'none',
-                          strokeLinecap: 'round',
-                          strokeLinejoin: 'round'
-                        }}
-                      />
-                    </g>
-                  )
-                })()
-              : null}
+          <g key={item.label}>
+            <text
+              x={VIEW_W / 2}
+              y={y}
+              textAnchor='middle'
+              fontSize={14}
+              fontWeight={weight}
+              fontFamily='system-ui, -apple-system, sans-serif'
+              style={{ fill: color }}>
+              {item.label}
+              {item.link ? ' →' : ''}
+            </text>
+            {item.link ? (
+              <line
+                x1={VIEW_W / 2 - 68}
+                x2={VIEW_W / 2 + 68}
+                y1={y + 4}
+                y2={y + 4}
+                style={{ stroke: ACCENT, strokeWidth: 1.2 }}
+              />
+            ) : null}
           </g>
         )
       })}
+
+      <rect
+        x={VIEW_W / 2 - 78}
+        y={START_Y + LINE_GAP - 16}
+        width={156}
+        height={24}
+        rx={6}
+        style={{
+          fill: 'none',
+          stroke: ACCENT,
+          strokeWidth: 1.5,
+          strokeDasharray: '3 3',
+          opacity: 0.55
+        }}
+      />
     </svg>
   )
 }
