@@ -59,7 +59,14 @@ export default function DrawerPreview() {
       <rect
         x={0}
         y={0}
-        width={OVERLAY_W}
+        width={VIEW_W}
+        height={VIEW_H}
+        style={{ fill: 'var(--inset)' }}
+      />
+      <rect
+        x={0}
+        y={0}
+        width={PANEL_X + PANEL_RADIUS}
         height={VIEW_H}
         style={{ fill: 'var(--divider)', opacity: 0.6 }}
       />

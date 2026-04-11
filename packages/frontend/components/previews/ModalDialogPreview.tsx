@@ -1,31 +1,31 @@
 const VIEW_W = 320
 const VIEW_H = 180
 
-const MODAL_W = 240
-const MODAL_H = 130
+const MODAL_W = 232
+const MODAL_H = 116
 const MODAL_X = (VIEW_W - MODAL_W) / 2
 const MODAL_Y = (VIEW_H - MODAL_H) / 2
 const RADIUS = 12
-const HEADER_H = 32
+const HEADER_H = 28
 
 const CONTENT_BARS = [
-  { w: 200, fill: 'var(--body)', opacity: 0.72 },
-  { w: 170, fill: 'var(--soft)', opacity: 0.55 },
-  { w: 140, fill: 'var(--soft)', opacity: 0.55 }
+  { w: 190, fill: 'var(--body)', opacity: 0.72 },
+  { w: 160, fill: 'var(--soft)', opacity: 0.55 },
+  { w: 130, fill: 'var(--soft)', opacity: 0.55 }
 ]
 
 const PAGE_BARS = [
-  { y: 28, w: 220 },
-  { y: 58, w: 260 },
-  { y: 92, w: 200 },
-  { y: 126, w: 240 }
+  { y: 22, w: 220 },
+  { y: 46, w: 260 },
+  { y: 140, w: 200 },
+  { y: 162, w: 240 }
 ]
 
-const BTN_W = 50
-const BTN_H = 22
+const BTN_W = 48
+const BTN_H = 20
 const BTN_GAP = 8
-const FOOTER_Y = MODAL_Y + MODAL_H - BTN_H - 14
-const CONFIRM_X = MODAL_X + MODAL_W - BTN_W - 14
+const FOOTER_Y = MODAL_Y + MODAL_H - BTN_H - 12
+const CONFIRM_X = MODAL_X + MODAL_W - BTN_W - 12
 const CANCEL_X = CONFIRM_X - BTN_W - BTN_GAP
 
 const ACCENT = '#8b5cf6'
