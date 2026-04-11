@@ -4,18 +4,21 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/$/, '')
 const KEY = process.env.INDEXNOW_KEY
 const ENDPOINT = 'https://api.indexnow.org/indexnow'
 
-async function fetchSitemapUrls(sitemapUrl) {
+async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
   const res = await fetch(sitemapUrl)
   if (!res.ok) throw new Error(`sitemap fetch 실패 (HTTP ${res.status}) ${sitemapUrl}`)
   const xml = await res.text()
-  const urls = []
+  const urls: string[] = []
   const re = /<loc>([^<]+)<\/loc>/g
-  let m
-  while ((m = re.exec(xml)) !== null) urls.push(m[1].trim())
+  let m: RegExpExecArray | null
+  while ((m = re.exec(xml)) !== null) {
+    const loc = m[1]
+    if (loc) urls.push(loc.trim())
+  }
   return urls
 }
 
-async function verifyKeyFile(keyLocation) {
+async function verifyKeyFile(keyLocation: string): Promise<void> {
   const res = await fetch(keyLocation).catch(() => null)
   if (!res || !res.ok) {
     throw new Error(`키 파일 ${keyLocation} 접근 불가 (HTTP ${res?.status ?? '?'}). 배포가 끝났는지, public/{KEY}.txt가 서빙되는지 확인하세요.`)
@@ -24,7 +27,7 @@ async function verifyKeyFile(keyLocation) {
   if (body !== KEY) throw new Error(`키 파일 내용 불일치 (${keyLocation})`)
 }
 
-async function main() {
+async function main(): Promise<void> {
   if (!KEY) {
     console.log('IndexNow: INDEXNOW_KEY 미설정 → 스킵')
     return
@@ -83,7 +86,7 @@ async function main() {
   console.log(`✓ IndexNow: 제출 완료 (${unique.length} URLs)`)
 }
 
-main().catch((e) => {
+main().catch((e: Error) => {
   console.error(`✗ IndexNow: ${e.message}`)
   process.exit(1)
 })

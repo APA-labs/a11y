@@ -8,7 +8,7 @@ const PUBLIC_DIR = path.resolve(__dirname, '../public')
 
 const KEY = process.env.INDEXNOW_KEY
 
-function isValid(key) {
+function isValid(key: string): boolean {
   return /^[a-zA-Z0-9-]{8,128}$/.test(key)
 }
 
