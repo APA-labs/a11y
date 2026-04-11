@@ -17,7 +17,7 @@ export default function ScrollProgress() {
     <m.div
       aria-hidden='true'
       style={{ scaleX }}
-      className='fixed top-14 left-0 right-0 h-[2px] origin-left z-40 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500'
+      className='fixed top-14 left-0 right-0 h-[2px] origin-left z-30 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500'
     />
   )
 }

@@ -56,7 +56,13 @@ export const en: Translations = {
     codeSample: 'Code sample',
     implNotes: 'Implementation notes',
     itemCount: (n: number) => `${n}`,
-    previewAlt: (name: string) => `${name} preview`
+    previewAlt: (name: string) => `${name} preview`,
+    eyebrow: 'Pattern',
+    onThisPage: 'On this page',
+    sectionCode: 'Code',
+    sectionRules: 'Rules',
+    sectionImpls: 'Implementations',
+    sectionRefs: 'References'
   },
   wcag: {
     title: 'WCAG 2.1 Reference',

@@ -54,7 +54,13 @@ export const ko = {
     codeSample: '코드 샘플',
     implNotes: '구현 노트',
     itemCount: (n: number) => `${n}개`,
-    previewAlt: (name: string) => `${name} 미리보기`
+    previewAlt: (name: string) => `${name} 미리보기`,
+    eyebrow: '패턴',
+    onThisPage: '목차',
+    sectionCode: '코드',
+    sectionRules: '규칙',
+    sectionImpls: '구현',
+    sectionRefs: '참고'
   },
   wcag: {
     title: 'WCAG 2.1 레퍼런스',

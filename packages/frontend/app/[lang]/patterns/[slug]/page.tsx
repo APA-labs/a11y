@@ -59,7 +59,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
         <header className='mb-12 max-w-3xl'>
           <div className='inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-soft mb-4'>
             <span className='inline-block h-1.5 w-1.5 rounded-full bg-violet-500' />
-            Pattern
+            {t.pattern.eyebrow}
           </div>
           <h1 className='text-[clamp(1.75rem,5vw,2.5rem)] font-semibold tracking-tight leading-tight text-body'>{pattern.name}</h1>
           <p className='mt-4 text-base text-soft leading-relaxed'>{pattern.description}</p>
@@ -84,7 +84,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
               id='overview'
               className='scroll-mt-24'>
               <SectionHeader
-                eyebrow='01 — Code'
+                eyebrow={`01 — ${t.pattern.sectionCode}`}
                 title={t.pattern.codeExample}
               />
               <CodeBlock
@@ -98,7 +98,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
               id='baseline'
               className='scroll-mt-24'>
               <SectionHeader
-                eyebrow='02 — Rules'
+                eyebrow={`02 — ${t.pattern.sectionRules}`}
                 title={t.pattern.baseline}>
                 {t.pattern.appliesTo}
               </SectionHeader>
@@ -113,7 +113,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
               id='design-systems'
               className='scroll-mt-24'>
               <SectionHeader
-                eyebrow='03 — Implementations'
+                eyebrow={`03 — ${t.pattern.sectionImpls}`}
                 title={t.pattern.dsSectionDivider}
               />
               <DesignSystemTabs
@@ -127,7 +127,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
               id='references'
               className='scroll-mt-24 pt-8 border-t border-outline'>
               <SectionHeader
-                eyebrow='04 — References'
+                eyebrow={`04 — ${t.pattern.sectionRefs}`}
                 title={t.pattern.references}
               />
               <ul className='space-y-2.5'>
@@ -152,7 +152,10 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
           </article>
 
           <aside className='hidden lg:block'>
-            <FloatingToc items={tocItems} />
+            <FloatingToc
+              items={tocItems}
+              heading={t.pattern.onThisPage}
+            />
           </aside>
         </div>
       </div>

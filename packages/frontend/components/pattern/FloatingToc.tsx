@@ -7,7 +7,7 @@ type TocItem = {
   label: string
 }
 
-export default function FloatingToc({ items }: { items: TocItem[] }) {
+export default function FloatingToc({ items, heading }: { items: TocItem[]; heading: string }) {
   const [active, setActive] = useState<string>(items[0]?.id ?? '')
 
   useEffect(() => {
@@ -46,9 +46,9 @@ export default function FloatingToc({ items }: { items: TocItem[] }) {
 
   return (
     <nav
-      aria-label='On this page'
+      aria-label={heading}
       className='sticky top-24 text-sm'>
-      <p className='text-[10px] font-semibold uppercase tracking-[0.18em] text-faint mb-3'>On this page</p>
+      <p className='text-[10px] font-semibold uppercase tracking-[0.18em] text-faint mb-3'>{heading}</p>
       <ul className='space-y-1.5 border-l border-outline'>
         {items.map(({ id, label }) => {
           const isActive = active === id
