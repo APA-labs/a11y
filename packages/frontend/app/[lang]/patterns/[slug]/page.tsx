@@ -61,7 +61,7 @@ export default async function PatternPage({ params }: { params: Promise<{ lang: 
             <span className='inline-block h-1.5 w-1.5 rounded-full bg-violet-500' />
             Pattern
           </div>
-          <h1 className='text-3xl sm:text-4xl font-semibold tracking-tight leading-tight text-body'>{pattern.name}</h1>
+          <h1 className='text-[clamp(1.75rem,5vw,2.5rem)] font-semibold tracking-tight leading-tight text-body'>{pattern.name}</h1>
           <p className='mt-4 text-base text-soft leading-relaxed'>{pattern.description}</p>
 
           <div className='mt-7'>

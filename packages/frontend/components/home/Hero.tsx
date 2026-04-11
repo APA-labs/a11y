@@ -48,7 +48,7 @@ export default function Hero({ subtitle }: HeroProps) {
 
           <m.h1
             variants={item}
-            className='font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.02] tracking-tight text-body'>
+            className='font-serif leading-[1.05] tracking-tight text-body text-[clamp(2.25rem,8vw,4.75rem)]'>
             Accessibility <span className='italic text-gradient'>patterns</span>
             <br className='hidden sm:block' /> decoded for builders.
           </m.h1>
