@@ -10,8 +10,8 @@
     "start": "next start",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
-    "postbuild": "next-sitemap && tsx --env-file-if-exists=.env scripts/write-indexnow-key.ts",
-    "indexnow": "tsx --env-file-if-exists=.env scripts/indexnow-ping.ts",
+    "postbuild": "next-sitemap && tsx scripts/write-indexnow-key.ts",
+    "indexnow": "tsx scripts/indexnow-ping.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },

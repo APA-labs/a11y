@@ -1,11 +1,28 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.local"],
-  "globalEnv": ["ANTHROPIC_API_KEY", "LOG_LEVEL", "PORT", "HOST", "NODE_ENV"],
+  "globalDependencies": [
+    "**/.env.local"
+  ],
+  "globalEnv": [
+    "ANTHROPIC_API_KEY",
+    "LOG_LEVEL",
+    "PORT",
+    "HOST",
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ],
+      "env": [
+        "INDEXNOW_KEY",
+        "NEXT_PUBLIC_SITE_URL"
+      ]
     },
     "lint": {
       "outputs": []
