@@ -45,20 +45,25 @@ export default function PatternGrid({ patterns, lang }: { patterns: Pattern[]; l
           </button>
           {DS_ORDER.map((id) => {
             const swatch = getDsSwatchColor(id)
+            const isActive = activeDS === id
+            const isBaseUi = id === 'baseui'
+            const activeTextClass = isBaseUi ? 'text-navy-900 dark:text-navy-900' : 'text-white'
             return (
               <button
                 key={id}
                 type='button'
-                onClick={() => setActiveDS(activeDS === id ? null : id)}
+                onClick={() => setActiveDS(isActive ? null : id)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
-                  activeDS === id
-                    ? 'text-white border-transparent shadow-sm'
+                  isActive
+                    ? `${activeTextClass} border-transparent shadow-sm`
                     : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
                 }`}
-                style={activeDS === id ? { backgroundColor: swatch, borderColor: swatch } : {}}>
+                style={isActive ? { backgroundColor: swatch, borderColor: swatch } : {}}>
                 <span
                   className='w-2 h-2 rounded-full shrink-0'
-                  style={{ backgroundColor: activeDS === id ? 'rgba(255,255,255,0.85)' : swatch }}
+                  style={{
+                    backgroundColor: isActive ? (isBaseUi ? 'rgba(24,24,27,0.7)' : 'rgba(255,255,255,0.85)') : swatch
+                  }}
                 />
                 {DS_META[id].name}
               </button>
