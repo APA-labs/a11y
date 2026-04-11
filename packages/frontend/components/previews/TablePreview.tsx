@@ -7,6 +7,7 @@ const TABLE_W = 264
 const TABLE_H = 132
 const ROW_H = 26
 const HEADER_H = 28
+const RADIUS = 10
 
 const COLS = [
   { x: 16, w: 70 },
@@ -22,26 +23,40 @@ export default function TablePreview() {
       xmlns='http://www.w3.org/2000/svg'
       className='w-full h-full'
       aria-hidden='true'>
-      <rect
-        x={TABLE_X}
-        y={TABLE_Y}
-        width={TABLE_W}
-        height={TABLE_H}
-        rx={10}
-        style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1 }}
-      />
+      <defs>
+        <clipPath id='table-preview-clip'>
+          <rect
+            x={TABLE_X}
+            y={TABLE_Y}
+            width={TABLE_W}
+            height={TABLE_H}
+            rx={RADIUS}
+          />
+        </clipPath>
+      </defs>
 
       <rect
         x={TABLE_X}
         y={TABLE_Y}
         width={TABLE_W}
-        height={HEADER_H}
-        style={{ fill: 'var(--divider)' }}
+        height={TABLE_H}
+        rx={RADIUS}
+        style={{ fill: 'var(--surface)', stroke: 'var(--outline)', strokeWidth: 1 }}
       />
-      <path
-        d={`M${TABLE_X} ${TABLE_Y + HEADER_H} L${TABLE_X + TABLE_W} ${TABLE_Y + HEADER_H}`}
-        style={{ stroke: 'var(--outline)', strokeWidth: 1 }}
-      />
+
+      <g clipPath='url(#table-preview-clip)'>
+        <rect
+          x={TABLE_X}
+          y={TABLE_Y}
+          width={TABLE_W}
+          height={HEADER_H}
+          style={{ fill: 'var(--divider)' }}
+        />
+        <path
+          d={`M${TABLE_X} ${TABLE_Y + HEADER_H} L${TABLE_X + TABLE_W} ${TABLE_Y + HEADER_H}`}
+          style={{ stroke: 'var(--outline)', strokeWidth: 1 }}
+        />
+      </g>
 
       {COLS.map((col, i) => (
         <rect
