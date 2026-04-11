@@ -1,8 +1,9 @@
 'use client'
 
+import { m } from 'motion/react'
 import { useMemo, useState } from 'react'
 
-import PatternCard from './PatternCard'
+import PatternCardFancy from './home/PatternCardFancy'
 import { getTranslations } from '../lib/i18n'
 import { DS_META, DS_ORDER } from '../lib/types'
 
@@ -19,55 +20,69 @@ export default function PatternGrid({ patterns, lang }: { patterns: Pattern[]; l
 
   return (
     <div>
-      <div
-        className='flex items-center gap-1.5 flex-wrap mb-5'
-        role='group'
-        aria-label={t.home.filterByDS}>
-        <button
-          type='button'
-          onClick={() => setActiveDS(null)}
-          className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-            activeDS === null
-              ? 'bg-violet-600 text-white border-violet-600'
-              : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
-          }`}>
-          {t.home.allDS}
-        </button>
-        {DS_ORDER.map((id) => (
+      <div className='flex items-end justify-between flex-wrap gap-4 mb-6'>
+        <div>
+          <p className='font-serif italic text-2xl sm:text-3xl text-body'>Explore the library</p>
+          <p className='text-xs text-faint mt-1'>
+            {filtered.length === patterns.length ? t.home.allPatterns : t.home.filteredCount(filtered.length)}
+          </p>
+        </div>
+
+        <div
+          className='flex items-center gap-1.5 flex-wrap'
+          role='group'
+          aria-label={t.home.filterByDS}>
           <button
-            key={id}
             type='button'
-            onClick={() => setActiveDS(activeDS === id ? null : id)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-              activeDS === id ? 'text-white border-transparent' : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
-            }`}
-            style={activeDS === id ? { backgroundColor: DS_META[id].color, borderColor: DS_META[id].color } : {}}>
-            <span
-              className='w-2 h-2 rounded-full shrink-0'
-              style={{ backgroundColor: activeDS === id ? 'rgba(255,255,255,0.8)' : DS_META[id].color }}
-            />
-            {DS_META[id].name}
+            onClick={() => setActiveDS(null)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
+              activeDS === null
+                ? 'bg-navy-800 text-pearl border-navy-800 dark:bg-pearl dark:text-navy-800 dark:border-pearl'
+                : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
+            }`}>
+            {t.home.allDS}
           </button>
-        ))}
+          {DS_ORDER.map((id) => (
+            <button
+              key={id}
+              type='button'
+              onClick={() => setActiveDS(activeDS === id ? null : id)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
+                activeDS === id
+                  ? 'text-white border-transparent shadow-sm'
+                  : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
+              }`}
+              style={activeDS === id ? { backgroundColor: DS_META[id].color, borderColor: DS_META[id].color } : {}}>
+              <span
+                className='w-2 h-2 rounded-full shrink-0'
+                style={{ backgroundColor: activeDS === id ? 'rgba(255,255,255,0.85)' : DS_META[id].color }}
+              />
+              {DS_META[id].name}
+            </button>
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 ? (
         <div className='py-20 text-center text-soft text-sm'>{t.home.noResults}</div>
       ) : (
-        <>
-          <p className='text-xs text-faint mb-3'>
-            {filtered.length === patterns.length ? t.home.allPatterns : t.home.filteredCount(filtered.length)}
-          </p>
-          <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3'>
-            {filtered.map((pattern) => (
-              <PatternCard
-                key={pattern.slug}
-                pattern={pattern}
-                lang={lang}
-              />
-            ))}
-          </div>
-        </>
+        <m.div
+          key={activeDS ?? 'all'}
+          initial='hidden'
+          animate='show'
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.04 } }
+          }}
+          className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5'>
+          {filtered.map((pattern) => (
+            <PatternCardFancy
+              key={pattern.slug}
+              pattern={pattern}
+              lang={lang}
+            />
+          ))}
+        </m.div>
       )}
     </div>
   )

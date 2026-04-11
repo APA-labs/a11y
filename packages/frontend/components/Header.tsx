@@ -47,12 +47,20 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
 
   return (
     <>
-      <header className='flex items-center h-14 px-4 md:px-6 border-b border-outline bg-surface shrink-0 z-40 relative'>
+      <header className='flex items-center h-14 px-4 md:px-6 border-b border-outline bg-surface/80 backdrop-blur-xl supports-[backdrop-filter]:bg-surface/70 shrink-0 z-40 relative'>
         {/* 좌측: 로고 */}
         <Link
           href={`/${lang}`}
-          className='flex items-center gap-2 sm:gap-2.5 min-w-0 shrink-0'>
-          <span className='font-semibold text-body text-sm tracking-tight whitespace-nowrap'>A11y Patterns</span>
+          className='group flex items-center gap-2.5 min-w-0 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded-md px-1'>
+          <span
+            aria-hidden='true'
+            className='relative inline-flex h-2 w-2'>
+            <span className='absolute inset-0 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500' />
+            <span className='absolute inset-0 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 animate-ping opacity-40 motion-reduce:hidden' />
+          </span>
+          <span className='font-serif text-[17px] tracking-tight text-body whitespace-nowrap'>
+            a11y <span className='italic text-soft'>patterns</span>
+          </span>
         </Link>
 
         {/* 중앙: 검색바 */}

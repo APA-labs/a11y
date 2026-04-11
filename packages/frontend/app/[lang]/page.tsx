@@ -1,9 +1,8 @@
 export const dynamic = 'force-static'
 
-import { Sparkles } from 'lucide-react'
-import Link from 'next/link'
-
 import DSLegendFloat from '../../components/DSLegendFloat'
+import Hero from '../../components/home/Hero'
+import StatsCounter from '../../components/home/StatsCounter'
 import PatternGrid from '../../components/PatternGrid'
 import { getTranslations, SUPPORTED_LANGS } from '../../lib/i18n'
 import { getPatterns } from '../../lib/patterns'
@@ -19,51 +18,41 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
   const { lang } = await params
   const t = getTranslations(lang)
   const patterns = getPatterns(lang)
+  const aiEnabled = process.env.NEXT_PUBLIC_AI_ENABLED === 'true'
 
   const totalMust = patterns.reduce((sum, p) => sum + p.baseline.checklist.must.length, 0)
   const totalShould = patterns.reduce((sum, p) => sum + p.baseline.checklist.should.length, 0)
   const dsCount = DS_ORDER.filter((id) => patterns.some((p) => p.designSystems[id] != null)).length
 
+  const stats = [
+    { label: 'Patterns', value: patterns.length, tone: 'violet' as const },
+    { label: 'Design Systems', value: dsCount, tone: 'body' as const },
+    { label: 'Must Rules', value: totalMust, tone: 'red' as const },
+    { label: 'Should Rules', value: totalShould, tone: 'amber' as const }
+  ]
+
   return (
-    <div className='max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-14'>
-      <div className='mb-8 sm:mb-10'>
-        <h1 className='text-2xl sm:text-3xl font-bold text-body mb-3'>Accessibility Pattern Hub</h1>
-        <p className='text-soft text-sm leading-relaxed'>{t.home.subtitle}</p>
-      </div>
-
-      <div className='flex items-center gap-6 sm:gap-10 mb-8 sm:mb-10 pb-8 sm:pb-10 border-b border-outline flex-wrap'>
-        <div>
-          <p className='text-3xl font-bold text-violet-600'>{patterns.length}</p>
-          <p className='text-xs text-soft mt-1 uppercase tracking-wider'>Patterns</p>
-        </div>
-        <div>
-          <p className='text-3xl font-bold text-body'>{dsCount}</p>
-          <p className='text-xs text-soft mt-1 uppercase tracking-wider'>Design Systems</p>
-        </div>
-        <div>
-          <p className='text-3xl font-bold text-red-500 dark:text-red-400'>{totalMust}</p>
-          <p className='text-xs text-soft mt-1 uppercase tracking-wider'>Must Rules</p>
-        </div>
-        <div>
-          <p className='text-3xl font-bold text-amber-500 dark:text-amber-400'>{totalShould}</p>
-          <p className='text-xs text-soft mt-1 uppercase tracking-wider'>Should Rules</p>
-        </div>
-        {process.env.NEXT_PUBLIC_AI_ENABLED === 'true' && (
-          <div className='ml-auto'>
-            <Link
-              href={`/${lang}/analyze`}
-              className='flex items-center gap-2 px-4 py-2 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 transition-colors'>
-              <Sparkles size={14} />
-              {t.home.aiAnalyze}
-            </Link>
-          </div>
-        )}
-      </div>
-
-      <PatternGrid
-        patterns={patterns}
+    <div className='relative'>
+      <Hero
         lang={lang}
+        subtitle={t.home.subtitle}
+        aiEnabled={aiEnabled}
+        aiLabel={t.home.aiAnalyze}
       />
+
+      <div className='-mt-4 sm:-mt-6 pb-4'>
+        <StatsCounter stats={stats} />
+      </div>
+
+      <div
+        id='patterns'
+        className='max-w-7xl mx-auto px-6 sm:px-10 pt-14 pb-16 sm:pt-16 sm:pb-20 scroll-mt-20'>
+        <PatternGrid
+          patterns={patterns}
+          lang={lang}
+        />
+      </div>
+
       <DSLegendFloat />
     </div>
   )
