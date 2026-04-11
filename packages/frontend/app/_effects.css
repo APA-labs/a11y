@@ -19,7 +19,7 @@
 
 .dark .aurora-orb {
   mix-blend-mode: screen;
-  opacity: 0.35;
+  opacity: 0.22;
 }
 
 .aurora-orb-a {
@@ -50,15 +50,15 @@
 }
 
 .dark .aurora-orb-a {
-  background: radial-gradient(circle at 30% 30%, #5b21b6, transparent 70%);
+  background: radial-gradient(circle at 30% 30%, #3b1f78, transparent 70%);
 }
 
 .dark .aurora-orb-b {
-  background: radial-gradient(circle at 70% 40%, #9d174d, transparent 70%);
+  background: radial-gradient(circle at 70% 40%, #6e1239, transparent 70%);
 }
 
 .dark .aurora-orb-c {
-  background: radial-gradient(circle at 50% 50%, #065f46, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, #05463a, transparent 70%);
 }
 
 @keyframes auroraFloatA {

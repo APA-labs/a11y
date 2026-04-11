@@ -47,15 +47,15 @@
   }
 
   .dark {
-    --canvas: #111a24;
-    --surface: #1e2e40;
-    --float: #2c435d;
-    --inset: #111a24;
-    --outline: #2c435d;
-    --divider: #1e2e40;
+    --canvas: #0d141d;
+    --surface: #1a2838;
+    --float: #263a52;
+    --inset: #0a1017;
+    --outline: #2f4764;
+    --divider: #263a52;
     --body: #f6f7f7;
     --soft: #a29fb0;
-    --faint: #9a99a7;
+    --faint: #7a8290;
   }
 
   * {
