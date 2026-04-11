@@ -1,5 +1,19 @@
 # capture-pattern-preview
 
+> ⚠️ **DEPRECATED (2026-04-11)** — 이 스킬은 더 이상 사용되지 않습니다.
+>
+> PNG 썸네일 시스템은 **벡터 SVG 프리뷰**로 완전히 교체되었습니다:
+>
+> - `packages/frontend/public/previews/` 디렉토리 삭제됨
+> - `packages/frontend/scripts/capture-previews.mjs` 스크립트는 더 이상 호출되지 않음
+> - `PatternCardFancy`는 `components/previews/*.tsx` SVG 컴포넌트만 참조
+>
+> **신규 패턴 썸네일이 필요하면 → [`create-svg-preview`](../create-svg-preview/SKILL.md) 사용.**
+>
+> 이 문서는 히스토리/참고용으로만 남겨둡니다.
+
+---
+
 **Name:** `capture-pattern-preview`
 **Description:** 패턴 카탈로그 프리뷰 이미지를 캡처한다. 새 패턴 추가 후 프리뷰 이미지가 필요하거나, 기존 프리뷰를 재캡처할 때 사용. "프리뷰 캡처", "미리보기 이미지", "preview image", "캡처해줘" 등의 요청에 트리거.
 
