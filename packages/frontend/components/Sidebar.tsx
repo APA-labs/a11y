@@ -4,9 +4,7 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 import { Heart, Layers, MousePointer2, PanelLeftClose, PanelLeftOpen, ShieldCheck, Sparkles, Tag } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+import { useEffect, useRef, useState } from 'react'
 
 import { getTranslations } from '../lib/i18n'
 import { ICON_MAP } from '../lib/pattern-icons'
@@ -69,23 +67,11 @@ function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
 
 export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const pathname = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
-  const [hydrated, setHydrated] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const t = getTranslations(lang)
   const patterns = getPatterns(lang)
 
-  useIsomorphicLayoutEffect(() => {
-    const stored = localStorage.getItem('sidebar-collapsed')
-    if (stored === 'true') setCollapsed(true)
-    setHydrated(true)
-  }, [])
-
-  const toggle = () => {
-    setCollapsed((prev) => {
-      localStorage.setItem('sidebar-collapsed', String(!prev))
-      return !prev
-    })
-  }
+  const toggle = () => setCollapsed((prev) => !prev)
 
   const SectionLabel = ({ children }: { children: string }) =>
     collapsed ? (
@@ -143,10 +129,7 @@ export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolea
     <Tooltip.Provider delayDuration={200}>
       <aside
         style={{ width: collapsed ? 52 : 240 }}
-        suppressHydrationWarning
-        className={`hidden lg:flex flex-col h-full bg-surface shrink-0 overflow-y-auto overflow-x-hidden scrollbar-thin border-r border-outline ${
-          hydrated ? 'transition-[width] duration-200 ease-in-out' : ''
-        }`}>
+        className='hidden lg:flex flex-col h-full bg-surface shrink-0 overflow-y-auto overflow-x-hidden scrollbar-thin transition-[width] duration-200 ease-in-out border-r border-outline'>
         <div className={`flex ${collapsed ? 'justify-center' : 'justify-end'} px-2 pt-3 pb-1`}>
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
