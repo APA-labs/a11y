@@ -67,7 +67,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
             />
           ) : (
             <div className='absolute inset-0 flex items-center justify-center'>
-              <span className='font-serif text-3xl italic text-faint'>{pattern.name}</span>
+              <span className='text-sm font-medium text-faint tracking-tight'>{pattern.name}</span>
             </div>
           )}
           <div className='absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-surface to-transparent pointer-events-none' />
@@ -75,7 +75,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
 
         <div className='relative p-4'>
           <div className='flex items-start justify-between gap-2'>
-            <h2 className='font-serif text-[18px] leading-tight text-body transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400'>
+            <h2 className='text-[14px] font-semibold tracking-tight leading-snug text-body transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400'>
               {pattern.name}
             </h2>
             <ArrowUpRight

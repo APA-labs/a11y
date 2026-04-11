@@ -58,8 +58,8 @@ export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean
             <span className='absolute inset-0 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500' />
             <span className='absolute inset-0 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 animate-ping opacity-40 motion-reduce:hidden' />
           </span>
-          <span className='font-serif text-[17px] tracking-tight text-body whitespace-nowrap'>
-            a11y <span className='italic text-soft'>patterns</span>
+          <span className='text-sm font-semibold tracking-tight text-body whitespace-nowrap'>
+            A11y <span className='text-soft font-normal'>Patterns</span>
           </span>
         </Link>
 

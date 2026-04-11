@@ -27,7 +27,20 @@ export const ko = {
     filterByDS: '디자인 시스템으로 필터',
     allDS: '전체',
     noResults: '검색 결과가 없습니다.',
-    filteredCount: (n: number) => `${n}개 패턴`
+    filteredCount: (n: number) => `${n}개 패턴`,
+    exploreTitle: '모든 패턴 탐색',
+    wcagIntro: {
+      eyebrow: 'WCAG란?',
+      title: '누구나 쓸 수 있는 웹을 만드는 국제 표준',
+      body: 'WCAG(Web Content Accessibility Guidelines)는 W3C가 정의한 웹 접근성 표준입니다. 장애의 유무, 사용 환경, 보조 기술에 상관없이 누구나 웹 콘텐츠를 이용할 수 있도록 돕는 4대 원칙과 단계별 기준(A → AA → AAA)으로 구성되어 있습니다. 이 사이트의 모든 패턴은 대부분의 법규와 기업 정책이 요구하는 AA 수준을 기준으로 합니다.',
+      principles: [
+        { id: 'P', name: 'Perceivable', desc: '정보와 UI는 사용자가 인식할 수 있어야 합니다.' },
+        { id: 'O', name: 'Operable', desc: '키보드, 터치, 음성 등으로 조작할 수 있어야 합니다.' },
+        { id: 'U', name: 'Understandable', desc: '화면 구조와 동작을 예측·이해할 수 있어야 합니다.' },
+        { id: 'R', name: 'Robust', desc: '다양한 브라우저와 보조 기술에서 동일하게 해석돼야 합니다.' }
+      ],
+      readMore: 'WCAG 2.1 전체 가이드 읽기'
+    }
   },
   pattern: {
     backToAll: '모든 패턴',

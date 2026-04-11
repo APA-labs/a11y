@@ -29,7 +29,20 @@ export const en: Translations = {
     filterByDS: 'Filter by design system',
     allDS: 'All',
     noResults: 'No patterns found.',
-    filteredCount: (n: number) => `${n} patterns`
+    filteredCount: (n: number) => `${n} patterns`,
+    exploreTitle: 'Explore every pattern',
+    wcagIntro: {
+      eyebrow: 'What is WCAG?',
+      title: 'The international standard for a usable web',
+      body: 'WCAG (Web Content Accessibility Guidelines) is the W3C standard for web accessibility. It helps everyone use the web regardless of disability, context, or assistive technology — organized around four principles and three conformance levels (A → AA → AAA). Every pattern on this site follows AA, the level required by most laws and corporate policies.',
+      principles: [
+        { id: 'P', name: 'Perceivable', desc: 'Information and UI must be presentable to users in ways they can perceive.' },
+        { id: 'O', name: 'Operable', desc: 'The interface must work with keyboard, touch, voice, and more.' },
+        { id: 'U', name: 'Understandable', desc: 'Content and behavior should be predictable and clear.' },
+        { id: 'R', name: 'Robust', desc: 'Content must work reliably across browsers and assistive tech.' }
+      ],
+      readMore: 'Read the full WCAG 2.1 guide'
+    }
   },
   pattern: {
     backToAll: 'All patterns',

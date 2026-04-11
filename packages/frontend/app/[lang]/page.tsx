@@ -3,6 +3,7 @@ export const dynamic = 'force-static'
 import DSLegendFloat from '../../components/DSLegendFloat'
 import Hero from '../../components/home/Hero'
 import StatsCounter from '../../components/home/StatsCounter'
+import WcagIntro from '../../components/home/WcagIntro'
 import PatternGrid from '../../components/PatternGrid'
 import { getTranslations, SUPPORTED_LANGS } from '../../lib/i18n'
 import { getPatterns } from '../../lib/patterns'
@@ -18,7 +19,6 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
   const { lang } = await params
   const t = getTranslations(lang)
   const patterns = getPatterns(lang)
-  const aiEnabled = process.env.NEXT_PUBLIC_AI_ENABLED === 'true'
 
   const totalMust = patterns.reduce((sum, p) => sum + p.baseline.checklist.must.length, 0)
   const totalShould = patterns.reduce((sum, p) => sum + p.baseline.checklist.should.length, 0)
@@ -33,20 +33,22 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
 
   return (
     <div className='relative'>
-      <Hero
-        lang={lang}
-        subtitle={t.home.subtitle}
-        aiEnabled={aiEnabled}
-        aiLabel={t.home.aiAnalyze}
-      />
+      <Hero subtitle={t.home.subtitle} />
 
-      <div className='-mt-4 sm:-mt-6 pb-4'>
+      <div className='mt-10 sm:mt-16'>
         <StatsCounter stats={stats} />
+      </div>
+
+      <div className='mt-24 sm:mt-36'>
+        <WcagIntro
+          lang={lang}
+          content={t.home.wcagIntro}
+        />
       </div>
 
       <div
         id='patterns'
-        className='max-w-7xl mx-auto px-6 sm:px-10 pt-14 pb-16 sm:pt-16 sm:pb-20 scroll-mt-20'>
+        className='max-w-7xl mx-auto px-6 sm:px-10 mt-20 sm:mt-28 pb-24 sm:pb-32 scroll-mt-20'>
         <PatternGrid
           patterns={patterns}
           lang={lang}

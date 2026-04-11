@@ -53,7 +53,7 @@ export default function StatsCounter({ stats }: StatsCounterProps) {
           <div
             key={s.label}
             className='bg-surface px-5 py-6 sm:py-7'>
-            <p className={`font-serif text-4xl sm:text-5xl leading-none ${toneClasses[s.tone]}`}>
+            <p className={`text-3xl sm:text-4xl font-semibold tracking-tight tabular-nums leading-none ${toneClasses[s.tone]}`}>
               <Counter
                 to={s.value}
                 reduce={reduce}

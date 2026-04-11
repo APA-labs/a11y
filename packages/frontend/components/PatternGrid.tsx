@@ -22,7 +22,7 @@ export default function PatternGrid({ patterns, lang }: { patterns: Pattern[]; l
     <div>
       <div className='flex items-end justify-between flex-wrap gap-4 mb-6'>
         <div>
-          <p className='font-serif italic text-2xl sm:text-3xl text-body'>Explore the library</p>
+          <h2 className='text-lg sm:text-xl font-semibold tracking-tight text-body'>{t.home.exploreTitle}</h2>
           <p className='text-xs text-faint mt-1'>
             {filtered.length === patterns.length ? t.home.allPatterns : t.home.filteredCount(filtered.length)}
           </p>

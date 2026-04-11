@@ -29,7 +29,7 @@ export default function SectionHeader({ eyebrow, title, children, id }: Props) {
         />
         {eyebrow && <span className='text-[11px] font-medium uppercase tracking-[0.16em] text-soft'>{eyebrow}</span>}
       </div>
-      <h2 className='mt-3 font-serif text-3xl sm:text-4xl text-body leading-tight'>{title}</h2>
+      <h2 className='mt-3 text-xl sm:text-2xl font-semibold tracking-tight text-body leading-tight'>{title}</h2>
       {children && <div className='mt-2 text-sm text-soft leading-relaxed'>{children}</div>}
     </m.header>
   )
