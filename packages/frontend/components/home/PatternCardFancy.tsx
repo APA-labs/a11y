@@ -90,7 +90,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
               className='shrink-0 mt-0.5 text-faint transition-all duration-300 group-hover:text-violet-600 group-hover:-translate-y-0.5 group-hover:translate-x-0.5'
             />
           </div>
-          <p className='mt-1 text-[12px] text-soft leading-snug line-clamp-2'>{pattern.description}</p>
+          <p className='mt-1 text-[12px] text-soft leading-snug line-clamp-2 min-h-[2.5rem]'>{pattern.description}</p>
 
           <div className='mt-3 pt-3 border-t border-divider flex items-center justify-between'>
             <div className='flex items-center gap-2 text-[11px] text-soft'>
