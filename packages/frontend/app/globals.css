@@ -1,3 +1,5 @@
+@import './_effects.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -42,18 +44,20 @@
     --body: #2c435d;
     --soft: #7e7d8e;
     --faint: #9a99a7;
+    --ds-baseui-swatch: #18181b;
   }
 
   .dark {
-    --canvas: #111a24;
-    --surface: #1e2e40;
-    --float: #2c435d;
-    --inset: #111a24;
-    --outline: #2c435d;
-    --divider: #1e2e40;
+    --canvas: #0d141d;
+    --surface: #1a2838;
+    --float: #263a52;
+    --inset: #0a1017;
+    --outline: #2f4764;
+    --divider: #263a52;
     --body: #f6f7f7;
     --soft: #a29fb0;
-    --faint: #9a99a7;
+    --faint: #7a8290;
+    --ds-baseui-swatch: #e4e4e7;
   }
 
   * {
@@ -67,6 +71,21 @@
   code,
   pre {
     font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  /* 한국어 어절 중간 줄바꿈 방지 — 제목과 주요 본문에 기본 적용 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    word-break: keep-all;
+    text-wrap: balance;
+  }
+
+  p {
+    word-break: keep-all;
   }
 }
 
@@ -113,5 +132,49 @@
 @keyframes sidebar-marquee {
   to {
     transform: translateX(var(--marquee-shift));
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blurIn {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

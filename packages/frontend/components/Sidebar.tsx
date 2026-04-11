@@ -67,21 +67,11 @@ function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
 
 export default function Sidebar({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const pathname = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const t = getTranslations(lang)
   const patterns = getPatterns(lang)
 
-  useEffect(() => {
-    const stored = localStorage.getItem('sidebar-collapsed')
-    if (stored !== null) setCollapsed(stored === 'true')
-  }, [])
-
-  const toggle = () => {
-    setCollapsed((prev) => {
-      localStorage.setItem('sidebar-collapsed', String(!prev))
-      return !prev
-    })
-  }
+  const toggle = () => setCollapsed((prev) => !prev)
 
   const SectionLabel = ({ children }: { children: string }) =>
     collapsed ? (
