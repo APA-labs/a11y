@@ -4,6 +4,7 @@ import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
+import { getDsSwatchColor } from '../lib/ds-swatch'
 import { getTranslations } from '../lib/i18n'
 import { renderWithCode } from '../lib/inline-code'
 import { DS_ORDER } from '../lib/types'
@@ -46,7 +47,7 @@ export default function DesignSystemTabs({ designSystems, lang = 'ko', slug }: P
               `}>
               <span
                 className='w-2 h-2 rounded-full shrink-0'
-                style={{ backgroundColor: ds.color }}
+                style={{ backgroundColor: getDsSwatchColor(id) }}
               />
               {ds.name}
             </button>

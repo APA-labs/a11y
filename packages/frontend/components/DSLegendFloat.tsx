@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+import { getDsSwatchColor } from '../lib/ds-swatch'
 import { DS_META, DS_ORDER } from '../lib/types'
 
 export default function DSLegendFloat() {
@@ -42,8 +43,8 @@ export default function DSLegendFloat() {
               key={id}
               className='flex items-center gap-2'>
               <span
-                className='w-2 h-2 rounded-full shrink-0'
-                style={{ backgroundColor: ds.color }}
+                className='w-2 h-2 rounded-full shrink-0 ring-1 ring-outline'
+                style={{ backgroundColor: getDsSwatchColor(id) }}
               />
               <span className='text-xs text-body whitespace-nowrap'>{ds.name}</span>
             </div>

@@ -44,6 +44,7 @@
     --body: #2c435d;
     --soft: #7e7d8e;
     --faint: #9a99a7;
+    --ds-baseui-swatch: #18181b;
   }
 
   .dark {
@@ -56,6 +57,7 @@
     --body: #f6f7f7;
     --soft: #a29fb0;
     --faint: #7a8290;
+    --ds-baseui-swatch: #e4e4e7;
   }
 
   * {

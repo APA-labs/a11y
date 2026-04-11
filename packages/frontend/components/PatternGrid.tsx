@@ -4,6 +4,7 @@ import { m } from 'motion/react'
 import { useMemo, useState } from 'react'
 
 import PatternCardFancy from './home/PatternCardFancy'
+import { getDsSwatchColor } from '../lib/ds-swatch'
 import { getTranslations } from '../lib/i18n'
 import { DS_META, DS_ORDER } from '../lib/types'
 
@@ -42,24 +43,27 @@ export default function PatternGrid({ patterns, lang }: { patterns: Pattern[]; l
             }`}>
             {t.home.allDS}
           </button>
-          {DS_ORDER.map((id) => (
-            <button
-              key={id}
-              type='button'
-              onClick={() => setActiveDS(activeDS === id ? null : id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
-                activeDS === id
-                  ? 'text-white border-transparent shadow-sm'
-                  : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
-              }`}
-              style={activeDS === id ? { backgroundColor: DS_META[id].color, borderColor: DS_META[id].color } : {}}>
-              <span
-                className='w-2 h-2 rounded-full shrink-0'
-                style={{ backgroundColor: activeDS === id ? 'rgba(255,255,255,0.85)' : DS_META[id].color }}
-              />
-              {DS_META[id].name}
-            </button>
-          ))}
+          {DS_ORDER.map((id) => {
+            const swatch = getDsSwatchColor(id)
+            return (
+              <button
+                key={id}
+                type='button'
+                onClick={() => setActiveDS(activeDS === id ? null : id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${
+                  activeDS === id
+                    ? 'text-white border-transparent shadow-sm'
+                    : 'bg-surface text-soft border-outline hover:border-violet-400 hover:text-body'
+                }`}
+                style={activeDS === id ? { backgroundColor: swatch, borderColor: swatch } : {}}>
+                <span
+                  className='w-2 h-2 rounded-full shrink-0'
+                  style={{ backgroundColor: activeDS === id ? 'rgba(255,255,255,0.85)' : swatch }}
+                />
+                {DS_META[id].name}
+              </button>
+            )
+          })}
         </div>
       </div>
 

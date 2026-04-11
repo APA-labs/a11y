@@ -1,6 +1,7 @@
 export const dynamic = 'force-static'
 
 import DSLegendFloat from '../../components/DSLegendFloat'
+import Aurora from '../../components/home/Aurora'
 import Hero from '../../components/home/Hero'
 import StatsCounter from '../../components/home/StatsCounter'
 import WcagIntro from '../../components/home/WcagIntro'
@@ -32,10 +33,20 @@ export default async function Home({ params }: { params: Promise<{ lang: Lang }>
   ]
 
   return (
-    <div className='relative'>
+    <div className='relative isolate'>
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-x-0 top-0 h-[900px] overflow-hidden -z-10'
+        style={{
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 55%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 55%, transparent 100%)'
+        }}>
+        <Aurora />
+      </div>
+
       <Hero subtitle={t.home.subtitle} />
 
-      <div className='mt-10 sm:mt-16'>
+      <div className='relative mt-10 sm:mt-16'>
         <StatsCounter stats={stats} />
       </div>
 

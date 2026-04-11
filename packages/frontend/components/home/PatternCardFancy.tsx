@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { getDsSwatchColor } from '../../lib/ds-swatch'
 import { DS_META, DS_ORDER } from '../../lib/types'
 
 import type { Lang } from '../../lib/i18n'
@@ -100,7 +101,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
                   key={id}
                   className='w-2.5 h-2.5 rounded-full ring-2 ring-surface'
                   title={DS_META[id].name}
-                  style={{ backgroundColor: DS_META[id].color }}
+                  style={{ backgroundColor: getDsSwatchColor(id) }}
                 />
               ))}
             </div>

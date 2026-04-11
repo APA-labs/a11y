@@ -2,8 +2,6 @@
 
 import { m, useReducedMotion } from 'motion/react'
 
-import Aurora from './Aurora'
-
 type HeroProps = {
   subtitle: string
 }
@@ -30,9 +28,7 @@ export default function Hero({ subtitle }: HeroProps) {
   const initial = reduce ? 'show' : 'hidden'
 
   return (
-    <section className='relative isolate overflow-hidden'>
-      <Aurora />
-
+    <section className='relative'>
       <div className='relative z-10 max-w-7xl mx-auto px-6 sm:px-10 pt-20 pb-4 sm:pt-28 sm:pb-6'>
         <m.div
           variants={container}
