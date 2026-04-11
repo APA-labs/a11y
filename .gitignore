@@ -37,3 +37,6 @@ CLAUDE.local.md
 # sitemap
 sitemap.xml
 robots.txt
+
+# IndexNow key file (filename contains the key, written from env at build)
+packages/frontend/public/*.txt

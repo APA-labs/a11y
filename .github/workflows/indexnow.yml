@@ -1,0 +1,31 @@
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/frontend/app/**'
+      - 'packages/frontend/lib/patterns/**'
+      - 'packages/frontend/next-sitemap.config.js'
+  workflow_dispatch:
+    inputs:
+      extra_urls:
+        description: '추가로 제출할 URL (공백 구분, 선택)'
+        required: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Vercel 배포 대기
+        run: sleep 150
+
+      - name: IndexNow 제출
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          EXTRA_URLS: ${{ github.event.inputs.extra_urls }}
+        run: node packages/frontend/scripts/indexnow-ping.mjs $EXTRA_URLS
