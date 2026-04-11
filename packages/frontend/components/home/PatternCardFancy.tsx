@@ -2,9 +2,7 @@
 
 import { ArrowUpRight } from 'lucide-react'
 import { m } from 'motion/react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 
 import { getDsSwatchColor } from '../../lib/ds-swatch'
 import { DS_META, DS_ORDER } from '../../lib/types'
@@ -21,8 +19,6 @@ type Props = {
 export default function PatternCardFancy({ pattern, lang }: Props) {
   const mustCount = pattern.baseline.checklist.must.length
   const shouldCount = pattern.baseline.checklist.should.length
-  const previewSrc = `/previews/${pattern.slug}.png`
-  const [hasImage, setHasImage] = useState(true)
   const SvgPreview = getPreview(pattern.slug)
 
   const activeDS = DS_ORDER.filter((id) => pattern.designSystems[id] != null)
@@ -63,16 +59,6 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
             <div className='absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]'>
               <SvgPreview />
             </div>
-          ) : hasImage ? (
-            <Image
-              src={previewSrc}
-              alt={`${pattern.name} preview`}
-              fill
-              sizes='(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw'
-              className='object-contain p-3 transition-transform duration-700 ease-out group-hover:scale-[1.04]'
-              onError={() => setHasImage(false)}
-              unoptimized
-            />
           ) : (
             <div className='absolute inset-0 flex items-center justify-center'>
               <span className='text-sm font-medium text-faint tracking-tight'>{pattern.name}</span>
