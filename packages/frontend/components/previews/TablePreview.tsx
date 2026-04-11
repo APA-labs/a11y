@@ -36,7 +36,7 @@ export default function TablePreview() {
         y={TABLE_Y}
         width={TABLE_W}
         height={HEADER_H}
-        style={{ fill: 'var(--inset)' }}
+        style={{ fill: 'var(--divider)' }}
       />
       <path
         d={`M${TABLE_X} ${TABLE_Y + HEADER_H} L${TABLE_X + TABLE_W} ${TABLE_Y + HEADER_H}`}
@@ -49,9 +49,9 @@ export default function TablePreview() {
           x={TABLE_X + col.x}
           y={TABLE_Y + HEADER_H / 2 - 3}
           width={col.w}
-          height={5}
-          rx={2.5}
-          style={{ fill: 'var(--body)', opacity: 0.85 }}
+          height={6}
+          rx={3}
+          style={{ fill: 'var(--body)' }}
         />
       ))}
 
