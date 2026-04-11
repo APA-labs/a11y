@@ -47,7 +47,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
         href={`/${lang}/patterns/${pattern.slug}`}
         className='relative block bg-surface rounded-2xl border border-outline overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas transition-colors group-hover:border-violet-300 dark:group-hover:border-violet-700'>
         <div
-          className='relative w-full bg-canvas overflow-hidden'
+          className='relative w-full bg-canvas overflow-hidden border-b border-divider'
           style={{ height: 136 }}>
           <div
             aria-hidden='true'
@@ -70,7 +70,6 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
               <span className='text-sm font-medium text-faint tracking-tight'>{pattern.name}</span>
             </div>
           )}
-          <div className='absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-surface to-transparent pointer-events-none' />
         </div>
 
         <div className='relative p-4'>
