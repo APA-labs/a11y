@@ -49,7 +49,7 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
         className='relative block bg-surface rounded-2xl border border-outline overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas transition-colors group-hover:border-violet-300 dark:group-hover:border-violet-700'>
         <div
           className='relative w-full bg-canvas overflow-hidden border-b border-divider'
-          style={{ height: 136 }}>
+          style={{ height: 168 }}>
           <div
             aria-hidden='true'
             className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none'
@@ -62,7 +62,8 @@ export default function PatternCardFancy({ pattern, lang }: Props) {
               src={previewSrc}
               alt={`${pattern.name} preview`}
               fill
-              className='object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]'
+              sizes='(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw'
+              className='object-contain p-3 transition-transform duration-700 ease-out group-hover:scale-[1.04]'
               onError={() => setHasImage(false)}
               unoptimized
             />
