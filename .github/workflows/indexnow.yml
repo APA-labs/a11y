@@ -28,4 +28,4 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
           EXTRA_URLS: ${{ github.event.inputs.extra_urls }}
-        run: node packages/frontend/scripts/indexnow-ping.mjs $EXTRA_URLS
+        run: npx --yes tsx packages/frontend/scripts/indexnow-ping.ts $EXTRA_URLS
