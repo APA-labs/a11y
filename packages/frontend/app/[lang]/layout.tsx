@@ -10,7 +10,7 @@ export default async function LangLayout({ children, params }: { children: React
 
   return (
     <MotionProvider>
-      <div className='flex flex-col h-screen bg-canvas text-body overflow-hidden'>
+      <div className='flex flex-col h-dvh bg-canvas text-body overflow-hidden'>
         <script
           dangerouslySetInnerHTML={{
             __html: `document.documentElement.lang='${lang}';(function(){var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')})()`
