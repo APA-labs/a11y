@@ -1,12 +1,5 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { redirect } from 'next/navigation'
 
 export default function RootPage() {
-  const router = useRouter()
-  useEffect(() => {
-    router.replace('/ko')
-  }, [router])
-  return null
+  redirect('/ko')
 }
