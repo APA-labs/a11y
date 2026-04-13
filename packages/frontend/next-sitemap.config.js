@@ -51,13 +51,18 @@ const defaultConfig = {
       changefreq: config.changefreq,
       priority: config.priority,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
-      alternateRefs: LANGS.map((lang) => ({
-        href: `${siteUrl}/${lang}${stripped}`,
-        hreflang: lang,
-        // next-sitemap 기본 동작은 href 뒤에 현재 loc path를 append하므로
-        // 이미 완전한 URL임을 표시해야 이중 경로 버그가 막힘.
-        hrefIsAbsolute: true
-      }))
+      alternateRefs: [
+        ...LANGS.map((lang) => ({
+          href: `${siteUrl}/${lang}${stripped}`,
+          hreflang: lang,
+          hrefIsAbsolute: true
+        })),
+        {
+          href: `${siteUrl}/ko${stripped}`,
+          hreflang: 'x-default',
+          hrefIsAbsolute: true
+        }
+      ]
     }
   },
   robotsTxtOptions: {
