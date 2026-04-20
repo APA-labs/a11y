@@ -101,7 +101,7 @@ const DS_DEPS: Record<string, Record<string, string>> = {
   },
   '@base-ui/react': {
     // NOTES: base-ui에서 code-sandbox를 지원하지 않아 유지되지 않는 못불러오는 경우가 존재합니다.
-    '@base-ui/react': '1.3.0'
+    '@base-ui/react': '1.4.1'
   }
 }
 

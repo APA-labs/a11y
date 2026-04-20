@@ -30,14 +30,23 @@
   "devDependencies": {
     "@a11y/eslint-config": "workspace:*",
     "@a11y/typescript-config": "workspace:*",
+    "@base-ui/react": "^1.4.1",
+    "@chakra-ui/react": "^3.34.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
     "@playwright/test": "^1.58.2",
+    "@radix-ui/react-slot": "^1.0.2",
     "@types/node": "^20.10.6",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "antd": "^5.23.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.0.0",
     "next-sitemap": "^4.2.3",
     "postcss": "^8.4.49",
+    "react-aria-components": "^1.16.0",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.7.0"
   }

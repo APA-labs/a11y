@@ -1838,7 +1838,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           {
             title: 'Use Field.Root for complete accessibility wiring',
             description:
-              'Field.Root from @base-ui-components/react/field automatically connects Field.Label, Field.Control, Field.Error, and Field.Description via aria-labelledby, aria-describedby, and aria-invalid.'
+              'Field.Root from @base-ui/react/field automatically connects Field.Label, Field.Control, Field.Error, and Field.Description via aria-labelledby, aria-describedby, and aria-invalid.'
           },
           {
             title: 'Use Field.Error match prop for HTML5 constraint validation',
@@ -2070,7 +2070,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           {
             title: 'Use AlertDialog for confirmation actions',
             description:
-              'Base UI provides a separate AlertDialog component (@base-ui-components/react/alert-dialog) for destructive or irreversible actions that require user confirmation.'
+              'Base UI provides a separate AlertDialog component (@base-ui/react/alert-dialog) for destructive or irreversible actions that require user confirmation.'
           }
         ],
         notes: [
@@ -2078,7 +2078,7 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           'Dialog.Title is auto-connected via aria-labelledby; Dialog.Description via aria-describedby.',
           'Dialog.Portal renders into the document body to prevent z-index conflicts.',
           'Use open/onOpenChange for controlled mode, or defaultOpen for uncontrolled mode.',
-          'Use AlertDialog (@base-ui-components/react/alert-dialog) for dangerous actions that require explicit user confirmation.'
+          'Use AlertDialog (@base-ui/react/alert-dialog) for dangerous actions that require explicit user confirmation.'
         ]
       }
     }
@@ -2980,19 +2980,18 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           {
             title: 'Use the Field component for best accessibility',
             description:
-              'Wrapping with Field.Root from @base-ui-components/react/field provides automatic label-input association, aria-invalid propagation, and error message wiring via aria-describedby.'
+              'Wrapping with Field.Root from @base-ui/react/field provides automatic label-input association, aria-invalid propagation, and error message wiring via aria-describedby.'
           },
           {
             title: 'Connect a label when using Input standalone',
-            description:
-              'When using Input (@base-ui-components/react/input) without Field, connect a label via <label htmlFor> or add aria-label directly.'
+            description: 'When using Input (@base-ui/react/input) without Field, connect a label via <label htmlFor> or add aria-label directly.'
           }
         ],
         notes: [
           'Field.Root automatically connects Field.Label and Field.Control and propagates aria-invalid to the child input.',
           'Field.Error uses HTML5 constraint validation API keys for the match prop (valueMissing, typeMismatch, tooShort, etc.).',
           'Field.Control wires aria-invalid and aria-describedby automatically from the Field context.',
-          'Input (@base-ui-components/react/input) can be used standalone, but label association must be handled manually.'
+          'Input (@base-ui/react/input) can be used standalone, but label association must be handled manually.'
         ]
       }
     }
@@ -3123,14 +3122,14 @@ export const patternTranslationsEn: Record<string, PatternT> = {
           {
             title: 'Toggle uses aria-pressed; Switch uses role="switch"',
             description:
-              'Toggle (@base-ui-components/react/toggle) is an aria-pressed toggle button for UI actions. Switch (@base-ui-components/react/switch) uses role="switch" for settings. Choose based on semantics, not appearance.'
+              'Toggle (@base-ui/react/toggle) is an aria-pressed toggle button for UI actions. Switch (@base-ui/react/switch) uses role="switch" for settings. Choose based on semantics, not appearance.'
           }
         ],
         notes: [
           'Switch.Root renders as <span> by default. Wrap in a <label> for the wrapping label pattern; role="switch" and aria-checked are managed automatically.',
           'role="switch" and aria-checked are managed automatically.',
           'Set nativeButton={true} and render={<button />} to render Switch.Root as a semantic button element.',
-          'Use the Toggle component (@base-ui-components/react/toggle) for aria-pressed toggle buttons instead.',
+          'Use the Toggle component (@base-ui/react/toggle) for aria-pressed toggle buttons instead.',
           'The data-checked and data-unchecked attributes are available for CSS-based styling.'
         ]
       }
