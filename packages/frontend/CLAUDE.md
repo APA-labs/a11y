@@ -64,7 +64,6 @@ lib/
   i18n/            → ko/en translations + hooks
   patterns/        → individual pattern definitions + icons + translations
   sandpack/        → build-preview-code (Sandpack wrapper generator)
-  seo/             → metadata (alternates, canonical)
   wcag/            → criteria, ds-swatch
   types.ts         → Pattern, ChecklistItem, DS_META, DS_ORDER
   inline-code.tsx  → renderWithCode (`…` → <code>)
