@@ -5,11 +5,19 @@
 ### Data layer (SSOT — do not edit when only touching UI)
 
 ```
-lib/patterns/           → Individual pattern definitions (one file per pattern)
+lib/patterns/<slug>/
+  index.ts              → Pattern metadata (checklist, notes). code fields are `?raw` imports
+  samples/
+    index.css           → Sandpack placeholder (actual styles injected by buildIndexCss)
+    baseline.tsx        → (or baseline.html when language === 'html')
+    <dsKey>.tsx         → one file per design system present in the pattern
 lib/patterns/index.ts   → Aggregates all patterns into the exported array
 lib/types.ts            → Pattern, ChecklistItem, DesignSystem types, DS_META
 lib/i18n/*              → ko / en translations (keep keys in sync)
 ```
+
+Sample `.tsx` files are real TypeScript, but excluded from `tsc` via `tsconfig.json`.
+Next's webpack uses `resourceQuery: /raw/` → `asset/source` so they are bundled as strings only.
 
 ### Sandpack live preview (feature-critical)
 
@@ -96,8 +104,16 @@ TS path alias `@/*` resolves to `./*` — prefer `@/components/...` / `@/lib/...
 
 ## Adding a new accessibility pattern (UI side)
 
-1. `lib/patterns/<slug>.ts` — follow existing files (see `.claude/rules/pattern-style.md`)
+1. Create `lib/patterns/<slug>/` folder following the `button/` reference:
+   - `samples/index.css` (placeholder)
+   - `samples/baseline.tsx` + one `<dsKey>.tsx` per design system
+   - `index.ts` that `?raw`-imports the samples into the `Pattern` object
 2. Register in `lib/patterns/index.ts` (both the import and the `patterns` array)
-3. Frontend picks it up automatically — no grid/card/detail-page changes needed
+3. Add English translations to `lib/patterns/translations.en.ts`
+4. Frontend picks it up automatically — no grid/card/detail-page changes needed
+
+Sample style/validation rules live in `.claude/rules/pattern-style.md`.
+If a sample needs a new DS package, add it to BOTH `SandpackPreview.tsx` `DS_DEPS`
+AND `.claude/hooks/validate-code-samples.js` `KNOWN_DEPS`.
 
 For the backend / rule engine side, see the root `CLAUDE.md`.
