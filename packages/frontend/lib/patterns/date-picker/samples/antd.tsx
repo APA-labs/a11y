@@ -1,12 +1,12 @@
 import './index.css'
 import { useState } from 'react'
 import { DatePicker, Form, ConfigProvider } from 'antd'
-import dayjs from 'dayjs'
+import dayjs, { type Dayjs } from 'dayjs'
 
 export default function App() {
-  const [value, setValue] = useState(null)
+  const [value, setValue] = useState<Dayjs | null>(null)
 
-  const disablePastDates = (current) => {
+  const disablePastDates = (current: Dayjs) => {
     return current && current < dayjs().startOf('day')
   }
 

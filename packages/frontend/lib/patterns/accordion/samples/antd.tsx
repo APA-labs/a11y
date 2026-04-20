@@ -1,7 +1,8 @@
 import './index.css'
 import { Collapse } from 'antd'
+import type { CollapseProps } from 'antd'
 
-const items = [
+const items: CollapseProps['items'] = [
   {
     key: '1',
     label: 'What is Ant Design?',

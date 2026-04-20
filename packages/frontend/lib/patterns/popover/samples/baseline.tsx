@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react'
+
 function PopoverDemo() {
   const [isOpen, setIsOpen] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)

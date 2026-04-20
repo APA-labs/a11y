@@ -19,7 +19,7 @@ export default function App() {
         onClose={() => setOpen(false)}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
-        slotProps={{ paper: { role: 'alertdialog' } }}>
+        PaperProps={{ role: 'alertdialog' }}>
         <DialogTitle id='alert-dialog-title'>Delete File</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>

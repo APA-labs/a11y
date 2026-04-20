@@ -1,10 +1,11 @@
+import { useState, type FormEvent } from 'react'
 import { TextField, Button } from '@mui/material'
 
 function MuiForm() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!email.includes('@')) {
       setError('Please enter a valid email address.')

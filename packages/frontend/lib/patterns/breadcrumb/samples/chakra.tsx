@@ -3,7 +3,7 @@ import { Breadcrumb } from '@chakra-ui/react'
 
 export default function App() {
   return (
-    <Breadcrumb.Root separator='/'>
+    <Breadcrumb.Root>
       <Breadcrumb.List>
         <Breadcrumb.Item>
           <Breadcrumb.Link href='/'>Home</Breadcrumb.Link>

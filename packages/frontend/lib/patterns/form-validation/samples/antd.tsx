@@ -4,7 +4,7 @@ import { Form, Input, Button, Space } from 'antd'
 export default function App() {
   const [form] = Form.useForm()
 
-  const onFinish = (values) => {
+  const onFinish = (values: Record<string, unknown>) => {
     console.log('Submitted:', values)
   }
 

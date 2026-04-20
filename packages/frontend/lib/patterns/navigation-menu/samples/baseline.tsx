@@ -1,5 +1,7 @@
-function NavigationMenuDemo() {
-  const [openMenu, setOpenMenu] = useState(null)
+import { useState } from 'react'
+
+export default function NavigationMenuDemo() {
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
   const currentPath = '/about'
   const items = [
     { id: 'home', label: 'Home', href: '/' },

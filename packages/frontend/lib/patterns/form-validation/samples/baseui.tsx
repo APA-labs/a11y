@@ -14,7 +14,6 @@ export default function App() {
           Full name <span aria-hidden>*</span>
         </Field.Label>
         <Field.Control
-          as='input'
           required
           minLength={2}
           placeholder='Enter your full name'
@@ -37,7 +36,6 @@ export default function App() {
           Email <span aria-hidden>*</span>
         </Field.Label>
         <Field.Control
-          as='input'
           type='email'
           required
           placeholder='you@example.com'

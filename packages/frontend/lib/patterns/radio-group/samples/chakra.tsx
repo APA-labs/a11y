@@ -9,7 +9,7 @@ export default function App() {
     <div className='app'>
       <RadioGroup.Root
         value={value}
-        onValueChange={(e) => setValue(e.value)}
+        onValueChange={(e) => setValue(e.value ?? '')}
         aria-label='Select option'>
         <HStack gap={4}>
           <RadioGroup.Item value='option-1'>

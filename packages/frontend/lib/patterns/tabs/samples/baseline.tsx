@@ -9,10 +9,10 @@ export function Tabs() {
   const [active, setActive] = useState('tab-1')
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key === 'ArrowRight') setActive(TABS[Math.min(index + 1, TABS.length - 1)].id)
-    if (e.key === 'ArrowLeft') setActive(TABS[Math.max(index - 1, 0)].id)
-    if (e.key === 'Home') setActive(TABS[0].id)
-    if (e.key === 'End') setActive(TABS[TABS.length - 1].id)
+    if (e.key === 'ArrowRight') setActive(TABS[Math.min(index + 1, TABS.length - 1)]!.id)
+    if (e.key === 'ArrowLeft') setActive(TABS[Math.max(index - 1, 0)]!.id)
+    if (e.key === 'Home') setActive(TABS[0]!.id)
+    if (e.key === 'End') setActive(TABS[TABS.length - 1]!.id)
   }
 
   return (

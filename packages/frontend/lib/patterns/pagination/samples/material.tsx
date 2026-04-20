@@ -23,6 +23,7 @@ export default function App() {
         color='primary'
         showFirstButton
         showLastButton
+        aria-label='Pagination navigation'
         getItemAriaLabel={(type, pageNum, selected) => {
           if (type === 'page') return `Go to page ${pageNum}${selected ? ', current page' : ''}`
           if (type === 'first') return 'Go to first page'
@@ -31,7 +32,6 @@ export default function App() {
           if (type === 'previous') return 'Go to previous page'
           return ''
         }}
-        slotProps={{ root: { 'aria-label': 'Pagination navigation' } as React.AriaAttributes }}
       />
     </Box>
   )

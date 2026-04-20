@@ -13,11 +13,7 @@ export default function App() {
             onAction={(key) => alert(`Action: ${key}`)}
             className='nav-spectrum-menu'>
             <MenuSection>
-              <Header
-                className='label'
-                className='label nav-spectrum-section-header'>
-                Actions
-              </Header>
+              <Header className='label nav-spectrum-section-header'>Actions</Header>
               <MenuItem
                 id='new'
                 className='nav-spectrum-menuitem'>

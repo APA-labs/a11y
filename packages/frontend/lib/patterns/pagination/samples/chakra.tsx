@@ -31,14 +31,18 @@ export default function App() {
             <Button aria-label='Previous page'>‹</Button>
           </Pagination.PrevTrigger>
           <Pagination.Items
-            render={(page) => (
-              <Pagination.Item
-                key={page.value}
-                {...page}
-                aria-label={page.type === 'ellipsis' ? 'More pages' : `Page ${page.value}`}>
-                {page.type === 'ellipsis' ? '…' : page.value}
-              </Pagination.Item>
-            )}
+            render={(page) => {
+              const type = (page as { type: string }).type
+              const isEllipsis = type === 'ellipsis'
+              return (
+                <Pagination.Item
+                  key={page.value}
+                  {...page}
+                  aria-label={isEllipsis ? 'More pages' : `Page ${page.value}`}>
+                  {isEllipsis ? '…' : page.value}
+                </Pagination.Item>
+              )
+            }}
           />
           <Pagination.NextTrigger asChild>
             <Button aria-label='Next page'>›</Button>

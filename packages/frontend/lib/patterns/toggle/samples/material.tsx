@@ -22,9 +22,7 @@ export default function App() {
               <Switch
                 checked={notifications}
                 onChange={(e) => setNotifications(e.target.checked)}
-                slotProps={{
-                  input: { role: 'switch', 'aria-checked': notifications } as React.AriaAttributes & React.HTMLAttributes<HTMLInputElement>
-                }}
+                inputProps={{ role: 'switch', 'aria-checked': notifications }}
               />
             }
             label='Push notifications'
@@ -34,7 +32,7 @@ export default function App() {
               <Switch
                 checked={marketing}
                 onChange={(e) => setMarketing(e.target.checked)}
-                slotProps={{ input: { role: 'switch', 'aria-checked': marketing } as React.AriaAttributes & React.HTMLAttributes<HTMLInputElement> }}
+                inputProps={{ role: 'switch', 'aria-checked': marketing }}
               />
             }
             label='Marketing emails'

@@ -21,13 +21,12 @@ export default function App() {
         <Accordion
           key={item.id}
           expanded={expanded === item.id}
-          onChange={handleChange(item.id)}
-          slotProps={{ heading: { component: 'h3' } }}>
+          onChange={handleChange(item.id)}>
           <AccordionSummary
             expandIcon={<span aria-hidden>▼</span>}
             aria-controls={`${item.id}-content`}
             id={`${item.id}-header`}>
-            {item.heading}
+            <h3 style={{ margin: 0, fontSize: 'inherit', fontWeight: 'inherit' }}>{item.heading}</h3>
           </AccordionSummary>
           <AccordionDetails id={`${item.id}-content`}>
             <Typography>{item.content}</Typography>

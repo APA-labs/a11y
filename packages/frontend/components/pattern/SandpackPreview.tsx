@@ -213,14 +213,14 @@ export default function SandpackPreviewBlock({ code, language, slug }: Props) {
     if (appCode.includes(WRAPPER_DIV)) {
       appCode =
         `import { ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'\n` +
-        appCode.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </ChakraProvider>\n  )\n}`)
+        appCode.replace(WRAPPER_DIV, `<ChakraProvider value={__ds}>`).replace(/(\s*<\/div>\n\s*\)\n\})\s*$/, `\n    </ChakraProvider>\n  )\n}`)
     } else {
       appCode = appCode.replace(
         /import\s*\{([^}]+)\}\s*from\s*['"]@chakra-ui\/react['"]/,
         (_, named: string) => `import { ${named.trim()}, ChakraProvider, defaultSystem as __ds } from '@chakra-ui/react'`
       )
       appCode = appCode.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<ChakraProvider value={__ds}>\n$3$4')
-      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </ChakraProvider>\n$2')
+      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})\s*$/, '$1  </ChakraProvider>\n$2')
     }
   }
 
@@ -232,11 +232,11 @@ export default function SandpackPreviewBlock({ code, language, slug }: Props) {
         `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` +
         appCode
           .replace(WRAPPER_DIV, `<__RAProvider theme={__RATheme} locale="ko-KR">`)
-          .replace(/(\s*<\/div>\n\s*\)\n\})$/, `\n    </__RAProvider>\n  )\n}`)
+          .replace(/(\s*<\/div>\n\s*\)\n\})\s*$/, `\n    </__RAProvider>\n  )\n}`)
     } else {
       appCode = `import { Provider as __RAProvider, defaultTheme as __RATheme } from '@adobe/react-spectrum'\n` + appCode
       appCode = appCode.replace(/(\s+)(return\s*\(\s*\n)(\s*)(<)/, '$1$2$3<__RAProvider theme={__RATheme} locale="ko-KR">\n$3$4')
-      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})$/, '$1  </__RAProvider>\n$2')
+      appCode = appCode.replace(/(\n)(\s*\)\s*\n\})\s*$/, '$1  </__RAProvider>\n$2')
     }
   }
 

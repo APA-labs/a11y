@@ -14,24 +14,27 @@ export default function App() {
       <ToastRegion
         queue={queue}
         className='toast-viewport'>
-        {(toast) => (
-          <Toast
-            toast={toast}
-            className='toast-root'>
-            <div className='row justify-between w-full'>
-              <div>
-                <div className='font-bold'>{toast.content.title}</div>
-                <div className='text-sm'>{toast.content.description}</div>
+        {({ toast }) => {
+          const content = toast.content as { title: string; description: string }
+          return (
+            <Toast
+              toast={toast}
+              className='toast-root'>
+              <div className='row justify-between w-full'>
+                <div>
+                  <div className='font-bold'>{content.title}</div>
+                  <div className='text-sm'>{content.description}</div>
+                </div>
+                <Button
+                  slot='close'
+                  className='btn btn-ghost btn-sm'
+                  aria-label='Dismiss'>
+                  ✕
+                </Button>
               </div>
-              <Button
-                slot='close'
-                className='btn btn-ghost btn-sm'
-                aria-label='Dismiss'>
-                ✕
-              </Button>
-            </div>
-          </Toast>
-        )}
+            </Toast>
+          )
+        }}
       </ToastRegion>
     </div>
   )

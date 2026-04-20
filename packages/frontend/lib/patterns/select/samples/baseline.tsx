@@ -1,21 +1,23 @@
+import { useState, type KeyboardEvent } from 'react'
+
 function SelectDemo() {
   const [isOpen, setIsOpen] = useState(false)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState<string | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const options = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry']
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault()
       if (!isOpen) setIsOpen(true)
-      setActiveIndex((i) => Math.min(i + 1, options.length - 1))
+      setActiveIndex((i: number) => Math.min(i + 1, options.length - 1))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
-      setActiveIndex((i) => Math.max(i - 1, 0))
+      setActiveIndex((i: number) => Math.max(i - 1, 0))
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
       if (isOpen) {
-        setSelected(options[activeIndex])
+        setSelected(options[activeIndex] ?? null)
         setIsOpen(false)
       } else setIsOpen(true)
     } else if (e.key === 'Escape') {

@@ -2,7 +2,7 @@ import './index.css'
 import { useState } from 'react'
 import { AppBar, Toolbar, Button, Menu, MenuItem, Box, Typography } from '@mui/material'
 
-const currentPath = '/'
+const currentPath: string = '/'
 
 export default function App() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)

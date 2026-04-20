@@ -1,3 +1,5 @@
+import { useState, type FormEvent } from 'react'
+
 function FormWithValidation() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -9,7 +11,7 @@ function FormWithValidation() {
     return ''
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     const err = validate()
     setError(err)

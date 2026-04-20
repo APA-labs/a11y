@@ -25,13 +25,16 @@ export default function App() {
         aria-labelledby='notification-label'
         className='stack gap-8'>
         {options.map((opt) => (
-          <Radio.Root
+          <label
             key={opt.value}
-            value={opt.value}
             className='row cursor-pointer'>
-            <div className='radio-btn'>{value === opt.value && <span className='radio-indicator' />}</div>
-            <Radio.Label className='cursor-pointer'>{opt.label}</Radio.Label>
-          </Radio.Root>
+            <Radio.Root
+              value={opt.value}
+              className='radio-btn'>
+              <Radio.Indicator className='radio-indicator' />
+            </Radio.Root>
+            <span className='cursor-pointer'>{opt.label}</span>
+          </label>
         ))}
       </RadioGroup>
     </div>

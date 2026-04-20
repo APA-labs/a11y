@@ -24,7 +24,7 @@ export default function App() {
         required
         error={nameError}
         helperText={nameError ? 'Full name is required.' : 'As it appears on your ID'}
-        slotProps={{ htmlInput: { autoComplete: 'name', 'aria-required': 'true' } }}
+        inputProps={{ autoComplete: 'name', 'aria-required': 'true' }}
         fullWidth
       />
 
@@ -37,7 +37,7 @@ export default function App() {
         required
         error={emailError}
         helperText={emailError ? 'Please enter a valid email address.' : 'e.g. user@example.com'}
-        slotProps={{ htmlInput: { autoComplete: 'email', 'aria-required': 'true' } }}
+        inputProps={{ autoComplete: 'email', 'aria-required': 'true' }}
         fullWidth
       />
 

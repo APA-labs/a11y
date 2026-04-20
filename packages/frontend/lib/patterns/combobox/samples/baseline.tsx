@@ -18,7 +18,7 @@ export function Combobox({ label }: { label: string }) {
       e.preventDefault()
       setActiveIndex((i) => Math.max(i - 1, 0))
     } else if (e.key === 'Enter' && activeIndex >= 0) {
-      setSelected(OPTIONS[activeIndex])
+      setSelected(OPTIONS[activeIndex] ?? '')
       setOpen(false)
     } else if (e.key === 'Escape') {
       setOpen(false)

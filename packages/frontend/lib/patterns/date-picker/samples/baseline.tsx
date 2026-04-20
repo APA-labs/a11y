@@ -1,10 +1,12 @@
+import { useState } from 'react'
+
 function DatePickerDemo() {
   const [date, setDate] = useState('')
   const [error, setError] = useState('')
   const hintId = 'date-format-hint'
   const errorId = 'date-error'
 
-  const validateDate = (value) => {
+  const validateDate = (value: string) => {
     if (!value) return ''
     const d = new Date(value)
     if (isNaN(d.getTime())) return 'Invalid date.'

@@ -8,12 +8,12 @@ function Modal() {
 
   useEffect(() => {
     if (!isOpen) return
-    // Move focus
     document.getElementById('modal-close')?.focus()
-    // Set background to inert
-    document.getElementById('root').inert = true
+    const root = document.getElementById('root')
+    if (root) root.inert = true
     return () => {
-      document.getElementById('root').inert = false
+      const r = document.getElementById('root')
+      if (r) r.inert = false
     }
   }, [isOpen])
 
