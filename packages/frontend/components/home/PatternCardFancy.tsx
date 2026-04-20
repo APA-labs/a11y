@@ -4,7 +4,6 @@ import { ArrowUpRight } from 'lucide-react'
 import { m } from 'motion/react'
 import Link from 'next/link'
 
-
 import type { Lang } from '@/lib/i18n'
 import type { Pattern } from '@/lib/types'
 

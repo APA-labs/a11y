@@ -15,7 +15,6 @@ import { getTranslations } from '@/lib/i18n'
 import { getPatterns } from '@/lib/patterns'
 import { ICON_MAP } from '@/lib/patterns/icons'
 
-
 export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [cmdOpen, setCmdOpen] = useState(false)

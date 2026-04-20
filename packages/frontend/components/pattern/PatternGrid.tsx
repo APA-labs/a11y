@@ -11,7 +11,6 @@ import { getTranslations } from '@/lib/i18n'
 import { DS_META, DS_ORDER } from '@/lib/types'
 import { getDsSwatchColor } from '@/lib/wcag/ds-swatch'
 
-
 export default function PatternGrid({ patterns, lang }: { patterns: Pattern[]; lang: Lang }) {
   const t = getTranslations(lang)
   const [activeDS, setActiveDS] = useState<DesignSystemId | null>(null)

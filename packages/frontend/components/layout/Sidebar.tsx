@@ -12,7 +12,6 @@ import { getTranslations } from '@/lib/i18n'
 import { getPatterns } from '@/lib/patterns'
 import { ICON_MAP } from '@/lib/patterns/icons'
 
-
 function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
   const containerRef = useRef<HTMLSpanElement>(null)
   const textRef = useRef<HTMLSpanElement>(null)

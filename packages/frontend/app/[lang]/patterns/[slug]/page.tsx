@@ -14,7 +14,6 @@ import WcagBadge from '@/components/pattern/WcagBadge'
 import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
 import { getPattern, getPatterns } from '@/lib/patterns'
 
-
 export const dynamic = 'force-static'
 
 export function generateStaticParams() {

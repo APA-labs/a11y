@@ -4,7 +4,6 @@ import Header from '@/components/layout/Header'
 import Sidebar from '@/components/layout/Sidebar'
 import MotionProvider from '@/components/ui/MotionProvider'
 
-
 export default async function LangLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: Lang }> }) {
   const { lang } = await params
   const aiEnabled = process.env.NEXT_PUBLIC_AI_ENABLED === 'true'

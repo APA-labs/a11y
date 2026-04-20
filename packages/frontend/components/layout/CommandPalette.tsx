@@ -10,7 +10,6 @@ import type { Pattern } from '@/lib/types'
 import { getTranslations } from '@/lib/i18n'
 import { ICON_MAP } from '@/lib/patterns/icons'
 
-
 interface Props {
   patterns: Pattern[]
   lang: Lang

@@ -6,7 +6,6 @@ import type { Lang } from '@/lib/i18n'
 import AnalyzeForm from '@/components/analyze/AnalyzeForm'
 import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
 
-
 export function generateStaticParams() {
   return SUPPORTED_LANGS.map((lang) => ({ lang }))
 }

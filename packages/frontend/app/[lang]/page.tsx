@@ -12,7 +12,6 @@ import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
 import { getPatterns } from '@/lib/patterns'
 import { DS_ORDER } from '@/lib/types'
 
-
 export function generateStaticParams() {
   return SUPPORTED_LANGS.map((lang) => ({ lang }))
 }

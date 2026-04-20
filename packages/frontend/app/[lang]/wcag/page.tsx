@@ -11,7 +11,6 @@ import type { Lang } from '@/lib/i18n'
 
 import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
 
-
 export function generateStaticParams() {
   return SUPPORTED_LANGS.map((lang) => ({ lang }))
 }

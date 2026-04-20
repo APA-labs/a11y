@@ -7,7 +7,6 @@ import type { Lang } from '@/lib/i18n'
 
 import { getWcagCriterion, getLevelColor } from '@/lib/wcag/criteria'
 
-
 interface WcagBadgeProps {
   criterion: string
   lang?: Lang
