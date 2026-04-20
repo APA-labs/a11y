@@ -1,4 +1,13 @@
-import type { Pattern } from '../types'
+
+import antdCode from './samples/antd.tsx?raw'
+import baselineCode from './samples/baseline.tsx?raw'
+import baseuiCode from './samples/baseui.tsx?raw'
+import chakraCode from './samples/chakra.tsx?raw'
+import materialCode from './samples/material.tsx?raw'
+import radixCode from './samples/radix.tsx?raw'
+import spectrumCode from './samples/spectrum.tsx?raw'
+
+import type { Pattern } from '../../types'
 
 export const buttonPattern: Pattern = {
   slug: 'button',
@@ -38,29 +47,7 @@ export const buttonPattern: Pattern = {
     codeSample: {
       language: 'tsx',
       label: 'Baseline (HTML)',
-      code: `import './index.css'
-import { useState } from 'react'
-
-export default function App() {
-  const [isLoading, setIsLoading] = useState(false)
-
-  return (
-    <div className='app'>
-      <button
-        type='button'
-        aria-label='Save file'
-        aria-disabled={isLoading}
-        aria-busy={isLoading}
-        className='btn'
-        onClick={() => {
-          setIsLoading(true)
-          setTimeout(() => setIsLoading(false), 1500)
-        }}>
-        {isLoading ? <span aria-hidden>⏳</span> : 'Save'}
-      </button>
-    </div>
-  )
-}`
+      code: baselineCode
     }
   },
   designSystems: {
@@ -92,58 +79,7 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'MUI Button',
-        code: `import './index.css'
-import { useState } from 'react'
-import { Button, CircularProgress, Stack } from '@mui/material'
-
-export default function App() {
-  const [loading, setLoading] = useState(false)
-
-  const handleSave = () => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
-  }
-
-  return (
-    <Stack
-      spacing={2}
-      direction='row'
-      className='app'>
-      <Button
-        variant='contained'
-        onClick={handleSave}
-        disabled={loading}
-        aria-busy={loading}
-        startIcon={
-          loading ? (
-            <CircularProgress
-              size={16}
-              aria-hidden='true'
-            />
-          ) : undefined
-        }
-        sx={{ minHeight: 44 }}>
-        {loading ? 'Saving...' : 'Save'}
-      </Button>
-
-      <Button
-        variant='outlined'
-        disabled
-        aria-disabled='true'
-        sx={{ minHeight: 44 }}>
-        Disabled
-      </Button>
-
-      <Button
-        variant='contained'
-        color='error'
-        aria-label='Delete selected item'
-        sx={{ minHeight: 44 }}>
-        Delete
-      </Button>
-    </Stack>
-  )
-}`
+        code: materialCode
       },
       notes: [
         'MUI Button은 기본적으로 <button type="button">을 렌더링합니다.',
@@ -173,41 +109,7 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Radix Slot',
-        code: `import './index.css'
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  asChild?: boolean
-  isLoading?: boolean
-  children?: React.ReactNode
-}
-
-function Button({ asChild, isLoading, children, ...props }: ButtonProps) {
-  const Comp = asChild ? Slot : 'button'
-  return (
-    <Comp
-      aria-busy={isLoading}
-      aria-disabled={isLoading || props.disabled}
-      className='btn'
-      {...props}>
-      {children}
-    </Comp>
-  )
-}
-
-export default function App() {
-  const [isLoading, setIsLoading] = React.useState(false)
-  return (
-    <div className='app'>
-      <Button
-        isLoading={isLoading}
-        onClick={() => setIsLoading(!isLoading)}>
-        {isLoading ? 'Saving...' : 'Save'}
-      </Button>
-    </div>
-  )
-}`
+        code: radixCode
       },
       notes: [
         'Radix는 headless 컴포넌트로 스타일을 직접 제어합니다.',
@@ -243,56 +145,7 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Ant Design Button',
-        code: `import './index.css'
-import { useState } from 'react'
-import { Button, Space } from 'antd'
-
-export default function App() {
-  const [loading, setLoading] = useState(false)
-
-  const handleSave = () => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
-  }
-
-  return (
-    <Space
-      className='app'
-      wrap>
-      <Button
-        type='primary'
-        loading={loading}
-        aria-busy={loading}
-        aria-label={loading ? 'Saving, please wait' : 'Save'}
-        className='max-h-44'
-        onClick={handleSave}>
-        {loading ? 'Saving...' : 'Save'}
-      </Button>
-
-      <Button
-        type='default'
-        disabled
-        aria-disabled='true'
-        className='max-h-44'>
-        Disabled
-      </Button>
-
-      <Button
-        danger
-        aria-label='Delete selected item'
-        className='max-h-44'>
-        Delete
-      </Button>
-
-      <Button
-        variant='outlined'
-        color='primary'
-        className='max-h-44'>
-        Outlined
-      </Button>
-    </Space>
-  )
-}`
+        code: antdCode
       },
       notes: [
         'Button은 내부적으로 <button> 요소를 렌더링합니다. htmlType prop으로 submit/reset/button을 지정하세요.',
@@ -316,53 +169,7 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Chakra UI Button',
-        code: `import './index.css'
-import { useState } from 'react'
-import { Button, Stack } from '@chakra-ui/react'
-
-export default function App() {
-  const [loading, setLoading] = useState(false)
-
-  const handleSave = () => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
-  }
-
-  return (
-    <Stack
-      direction='row'
-      gap={3}
-      className='app'
-      wrap='wrap'>
-      <Button
-        colorPalette='teal'
-        loading={loading}
-        loadingText='Saving...'
-        onClick={handleSave}>
-        Save
-      </Button>
-
-      <Button
-        colorPalette='teal'
-        variant='outline'>
-        Outlined
-      </Button>
-
-      <Button
-        disabled
-        aria-disabled='true'>
-        Disabled
-      </Button>
-
-      <Button
-        colorPalette='red'
-        variant='solid'
-        aria-label='Delete selected item'>
-        Delete
-      </Button>
-    </Stack>
-  )
-}`
+        code: chakraCode
       },
       notes: [
         'Chakra Button은 내부적으로 <button> 요소를 렌더링합니다.',
@@ -387,41 +194,7 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'React Aria Button',
-        code: `import './index.css'
-import { useState } from 'react'
-import { Button } from 'react-aria-components'
-
-export default function App() {
-  const [isPending, setPending] = useState(false)
-
-  const handleSave = () => {
-    setPending(true)
-    setTimeout(() => setPending(false), 2000)
-  }
-
-  return (
-    <div className='app row'>
-      <Button
-        isPending={isPending}
-        onPress={handleSave}
-        className='btn btn-accent max-h-44'>
-        {isPending ? 'Saving...' : 'Save'}
-      </Button>
-
-      <Button
-        isDisabled
-        className='btn max-h-44'>
-        Disabled
-      </Button>
-
-      <Button
-        aria-label='Delete selected item'
-        className='btn btn-danger-outline max-h-44'>
-        Delete
-      </Button>
-    </div>
-  )
-}`
+        code: spectrumCode
       },
       notes: [
         'onPress 이벤트 핸들러를 사용합니다. onClick도 동작하지만 onPress가 마우스/키보드/터치를 통합 처리합니다.',
@@ -451,42 +224,7 @@ export default function App() {
       codeSample: {
         language: 'tsx',
         label: 'Base UI Button',
-        code: `import './index.css'
-import { useState } from 'react'
-import { Button } from '@base-ui-components/react/button'
-
-export default function App() {
-  const [isLoading, setIsLoading] = useState(false)
-
-  return (
-    <div className='app row'>
-      <Button
-        disabled={isLoading}
-        focusableWhenDisabled
-        aria-busy={isLoading}
-        className='btn btn-primary max-h-44'
-        onClick={() => {
-          setIsLoading(true)
-          setTimeout(() => setIsLoading(false), 2000)
-        }}>
-        {isLoading ? 'Saving...' : 'Save'}
-      </Button>
-
-      <Button
-        disabled
-        focusableWhenDisabled
-        className='btn max-h-44'>
-        Disabled
-      </Button>
-
-      <Button
-        aria-label='Delete selected item'
-        className='btn btn-danger-solid max-h-44'>
-        Delete
-      </Button>
-    </div>
-  )
-}`
+        code: baseuiCode
       },
       notes: [
         'Base UI Button은 기본적으로 <button type="button"> 요소를 렌더링합니다.',
