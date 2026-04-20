@@ -3,13 +3,14 @@
 import { m } from 'motion/react'
 import { useMemo, useState } from 'react'
 
-import PatternCardFancy from './home/PatternCardFancy'
-import { getDsSwatchColor } from '../lib/ds-swatch'
-import { getTranslations } from '../lib/i18n'
-import { DS_META, DS_ORDER } from '../lib/types'
+import type { Lang } from '@/lib/i18n'
+import type { DesignSystemId, Pattern } from '@/lib/types'
 
-import type { Lang } from '../lib/i18n'
-import type { DesignSystemId, Pattern } from '../lib/types'
+import PatternCardFancy from '@/components/home/PatternCardFancy'
+import { getTranslations } from '@/lib/i18n'
+import { DS_META, DS_ORDER } from '@/lib/types'
+import { getDsSwatchColor } from '@/lib/wcag/ds-swatch'
+
 
 export default function PatternGrid({ patterns, lang }: { patterns: Pattern[]; lang: Lang }) {
   const t = getTranslations(lang)

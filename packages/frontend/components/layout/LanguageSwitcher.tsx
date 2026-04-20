@@ -4,9 +4,10 @@ import { Languages } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import { SUPPORTED_LANGS } from '../lib/i18n'
+import type { Lang } from '@/lib/i18n'
 
-import type { Lang } from '../lib/i18n'
+import { SUPPORTED_LANGS } from '@/lib/i18n'
+
 
 const LANG_LABELS: Record<Lang, string> = {
   ko: '한국어',

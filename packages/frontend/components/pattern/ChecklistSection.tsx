@@ -1,6 +1,6 @@
 import { AlertCircle, CheckCircle2, MinusCircle } from 'lucide-react'
 
-import type { ChecklistItem } from '../lib/types'
+import type { ChecklistItem } from '@/lib/types'
 
 const CONFIG = {
   must: {

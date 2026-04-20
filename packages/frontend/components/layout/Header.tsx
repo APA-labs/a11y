@@ -8,11 +8,13 @@ import { useEffect, useState } from 'react'
 import CommandPalette from './CommandPalette'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
-import { getTranslations } from '../lib/i18n'
-import { ICON_MAP } from '../lib/pattern-icons'
-import { getPatterns } from '../lib/patterns'
 
-import type { Lang } from '../lib/i18n'
+import type { Lang } from '@/lib/i18n'
+
+import { getTranslations } from '@/lib/i18n'
+import { getPatterns } from '@/lib/patterns'
+import { ICON_MAP } from '@/lib/patterns/icons'
+
 
 export default function Header({ aiEnabled = true, lang }: { aiEnabled?: boolean; lang: Lang }) {
   const [drawerOpen, setDrawerOpen] = useState(false)

@@ -3,9 +3,10 @@
 import * as RadixPopover from '@radix-ui/react-popover'
 import { ExternalLink, Info } from 'lucide-react'
 
-import { getWcagCriterion, getLevelColor } from '../lib/wcag-criteria'
+import type { Lang } from '@/lib/i18n'
 
-import type { Lang } from '../lib/i18n'
+import { getWcagCriterion, getLevelColor } from '@/lib/wcag/criteria'
+
 
 interface WcagBadgeProps {
   criterion: string

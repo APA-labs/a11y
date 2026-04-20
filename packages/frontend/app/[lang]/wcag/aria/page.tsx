@@ -1,11 +1,12 @@
 export const dynamic = 'force-static'
 
-import { getTranslations, SUPPORTED_LANGS } from '../../../../lib/i18n'
 import { WcagInfoCard } from '../_components/WcagInfoCard'
 import { WcagPageShell } from '../_components/WcagPageShell'
 import { WcagSection } from '../_components/WcagSection'
 
-import type { Lang } from '../../../../lib/i18n'
+import type { Lang } from '@/lib/i18n'
+
+import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
 
 export function generateStaticParams() {
   return SUPPORTED_LANGS.map((lang) => ({ lang }))

@@ -4,11 +4,12 @@ import { MousePointer2, Search } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import { getTranslations } from '../lib/i18n'
-import { ICON_MAP } from '../lib/pattern-icons'
+import type { Lang } from '@/lib/i18n'
+import type { Pattern } from '@/lib/types'
 
-import type { Lang } from '../lib/i18n'
-import type { Pattern } from '../lib/types'
+import { getTranslations } from '@/lib/i18n'
+import { ICON_MAP } from '@/lib/patterns/icons'
+
 
 interface Props {
   patterns: Pattern[]

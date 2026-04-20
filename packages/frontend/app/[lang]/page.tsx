@@ -1,16 +1,17 @@
 export const dynamic = 'force-static'
 
-import DSLegendFloat from '../../components/DSLegendFloat'
-import Aurora from '../../components/home/Aurora'
-import Hero from '../../components/home/Hero'
-import StatsCounter from '../../components/home/StatsCounter'
-import WcagIntro from '../../components/home/WcagIntro'
-import PatternGrid from '../../components/PatternGrid'
-import { getTranslations, SUPPORTED_LANGS } from '../../lib/i18n'
-import { getPatterns } from '../../lib/patterns'
-import { DS_ORDER } from '../../lib/types'
+import type { Lang } from '@/lib/i18n'
 
-import type { Lang } from '../../lib/i18n'
+import Aurora from '@/components/home/Aurora'
+import Hero from '@/components/home/Hero'
+import StatsCounter from '@/components/home/StatsCounter'
+import WcagIntro from '@/components/home/WcagIntro'
+import DSLegendFloat from '@/components/layout/DSLegendFloat'
+import PatternGrid from '@/components/pattern/PatternGrid'
+import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
+import { getPatterns } from '@/lib/patterns'
+import { DS_ORDER } from '@/lib/types'
+
 
 export function generateStaticParams() {
   return SUPPORTED_LANGS.map((lang) => ({ lang }))

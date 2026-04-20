@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+code,
+pre {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* 한국어 어절 중간 줄바꿈 방지 — 제목과 주요 본문에 기본 적용 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  word-break: keep-all;
+  text-wrap: balance;
+}
+
+p {
+  word-break: keep-all;
+}

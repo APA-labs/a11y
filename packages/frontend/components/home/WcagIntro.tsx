@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
-import type { Lang, Translations } from '../../lib/i18n'
+import type { Lang, Translations } from '@/lib/i18n'
 
 type Props = {
   lang: Lang

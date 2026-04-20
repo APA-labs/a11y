@@ -4,13 +4,14 @@ import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 
 import CodeBlock from './CodeBlock'
-import { getDsSwatchColor } from '../lib/ds-swatch'
-import { getTranslations } from '../lib/i18n'
-import { renderWithCode } from '../lib/inline-code'
-import { DS_ORDER } from '../lib/types'
 
-import type { Lang } from '../lib/i18n'
-import type { DesignSystemId, DesignSystemVariant, Pattern } from '../lib/types'
+import type { Lang } from '@/lib/i18n'
+import type { DesignSystemId, DesignSystemVariant, Pattern } from '@/lib/types'
+
+import { getTranslations } from '@/lib/i18n'
+import { renderWithCode } from '@/lib/inline-code'
+import { DS_ORDER } from '@/lib/types'
+import { getDsSwatchColor } from '@/lib/wcag/ds-swatch'
 
 /** Design system tabs that show code only (no Sandpack preview). */
 const DESIGN_SYSTEM_IDS_WITHOUT_PREVIEW: readonly DesignSystemId[] = ['baseui']

@@ -2,17 +2,18 @@ import { ArrowLeft, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import ChecklistSection from '../../../../components/ChecklistSection'
-import CodeBlock from '../../../../components/CodeBlock'
-import DesignSystemTabs from '../../../../components/DesignSystemTabs'
-import FloatingToc from '../../../../components/pattern/FloatingToc'
-import ScrollProgress from '../../../../components/pattern/ScrollProgress'
-import SectionHeader from '../../../../components/pattern/SectionHeader'
-import WcagBadge from '../../../../components/WcagBadge'
-import { getTranslations, SUPPORTED_LANGS } from '../../../../lib/i18n'
-import { getPattern, getPatterns } from '../../../../lib/patterns'
+import type { Lang } from '@/lib/i18n'
 
-import type { Lang } from '../../../../lib/i18n'
+import ChecklistSection from '@/components/pattern/ChecklistSection'
+import CodeBlock from '@/components/pattern/CodeBlock'
+import DesignSystemTabs from '@/components/pattern/DesignSystemTabs'
+import FloatingToc from '@/components/pattern/FloatingToc'
+import ScrollProgress from '@/components/pattern/ScrollProgress'
+import SectionHeader from '@/components/pattern/SectionHeader'
+import WcagBadge from '@/components/pattern/WcagBadge'
+import { getTranslations, SUPPORTED_LANGS } from '@/lib/i18n'
+import { getPattern, getPatterns } from '@/lib/patterns'
+
 
 export const dynamic = 'force-static'
 

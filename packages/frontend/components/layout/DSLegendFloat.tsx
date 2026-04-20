@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
-import { getDsSwatchColor } from '../lib/ds-swatch'
-import { DS_META, DS_ORDER } from '../lib/types'
+import { DS_META, DS_ORDER } from '@/lib/types'
+import { getDsSwatchColor } from '@/lib/wcag/ds-swatch'
 
 export default function DSLegendFloat() {
   const [visible, setVisible] = useState(false)

@@ -3,7 +3,7 @@
 import { SandpackCodeEditor, SandpackLayout, SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react'
 import { Component, useEffect, useState, type ReactNode } from 'react'
 
-import { buildAppCode } from '../lib/build-preview-code'
+import { buildAppCode } from '@/lib/sandpack/build-preview-code'
 
 class SandpackErrorBoundary extends Component<{ children: ReactNode }, { error: boolean }> {
   state = { error: false }

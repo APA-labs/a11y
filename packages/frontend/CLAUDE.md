@@ -14,34 +14,63 @@ lib/i18n/*              → ko / en translations (keep keys in sync)
 ### Sandpack live preview (feature-critical)
 
 ```
-lib/build-preview-code.ts → Sandpack App wrapper generator (buildAppCode)
-lib/sandpack-shadcn.ts    → shadcn/ui component stubs for Sandpack preview
-components/SandpackPreview.tsx → Live preview component
+lib/sandpack/build-preview-code.ts → Sandpack App wrapper generator (buildAppCode)
+components/pattern/SandpackPreview.tsx → Live preview component
   - DS_DEPS: dependency map per design system (add new DS packages here)
   - detectDeps(): scans code for known DS imports
   - hasShadcn / hasChakra: provider injection logic
-components/CodeBlock.tsx → Code display + preview tab toggle
+components/pattern/CodeBlock.tsx → Code display + preview tab toggle
 ```
 
 ### UI layer (safe to redesign)
 
 ```
-components/ui/MotionProvider.tsx  → LazyMotion + MotionConfig (reducedMotion: 'user')
-components/home/Hero.tsx          → Serif h1 hero (only place where font-serif is used)
-components/home/Aurora.tsx        → 3 conic orbs + SVG noise overlay
-components/home/StatsCounter.tsx  → In-view count-up stats
-components/home/WcagIntro.tsx     → WCAG explainer + POUR principles
-components/home/PatternCardFancy.tsx → Home pattern card (replaces old PatternCard)
-components/pattern/ScrollProgress.tsx → Top scroll progress bar
-components/pattern/SectionHeader.tsx  → Section headers on pattern detail page
-components/pattern/FloatingToc.tsx    → Right-side sticky TOC (lg+)
-components/DSLegendFloat.tsx      → Floating DS legend, visible only when #patterns is in view
-lib/ds-swatch.ts                  → getDsSwatchColor(id) — maps 'baseui' to --ds-baseui-swatch CSS var
-                                    for dark mode visibility (SSOT colors stay untouched)
-app/_effects.css                  → aurora orbs, noise, text-gradient, animation keyframes
-app/globals.css                   → semantic tokens (light + dark), global heading/paragraph rules
-                                    (word-break: keep-all, text-wrap: balance on h1-h6)
+components/ui/MotionProvider.tsx       → LazyMotion + MotionConfig (reducedMotion: 'user')
+components/home/Hero.tsx               → Serif h1 hero (only place where font-serif is used)
+components/home/Aurora.tsx             → 3 conic orbs + SVG noise overlay
+components/home/StatsCounter.tsx       → In-view count-up stats
+components/home/WcagIntro.tsx          → WCAG explainer + POUR principles
+components/home/PatternCardFancy.tsx   → Home pattern card (replaces old PatternCard)
+components/pattern/ScrollProgress.tsx  → Top scroll progress bar
+components/pattern/SectionHeader.tsx   → Section headers on pattern detail page
+components/pattern/FloatingToc.tsx     → Right-side sticky TOC (lg+)
+components/layout/DSLegendFloat.tsx    → Floating DS legend, visible only when #patterns is in view
+lib/wcag/ds-swatch.ts                  → getDsSwatchColor(id) — maps 'baseui' to --ds-baseui-swatch CSS var
+                                         for dark mode visibility (SSOT colors stay untouched)
+app/globals.css                        → entrypoint (imports styles/* in order)
+app/styles/tokens.css                  → semantic tokens (light + dark) in :root / .dark
+app/styles/base.css                    → reset, heading/paragraph rules (word-break, text-wrap)
+app/styles/utilities.css               → custom utility classes (.scrollbar-thin)
+app/styles/animations.css              → @keyframes + prefers-reduced-motion overrides
+app/styles/effects.css                 → aurora orbs, noise, text-gradient
 ```
+
+### Folder layout
+
+```
+app/
+  [lang]/          → localized route tree (ko/en)
+  styles/          → CSS split by concern (tokens/base/utilities/animations/effects)
+  globals.css      → entry point, imports styles/* then @tailwind directives
+components/
+  layout/          → Header, Sidebar, ThemeToggle, LanguageSwitcher, CommandPalette, DSLegendFloat
+  home/            → Aurora, Hero, StatsCounter, WcagIntro, PatternCardFancy
+  pattern/         → CodeBlock, SandpackPreview, DesignSystemTabs, ChecklistSection,
+                     WcagBadge, PatternGrid, ScrollProgress, SectionHeader, FloatingToc
+  analyze/         → AnalyzeForm
+  previews/        → per-pattern preview components (button, dialog, etc.)
+  ui/              → primitive providers (MotionProvider)
+lib/
+  i18n/            → ko/en translations + hooks
+  patterns/        → individual pattern definitions + icons + translations
+  sandpack/        → build-preview-code (Sandpack wrapper generator)
+  seo/             → metadata (alternates, canonical)
+  wcag/            → criteria, ds-swatch
+  types.ts         → Pattern, ChecklistItem, DS_META, DS_ORDER
+  inline-code.tsx  → renderWithCode (`…` → <code>)
+```
+
+TS path alias `@/*` resolves to `./*` — prefer `@/components/...` / `@/lib/...` over deep relative imports.
 
 ## UI conventions
 

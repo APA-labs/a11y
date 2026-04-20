@@ -4,8 +4,8 @@ import { Check, Code, Copy, Eye } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
-import type { Lang } from '../lib/i18n'
-import type { CodeSample } from '../lib/types'
+import type { Lang } from '@/lib/i18n'
+import type { CodeSample } from '@/lib/types'
 
 const SandpackPreviewBlock = dynamic(() => import('./SandpackPreview'), {
   ssr: false,

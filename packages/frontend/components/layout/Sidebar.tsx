@@ -6,11 +6,12 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import { getTranslations } from '../lib/i18n'
-import { ICON_MAP } from '../lib/pattern-icons'
-import { getPatterns } from '../lib/patterns'
+import type { Lang } from '@/lib/i18n'
 
-import type { Lang } from '../lib/i18n'
+import { getTranslations } from '@/lib/i18n'
+import { getPatterns } from '@/lib/patterns'
+import { ICON_MAP } from '@/lib/patterns/icons'
+
 
 function MarqueeText({ label, hidden }: { label: string; hidden: boolean }) {
   const containerRef = useRef<HTMLSpanElement>(null)

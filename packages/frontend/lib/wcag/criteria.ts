@@ -1,4 +1,4 @@
-import type { Lang } from './i18n'
+import type { Lang } from '../i18n'
 
 export interface WcagCriterion {
   id: string
