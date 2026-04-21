@@ -201,7 +201,7 @@ export default function SandpackPreviewBlock({ code, language, slug }: Props) {
     )
   }
 
-  let appCode = buildAppCode(code)
+  let appCode = buildAppCode(code).replace(/\s+$/, '')
   const extraDeps = detectDeps(code)
 
   const hasChakra = code.includes('@chakra-ui')
