@@ -1,0 +1,54 @@
+:root {
+  --sidebar-width: 240px;
+
+  /* Brand palette */
+  --color-pearl: #f6f7f7;
+  --color-sand: #a28958;
+  --color-sand-light: #c4a570;
+  --color-sand-dark: #705c38;
+  --color-mist: #9a99a7;
+  --color-mist-light: #c8c7d2;
+  --color-mist-dark: #636272;
+  --color-mauve: #7c646c;
+  --color-mauve-light: #b09699;
+  --color-mauve-dark: #523b43;
+  --color-navy: #2c435d;
+  --color-navy-light: #5088b3;
+  --color-navy-dark: #1e2e40;
+
+  /* Semantic tokens */
+  --color-bg: var(--color-pearl);
+  --color-surface: #ffffff;
+  --color-accent: var(--color-sand);
+  --color-accent-hover: var(--color-sand-dark);
+  --color-neutral: var(--color-mist);
+  --color-warm: var(--color-mauve);
+  --color-text-primary: var(--color-navy);
+  --color-text-secondary: var(--color-mist-dark);
+  --color-border: var(--color-mist-light);
+
+  /* Semantic tokens — Light */
+  --canvas: #f6f7f7;
+  --surface: #ffffff;
+  --float: #ffffff;
+  --inset: #eaecec;
+  --outline: #c8c7d2;
+  --divider: #e2e2e8;
+  --body: #2c435d;
+  --soft: #7e7d8e;
+  --faint: #9a99a7;
+  --ds-baseui-swatch: #18181b;
+}
+
+.dark {
+  --canvas: #0d141d;
+  --surface: #1a2838;
+  --float: #263a52;
+  --inset: #0a1017;
+  --outline: #2f4764;
+  --divider: #263a52;
+  --body: #f6f7f7;
+  --soft: #a29fb0;
+  --faint: #7a8290;
+  --ds-baseui-swatch: #e4e4e7;
+}

@@ -75,10 +75,9 @@ process.stdin.on('end', () => {
     if (!filePath) process.exit(0)
 
     const isRuleJson = filePath.match(/\/rules\/[^/]+\.json$/) && !filePath.endsWith('patterns.json')
-    const isFrontendPatterns =
-      filePath.endsWith('packages/frontend/lib/patterns.ts') || filePath.match(/packages\/frontend\/lib\/patterns\/[^/]+\.ts$/)
+    const isPatternSample = filePath.match(/packages\/frontend\/lib\/patterns\/[^/]+\/samples\/[^/]+\.(tsx|html)$/)
 
-    if (!isRuleJson && !isFrontendPatterns) process.exit(0)
+    if (!isRuleJson && !isPatternSample) process.exit(0)
 
     const raw = fs.readFileSync(filePath, 'utf-8')
     const issues = []
@@ -91,13 +90,9 @@ process.stdin.on('end', () => {
         if (sample?.code) codeSamples.push({ label: `codeSamples.${key}`, code: sample.code })
       }
     } else {
-      // Extract template literal code strings from patterns.ts
-      const codeRe = /code:\s*`([\s\S]*?)`/g
-      let m
-      let idx = 0
-      while ((m = codeRe.exec(raw)) !== null) {
-        codeSamples.push({ label: `code[${idx++}]`, code: m[1] })
-      }
+      // 샘플 파일 자체를 하나의 code 블록으로 검사
+      const rel = filePath.split('packages/frontend/lib/patterns/')[1] || filePath
+      codeSamples.push({ label: rel, code: raw })
     }
 
     for (const { label, code } of codeSamples) {

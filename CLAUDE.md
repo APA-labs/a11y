@@ -36,9 +36,11 @@ tools/typescript-config   → @a11y/typescript-config
 
 1. Create `packages/backend/src/rules/<pattern-name>.json` (follow existing structure)
 2. Register in `packages/backend/src/rules/patterns.json`
-3. Add pattern entry to `packages/frontend/lib/patterns/<pattern-name>.ts` (see existing files for structure)
+3. Create `packages/frontend/lib/patterns/<slug>/` folder with `index.ts` (Pattern metadata) and `samples/` (actual `.tsx` sample files per DS + `index.css` placeholder). See `packages/frontend/lib/patterns/button/` as a reference.
 4. Export it in `packages/frontend/lib/patterns/index.ts` and add to the `patterns` array
 5. No other code changes needed — rule engine and frontend pick it up automatically
+
+Sample files use `?raw` imports (see `.claude/rules/pattern-style.md` for style + validation rules).
 
 ## Session Wrap
 

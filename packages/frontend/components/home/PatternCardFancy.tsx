@@ -4,12 +4,12 @@ import { ArrowUpRight } from 'lucide-react'
 import { m } from 'motion/react'
 import Link from 'next/link'
 
-import { getDsSwatchColor } from '../../lib/ds-swatch'
-import { DS_META, DS_ORDER } from '../../lib/types'
-import { getPreview } from '../previews'
+import type { Lang } from '@/lib/i18n'
+import type { Pattern } from '@/lib/types'
 
-import type { Lang } from '../../lib/i18n'
-import type { Pattern } from '../../lib/types'
+import { getPreview } from '@/components/previews'
+import { DS_META, DS_ORDER } from '@/lib/types'
+import { getDsSwatchColor } from '@/lib/wcag/ds-swatch'
 
 type Props = {
   pattern: Pattern

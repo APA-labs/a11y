@@ -23,9 +23,7 @@ const defaultConfig = {
   autoLastmod: true,
   changefreq: 'weekly',
   priority: 0.7,
-  // Next.js [lang] 다이나믹 세그먼트가 자동 수집 시 벗겨져 bare path가 들어오므로 제외.
-  // 실제 등록은 아래 additionalPaths에서 로컬라이즈된 경로만 수행.
-  exclude: ['/', '/404', '/analyze', '/wcag', '/wcag/*', '/patterns/*'],
+  exclude: ['/', '/404'],
   additionalPaths: async () => {
     const paths = []
     for (const lang of LANGS) {
